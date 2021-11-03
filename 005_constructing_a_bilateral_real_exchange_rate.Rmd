@@ -1,0 +1,113 @@
+---
+title: "Constructing a bilateral real exchange rate"
+author: "Anonymous"
+date: '2021-09-19'
+output:
+  pdf_document: default
+  html_document:
+    number_sections: yes
+    code_folding: hide
+bibliography: intro_econ.bib
+link-citations: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r message=FALSE}
+library(tidyverse)
+library(tidyquant)
+library(timetk)
+```
+
+# Introduction
+
+This document expands the information that is pointed out in [@neely_constructing_2020]
+
+# Bilateral real exchange rate
+
+$$BRER_{ij} = \frac{NER_{ij} * P_{j}}{P_i}$$
+
+- Territory $i$
+- Territory $j$
+- $BRER_{ij}$: Bilateral real exchange rate between territory $i$ and territory $j$ from the perspective of territory $i$
+- $NER_{ij}$: Nominal exchange rate between territory $i$ and territory $j$ from the perspective of territory $i$
+
+    + $NER_{ij} = \frac{Currency_i}{Currency_j}$
+    
+For example if $i = US$ and $j = EUA$ then the idea is to calculate the bilateral real exchange rate between the United States of America and the Euro Area
+
+# Data
+
+## Case study: Bilateral real exchange rate between the US and the EUA 
+
+- Source: https://fred.stlouisfed.org/
+- Variables: 
+
+    + $NER_{US,EUA}$: U.S. / Euro Foreign Exchange Rate
+        + Code: DEXUSEU
+        
+    + $P_{US}$: Consumer Price Index for All Urban Consumers: All Items in U.S. City Average 
+        + Code: CPIAUCSL
+    
+    + $P_{EUA}$: Harmonized Index of Consumer Prices: All Items for Euro area (19 countries) 
+        + Code: CP0000EZ19M086NEST 
+        
+## Import and tidy
+
+```{r}
+# Import
+nex_us_eua <- tq_get(c("DEXUSEU"),
+       get = "economic.data", 
+       complete_cases = TRUE,
+       from = "1999-01-01")
+
+pi_us_eua <- tq_get(c("CPIAUCSL", "CP0000EZ19M086NEST"),
+                     get = "economic.data", 
+                     complete_cases = TRUE,
+                     from = "1999-01-01")
+
+# Tidy
+nex_us_eua <- nex_us_eua %>% 
+  summarize_by_time(.date_var = date, 
+                    .by = "month", 
+                    DEXUSEU = mean(price, na.rm = TRUE))
+
+pi_us_eua <- pi_us_eua %>% 
+  pivot_wider(id_cols = date, 
+              names_from = symbol, 
+              values_from = price)
+
+data_clean <- nex_us_eua %>% 
+  inner_join(y = pi_us_eua, by = "date") %>% 
+  set_names(nm = c("date", "nex_us_eua", "p_us", "p_eua"))
+```
+
+## Transform
+
+### Bilateral real exchange rate
+
+```{r}
+data_transform <- data_clean %>% 
+  mutate(brer_us_eua = nex_us_eua * (p_eua / p_us))
+```
+
+### Rescale bilateral real exchange rate
+
+```{r}
+brer_us_eua_100 <- data_transform$brer_us_eua[1]
+
+data_transform <- data_transform %>% 
+  mutate(rescale_brer_us_eua = (100 * brer_us_eua) / brer_us_eua_100)
+```
+
+# Visualize
+
+```{r}
+data_transform %>% 
+  ggplot(aes(x = date, y = rescale_brer_us_eua)) + 
+  geom_line()
+```
+
+# References

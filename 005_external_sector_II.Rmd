@@ -1,0 +1,281 @@
+---
+title: "External sector II"
+author: Luis Francisco Gomez Lopez
+date: 2021-09-18 17:45:03
+output:
+  beamer_presentation:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+  ioslides_presentation: default
+  slidy_presentation: default
+bibliography: intro_econ.bib
+link-citations: yes
+header-includes:
+  - \usepackage{booktabs}
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{multirow}
+  - \usepackage{wrapfig}
+  - \usepackage{float}
+  - \usepackage{colortbl}
+  - \usepackage{pdflscape}
+  - \usepackage{tabu}
+  - \usepackage{threeparttable}
+  - \usepackage{threeparttablex}
+  - \usepackage[normalem]{ulem}
+  - \usepackage{makecell}
+  - \usepackage{xcolor}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo      = FALSE, 
+                      warning   = FALSE, 
+                      message   = FALSE,
+                      fig.align = "center")
+```
+
+```{r}
+library(tidyverse)
+library(wbstats)
+library(tidyquant)
+library(knitr)
+```
+
+# Contents
+
+- Please Read Me
+- Purpose
+- The concept of comparative advantage
+- Volume of international trade
+- Harmonized System (HS)
+- Patterns of international trade: goods
+- Extended Balance of Payments Services classification (EBOPS)
+- Patterns of international trade: services
+- Observatory of Economic Complexity (OEC)
+- Acknowledgments
+- References
+
+# Please Read Me
+
+- Check the message __Welcome greeting__ published in the News Bulletin Board.
+
+- Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 5]
+
+# Purpose
+
+Explain the composition and determinants of Colombian foreign trade
+
+# The concept of comparative advantage
+
+- __Absolute advantage__: the ability of a party (individual, company, country) to produce a product more efficiently than any other party
+    
+    + A party should concentrate in producing a good in which it has an absolute advantage
+        
+    + ¿What happend when you don't have an absolute advantage?
+    
+- __Comparative advantage__: the ability of a party (individual, company, country) to produce a product at a lower relative opportunity cost
+    
+    + Under certain conditions, even if a party doesn't have an __absolute advantage__, trade with other agent can be benefical for both of them
+    
+# The concept of comparative advantage
+
+- Example of gains of trade using the concept of __comparative advantage__ [@ridley_when_2010]
+    
+    + __Agent 1__ produce 1 spear in 4 hours and 1 axe in 3 hours. 
+    
+        + To produce both products __agent 1__ will need to allocate 7 hours 
+        
+    + __Agent 2__ produce 1 spear in 1 hour and 1 axe in 2 hours. 
+    
+        + __Agent 2__ has the absolute advantage in the prodution of spears and axes. 
+        + To produce both products __agent 2__ will need to allocate 3 hours 
+            
+    + ¿It will be benefical for agent 1 and 2 to trade? Yes!!! __Agent 1__ can produce 2 axes in 6 hours and __agent 2__ 2 spears in 2 hours. Then they can trade 1 spear for 1 axe.
+        
+        + __Agent 1__ has now 1 spear and 1 axe only working 6 hours. 
+        + Furthermore __agent 2__ has now 1 spear and 1 axe only working 2 hours. 
+        + Each of them saves 1 hour of work in contrast with a situation in which they don't trade and produce themselves both products.
+        
+# Volume of international trade
+
+```{r out.width="90%"}
+# Data
+data <- wbstats::wb_data(country   = "COL",
+                         indicator = c("NE.IMP.GNFS.KN", "NE.EXP.GNFS.KN"),
+                         return_wide = FALSE) %>%
+  filter(!is.na(value))
+
+data %>%
+  select(country, date, value, indicator_id) %>%
+  mutate(indicator_id = case_when(
+    indicator_id == "NE.IMP.GNFS.KN" ~ "Imports",
+    indicator_id == "NE.EXP.GNFS.KN" ~ "Exports",
+    TRUE                             ~ indicator_id)) %>%
+
+  #Plot
+  ggplot() +
+  geom_point(aes(x = date, y = value, fill = indicator_id),
+             shape = 21,
+             color = "black",
+             show.legend = FALSE) +
+  geom_line(aes(x     = date,
+                y     = value,
+                group = indicator_id,
+                color = indicator_id)) +
+  scale_y_continuous(labels = scales::number_format(scale    = 1e-9,
+                                                    suffix   = "B",
+                                                    accuracy = 1)) +
+  scale_color_tq() +
+  scale_fill_tq() +
+  labs(x        = "Year",
+       y        = "Billions (Short scale)",
+       color    = "",
+       title    = str_glue("Colombia imports and exports: {min(data$date)}-{max(data$date)}"),
+       subtitle = str_glue("Variables Units: constant Local Currency Units Base Year 2015
+                              Imports WDI code : NE.IMP.GNFS.KN
+                              Exports WDI: NE.EXP.GNFS.KN"),
+       caption  = str_glue("Source: World Development Indicators - World Bank,
+                              Last update: {unique(data$last_updated)}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+
+# Harmonized System (HS)
+
+- The __Harmonized System (HS)__ is a standardized numerical method of classifying traded goods that is internationally accepted and maintained by the __World Customs Organization (WCO)__
+
+- The HS code consists of 6-digits that are the same independent of the country:
+
+    + First 2 digits designate the __HS__ chapter
+    + Second 2 digits designate the __HS__ heading
+    + Third 2 digits designate the __HS__ subheading
+    
+- Example of __HS__ code: 090111 (Coffee, not roasted, not decaffeinated)
+
+    + Chapter __09__: Cofee, tea, mate and spices
+    + Heading __01__: Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion
+    + Subheading __11__: Coffee, not roasted, not decaffeinated
+    
+# Patterns of international trade: goods
+
+- Colombian goods exports __(HS 2 digits Version 1992)__ year 1995 [@oec_observatory_2021]
+
+```{r out.width="100%"}
+knitr::include_graphics(path = "000_data/005_col_export_hs2_version1992_1995.png")
+```
+
+# Patterns of international trade: goods
+
+- Colombian goods exports __(HS 2 digits Version 1992)__ year 2019 [@oec_observatory_2021]
+
+```{r out.width="100%"}
+knitr::include_graphics(path = "000_data/005_col_export_hs2_version1992_2019.png")
+```
+
+# Patterns of international trade: goods
+
+- Colombian goods imports __(HS 2 digits Version 1992)__ year 1995 [@oec_observatory_2021]
+
+```{r out.width="100%"}
+knitr::include_graphics(path = "000_data/005_col_import_hs2_version1992_1995.png")
+```
+
+# Patterns of international trade: goods
+
+- Colombian goods imports __(HS 2 digits Version 1992)__ year 2019 [@oec_observatory_2021]
+
+```{r out.width="100%"}
+knitr::include_graphics(path = "000_data/005_col_import_hs2_version1992_2019.png")
+```
+
+# Extended Balance of Payments Services classification (EBOPS)
+
+-  The EBOPS classification provides a breakdown of the Balance of Payments Trade in Services by types of services. 
+
+- The classification thereby meets a number of user requirements, including the provision of more detailed information on Trade in services
+
+    + **EBOPS 2002**
+    + **EBOPS 2010**
+    
+- For more information check out
+
+    + [@vereinte_nationen_manual_2002]
+    + [@united_nations_manual_2012]
+    
+# Patterns of international trade: services
+
+- Colombian services exports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2021]
+
+```{r out.width="60%"}
+knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2000.png")
+```
+
+# Patterns of international trade: services
+
+- Colombian services imports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2021]
+
+```{r out.width="60%"}
+knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2000.png")
+```
+
+# Patterns of international trade: services
+
+- Colombian services exports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2021]
+
+```{r out.width="60%"}
+knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2019.png")
+```
+
+# Patterns of international trade: services
+
+- Colombian services imports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2021]
+
+```{r out.width="60%"}
+knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2019.png")
+```
+
+# Observatory of Economic Complexity (OEC)
+
+- "The Observatory of Economic Complexity (OEC) is an online data visualization and distribution platform focused on the geography and dynamics of economic activities" [@oec_observatory_2021]
+
+- "The OEC is currently designed and developed by Datawheel, but it began as a research project at MIT's Collective Learning group (former Macro Connections Group)" [@oec_observatory_2021]
+
+# Observatory of Economic Complexity (OEC)
+
+- Tree map
+
+    + https://oec.world/ > TOOLS > Tree map
+    
+        + Country 
+        + Product
+        + Bilateral
+        
+- Profiles
+
+    + https://oec.world/ > PROFILES > Countries > Colombia
+
+# Acknowledgments
+
+- To my family that supports me
+
+- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+
+- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+
+- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+
+# References {.allowframebreaks}
