@@ -337,11 +337,11 @@ market_cap %>%
 
 - **Moral hazard** is "any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly" [@krugman_return_2009, p 63]
 
-    + In the context of financial markets **moral hazard** occurs when when debtors take riskier actions that increase the probability of default [@cardenas_santamaria_introduccion_2013, p 328]
+    + In the context of financial markets **moral hazard** occurs when debtors take riskier actions that increase the probability of default [@cardenas_santamaria_introduccion_2013, p 328]
     
 # Principal instruments "Mercado no intermediado"
 
-- **Fixed income**: provides returns in the form of regular interest payments and repayments of the principal
+- **Fixed income (Renta fija)**: provides returns in the form of regular interest payments and repayments of the principal
 
     + Títulos de tesorería (TES)
     
@@ -387,7 +387,7 @@ tes_daily_t_10 %>%
 
 # Principal instruments "Mercado no intermediado"
 
-- **Equity**: are securities which don't have a preset yield
+- **Equity (Renta variable)**:
 
     + Shares/Stocks
     
@@ -450,7 +450,7 @@ msci_colcap %>%
     
 - **Transforming assets** [@freixas_microeconomics_2008, p 5-6]
 
-    + **Conveniende of denomination**: banks collect small deposits to offer large loans
+    + **Convenience of denomination**: banks collect small deposits to offer large loans
     + **Quality transformation**: bank deposits offer better risk-return characteristics than direct investments
     + **Maturity transformation**: banks transform securities with short maturities, offered to depositors, into securities with long maturities, which borrowers desire
     
