@@ -1,4 +1,4 @@
-﻿﻿Fecha (dd/mm/aaaa),Año(aaaa)-Mes(mm),Descripción,Id,Tasa a 1 año %,Tasa a 5 años %,Tasa a 10 años %,Versión,Versión,Versión,Descripción
+﻿Fecha (dd/mm/aaaa),Año(aaaa)-Mes(mm),Descripción,Id,Tasa a 1 año %,Tasa a 5 años %,Tasa a 10 años %,Versión,Versión,Versión,Descripción
 2003-01-02,2003-01-02, Cinco años %,13,,"15,4159048229041",,Ultima,Ultima,Ultima,Diario
 2003-01-02,2003-01-02, Diez años %,14,,,"14,6906469457004",Ultima,Ultima,Ultima,Diario
 2003-01-02,2003-01-02,Un año %,7,"10,7524528622042",,,Ultima,Ultima,Ultima,Diario
@@ -17288,3 +17288,336 @@
 2021-10-01,2021-10-01, Diez años %,14,,,"8,02413320906262",Ultima,Ultima,Ultima,Semanal
 2021-10-01,2021-10-01,Un año %,7,"3,46359632308993",,,Ultima,Ultima,Ultima,Diario
 2021-10-01,2021-10-01,Un año %,7,"3,46359632308993",,,Ultima,Ultima,Ultima,Semanal
+2021-10-04,2021-10-04, Cinco años %,13,,"6,71905873215961",,Ultima,Ultima,Ultima,Diario
+2021-10-04,2021-10-04, Diez años %,14,,,"8,09530407755639",Ultima,Ultima,Ultima,Diario
+2021-10-04,2021-10-04,Un año %,7,"3,5599852852203",,,Ultima,Ultima,Ultima,Diario
+2021-10-05,2021-10-05, Cinco años %,13,,"6,76413137848791",,Ultima,Ultima,Ultima,Diario
+2021-10-05,2021-10-05, Diez años %,14,,,"8,1401951312707",Ultima,Ultima,Ultima,Diario
+2021-10-05,2021-10-05,Un año %,7,"3,61482396063542",,,Ultima,Ultima,Ultima,Diario
+2021-10-06,2021-10-06, Cinco años %,13,,"6,72161595238573",,Ultima,Ultima,Ultima,Diario
+2021-10-06,2021-10-06, Diez años %,14,,,"8,07758171762457",Ultima,Ultima,Ultima,Diario
+2021-10-06,2021-10-06,Un año %,7,"3,5862837486656",,,Ultima,Ultima,Ultima,Diario
+2021-10-07,2021-10-07, Cinco años %,13,,"6,67420363742143",,Ultima,Ultima,Ultima,Diario
+2021-10-07,2021-10-07, Diez años %,14,,,"8,02834261004338",Ultima,Ultima,Ultima,Diario
+2021-10-07,2021-10-07,Un año %,7,"3,5741434047466",,,Ultima,Ultima,Ultima,Diario
+2021-10-08,2021-10-08, Cinco años %,13,,"6,72249526794686",,Ultima,Ultima,Ultima,Diario
+2021-10-08,2021-10-08, Cinco años %,13,,"6,72249526794686",,Ultima,Ultima,Ultima,Semanal
+2021-10-08,2021-10-08, Diez años %,14,,,"8,07448299978352",Ultima,Ultima,Ultima,Diario
+2021-10-08,2021-10-08, Diez años %,14,,,"8,07448299978352",Ultima,Ultima,Ultima,Semanal
+2021-10-08,2021-10-08,Un año %,7,"3,61868333827683",,,Ultima,Ultima,Ultima,Diario
+2021-10-08,2021-10-08,Un año %,7,"3,61868333827683",,,Ultima,Ultima,Ultima,Semanal
+2021-10-11,2021-10-11, Cinco años %,13,,"6,73334081563323",,Ultima,Ultima,Ultima,Diario
+2021-10-11,2021-10-11, Diez años %,14,,,"8,09085141968834",Ultima,Ultima,Ultima,Diario
+2021-10-11,2021-10-11,Un año %,7,"3,6051229130696",,,Ultima,Ultima,Ultima,Diario
+2021-10-12,2021-10-12, Cinco años %,13,,"6,7222117126832",,Ultima,Ultima,Ultima,Diario
+2021-10-12,2021-10-12, Diez años %,14,,,"8,05386545384287",Ultima,Ultima,Ultima,Diario
+2021-10-12,2021-10-12,Un año %,7,"3,66334829957164",,,Ultima,Ultima,Ultima,Diario
+2021-10-13,2021-10-13, Cinco años %,13,,"6,72686438740245",,Ultima,Ultima,Ultima,Diario
+2021-10-13,2021-10-13, Diez años %,14,,,"8,05110172910153",Ultima,Ultima,Ultima,Diario
+2021-10-13,2021-10-13,Un año %,7,"3,68025460046689",,,Ultima,Ultima,Ultima,Diario
+2021-10-14,2021-10-14, Cinco años %,13,,"6,78839052488902",,Ultima,Ultima,Ultima,Diario
+2021-10-14,2021-10-14, Diez años %,14,,,"8,05701642726336",Ultima,Ultima,Ultima,Diario
+2021-10-14,2021-10-14,Un año %,7,"3,75210447912655",,,Ultima,Ultima,Ultima,Diario
+2021-10-15,2021-10-15, Cinco años %,13,,"6,83378738366339",,Ultima,Ultima,Ultima,Diario
+2021-10-15,2021-10-15, Cinco años %,13,,"6,83378738366339",,Ultima,Ultima,Ultima,Semanal
+2021-10-15,2021-10-15, Diez años %,14,,,"8,09369701823794",Ultima,Ultima,Ultima,Diario
+2021-10-15,2021-10-15, Diez años %,14,,,"8,09369701823794",Ultima,Ultima,Ultima,Semanal
+2021-10-15,2021-10-15,Un año %,7,"3,81832578372575",,,Ultima,Ultima,Ultima,Diario
+2021-10-15,2021-10-15,Un año %,7,"3,81832578372575",,,Ultima,Ultima,Ultima,Semanal
+2021-10-19,2021-10-19, Cinco años %,13,,"6,89612383785883",,Ultima,Ultima,Ultima,Diario
+2021-10-19,2021-10-19, Diez años %,14,,,"8,13723910197084",Ultima,Ultima,Ultima,Diario
+2021-10-19,2021-10-19,Un año %,7,"3,89808995200315",,,Ultima,Ultima,Ultima,Diario
+2021-10-20,2021-10-20, Cinco años %,13,,"6,90489143429312",,Ultima,Ultima,Ultima,Diario
+2021-10-20,2021-10-20, Diez años %,14,,,"8,13780489669806",Ultima,Ultima,Ultima,Diario
+2021-10-20,2021-10-20,Un año %,7,"3,92265723876022",,,Ultima,Ultima,Ultima,Diario
+2021-10-21,2021-10-21, Cinco años %,13,,"6,93653125126477",,Ultima,Ultima,Ultima,Diario
+2021-10-21,2021-10-21, Diez años %,14,,,"8,15812312842595",Ultima,Ultima,Ultima,Diario
+2021-10-21,2021-10-21,Un año %,7,"3,93709752701114",,,Ultima,Ultima,Ultima,Diario
+2021-10-22,2021-10-22, Cinco años %,13,,"7,07674250058248",,Ultima,Ultima,Ultima,Diario
+2021-10-22,2021-10-22, Cinco años %,13,,"7,07674250058248",,Ultima,Ultima,Ultima,Semanal
+2021-10-22,2021-10-22, Diez años %,14,,,"8,28635805003787",Ultima,Ultima,Ultima,Diario
+2021-10-22,2021-10-22, Diez años %,14,,,"8,28635805003787",Ultima,Ultima,Ultima,Semanal
+2021-10-22,2021-10-22,Un año %,7,"4,04633296140558",,,Ultima,Ultima,Ultima,Diario
+2021-10-22,2021-10-22,Un año %,7,"4,04633296140558",,,Ultima,Ultima,Ultima,Semanal
+2021-10-25,2021-10-25, Cinco años %,13,,"7,11274343250488",,Ultima,Ultima,Ultima,Diario
+2021-10-25,2021-10-25, Diez años %,14,,,"8,2792526497951",Ultima,Ultima,Ultima,Diario
+2021-10-25,2021-10-25,Un año %,7,"4,12710204384813",,,Ultima,Ultima,Ultima,Diario
+2021-10-26,2021-10-26, Cinco años %,13,,"7,17946307896809",,Ultima,Ultima,Ultima,Diario
+2021-10-26,2021-10-26, Diez años %,14,,,"8,33324660728944",Ultima,Ultima,Ultima,Diario
+2021-10-26,2021-10-26,Un año %,7,"4,20909424284076",,,Ultima,Ultima,Ultima,Diario
+2021-10-27,2021-10-27, Cinco años %,13,,"7,24124628507408",,Ultima,Ultima,Ultima,Diario
+2021-10-27,2021-10-27, Diez años %,14,,,"8,40061167135741",Ultima,Ultima,Ultima,Diario
+2021-10-27,2021-10-27,Un año %,7,"4,24990435788963",,,Ultima,Ultima,Ultima,Diario
+2021-10-28,2021-10-28, Cinco años %,13,,"7,29405395545118",,Ultima,Ultima,Ultima,Diario
+2021-10-28,2021-10-28, Diez años %,14,,,"8,44505915993473",Ultima,Ultima,Ultima,Diario
+2021-10-28,2021-10-28,Un año %,7,"4,32020132669765",,,Ultima,Ultima,Ultima,Diario
+2021-10-29,2021-10-29, Cinco años %,13,,"7,29257723733256",,Ultima,Ultima,Ultima,Diario
+2021-10-29,2021-10-29, Cinco años %,13,,"7,29257723733256",,Ultima,Ultima,Ultima,Mensual
+2021-10-29,2021-10-29, Cinco años %,13,,"7,29257723733256",,Ultima,Ultima,Ultima,Semanal
+2021-10-29,2021-10-29, Diez años %,14,,,"8,40442944667081",Ultima,Ultima,Ultima,Diario
+2021-10-29,2021-10-29, Diez años %,14,,,"8,40442944667081",Ultima,Ultima,Ultima,Mensual
+2021-10-29,2021-10-29, Diez años %,14,,,"8,40442944667081",Ultima,Ultima,Ultima,Semanal
+2021-10-29,2021-10-29,Un año %,7,"4,38853085217537",,,Ultima,Ultima,Ultima,Diario
+2021-10-29,2021-10-29,Un año %,7,"4,38853085217537",,,Ultima,Ultima,Ultima,Mensual
+2021-10-29,2021-10-29,Un año %,7,"4,38853085217537",,,Ultima,Ultima,Ultima,Semanal
+2021-11-02,2021-11-02, Cinco años %,13,,"7,18017426591253",,Ultima,Ultima,Ultima,Diario
+2021-11-02,2021-11-02, Diez años %,14,,,"8,24339341281731",Ultima,Ultima,Ultima,Diario
+2021-11-02,2021-11-02,Un año %,7,"4,47135624707932",,,Ultima,Ultima,Ultima,Diario
+2021-11-03,2021-11-03, Cinco años %,13,,"7,30016655581223",,Ultima,Ultima,Ultima,Diario
+2021-11-03,2021-11-03, Diez años %,14,,,"8,27765061112473",Ultima,Ultima,Ultima,Diario
+2021-11-03,2021-11-03,Un año %,7,"4,57324067762646",,,Ultima,Ultima,Ultima,Diario
+2021-11-04,2021-11-04, Cinco años %,13,,"7,4254677467579",,Ultima,Ultima,Ultima,Diario
+2021-11-04,2021-11-04, Diez años %,14,,,"8,34722083364022",Ultima,Ultima,Ultima,Diario
+2021-11-04,2021-11-04,Un año %,7,"4,68717734221865",,,Ultima,Ultima,Ultima,Diario
+2021-11-05,2021-11-05, Cinco años %,13,,"7,40892485100366",,Ultima,Ultima,Ultima,Diario
+2021-11-05,2021-11-05, Cinco años %,13,,"7,40892485100366",,Ultima,Ultima,Ultima,Semanal
+2021-11-05,2021-11-05, Diez años %,14,,,"8,33733519460035",Ultima,Ultima,Ultima,Diario
+2021-11-05,2021-11-05, Diez años %,14,,,"8,33733519460035",Ultima,Ultima,Ultima,Semanal
+2021-11-05,2021-11-05,Un año %,7,"4,65938545287366",,,Ultima,Ultima,Ultima,Diario
+2021-11-05,2021-11-05,Un año %,7,"4,65938545287366",,,Ultima,Ultima,Ultima,Semanal
+2021-11-08,2021-11-08, Cinco años %,13,,"7,33019625964928",,Ultima,Ultima,Ultima,Diario
+2021-11-08,2021-11-08, Diez años %,14,,,"8,27905887809769",Ultima,Ultima,Ultima,Diario
+2021-11-08,2021-11-08,Un año %,7,"4,61508530359644",,,Ultima,Ultima,Ultima,Diario
+2021-11-09,2021-11-09, Cinco años %,13,,"7,33486463967613",,Ultima,Ultima,Ultima,Diario
+2021-11-09,2021-11-09, Diez años %,14,,,"8,3084087438272",Ultima,Ultima,Ultima,Diario
+2021-11-09,2021-11-09,Un año %,7,"4,47814428319754",,,Ultima,Ultima,Ultima,Diario
+2021-11-10,2021-11-10, Cinco años %,13,,"7,29857896056611",,Ultima,Ultima,Ultima,Diario
+2021-11-10,2021-11-10, Diez años %,14,,,"8,27194501304604",Ultima,Ultima,Ultima,Diario
+2021-11-10,2021-11-10,Un año %,7,"4,46747964646507",,,Ultima,Ultima,Ultima,Diario
+2021-11-11,2021-11-11, Cinco años %,13,,"7,31001772251395",,Ultima,Ultima,Ultima,Diario
+2021-11-11,2021-11-11, Diez años %,14,,,"8,28073786206188",Ultima,Ultima,Ultima,Diario
+2021-11-11,2021-11-11,Un año %,7,"4,48182149543358",,,Ultima,Ultima,Ultima,Diario
+2021-11-12,2021-11-12, Cinco años %,13,,"7,44729980697086",,Ultima,Ultima,Ultima,Diario
+2021-11-12,2021-11-12, Cinco años %,13,,"7,44729981575878",,Ultima,Ultima,Ultima,Semanal
+2021-11-12,2021-11-12, Diez años %,14,,,"8,42662899633662",Ultima,Ultima,Ultima,Diario
+2021-11-12,2021-11-12, Diez años %,14,,,"8,42662898339398",Ultima,Ultima,Ultima,Semanal
+2021-11-12,2021-11-12,Un año %,7,"4,62907174637516",,,Ultima,Ultima,Ultima,Diario
+2021-11-12,2021-11-12,Un año %,7,"4,62907174010535",,,Ultima,Ultima,Ultima,Semanal
+2021-11-16,2021-11-16, Cinco años %,13,,"7,62618228693464",,Ultima,Ultima,Ultima,Diario
+2021-11-16,2021-11-16, Diez años %,14,,,"8,59405012792838",Ultima,Ultima,Ultima,Diario
+2021-11-16,2021-11-16,Un año %,7,"4,801377535101",,,Ultima,Ultima,Ultima,Diario
+2021-11-17,2021-11-17, Cinco años %,13,,"7,60938173715855",,Ultima,Ultima,Ultima,Diario
+2021-11-17,2021-11-17, Diez años %,14,,,"8,56794909401299",Ultima,Ultima,Ultima,Diario
+2021-11-17,2021-11-17,Un año %,7,"4,77465977181159",,,Ultima,Ultima,Ultima,Diario
+2021-11-18,2021-11-18, Cinco años %,13,,"7,48510357763854",,Ultima,Ultima,Ultima,Diario
+2021-11-18,2021-11-18, Diez años %,14,,,"8,44563756758813",Ultima,Ultima,Ultima,Diario
+2021-11-18,2021-11-18,Un año %,7,"4,64696584135725",,,Ultima,Ultima,Ultima,Diario
+2021-11-19,2021-11-19, Cinco años %,13,,"7,45934787398486",,Ultima,Ultima,Ultima,Diario
+2021-11-19,2021-11-19, Cinco años %,13,,"7,45934787398486",,Ultima,Ultima,Ultima,Semanal
+2021-11-19,2021-11-19, Diez años %,14,,,"8,43984250402032",Ultima,Ultima,Ultima,Diario
+2021-11-19,2021-11-19, Diez años %,14,,,"8,43984250402032",Ultima,Ultima,Ultima,Semanal
+2021-11-19,2021-11-19,Un año %,7,"4,61458061331414",,,Ultima,Ultima,Ultima,Diario
+2021-11-19,2021-11-19,Un año %,7,"4,61458061331414",,,Ultima,Ultima,Ultima,Semanal
+2021-11-22,2021-11-22, Cinco años %,13,,"7,59621523445376",,Ultima,Ultima,Ultima,Diario
+2021-11-22,2021-11-22, Diez años %,14,,,"8,60821108075883",Ultima,Ultima,Ultima,Diario
+2021-11-22,2021-11-22,Un año %,7,"4,61502611623012",,,Ultima,Ultima,Ultima,Diario
+2021-11-23,2021-11-23, Cinco años %,13,,"7,68860575117556",,Ultima,Ultima,Ultima,Diario
+2021-11-23,2021-11-23, Diez años %,14,,,"8,76473716785372",Ultima,Ultima,Ultima,Diario
+2021-11-23,2021-11-23,Un año %,7,"4,57140135153842",,,Ultima,Ultima,Ultima,Diario
+2021-11-24,2021-11-24, Cinco años %,13,,"7,81404083778785",,Ultima,Ultima,Ultima,Diario
+2021-11-24,2021-11-24, Diez años %,14,,,"8,91047629535161",Ultima,Ultima,Ultima,Diario
+2021-11-24,2021-11-24,Un año %,7,"4,6327179289588",,,Ultima,Ultima,Ultima,Diario
+2021-11-25,2021-11-25, Cinco años %,13,,"7,78047279110171",,Ultima,Ultima,Ultima,Diario
+2021-11-25,2021-11-25, Diez años %,14,,,"8,89466278119061",Ultima,Ultima,Ultima,Diario
+2021-11-25,2021-11-25,Un año %,7,"4,55062451777474",,,Ultima,Ultima,Ultima,Diario
+2021-11-26,2021-11-26, Cinco años %,13,,"7,74601049775134",,Ultima,Ultima,Ultima,Diario
+2021-11-26,2021-11-26, Cinco años %,13,,"7,74601049775134",,Ultima,Ultima,Ultima,Semanal
+2021-11-26,2021-11-26, Diez años %,14,,,"8,87760614062105",Ultima,Ultima,Ultima,Diario
+2021-11-26,2021-11-26, Diez años %,14,,,"8,87760614062105",Ultima,Ultima,Ultima,Semanal
+2021-11-26,2021-11-26,Un año %,7,"4,52596602131398",,,Ultima,Ultima,Ultima,Diario
+2021-11-26,2021-11-26,Un año %,7,"4,52596602131398",,,Ultima,Ultima,Ultima,Semanal
+2021-11-29,2021-11-29, Cinco años %,13,,"7,75906052743316",,Ultima,Ultima,Ultima,Diario
+2021-11-29,2021-11-29, Diez años %,14,,,"8,89168446338251",Ultima,Ultima,Ultima,Diario
+2021-11-29,2021-11-29,Un año %,7,"4,62780418089085",,,Ultima,Ultima,Ultima,Diario
+2021-11-30,2021-11-30, Cinco años %,13,,"7,67218850914135",,Ultima,Ultima,Ultima,Diario
+2021-11-30,2021-11-30, Cinco años %,13,,"7,67218850914135",,Ultima,Ultima,Ultima,Mensual
+2021-11-30,2021-11-30, Diez años %,14,,,"8,80255512885752",Ultima,Ultima,Ultima,Diario
+2021-11-30,2021-11-30, Diez años %,14,,,"8,80255512885752",Ultima,Ultima,Ultima,Mensual
+2021-11-30,2021-11-30,Un año %,7,"4,59685672142243",,,Ultima,Ultima,Ultima,Diario
+2021-11-30,2021-11-30,Un año %,7,"4,59685672142243",,,Ultima,Ultima,Ultima,Mensual
+2021-12-01,2021-12-01, Cinco años %,13,,"7,54667262665403",,Ultima,Ultima,Ultima,Diario
+2021-12-01,2021-12-01, Diez años %,14,,,"8,6944285485728",Ultima,Ultima,Ultima,Diario
+2021-12-01,2021-12-01,Un año %,7,"4,49949843260111",,,Ultima,Ultima,Ultima,Diario
+2021-12-02,2021-12-02, Cinco años %,13,,"7,44138223005662",,Ultima,Ultima,Ultima,Diario
+2021-12-02,2021-12-02, Diez años %,14,,,"8,55592458049815",Ultima,Ultima,Ultima,Diario
+2021-12-02,2021-12-02,Un año %,7,"4,5053018538774",,,Ultima,Ultima,Ultima,Diario
+2021-12-03,2021-12-03, Cinco años %,13,,"7,4671721569896",,Ultima,Ultima,Ultima,Diario
+2021-12-03,2021-12-03, Cinco años %,13,,"7,4671721569896",,Ultima,Ultima,Ultima,Semanal
+2021-12-03,2021-12-03, Diez años %,14,,,"8,54758702626348",Ultima,Ultima,Ultima,Diario
+2021-12-03,2021-12-03, Diez años %,14,,,"8,54758702626348",Ultima,Ultima,Ultima,Semanal
+2021-12-03,2021-12-03,Un año %,7,"4,58362699176553",,,Ultima,Ultima,Ultima,Diario
+2021-12-03,2021-12-03,Un año %,7,"4,58362699176553",,,Ultima,Ultima,Ultima,Semanal
+2021-12-06,2021-12-06, Cinco años %,13,,"7,51473418274427",,Ultima,Ultima,Ultima,Diario
+2021-12-06,2021-12-06, Diez años %,14,,,"8,52633018857681",Ultima,Ultima,Ultima,Diario
+2021-12-06,2021-12-06,Un año %,7,"4,80236996558147",,,Ultima,Ultima,Ultima,Diario
+2021-12-07,2021-12-07, Cinco años %,13,,"7,51628874273182",,Ultima,Ultima,Ultima,Diario
+2021-12-07,2021-12-07, Diez años %,14,,,"8,47909038625654",Ultima,Ultima,Ultima,Diario
+2021-12-07,2021-12-07,Un año %,7,"4,89106156045532",,,Ultima,Ultima,Ultima,Diario
+2021-12-09,2021-12-09, Cinco años %,13,,"7,3998139549261",,Ultima,Ultima,Ultima,Diario
+2021-12-09,2021-12-09, Diez años %,14,,,"8,35797241238499",Ultima,Ultima,Ultima,Diario
+2021-12-09,2021-12-09,Un año %,7,"4,80736279717872",,,Ultima,Ultima,Ultima,Diario
+2021-12-10,2021-12-10, Cinco años %,13,,"7,37635600997758",,Ultima,Ultima,Ultima,Diario
+2021-12-10,2021-12-10, Cinco años %,13,,"7,37635600997758",,Ultima,Ultima,Ultima,Semanal
+2021-12-10,2021-12-10, Diez años %,14,,,"8,31545527295939",Ultima,Ultima,Ultima,Diario
+2021-12-10,2021-12-10, Diez años %,14,,,"8,31545527295939",Ultima,Ultima,Ultima,Semanal
+2021-12-10,2021-12-10,Un año %,7,"4,82793943405728",,,Ultima,Ultima,Ultima,Diario
+2021-12-10,2021-12-10,Un año %,7,"4,82793943405728",,,Ultima,Ultima,Ultima,Semanal
+2021-12-13,2021-12-13, Cinco años %,13,,"7,53112359674218",,Ultima,Ultima,Ultima,Diario
+2021-12-13,2021-12-13, Diez años %,14,,,"8,44750580398308",Ultima,Ultima,Ultima,Diario
+2021-12-13,2021-12-13,Un año %,7,"4,92813512147825",,,Ultima,Ultima,Ultima,Diario
+2021-12-14,2021-12-14, Cinco años %,13,,"7,72660517689223",,Ultima,Ultima,Ultima,Diario
+2021-12-14,2021-12-14, Diez años %,14,,,"8,53363885676465",Ultima,Ultima,Ultima,Diario
+2021-12-14,2021-12-14,Un año %,7,"5,30306156731796",,,Ultima,Ultima,Ultima,Diario
+2021-12-15,2021-12-15, Cinco años %,13,,"7,73629810669925",,Ultima,Ultima,Ultima,Diario
+2021-12-15,2021-12-15, Diez años %,14,,,"8,56549582879521",Ultima,Ultima,Ultima,Diario
+2021-12-15,2021-12-15,Un año %,7,"5,23465281710226",,,Ultima,Ultima,Ultima,Diario
+2021-12-16,2021-12-16, Cinco años %,13,,"7,63336696304387",,Ultima,Ultima,Ultima,Diario
+2021-12-16,2021-12-16, Diez años %,14,,,"8,49526530552319",Ultima,Ultima,Ultima,Diario
+2021-12-16,2021-12-16,Un año %,7,"5,11281850695594",,,Ultima,Ultima,Ultima,Diario
+2021-12-17,2021-12-17, Cinco años %,13,,"7,53279475391064",,Ultima,Ultima,Ultima,Diario
+2021-12-17,2021-12-17, Cinco años %,13,,"7,53279475391064",,Ultima,Ultima,Ultima,Semanal
+2021-12-17,2021-12-17, Diez años %,14,,,"8,34441995908736",Ultima,Ultima,Ultima,Diario
+2021-12-17,2021-12-17, Diez años %,14,,,"8,34441995908736",Ultima,Ultima,Ultima,Semanal
+2021-12-17,2021-12-17,Un año %,7,"5,10467079292454",,,Ultima,Ultima,Ultima,Diario
+2021-12-17,2021-12-17,Un año %,7,"5,10467079292454",,,Ultima,Ultima,Ultima,Semanal
+2021-12-20,2021-12-20, Cinco años %,13,,"7,55840785770044",,Ultima,Ultima,Ultima,Diario
+2021-12-20,2021-12-20, Diez años %,14,,,"8,32614991079969",Ultima,Ultima,Ultima,Diario
+2021-12-20,2021-12-20,Un año %,7,"5,24425579399679",,,Ultima,Ultima,Ultima,Diario
+2021-12-21,2021-12-21, Cinco años %,13,,"7,62269519980097",,Ultima,Ultima,Ultima,Diario
+2021-12-21,2021-12-21, Diez años %,14,,,"8,39019374094971",Ultima,Ultima,Ultima,Diario
+2021-12-21,2021-12-21,Un año %,7,"5,30307058447211",,,Ultima,Ultima,Ultima,Diario
+2021-12-22,2021-12-22, Cinco años %,13,,"7,64245405589398",,Ultima,Ultima,Ultima,Diario
+2021-12-22,2021-12-22, Diez años %,14,,,"8,41141440813285",Ultima,Ultima,Ultima,Diario
+2021-12-22,2021-12-22,Un año %,7,"5,34335050687319",,,Ultima,Ultima,Ultima,Diario
+2021-12-23,2021-12-23, Cinco años %,13,,"7,69236684866071",,Ultima,Ultima,Ultima,Diario
+2021-12-23,2021-12-23, Cinco años %,13,,"7,69236684866071",,Ultima,Ultima,Ultima,Semanal
+2021-12-23,2021-12-23, Diez años %,14,,,"8,47094751190134",Ultima,Ultima,Ultima,Diario
+2021-12-23,2021-12-23, Diez años %,14,,,"8,47094751190134",Ultima,Ultima,Ultima,Semanal
+2021-12-23,2021-12-23,Un año %,7,"5,36388781592968",,,Ultima,Ultima,Ultima,Diario
+2021-12-23,2021-12-23,Un año %,7,"5,36388781592968",,,Ultima,Ultima,Ultima,Semanal
+2021-12-27,2021-12-27, Cinco años %,13,,"7,60809880634077",,Ultima,Ultima,Ultima,Diario
+2021-12-27,2021-12-27, Diez años %,14,,,"8,38835288565331",Ultima,Ultima,Ultima,Diario
+2021-12-27,2021-12-27,Un año %,7,"5,29257268094307",,,Ultima,Ultima,Ultima,Diario
+2021-12-28,2021-12-28, Cinco años %,13,,"7,65505180844825",,Ultima,Ultima,Ultima,Diario
+2021-12-28,2021-12-28, Diez años %,14,,,"8,44628025428783",Ultima,Ultima,Ultima,Diario
+2021-12-28,2021-12-28,Un año %,7,"5,32194002044753",,,Ultima,Ultima,Ultima,Diario
+2021-12-29,2021-12-29, Cinco años %,13,,"7,70552722055991",,Ultima,Ultima,Ultima,Diario
+2021-12-29,2021-12-29, Diez años %,14,,,"8,52026356553113",Ultima,Ultima,Ultima,Diario
+2021-12-29,2021-12-29,Un año %,7,"5,2583110667602",,,Ultima,Ultima,Ultima,Diario
+2021-12-30,2021-12-30, Cinco años %,13,,"7,71695601451235",,Ultima,Ultima,Ultima,Diario
+2021-12-30,2021-12-30, Cinco años %,13,,"7,71695601451235",,Ultima,Ultima,Ultima,Mensual
+2021-12-30,2021-12-30, Cinco años %,13,,"7,71695601451235",,Ultima,Ultima,Ultima,Semanal
+2021-12-30,2021-12-30, Diez años %,14,,,"8,46128961933493",Ultima,Ultima,Ultima,Diario
+2021-12-30,2021-12-30, Diez años %,14,,,"8,46128961933493",Ultima,Ultima,Ultima,Mensual
+2021-12-30,2021-12-30, Diez años %,14,,,"8,46128961933493",Ultima,Ultima,Ultima,Semanal
+2021-12-30,2021-12-30,Un año %,7,"5,43882627776902",,,Ultima,Ultima,Ultima,Diario
+2021-12-30,2021-12-30,Un año %,7,"5,43882627776902",,,Ultima,Ultima,Ultima,Mensual
+2021-12-30,2021-12-30,Un año %,7,"5,43882627776902",,,Ultima,Ultima,Ultima,Semanal
+2022-01-03,2022-01-03, Cinco años %,13,,"7,81115020417385",,Ultima,Ultima,Ultima,Diario
+2022-01-03,2022-01-03, Diez años %,14,,,"8,63006969403873",Ultima,Ultima,Ultima,Diario
+2022-01-03,2022-01-03,Un año %,7,"5,33295887602794",,,Ultima,Ultima,Ultima,Diario
+2022-01-04,2022-01-04, Cinco años %,13,,"7,93299958286244",,Ultima,Ultima,Ultima,Diario
+2022-01-04,2022-01-04, Diez años %,14,,,"8,72218172128436",Ultima,Ultima,Ultima,Diario
+2022-01-04,2022-01-04,Un año %,7,"5,54343736322147",,,Ultima,Ultima,Ultima,Diario
+2022-01-05,2022-01-05, Cinco años %,13,,"7,95228027323617",,Ultima,Ultima,Ultima,Diario
+2022-01-05,2022-01-05, Diez años %,14,,,"8,7533058576966",Ultima,Ultima,Ultima,Diario
+2022-01-05,2022-01-05,Un año %,7,"5,5427146878974",,,Ultima,Ultima,Ultima,Diario
+2022-01-06,2022-01-06, Cinco años %,13,,"8,12875418111536",,Ultima,Ultima,Ultima,Diario
+2022-01-06,2022-01-06, Diez años %,14,,,"8,94981098675082",Ultima,Ultima,Ultima,Diario
+2022-01-06,2022-01-06,Un año %,7,"5,70282075898038",,,Ultima,Ultima,Ultima,Diario
+2022-01-07,2022-01-07, Cinco años %,13,,"8,26867947093194",,Ultima,Ultima,Ultima,Diario
+2022-01-07,2022-01-07, Cinco años %,13,,"8,26867947093194",,Ultima,Ultima,Ultima,Semanal
+2022-01-07,2022-01-07, Diez años %,14,,,"9,09885651356788",Ultima,Ultima,Ultima,Diario
+2022-01-07,2022-01-07, Diez años %,14,,,"9,09885651356788",Ultima,Ultima,Ultima,Semanal
+2022-01-07,2022-01-07,Un año %,7,"5,77188827105458",,,Ultima,Ultima,Ultima,Diario
+2022-01-07,2022-01-07,Un año %,7,"5,77188827105458",,,Ultima,Ultima,Ultima,Semanal
+2022-01-11,2022-01-11, Cinco años %,13,,"8,48057779904647",,Ultima,Ultima,Ultima,Diario
+2022-01-11,2022-01-11, Diez años %,14,,,"9,25252314551446",Ultima,Ultima,Ultima,Diario
+2022-01-11,2022-01-11,Un año %,7,"6,10012880512661",,,Ultima,Ultima,Ultima,Diario
+2022-01-12,2022-01-12, Cinco años %,13,,"8,40976699378674",,Ultima,Ultima,Ultima,Diario
+2022-01-12,2022-01-12, Diez años %,14,,,"9,20683463702475",Ultima,Ultima,Ultima,Diario
+2022-01-12,2022-01-12,Un año %,7,"5,97258744215345",,,Ultima,Ultima,Ultima,Diario
+2022-01-13,2022-01-13, Cinco años %,13,,"8,37113337209662",,Ultima,Ultima,Ultima,Diario
+2022-01-13,2022-01-13, Diez años %,14,,,"9,27461890497042",Ultima,Ultima,Ultima,Diario
+2022-01-13,2022-01-13,Un año %,7,"5,72415149822426",,,Ultima,Ultima,Ultima,Diario
+2022-01-14,2022-01-14, Cinco años %,13,,"8,38082636909093",,Ultima,Ultima,Ultima,Diario
+2022-01-14,2022-01-14, Cinco años %,13,,"8,38082636909093",,Ultima,Ultima,Ultima,Semanal
+2022-01-14,2022-01-14, Diez años %,14,,,"9,27207231373453",Ultima,Ultima,Ultima,Diario
+2022-01-14,2022-01-14, Diez años %,14,,,"9,27207231373453",Ultima,Ultima,Ultima,Semanal
+2022-01-14,2022-01-14,Un año %,7,"5,76201476786346",,,Ultima,Ultima,Ultima,Diario
+2022-01-14,2022-01-14,Un año %,7,"5,76201476786346",,,Ultima,Ultima,Ultima,Semanal
+2022-01-17,2022-01-17, Cinco años %,13,,"8,49464974000029",,Ultima,Ultima,Ultima,Diario
+2022-01-17,2022-01-17, Diez años %,14,,,"9,40006966449161",Ultima,Ultima,Ultima,Diario
+2022-01-17,2022-01-17,Un año %,7,"5,84097509918758",,,Ultima,Ultima,Ultima,Diario
+2022-01-18,2022-01-18, Cinco años %,13,,"8,68562675200646",,Ultima,Ultima,Ultima,Diario
+2022-01-18,2022-01-18, Diez años %,14,,,"9,57734305308058",Ultima,Ultima,Ultima,Diario
+2022-01-18,2022-01-18,Un año %,7,"6,07505896080179",,,Ultima,Ultima,Ultima,Diario
+2022-01-19,2022-01-19, Cinco años %,13,,"8,64040708969308",,Ultima,Ultima,Ultima,Diario
+2022-01-19,2022-01-19, Diez años %,14,,,"9,58030427149553",Ultima,Ultima,Ultima,Diario
+2022-01-19,2022-01-19,Un año %,7,"5,94779843189436",,,Ultima,Ultima,Ultima,Diario
+2022-01-20,2022-01-20, Cinco años %,13,,"8,50995520747875",,Ultima,Ultima,Ultima,Diario
+2022-01-20,2022-01-20, Diez años %,14,,,"9,45953523232864",Ultima,Ultima,Ultima,Diario
+2022-01-20,2022-01-20,Un año %,7,"5,82929299098287",,,Ultima,Ultima,Ultima,Diario
+2022-01-21,2022-01-21, Cinco años %,13,,"8,36532183584866",,Ultima,Ultima,Ultima,Diario
+2022-01-21,2022-01-21, Cinco años %,13,,"8,36532183584865",,Ultima,Ultima,Ultima,Semanal
+2022-01-21,2022-01-21, Diez años %,14,,,"9,32465729330249",Ultima,Ultima,Ultima,Diario
+2022-01-21,2022-01-21, Diez años %,14,,,"9,32465729330249",Ultima,Ultima,Ultima,Semanal
+2022-01-21,2022-01-21,Un año %,7,"5,71814101379388",,,Ultima,Ultima,Ultima,Diario
+2022-01-21,2022-01-21,Un año %,7,"5,71814101379388",,,Ultima,Ultima,Ultima,Semanal
+2022-01-24,2022-01-24, Cinco años %,13,,"8,48608665660863",,Ultima,Ultima,Ultima,Diario
+2022-01-24,2022-01-24, Diez años %,14,,,"9,43718609695019",Ultima,Ultima,Ultima,Diario
+2022-01-24,2022-01-24,Un año %,7,"5,85410765099908",,,Ultima,Ultima,Ultima,Diario
+2022-01-25,2022-01-25, Cinco años %,13,,"8,48082268620227",,Ultima,Ultima,Ultima,Diario
+2022-01-25,2022-01-25, Diez años %,14,,,"9,44796977917184",Ultima,Ultima,Ultima,Diario
+2022-01-25,2022-01-25,Un año %,7,"5,89713121751174",,,Ultima,Ultima,Ultima,Diario
+2022-01-26,2022-01-26, Cinco años %,13,,"8,42074967808237",,Ultima,Ultima,Ultima,Diario
+2022-01-26,2022-01-26, Diez años %,14,,,"9,37447797694229",Ultima,Ultima,Ultima,Diario
+2022-01-26,2022-01-26,Un año %,7,"5,87573011545641",,,Ultima,Ultima,Ultima,Diario
+2022-01-27,2022-01-27, Cinco años %,13,,"8,51605929779752",,Ultima,Ultima,Ultima,Diario
+2022-01-27,2022-01-27, Diez años %,14,,,"9,44859084211046",Ultima,Ultima,Ultima,Diario
+2022-01-27,2022-01-27,Un año %,7,"5,95674741366313",,,Ultima,Ultima,Ultima,Diario
+2022-01-28,2022-01-28, Cinco años %,13,,"8,55978214286886",,Ultima,Ultima,Ultima,Diario
+2022-01-28,2022-01-28, Cinco años %,13,,"8,55978214286887",,Ultima,Ultima,Ultima,Semanal
+2022-01-28,2022-01-28, Diez años %,14,,,"9,46598625251322",Ultima,Ultima,Ultima,Diario
+2022-01-28,2022-01-28, Diez años %,14,,,"9,46598625251322",Ultima,Ultima,Ultima,Semanal
+2022-01-28,2022-01-28,Un año %,7,"6,02016694030399",,,Ultima,Ultima,Ultima,Diario
+2022-01-28,2022-01-28,Un año %,7,"6,02016694030399",,,Ultima,Ultima,Ultima,Semanal
+2022-01-31,2022-01-31, Cinco años %,13,,"8,55952121551764",,Ultima,Ultima,Ultima,Diario
+2022-01-31,2022-01-31, Cinco años %,13,,"8,55952121551764",,Ultima,Ultima,Ultima,Mensual
+2022-01-31,2022-01-31, Diez años %,14,,,"9,42721942908799",Ultima,Ultima,Ultima,Diario
+2022-01-31,2022-01-31, Diez años %,14,,,"9,42721942908799",Ultima,Ultima,Ultima,Mensual
+2022-01-31,2022-01-31,Un año %,7,"6,0862233936765",,,Ultima,Ultima,Ultima,Diario
+2022-01-31,2022-01-31,Un año %,7,"6,0862233936765",,,Ultima,Ultima,Ultima,Mensual
+2022-02-01,2022-02-01, Cinco años %,13,,"8,42776402141928",,Ultima,Ultima,Ultima,Diario
+2022-02-01,2022-02-01, Diez años %,14,,,"9,25729652749567",Ultima,Ultima,Ultima,Diario
+2022-02-01,2022-02-01,Un año %,7,"6,04802343631255",,,Ultima,Ultima,Ultima,Diario
+2022-02-02,2022-02-02, Cinco años %,13,,"8,35770473208872",,Ultima,Ultima,Ultima,Diario
+2022-02-02,2022-02-02, Diez años %,14,,,"9,17035567981029",Ultima,Ultima,Ultima,Diario
+2022-02-02,2022-02-02,Un año %,7,"6,0236385961234",,,Ultima,Ultima,Ultima,Diario
+2022-02-03,2022-02-03, Cinco años %,13,,"8,43002893764328",,Ultima,Ultima,Ultima,Diario
+2022-02-03,2022-02-03, Diez años %,14,,,"9,25109219518987",Ultima,Ultima,Ultima,Diario
+2022-02-03,2022-02-03,Un año %,7,"6,06978178855099",,,Ultima,Ultima,Ultima,Diario
+2022-02-04,2022-02-04, Cinco años %,13,,"8,38694405324918",,Ultima,Ultima,Ultima,Diario
+2022-02-04,2022-02-04, Cinco años %,13,,"8,38694405324918",,Ultima,Ultima,Ultima,Semanal
+2022-02-04,2022-02-04, Diez años %,14,,,"9,15775597188319",Ultima,Ultima,Ultima,Diario
+2022-02-04,2022-02-04, Diez años %,14,,,"9,15775597188319",Ultima,Ultima,Ultima,Semanal
+2022-02-04,2022-02-04,Un año %,7,"6,13823888467998",,,Ultima,Ultima,Ultima,Diario
+2022-02-04,2022-02-04,Un año %,7,"6,13823888467998",,,Ultima,Ultima,Ultima,Semanal
+2022-02-07,2022-02-07, Cinco años %,13,,"8,40653735107137",,Ultima,Ultima,Ultima,Diario
+2022-02-07,2022-02-07, Diez años %,14,,,"9,12015932929597",Ultima,Ultima,Ultima,Diario
+2022-02-07,2022-02-07,Un año %,7,"6,27267718393817",,,Ultima,Ultima,Ultima,Diario
+2022-02-08,2022-02-08, Cinco años %,13,,"8,56886347056529",,Ultima,Ultima,Ultima,Diario
+2022-02-08,2022-02-08, Diez años %,14,,,"9,25800510633702",Ultima,Ultima,Ultima,Diario
+2022-02-08,2022-02-08,Un año %,7,"6,44452171838795",,,Ultima,Ultima,Ultima,Diario
+2022-02-09,2022-02-09, Cinco años %,13,,"8,66307731378634",,Ultima,Ultima,Ultima,Diario
+2022-02-09,2022-02-09, Diez años %,14,,,"9,31461888693099",Ultima,Ultima,Ultima,Diario
+2022-02-09,2022-02-09,Un año %,7,"6,61586350818809",,,Ultima,Ultima,Ultima,Diario
+2022-02-10,2022-02-10, Cinco años %,13,,"8,76563710903978",,Ultima,Ultima,Ultima,Diario
+2022-02-10,2022-02-10, Diez años %,14,,,"9,36978499431804",Ultima,Ultima,Ultima,Diario
+2022-02-10,2022-02-10,Un año %,7,"6,83196414429141",,,Ultima,Ultima,Ultima,Diario
+2022-02-11,2022-02-11, Cinco años %,13,,"8,75215111447321",,Ultima,Ultima,Ultima,Diario
+2022-02-11,2022-02-11, Cinco años %,13,,"8,75215111447321",,Ultima,Ultima,Ultima,Semanal
+2022-02-11,2022-02-11, Diez años %,14,,,"9,34338394905183",Ultima,Ultima,Ultima,Diario
+2022-02-11,2022-02-11, Diez años %,14,,,"9,34338394905183",Ultima,Ultima,Ultima,Semanal
+2022-02-11,2022-02-11,Un año %,7,"6,83742317532349",,,Ultima,Ultima,Ultima,Diario
+2022-02-11,2022-02-11,Un año %,7,"6,83742317532349",,,Ultima,Ultima,Ultima,Semanal
