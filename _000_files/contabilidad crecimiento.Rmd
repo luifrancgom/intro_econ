@@ -1,0 +1,61 @@
+---
+title: "Contabilidad crecimiento"
+author: "Luis Francisco Gomez Lopez"
+date: 2022-04-19
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Función de producción
+
+$$ PIB_t = Y_t = F(A_t,K_t,H_t)$$
+
+- $A_t:$ tecnología
+- $K_t:$ acervo de capital físico
+- $H_t:$ acervo de capital humano (incluye mano de obra y su nivel educativo)
+
+## Función de producción Cobb-Douglas
+
+$$Y_t = F(A_t,K_t,H_t) = K_t^{\alpha}(A_tH_t)^{1-\alpha}$$
+
+$$H_t = e^{\Phi(E_t)}L_t$$
+
+- Se supone que el capital humano está relacionado exponencialmente con la cantidad de educación de los trabajadores
+- Cada unidad de mano de obra, $L_t$,está entrenada con, $E_t$, años de escolaridad
+- $\Phi(E_t)$ refleja la eficiencia de una unidad de mano de obra con $E_t$ años de escolaridad donde $\Phi(0) = 0$
+- La derivada $\Phi^{'}(E_t)$ mide el efecto de un año adicional de escolaridad sobre la eficiencia, lo que corresponde a los retornos a la educación estimados a través de una ecuación tipo Mincer 
+
+## Función de producción Cobb-Douglas en términos por trabajador
+
+$Y_t = K_t^{\alpha}(A_tH_t)^{1-\alpha}$
+
+$Y_t = K_t^{\alpha\frac{1-\alpha}{1-\alpha}}(A_tH_t)^{1-\alpha}$
+
+$Y_t = K_t^{\frac{\alpha-\alpha^2}{1-\alpha}}(A_tH_t)^{1-\alpha}$
+
+$Y_t = \frac{K_t^{\frac{\alpha}{1-\alpha}}}{K_t^{\frac{\alpha^2}{1-\alpha}}}(A_tH_t)^{1-\alpha}$
+
+$Y_t = \frac{K_t^{\frac{\alpha}{1-\alpha}}}{K_t^{\frac{\alpha^2}{1-\alpha}}(A_tH_t)^{\alpha}}(A_tH_t)$
+
+$Y_t = \frac{K_t^{\frac{\alpha}{1-\alpha}}}{K_t^{\frac{\alpha^2}{1-\alpha}}(A_tH_t)^{\alpha\frac{1-\alpha}{1-\alpha}}}(A_tH_t)$
+
+$Y_t = \left[\frac{K_t}{K_t^\alpha(A_tH_t)^{1-\alpha}}\right]^{\frac{\alpha}{1-\alpha}}(A_tH_t)$
+
+$Y_t = \left[\frac{K_t}{Y_t}\right]^{\frac{\alpha}{1-\alpha}}(A_tH_t)$
+
+$\frac{Y_t}{L_t} = \left[\frac{K_t}{Y_t}\right]^{\frac{\alpha}{1-\alpha}}(A_t\frac{H_t}{L_t})$
+
+$y_t = \left[\frac{K_t}{Y_t}\right]^{\frac{\alpha}{1-\alpha}}h_tA_t$
+
+Donde $y_t = \frac{Y_t}{L_t}$ y $h_t = \frac{H_t}{L_t} = e^{\Phi(E_t)}$ 
+
+## Logaritmos y primeras diferencias
+
+$log_e(y_t) = \frac{\alpha}{1-\alpha}log_e(\frac{K_t}{Y_t}) + log_e(e^{\Phi(E_t)}) + log_e(A_t)$
+
+$log_e(y_t) = \frac{\alpha}{1-\alpha}log_e(\frac{K_t}{Y_t}) + \Phi(E_t) + log_e(A_t)$
+
+$\Delta log_e(y_t) = \frac{\alpha}{1-\alpha} \Delta log_e(\frac{K_t}{Y_t}) + \Delta \Phi(E_t) + \Delta log_e(A_t)$

@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 author: Luis Francisco Gomez Lopez
-date: 2021-08-12 16:33:15
+date: 2022-06-13 11:06:20
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -70,7 +70,7 @@ library(ggrepel)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 1]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 1]
 
 # Purpose
 
@@ -142,9 +142,13 @@ ggplot(data = tibble(x = 0, y = 0)) +
 
 ```{r out.width = "85%"}
 # Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Demografía y población > Proyecciones de población >
+# Proyecciones y retroproyecciones de población nacional para el periodo 1950-2017 y 2018-2070 con base en el CNPV 2018 >
+# Serie nacional de población por área, sexo y edad para el periodo 2018 – 2070
 pop_pyramid_tbl <- readxl::read_excel(path = "000_data/001_anexo_proyecciones_poblacion_Nacional2018_2070.xlsx", 
-                   sheet = 1, 
-                   range = "C12:KY171") %>% 
+                                      sheet = 1, 
+                                      range = "C12:KY171") %>% 
   janitor::clean_names() %>% 
   filter(area_geografica == "TOTAL") %>% 
   select(-c(area_geografica, total_general, total_hombres, total_mujeres)) %>% 
@@ -153,7 +157,7 @@ pop_pyramid_tbl <- readxl::read_excel(path = "000_data/001_anexo_proyecciones_po
   pivot_longer(cols = hombres_0:mujeres_100, 
                names_to = "genero_edad", 
                values_to = "pop") %>% 
-  filter(ano %in% c(2021, 2021 + 30)) %>% 
+  filter(ano %in% c(2022, 2022 + 30)) %>% 
   separate(col = genero_edad, 
            into = c("genero", "edad"), 
            sep = "_", 
@@ -217,6 +221,9 @@ pop_pyramid_tbl %>%
 # Mean height
 
 ```{r out.width = "85%"}
+# Data
+# https://ncdrisc.org/index.html > DATA DOWNLOADS >
+# HEIGHT > Country-specific data for all countries
 height_tbl <- read_csv(file = "000_data/001_NCD_RisC_Lancet_2020_height_child_adolescent_country.csv") %>% 
   janitor::clean_names() %>% 
   filter(country == "Colombia", age_group == 19)
@@ -273,13 +280,34 @@ height_tbl %>%
 # Household income
 
 ```{r out.width = "85%"}
-
+# Data
+# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
+# Sociedad > Pobreza y condiciones de vida >
+# Medición de Pobreza Monetaria y Desigualdad > Hogares
 household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2020.csv", 
                                    delim = ";", 
                                    locale = locale(decimal_mark = ",")) %>% 
   janitor::clean_names() %>% 
-  select(directorio,secuencia_p, 
-         p5090, nper, ingtotug, 
+  select(
+         # Llave vivienda 
+         directorio,
+         # Llave hogar
+         secuencia_p,
+         # La vivienda ocupada por este hogar es:
+         # a. Propia, totalmente pagada 
+         # b. Propia, la están pagando 
+         # c. En arriendo o subarriendo 
+         # d. En usufructo 
+         # e. Posesión sin titulo (ocupante 
+         # f. Otra
+         p5090,
+         # Personas en el hogar
+         nper, 
+         # Ingreso total de la unidad de
+         # gasto antes de imputación de
+         # arriendo a propietarios y usufructuarios
+         ingtotug,
+         # Factor de expansión anualizado 
          fex_c)
 
 ingtotug_zero <- filter(household_tbl, 
@@ -467,7 +495,14 @@ schools_tbl <- read_delim(file = "000_data/001_caratula_unica_sede_educativa.csv
                                    locale = locale(decimal_mark = ","))
 
 schools_bilin_tbl <- schools_tbl %>% 
-  count(SECTOR_NOMBRE, ES_BILINGUE, TIPOBIL_NOMBRE) %>% 
+  count(# Sector 01 Oficial 02 No Oficial
+        SECTOR_NOMBRE, 
+        # ¿La sede educativa es bilingüe? 0 NO 1 SÍ
+        ES_BILINGUE, 
+        #  ¿La sede educativa es bilingüe? 
+        # No\Si 1 Programa académico 100% bilingüe 
+        # 2 Bilingüismo como profundización y énfasis en el plan de estudios
+        TIPOBIL_NOMBRE) %>% 
   mutate(pct_n = n / nrow(schools_tbl),
          pct_n_text = scales::percent(pct_n, accuracy = 0.01),
          TIPOBIL_NOMBRE = case_when(
@@ -490,12 +525,12 @@ schools_bilin_tbl %>%
   labs(x = NULL,
        y = NULL,
        title = "Bilingualism level in the Colombian school education system",
-       subtitle = str_glue("Year: 2019 
+       subtitle = str_glue("Year: 2020 
                            Number of educational establishments: {scales::number(sum(schools_bilin_tbl$n), big.mark = ',')} 
                            Number of not official educational establishments: {scales::number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
                            Number of official educational establishments: {scales::number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Educación Formal - 2019 - Carátula única sede educativa
-                          Last update date: 2020-12-01')) + 
+       caption = str_glue('Source: DANE - Educación Formal - 2020 - Carátula única sede educativa
+                          Last update date: 2022-06-13')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -586,8 +621,9 @@ hogares individuales como productores de bienes y servicios para uso propio",
 - $\text{Aggregate value = Gross production - Intermediate consumption}$ 
 
 ```{r out.width = "80%"}
-manufac_tbl <- read_delim(file = "000_data/001_encuesta_anual_manufacturera_2019.csv", 
-                            delim = ";", 
+# Estadísticas por tema > Industria > Encuesta Anual Manufacturera (EAM) > Acceso a Microdatos Anomimizados > Encuesta Anual Manufacturera – EAM - 2020
+manufac_tbl <- read_delim(file = "000_data/001_encuesta_anual_manufacturera_2020.csv", 
+                            delim = ",", 
                             locale = locale(decimal_mark = ",")) %>% 
   janitor::clean_names() %>%
   select(nordemp, nordest,
@@ -614,13 +650,13 @@ manufac_tbl %>%
                                                     suffix = "M", 
                                                     big.mark = ",")) + 
   labs(x = NULL, 
-       y = "COP 2019 (M = Millions)", 
+       y = "COP 2020 (M = Millions)", 
        title = "Distribution of aggregate value in the manufacturing Colombian sector", 
-       subtitle = str_glue("Period: 2019
+       subtitle = str_glue("Period: 2020
                            Number of companies: {total_nordemp}
                            Observation: Every point represents a company"),
        caption = 'Source: DANE - Encuesta Anual Manufacturera – EAM - 2019
-                          Last update date: 2020-12-29') + 
+                          Last update date: 2022-06-13') + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -637,16 +673,16 @@ manufac_tbl %>%
 # Egg wholesale prices
 
 ```{r out.width = "85%"}
-egg_jan_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx", 
+egg_jan_2021_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx", 
                           sheet = 2, 
                           range = "A7:E4608") %>% 
   janitor::clean_names() %>%
   select(fecha, producto:precio_promedio_por_kilogramo) %>% 
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
 
-egg_july_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx", 
-                           sheet = 8, 
-                           range = "A7:E4557") %>% 
+egg_jan_2022_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2022_may.xlsx", 
+                           sheet = 6, 
+                           range = "A7:E4489") %>% 
   janitor::clean_names() %>%
   select(fecha, producto:precio_promedio_por_kilogramo) %>%
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
@@ -656,17 +692,19 @@ mercado_list <- c("Cali, Siloé",
                   "Pereira, La 41",
                   "Valledupar, Mercado Nuevo")
 
-egg_jan_july_tbl <- egg_jan_tbl %>% 
-  bind_rows(egg_july_tbl) %>%
+egg_jan_jan_tbl <- egg_jan_2021_tbl %>% 
+  bind_rows(egg_jan_2022_tbl) %>%
   rename(precio = precio_promedio_por_kilogramo) %>% 
   mutate(fecha = ymd(fecha),
-         label_mercado = ifelse(mercado %in% mercado_list, mercado, ""))
+         label_mercado = ifelse(mercado %in% mercado_list, mercado, "")) 
+# %>% 
+#  mutate(producto = str_to_title(producto))
 
-n_market <- egg_jan_july_tbl %>% 
+n_market <- egg_jan_jan_tbl %>% 
   count(mercado) %>% 
   nrow()
 
-egg_jan_july_tbl %>% 
+egg_jan_jan_tbl %>% 
   ggplot(aes(precio, producto)) + 
   geom_point(aes(fill = producto),
              shape = 21,
@@ -688,7 +726,7 @@ egg_jan_july_tbl %>%
        y = NULL, 
        title = str_glue("Egg mean wholesale prices in {n_market} Colombian markets"),
        caption = 'Source: DANE - Sistema de información de precios SIPSA
-                          Last update date: 2021-08-06')  + 
+                          Last update date: 2022-06-13')  + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -746,8 +784,6 @@ knitr::include_graphics("000_data/001_patrimonio_duque.png")
 ```{r out.width="60%"}
 knitr::include_graphics("000_data/001_rentas_trabajo_duque.png")
 ```
-
-    
 
 # Acknowledgments
 

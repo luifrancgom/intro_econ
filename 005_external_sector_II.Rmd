@@ -1,7 +1,7 @@
 ---
 title: "External sector II"
 author: Luis Francisco Gomez Lopez
-date: 2021-09-18 17:45:03
+date: 2022-06-15 18:09:54
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -64,7 +64,7 @@ library(knitr)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 5]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 5]
 
 # Purpose
 
@@ -170,34 +170,34 @@ data %>%
     
 # Patterns of international trade: goods
 
-- Colombian goods exports __(HS 2 digits Version 1992)__ year 1995 [@oec_observatory_2021]
+- Colombian goods exports __(HS 4 digits Version 1992)__ year 1995 [@oec_observatory_2022]
 
 ```{r out.width="100%"}
-knitr::include_graphics(path = "000_data/005_col_export_hs2_version1992_1995.png")
+knitr::include_graphics(path = "000_data/005_col_export_hs4_version1992_1995.png")
 ```
 
 # Patterns of international trade: goods
 
-- Colombian goods exports __(HS 2 digits Version 1992)__ year 2019 [@oec_observatory_2021]
+- Colombian goods exports __(HS 4 digits Version 1992)__ year 2020 [@oec_observatory_2022]
 
 ```{r out.width="100%"}
-knitr::include_graphics(path = "000_data/005_col_export_hs2_version1992_2019.png")
+knitr::include_graphics(path = "000_data/005_col_export_hs4_version1992_2020.png")
 ```
 
 # Patterns of international trade: goods
 
-- Colombian goods imports __(HS 2 digits Version 1992)__ year 1995 [@oec_observatory_2021]
+- Colombian goods imports __(HS 4 digits Version 1992)__ year 1995 [@oec_observatory_2022]
 
 ```{r out.width="100%"}
-knitr::include_graphics(path = "000_data/005_col_import_hs2_version1992_1995.png")
+knitr::include_graphics(path = "000_data/005_col_import_hs4_version1992_1995.png")
 ```
 
 # Patterns of international trade: goods
 
-- Colombian goods imports __(HS 2 digits Version 1992)__ year 2019 [@oec_observatory_2021]
+- Colombian goods imports __(HS 4 digits Version 1992)__ year 2020 [@oec_observatory_2022]
 
 ```{r out.width="100%"}
-knitr::include_graphics(path = "000_data/005_col_import_hs2_version1992_2019.png")
+knitr::include_graphics(path = "000_data/005_col_import_hs4_version1992_2020.png")
 ```
 
 # Extended Balance of Payments Services classification (EBOPS)
@@ -216,7 +216,7 @@ knitr::include_graphics(path = "000_data/005_col_import_hs2_version1992_2019.png
     
 # Patterns of international trade: services
 
-- Colombian services exports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2021]
+- Colombian services exports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]
 
 ```{r out.width="60%"}
 knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2000.png")
@@ -224,7 +224,7 @@ knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2000.p
 
 # Patterns of international trade: services
 
-- Colombian services imports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2021]
+- Colombian services imports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]
 
 ```{r out.width="60%"}
 knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2000.png")
@@ -232,7 +232,7 @@ knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2000.p
 
 # Patterns of international trade: services
 
-- Colombian services exports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2021]
+- Colombian services exports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2022]
 
 ```{r out.width="60%"}
 knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2019.png")
@@ -240,7 +240,7 @@ knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2019.p
 
 # Patterns of international trade: services
 
-- Colombian services imports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2021]
+- Colombian services imports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2022]
 
 ```{r out.width="60%"}
 knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2019.png")
@@ -248,9 +248,9 @@ knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2019.p
 
 # Observatory of Economic Complexity (OEC)
 
-- "The Observatory of Economic Complexity (OEC) is an online data visualization and distribution platform focused on the geography and dynamics of economic activities" [@oec_observatory_2021]
+- "The Observatory of Economic Complexity (OEC) is an online data visualization and distribution platform focused on the geography and dynamics of economic activities" [@oec_observatory_2022]
 
-- "The OEC is currently designed and developed by Datawheel, but it began as a research project at MIT's Collective Learning group (former Macro Connections Group)" [@oec_observatory_2021]
+- "The OEC is currently designed and developed by Datawheel, but it began as a research project at MIT's Collective Learning group (former Macro Connections Group)" [@oec_observatory_2022]
 
 # Observatory of Economic Complexity (OEC)
 

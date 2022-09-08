@@ -1,7 +1,7 @@
 ---
 title: "Money, prices and the exchange rate"
 author: Luis Francisco Gomez Lopez
-date: 2021-09-29 12:43:56
+date: 2022-06-16 11:20:49
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -63,7 +63,7 @@ library(tidyquant)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 7]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 7]
 
 # Purpose
 
@@ -77,7 +77,7 @@ Analyze the money market and introduce the concepts of inflation, nominal exchan
     + Unit of account
     + Store of value 
     
-- A central bank is the institution that issues and administrates legal currency and exercises the function of banker of banks [@banrep_central_2021]
+- A central bank is the institution that issues and administrates legal currency and exercises the function of banker of banks [@banco_de_la_republica_central_2021]
 
 - In the case of Colombia, some of the functions of the central bank are: 
 
@@ -217,7 +217,7 @@ wbstats::wb_data(country   = c("COL"),
          subtitle = str_glue("CPI code WDI: FP.CPI.TOTL
                              CPI units: none but Base Year 2010"),
          caption  = str_glue("Source: World Bank - World Development Indicators (WDI)
-                             Last update date: 2021-09-15")) +
+                             Last update date: 2022-06-16")) +
     theme(panel.border      = element_rect(fill = NA, color = "black"),
           plot.background   = element_rect(fill = "#f3fcfc"),
           panel.background  = element_rect(fill = "#f3f7fc"),
@@ -271,7 +271,7 @@ data %>%
          subtitle = str_glue("Variable code WDI: FP.CPI.TOTL.ZG
                              Variable units: annual percent Base Year 2010"),
          caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2021-09-15")) +
+                             Last update date: 2022-06-16")) +
     theme(panel.border      = element_rect(fill = NA, color = "black"),
           plot.background   = element_rect(fill = "#f3fcfc"),
           panel.background  = element_rect(fill = "#f3f7fc"),
@@ -363,17 +363,17 @@ cop_usd_trm %>%
 
 # Monetary policy intervention rate
 
-- In the link **http://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria** on __2021-09-30__ it was pointed out that:
+- In the link **http://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria** on __2022-06-16__ it was pointed out that:
 
     + *"La tasa de intervención de política monetaria es la tasa de interés mínima que el Banco de la República cobra a las entidades financieras por los préstamos que les hace mediante las operaciones de mercado abierto (OMA) que se otorgan en las subastas de expansión monetaria a un día. Esta tasa es el principal mecanismo de intervención de política monetaria usado por el Banco de la República para afectar la cantidad de dinero que circula en la economía."*
 
 ```{r}
 
 # Political interest rate August 10, 2020 (Colombia)
-i_t <- 0.0175 
+i_t <- 0.06 
 ```
 
-    + Also the *"tasa de intervención de política monetaria"* on __2021-09-30__ was `r scales::percent(i_t, accuracy = 0.01)`
+    + Also the *"tasa de intervención de política monetaria"* on __2022-06-16__ was `r scales::percent(i_t, accuracy = 0.01)`
     
 # Monetary policy intervention rate
 

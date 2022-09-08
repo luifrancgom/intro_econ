@@ -1,7 +1,7 @@
 ---
 title: "Public Finances"
 author: Luis Francisco Gomez Lopez
-date: 2021-09-20 17:41:23
+date: 2022-06-16 11:18:20
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -66,7 +66,7 @@ library(treemapify)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 6]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
 
 # Purpose
 
@@ -237,16 +237,20 @@ digraph boxes_and_circles {
 # Colombian public sector
 
 ```{r}
-cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2020.xlsx", 
-           sheet = 2, 
-           range = "B5:AC100") %>%
+# Data
+# https://www.minhacienda.gov.co > Entidades Financieras 
+# > Balance Gobierno Nacional Central
+# > Balance Gobierno Nacional Central 1994-2021
+cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2021.xlsx", 
+                     sheet = 2, 
+                     range = "B5:AD100") %>%
   rename(Concepto = "CONCEPTO") %>% 
   slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
-  select(Concepto, `2020`)
+  select(Concepto, `2021`)
 
 cng_fb_table <- cng_fb %>% 
   slice(2:5, 8:26,29)
-  
+
 cng_fb_table_footnote <- cng_fb_table
 
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
@@ -263,10 +267,11 @@ cng_fb_table_footnote %>%
   row_spec(row = 1, bold = TRUE, background = unname(palette_light()[4])) %>% 
   row_spec(row = c(2,21), bold = TRUE, background = unname(palette_light()[2])) %>% 
   row_spec(row = 3, bold = TRUE, background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2021-06-18'),
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2022-06-15'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
+
 ```
 
 # Colombian public sector
@@ -292,7 +297,7 @@ cng_fb_table_footnote %>%
   row_spec(row = 1, background = unname(palette_light()[4]), bold = TRUE) %>% 
   row_spec(row = c(2, 5:6), bold = TRUE) %>%
   row_spec(row = 3, background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2021-06-18'),
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2022-06-15'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -321,7 +326,7 @@ cng_fb_table_footnote %>%
   row_spec(row = c(1,7), background = unname(palette_light()[4]), bold = TRUE) %>% 
   row_spec(row = c(8:9, 21), background = unname(palette_light()[2]), bold = TRUE) %>%
   row_spec(row = c(3, 16), background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2021-06-18'),
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2022-06-15'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -349,7 +354,7 @@ cng_fb_table_footnote %>%
   row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
   row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
   row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2021-06-18'),
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2022-06-15'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -358,16 +363,16 @@ cng_fb_table_footnote %>%
 # Colombian public sector
 
 ```{r}
-cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2020.xlsx", 
+cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2021.xlsx", 
                      # Cambiando la hoja para mostrar las cifras
                      # en miles de millones
                      sheet = 1, 
-                     range = "B5:AC100") %>%
+                     range = "B5:AD100") %>%
   rename(Concepto = "CONCEPTO") %>% 
   slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
-  select(Concepto, `2020`) %>%
+  select(Concepto, `2021`) %>%
   # Mostrando todas las cifras
-  mutate(`2020` = (`2020`*10^9) %>% scales::number(big.mark = ",", 
+  mutate(`2021` = (`2021`*10^9) %>% scales::number(big.mark = ",", 
                                                    accuracy = 0.1))
 
 cng_fb_table <- cng_fb %>% 
@@ -389,7 +394,7 @@ cng_fb_table_footnote %>%
   row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
   row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
   row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2021-06-18'),
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2022-06-15'),
            general_title = "",
            alphabet = 'Pesos colombianos (COP)',
            threeparttable = TRUE)
@@ -456,124 +461,135 @@ knitr::include_graphics(c("_000_images/006_regressive_tax.png",
 # Revenues: taxes
 
 ```{r out.width="90%"}
-# Structure data set
-RS_GBL_structure <- get_data_structure(dataset = "RS_GBL")
+# # Structure data set
+# RS_GBL_structure <- get_data_structure(dataset = "RS_GBL")
+# 
+# # RS_GBL Global Revenue Statistics Database
+# tax_pct_gdp_col_latin_oecd <- get_dataset(dataset = "RS_GBL",
+#             start_time = 1990,
+#             end_time = 2019,
+#                           # Countries, regions, territories
+#                           # Colombia, OECD - Average, Latin America and the Caribbean
+#             filter = list(c("COL", "OAVG", "419"),
+#                           # Government: NES Total
+#                           c("NES"),
+#                           # Tax: TOTALTAX Total Tax Revenue
+#                           c("TOTALTAX"),
+#                           # Variable: Tax revenue as % of GDP
+#                           c("TAXGDP"))) %>%
+#   left_join(y = as_tibble(RS_GBL_structure$COU),
+#             by = c("COU" = "id"))
+# 
+# tax_pct_gdp_col_latin_oecd %>%
+#   mutate(obsTime = as.integer(obsTime),
+#          label = replace(label,
+#                          list = label == "Latin America and the Caribbean",
+#                          values = "Latin America and the Caribbean - Average")) %>%
+#   ggplot(aes(x = obsTime, y = obsValue, group = label)) +
+#   geom_line(aes(color = label))  +
+#   scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+#   tidyquant::scale_color_tq()  +
+#   expand_limits(y = 0) +
+#   labs(x = NULL,
+#        y = NULL,
+#        color = NULL,
+#        title    = "Total tax revenue as % of GDP",
+#        subtitle = str_glue("Period: {min(tax_pct_gdp_col_latin_oecd$obsTime)}-{max(tax_pct_gdp_col_latin_oecd$obsTime)}
+#                            Observation: Latin America and the Caribbean includes the following territories Antigua and Barbuda, Argentina, Bahamas, Barbados, Belize,
+#                            Bolivia, Brazil, Chile, Colombia, Costa Rica, Cuba, Dominican Republic, Ecuador, El Salvador, Guatemala, Guyana, Honduras, Jamaica,
+#                            Mexico, Nicaragua, Panama, Paraguay, Peru, Saint Lucia, Trinidad and Tobago, Uruguay"),
+#        caption  = str_glue("Source: Global Revenue Statistics Database - OECD.Stat
+#                              Last update date: 2021-09-24")) +
+#   theme(panel.border    = element_rect(fill = NA, color = "black"),
+#         plot.background   = element_rect(fill = "#f3fcfc"),
+#         panel.background  = element_rect(fill = "#f3f7fc"),
+#         legend.background = element_rect(fill = "#f3fcfc"),
+#         legend.position   = "bottom",
+#         plot.title        = element_text(face = "bold"),
+#         axis.title        = element_text(face = "bold"),
+#         legend.title      = element_text(face = "bold"),
+#         axis.text         = element_text(face = "bold"))
+```
 
-# RS_GBL Global Revenue Statistics Database
-tax_pct_gdp_col_latin_oecd <- get_dataset(dataset = "RS_GBL",
-            start_time = 1990,
-            end_time = 2019,
-                          # Countries, regions, territories
-                          # Colombia, OECD - Average, Latin America and the Caribbean
-            filter = list(c("COL", "OAVG", "419"),
-                          # Government: NES Total
-                          c("NES"),
-                          # Tax: TOTALTAX Total Tax Revenue
-                          c("TOTALTAX"),
-                          # Variable: Tax revenue as % of GDP
-                          c("TAXGDP"))) %>%
-  left_join(y = as_tibble(RS_GBL_structure$COU),
-            by = c("COU" = "id"))
+- [@oecd_revenue_2021, p 2]
 
-tax_pct_gdp_col_latin_oecd %>%
-  mutate(obsTime = as.integer(obsTime),
-         label = replace(label,
-                         list = label == "Latin America and the Caribbean",
-                         values = "Latin America and the Caribbean - Average")) %>%
-  ggplot(aes(x = obsTime, y = obsValue, group = label)) +
-  geom_line(aes(color = label))  +
-  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
-  tidyquant::scale_color_tq()  +
-  expand_limits(y = 0) +
-  labs(x = NULL,
-       y = NULL,
-       color = NULL,
-       title    = "Total tax revenue as % of GDP",
-       subtitle = str_glue("Period: {min(tax_pct_gdp_col_latin_oecd$obsTime)}-{max(tax_pct_gdp_col_latin_oecd$obsTime)}
-                           Observation: Latin America and the Caribbean includes the following territories Antigua and Barbuda, Argentina, Bahamas, Barbados, Belize,
-                           Bolivia, Brazil, Chile, Colombia, Costa Rica, Cuba, Dominican Republic, Ecuador, El Salvador, Guatemala, Guyana, Honduras, Jamaica,
-                           Mexico, Nicaragua, Panama, Paraguay, Peru, Saint Lucia, Trinidad and Tobago, Uruguay"),
-       caption  = str_glue("Source: Global Revenue Statistics Database - OECD.Stat
-                             Last update date: 2021-09-24")) +
-  theme(panel.border    = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+```{r out.width="90%"}
+knitr::include_graphics(path = "000_data/006_tax_to_GDP_OECD_2020.png")
 ```
 
 # Revenues: taxes
 
 ```{r out.width="90%"}
-# RS_GBL Global Revenue Statistics Database
-tax_struc_col_2019 <- get_dataset(dataset = "RS_GBL",
-            start_time = 2019,
-            end_time = 2019,
-                          # Countries, regions, territories
-                          # Colombia, OECD - Average, Latin America and the Caribbean
-            filter = list(c("COL"),
-                          # Government: NES Total
-                          c("NES"),
-                          # Tax: TOTALTAX Total Tax Revenue
-                          c("1110", "1210", "1300",
-                            "2000", "3000", "4000",
-                            "5111", "5112", "5113", "5120", "5130", "5200", "5300",
-                            "6000"),
-                          # Variable: Tax revenue as % of total taxation
-                          c("TAXPER"))) %>%
-  left_join(y = as_tibble(RS_GBL_structure$TAX),
-            by = c("TAX" = "id"))
+# # RS_GBL Global Revenue Statistics Database
+# tax_struc_col_2019 <- get_dataset(dataset = "RS_GBL",
+#             start_time = 2019,
+#             end_time = 2019,
+#                           # Countries, regions, territories
+#                           # Colombia, OECD - Average, Latin America and the Caribbean
+#             filter = list(c("COL"),
+#                           # Government: NES Total
+#                           c("NES"),
+#                           # Tax: TOTALTAX Total Tax Revenue
+#                           c("1110", "1210", "1300",
+#                             "2000", "3000", "4000",
+#                             "5111", "5112", "5113", "5120", "5130", "5200", "5300",
+#                             "6000"),
+#                           # Variable: Tax revenue as % of total taxation
+#                           c("TAXPER"))) %>%
+#   left_join(y = as_tibble(RS_GBL_structure$TAX),
+#             by = c("TAX" = "id"))
+# 
+# # Consolidation
+# tax_struc_col_consolidation <- tibble(TAX = tax_struc_col_2019$TAX,
+#             label_consolidation = c("Impuesto sobre la renta de personas físicas",
+#                                    "Impuesto sobre la renta de sociedades",
+#                                    "Otros impuestos",
+#                                    "Cotizaciones a la seguridad social",
+#                                    "Otros impuestos",
+#                                    "Impuestos sobre la propiedad",
+#                                    "Impuesto sobre el valor añadido",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos sobre bienes y servicios",
+#                                    "Otros impuestos"))
+# 
+# tax_struc_col_2019 %>%
+#   left_join(y = tax_struc_col_consolidation,
+#             by = "TAX") %>%
+#   group_by(COU, obsTime, label_consolidation) %>%
+#   summarize(obsValue = sum(obsValue)) %>%
+#   ungroup() %>%
+#   mutate(label_pct = obsValue %>% scales::number(suffix = "%"),
+#          label_consolidation = fct_reorder(label_consolidation,
+#                                            obsValue) %>%
+#            fct_rev()) %>%
+#   ggplot(aes(area = obsValue,
+#              fill = label_consolidation,
+#              label = label_pct)) +
+#   geom_treemap(color = "black") +
+#   geom_treemap_text(place = "centre") +
+#   scale_fill_tq() +
+#   labs(fill = NULL,
+#        title = str_glue("Tax revenue as % of total taxation in Colombia: {unique(tax_struc_col_2019$obsTime)}"),
+#        caption = str_glue("Global Revenue Statistics Database - OECD.Stat
+#                           Last update date: 2021-09-25")) +
+#   theme(panel.border      = element_rect(fill = NA, color = "black"),
+#         plot.background   = element_rect(fill = "#f3fcfc"),
+#         panel.background  = element_rect(fill = "#f3f7fc"),
+#         legend.background = element_rect(fill = "#f3fcfc"),
+#         legend.position   = "bottom",
+#         plot.title        = element_text(face = "bold"),
+#         axis.title        = element_text(face = "bold"),
+#         legend.title      = element_text(face = "bold"),
+#         axis.text         = element_text(face = "bold"))
+```
+- [@oecd_revenue_2021, p 3]
 
-# Consolidation
-tax_struc_col_consolidation <- tibble(TAX = tax_struc_col_2019$TAX,
-            label_consolidation = c("Impuesto sobre la renta de personas físicas",
-                                   "Impuesto sobre la renta de sociedades",
-                                   "Otros impuestos",
-                                   "Cotizaciones a la seguridad social",
-                                   "Otros impuestos",
-                                   "Impuestos sobre la propiedad",
-                                   "Impuesto sobre el valor añadido",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos sobre bienes y servicios",
-                                   "Otros impuestos"))
-
-tax_struc_col_2019 %>%
-  left_join(y = tax_struc_col_consolidation,
-            by = "TAX") %>%
-  group_by(COU, obsTime, label_consolidation) %>%
-  summarize(obsValue = sum(obsValue)) %>%
-  ungroup() %>%
-  mutate(label_pct = obsValue %>% scales::number(suffix = "%"),
-         label_consolidation = fct_reorder(label_consolidation,
-                                           obsValue) %>% 
-           fct_rev()) %>%
-  ggplot(aes(area = obsValue,
-             fill = label_consolidation,
-             label = label_pct)) +
-  geom_treemap(color = "black") +
-  geom_treemap_text(place = "centre") +
-  scale_fill_tq() +
-  labs(fill = NULL,
-       title = str_glue("Tax revenue as % of total taxation in Colombia: {unique(tax_struc_col_2019$obsTime)}"),
-       caption = str_glue("Global Revenue Statistics Database - OECD.Stat
-                          Last update date: 2021-09-25")) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+```{r out.width="90%"}
+knitr::include_graphics(path = "000_data/006_tax_structure_vs_oedc_average.png")
 ```
 
 # Expenditures
@@ -603,14 +619,15 @@ tax_struc_col_2019 %>%
 # Expenditures
 
 ```{r out.width="90%"}
-pgn_2020_what_spent <- read_excel("000_data/006_en_que_se_gasta_PTE.xlsx",
-           sheet = 1, 
-           range = "E1:M5") %>%
+# https://www.pte.gov.co >  > Consultas sobre la gestión de los recursos públicos > GASTOS DE LA NACIÓN > Consultas: Consultas Personalizadas de Gastos
+pgn_2022_what_spent <- read_excel("000_data/006_en_que_se_gasta_PTE.xlsx",
+                                  sheet = 1, 
+                                  range = "E1:M5") %>%
   select(TipoPresupuesto, ApropiacionInicial)
 
-pgn_2020_what_spent %>% 
+pgn_2022_what_spent %>% 
   slice(1:3) %>% 
-  mutate(png_pct = ApropiacionInicial / pgn_2020_what_spent$ApropiacionInicial[4],
+  mutate(png_pct = ApropiacionInicial / pgn_2022_what_spent$ApropiacionInicial[4],
          png_pct_label = png_pct %>% scales::percent(accuracy = 0.01),
          TipoPresupuesto = str_to_title(TipoPresupuesto),
          TipoPresupuesto = TipoPresupuesto %>% fct_reorder(ApropiacionInicial) %>% 
@@ -622,13 +639,13 @@ pgn_2020_what_spent %>%
   geom_treemap_text(place = "centre") +
   scale_fill_tq() +
   labs(fill = NULL,
-       title = str_glue("What is the nation's general budget spent on in 2020?"),
-       subtitle = str_glue("Total national budget: {scales::number(pgn_2020_what_spent$ApropiacionInicial[4], big.mark = ',')} COP
-                           Funcionamiento: {scales::number(pgn_2020_what_spent$ApropiacionInicial[1], big.mark = ',')} COP
-                           Servicio De La Deuda: {scales::number(pgn_2020_what_spent$ApropiacionInicial[2], big.mark = ',')} COP,
-                           Inversión: {scales::number(pgn_2020_what_spent$ApropiacionInicial[3], big.mark = ',')} COP"),
+       title = str_glue("What is the nation's general budget spent on in 2022?"),
+       subtitle = str_glue("Total national budget: {scales::number(pgn_2022_what_spent$ApropiacionInicial[4], big.mark = ',')} COP
+                           Funcionamiento: {scales::number(pgn_2022_what_spent$ApropiacionInicial[1], big.mark = ',')} COP
+                           Servicio De La Deuda: {scales::number(pgn_2022_what_spent$ApropiacionInicial[2], big.mark = ',')} COP,
+                           Inversión: {scales::number(pgn_2022_what_spent$ApropiacionInicial[3], big.mark = ',')} COP"),
        caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
-                          Last update date: 2021-06-30")) +
+                          Last update date: 2022-06-15")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -643,28 +660,33 @@ pgn_2020_what_spent %>%
 # Expenditures
 
 ```{r}
-pgn_2020_who_spends <- read_excel("000_data/006_quien_gasta_PTE.xlsx", 
+pgn_2022_what_spent <- read_excel("000_data/006_en_que_se_gasta_PTE.xlsx",
                                   sheet = 1, 
-                                  range = "A1:L196") %>%
+                                  range = "E1:M5") %>%
+  select(TipoPresupuesto, ApropiacionInicial)
+
+pgn_2022_who_spends <- read_excel("000_data/006_quien_gasta_PTE.xlsx", 
+                                  sheet = 1, 
+                                  range = "A1:L193") %>%
   select(CodigoSector, NombreSector, ApropiacionInicial) %>% 
   slice(-1)
-  
-pgn_2020_who_spends_table <- pgn_2020_who_spends %>% 
+
+pgn_2022_who_spends_table <- pgn_2022_who_spends %>% 
   mutate(NombreSector = str_to_title(NombreSector)) %>% 
   group_by(CodigoSector, NombreSector) %>% 
   summarize(ApropiacionInicial = sum(ApropiacionInicial)) %>% 
   ungroup() %>% 
-  mutate(png_pct = ApropiacionInicial / pgn_2020_what_spent$ApropiacionInicial[4]) %>% 
+  mutate(png_pct = ApropiacionInicial / pgn_2022_what_spent$ApropiacionInicial[4]) %>% 
   arrange(desc(png_pct))
 ```
 
 ```{r out.width="90%"}
-pgn_2020_who_spends_table %>% 
-    mutate(NombreSector = case_when(
-      ApropiacionInicial < pgn_2020_who_spends_table$ApropiacionInicial[11] ~ "Otros Sectores",
-      TRUE ~ NombreSector)) %>% 
+pgn_2022_who_spends_table %>% 
+  mutate(NombreSector = case_when(
+    ApropiacionInicial < pgn_2022_who_spends_table$ApropiacionInicial[11] ~ "Otros Sectores",
+    TRUE ~ NombreSector)) %>% 
   group_by(NombreSector) %>% 
-    summarize(across(ApropiacionInicial:png_pct, sum)) %>% 
+  summarize(across(ApropiacionInicial:png_pct, sum)) %>% 
   ungroup() %>%
   mutate(png_pct_label = str_glue("{scales::percent(png_pct, accuracy = 0.01)}
                                   {scales::number(ApropiacionInicial, scale = 1e-12, suffix = 'B')}"),
@@ -677,11 +699,11 @@ pgn_2020_who_spends_table %>%
   geom_treemap_text(place = "centre") +
   scale_fill_tq() +
   labs(fill = NULL,
-       title = str_glue("Who spends nation's general budget spent on in 2020?"),
-       subtitle = str_glue("Total national budget: {scales::number(pgn_2020_what_spent$ApropiacionInicial[4], big.mark = ',')} COP
+       title = str_glue("Who spends nation's general budget spent on in 2022?"),
+       subtitle = str_glue("Total national budget: {scales::number(pgn_2022_what_spent$ApropiacionInicial[4], big.mark = ',')} COP
                            Observation: B means billions in long scale (10^12)"),
        caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
-                          Last update date: 2021-06-30")) +
+                          Last update date: 2022-06-15")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

@@ -1,7 +1,7 @@
 ---
 title: "Production and Income I"
 author: Luis Francisco Gomez Lopez
-date: 2021-08-12 16:33:15
+date: 2022-06-14 08:33:05
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -61,7 +61,7 @@ library(tidyquant)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 2]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
 
 # Purpose
 
@@ -117,19 +117,24 @@ knitr::include_graphics(path = "_000_images/001_image3.png")
         
 # Gross Domestic Product (GDP)
 
-- Output/Production approach (Colombia, Period: 2021-Q1)
+- Output/Production approach (Colombia, Period: 2021-Q4)
 
 ```{r}
-gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_II_2021.xlsx", 
+
+# Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
+# Información técnica
+gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_I_2022.xlsx", 
                             sheet = 2, 
-                            range = "C15:BQ29", 
+                            range = "C15:BT29", 
                             col_names = FALSE)
 
 gdp_agg_value_table <- gdp_agg_value %>% 
   # Data for 2021-Q1 is not available for the income approach
   select(1, ncol(gdp_agg_value) - 1) %>% 
-  rename(concept = `...1`, value_2017_1 = `...66`) %>% 
-  mutate(value_2017_1 = round(value_2017_1, digits = 0))
+  rename(concept = `...1`, value_2021_4 = `...69`) %>% 
+  mutate(value_2021_4 = round(value_2021_4, digits = 0))
 
 gdp_agg_value_table_footnote <- gdp_agg_value_table
 
@@ -148,26 +153,26 @@ gdp_agg_value_table_footnote %>%
   row_spec(row = 15, background = '#e31a1c') %>% 
   column_spec(column = 1, width = "3.4in") %>%
   column_spec(column = 2, width = "1in", ) %>%
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque de la producción a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2021-08-17'), 
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque de la producción a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2022-06-13'), 
            general_title = "",
            alphabet = 'Preliminary data at current prices')
 ```
 
 # Gross Domestic Product (GDP)
 
-- Income approach (Colombia, Period: 2021-Q1)
+- Income approach (Colombia, Period: 2021-Q4)
 
 ```{r}
-gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_I_2021.xlsx",
-                            sheet = 1,
-                            range = "C14:X42",
-                            col_names = FALSE)
+gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_IV_2021.xlsx",
+                         sheet = 1,
+                         range = "C14:AB42",
+                         col_names = FALSE)
 
 gdp_income_table <- gdp_income %>%
   select(1, ncol(gdp_income)) %>%
-  rename(concept = `...1`, value_2017_1 = `...22`) %>%
+  rename(concept = `...1`, value_2021_3 = `...26`) %>%
   slice(1:3, 16, 29) %>%
-  mutate(value_2017_1 = round(value_2017_1, digits = 0))
+  mutate(value_2021_3 = round(value_2021_3, digits = 0))
 
 gdp_income_table_footnote <- gdp_income_table
 
@@ -175,7 +180,7 @@ names(gdp_income_table_footnote)[1] <- "Concepto"
 names(gdp_income_table_footnote)[2] <- "Miles de Millones - COP"
 
 names(gdp_income_table_footnote)[2] <- paste0(names(gdp_income_table_footnote)[2],
-                                                 footnote_marker_alphabet(1, "latex"))
+                                              footnote_marker_alphabet(1, "latex"))
 
 gdp_income_table_footnote %>%
   kable(booktabs = TRUE, escape = FALSE) %>%
@@ -185,30 +190,29 @@ gdp_income_table_footnote %>%
   row_spec(row = 5, background = '#e31a1c') %>%
   column_spec(column = 1, width = "2in") %>%
   column_spec(column = 2, width = "2in", ) %>%
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - PIB por Ingreso - S1 Total Economía', 'Last update: 2021-06-30'),
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - PIB por Ingreso - S1 Total Economía', 'Last update: 2022-06-13'),
            general_title = "",
            alphabet = 'Preliminary data at current prices', threeparttable = TRUE)
 ```
 
 # Gross Domestic Product (GDP)
 
-- Expenditure/Final demand approach (Colombia, Period: 2021-Q1)
+- Expenditure/Final demand approach (Colombia, Period: 2021-Q4)
 
 ```{r}
-gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_II_2021.xlsx",
-                            sheet = 2,
-                            range = "B15:BP21",
-                            col_names = FALSE)
+gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_I_2022.xlsx",
+                              sheet = 2,
+                              range = "B15:BS21",
+                              col_names = FALSE)
 
 gdp_expenditure_table <- gdp_expenditure %>%
-  # Data for 2021-Q1 is not available for the income approach
-  select(1, ncol(gdp_expenditure) - 1) %>%
+  select(1, ncol(gdp_expenditure)-1) %>%
   slice(1:3, 5:7) %>%
-  rename(concept = `...1`, value_2017_1 = `...66`) %>%
+  rename(concept = `...1`, value_2021_4 = `...69`) %>%
   mutate(concept = replace(concept,
                            concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH2",
                            "Gasto de consumo final individual de los hogares y las ISFLH"),
-         value_2017_1 = round(value_2017_1, digits = 0))
+         value_2021_4 = round(value_2021_4, digits = 0))
 
 gdp_expenditure_table_footnote <- gdp_expenditure_table
 
@@ -228,10 +232,11 @@ gdp_expenditure_table_footnote %>%
   row_spec(row = 6, background = '#e31a1c') %>%
   column_spec(column = 1, width = "2.6in") %>%
   column_spec(column = 2, width = "1.5in", ) %>%
-  footnote(general       = linebreak(c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque del gasto a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2021-08-17')),
+  footnote(general       = linebreak(c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque del gasto a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2022-06-14')),
            general_title = "",
            alphabet = c('Preliminary data at current prices',
                         'Instituciones sin fines de lucro que sirven a los hogares'), threeparttable = TRUE)
+
 ```
 
 # Gross Domestic Product

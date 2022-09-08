@@ -1,7 +1,7 @@
 ---
 title: "Economy and institutions"
 author: Luis Francisco Gomez Lopez
-date: 2021-09-12 19:08:13
+date: 2022-06-14 09:28:34
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -64,7 +64,7 @@ library(ggrepel)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 4]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 4]
 
 # Purpose
 
@@ -150,7 +150,7 @@ digraph boxes_and_circles {
 
 ```{r out.width = "90%"}
 initial_year <- 1996
-last_year <- 2019
+last_year <- 2020
 middle_year <- ceiling((2019 - 1996) / 2) + initial_year
 
 # Percent Rank indicators
@@ -205,7 +205,7 @@ wgi_col_1996_2019 %>%
                            Percentile rank indicates the country's rank among all countries covered by the aggregate indicator,
                            with 0 corresponding to lowest rank, and 100 to highest rank"),
        caption = str_glue("Source: Worldwide Governance Indicators (WGI) - World Bank
-                          Last update: 2020-09-28")) +
+                          Last update: 2021-09-27")) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -357,20 +357,22 @@ db_col_2020 %>%
 # Crime
 
 ```{r out.width="90%"}
-homicide_1990_2018 <- read_csv("000_data/004_homicide_table_full_data.csv") %>% 
-  janitor::clean_names() %>% 
-  filter(year %in% c(1990, 2018),
-         indicator == "Homicide rate") %>% 
-  pivot_wider(id_cols = c(region:indicator), 
-              names_from = year, values_from = value) %>% 
-  filter(!(is.na(`2018`) | is.na(`1990`)))
+homicide_1990_2018 <- wbstats::wb_data(# Intentional homicides (per 100,000 people)
+  indicator = "VC.IHR.PSRC.P5", 
+  start_date = 1990, 
+  end_date = 2018) %>% 
+  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(1990, 2018)) %>% 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.P5) %>% 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.P5) %>% 
+  drop_na()
+
 
 homicide_1990_2018 %>% 
   ggplot(aes(x = `1990`, y = `2018`)) + 
   geom_abline(slope = 1, color = 'black') +
-  geom_point(aes(fill = region),
-             shape = 21, 
-             size = 4) + 
+  geom_point(shape = 21, 
+             size = 4,
+             fill = "red") + 
   geom_label_repel(data = homicide_1990_2018 %>% 
                      filter(country == "Colombia"),
                    aes(label = country), 
@@ -378,10 +380,50 @@ homicide_1990_2018 %>%
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Intentional homicide rate per 100,000 population: 1990 vs 2018",
-       subtitle = str_glue("Number of countries: {nrow(homicide_1990_2018)}"),
-       caption = str_glue("Source: United Nations Office on Drugs and Crime - DATAUNODC
-                          Last update: 2018-10-12")) + 
+       title = str_glue("Intentional homicides (per 100,000 people): 1990 vs 2018"),
+                        subtitle = str_glue("Number of countries: {nrow(homicide_1990_2018)}"),
+                        caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: 2022-06-14")) + 
+         theme(panel.border    = element_rect(fill = NA, color = "black"),
+               plot.background   = element_rect(fill = "#f3fcfc"),
+               panel.background  = element_rect(fill = "#f3f7fc"),
+               legend.background = element_rect(fill = "#f3fcfc"),
+               legend.position   = "bottom",
+               plot.title        = element_text(face = "bold"),
+               axis.title        = element_text(face = "bold"),
+               legend.title      = element_text(face = "bold"),
+               axis.text         = element_text(face = "bold"))
+```
+
+# Crime
+
+```{r out.width="90%"}
+homicide_female_1990_2018 <- wbstats::wb_data(# Intentional homicides, female (per 100,000 female)
+  indicator = "VC.IHR.PSRC.FE.P5", 
+  start_date = 1990, 
+  end_date = 2018) %>% 
+  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(1990, 2018)) %>% 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) %>% 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) %>% 
+  drop_na()
+
+homicide_female_1990_2018 %>% 
+  ggplot(aes(x = `1990`, y = `2018`)) + 
+  geom_abline(slope = 1, color = 'black') +
+  geom_point(shape = 21, 
+             size = 4,
+             fill = "red") + 
+  geom_label_repel(data = homicide_female_1990_2018 %>% 
+                     filter(country == "Colombia"),
+                   aes(label = country), 
+                   seed = 1234,                    
+                   box.padding = 1) + 
+  scale_fill_tq() +
+  labs(fill = NULL, 
+       title = "# Intentional homicides, female (per 100,000 female): 1990 vs 2018",
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2018)}"),
+       caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: 2022-06-14")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -396,68 +438,32 @@ homicide_1990_2018 %>%
 # Crime
 
 ```{r out.width="90%"}
-kidnapping_2004_2018 <- read_csv("000_data/004_kidnapping_table_data.csv") %>% 
-  janitor::clean_names() %>% 
-  filter(year %in% c(2004, 2018),
-         measure_names == "Rate") %>% 
-  pivot_wider(id_cols = c(region:country), 
-              names_from = year, values_from = measure_values) %>% 
-  filter(!(is.na(`2004`) | is.na(`2018`)))
+homicide_male_1990_2018 <- wbstats::wb_data(# Intentional homicides, male (per 100,000 male)
+  indicator = "VC.IHR.PSRC.MA.P5", 
+  start_date = 1990, 
+  end_date = 2018) %>% 
+  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(1990, 2018)) %>% 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) %>% 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) %>% 
+  drop_na()
 
-kidnapping_2004_2018 %>% 
-  ggplot(aes(x = `2004`, y = `2018`)) + 
+homicide_male_1990_2018 %>% 
+  ggplot(aes(x = `1990`, y = `2018`)) + 
   geom_abline(slope = 1, color = 'black') +
-  geom_point(aes(fill = region),
-             shape = 21, size = 4) + 
-  geom_label_repel(data = kidnapping_2004_2018 %>% 
+  geom_point(shape = 21, 
+             size = 4,
+             fill = "red") + 
+  geom_label_repel(data = homicide_male_1990_2018 %>% 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
-                   box.padding = 17) + 
+                   box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Kidnapping, police-recorded offences, per 100,000 population: 2004 vs 2018",
-       subtitle = str_glue("Number of countries: {nrow(kidnapping_2004_2018)}"),
-       caption = str_glue("Source: United Nations Office on Drugs and Crime - DATAUNODC
-                          Last update: 2018-10-12")) + 
-  theme(panel.border    = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-```
-
-# Crime
-
-```{r out.width="90%"}
-theft_2004_2018 <- read_csv("000_data/004_theft_full_data.csv") %>% 
-  janitor::clean_names() %>%
-  filter(year %in% c(2004, 2018)) %>% 
-  pivot_wider(id_cols = c(country, 
-                          population_type:sub_region), 
-              names_from = year, values_from = rate) %>% 
-  filter(!(is.na(`2004`) | is.na(`2018`)))
-
-theft_2004_2018 %>% 
-  ggplot(aes(x = `2004`, y = `2018`)) + 
-  geom_abline(slope = 1, color = 'black') +
-  geom_point(aes(fill = region),
-             shape = 21, size = 4) + 
-  geom_label_repel(data = theft_2004_2018 %>% 
-                     filter(country == "Colombia"),
-                   aes(label = country), 
-                   seed = 1234,                    
-                   box.padding = 10) + 
-  scale_fill_tq() +
-  labs(fill = NULL, 
-       title = "Theft, police-recorded offences, per 100,000 population: 2004 vs 2018",
-       subtitle = str_glue("Number of countries: {nrow(theft_2004_2018)}"),
-       caption = str_glue("Source: United Nations Office on Drugs and Crime - DATAUNODC
-                          Last update: 2018-10-12")) + 
+       title = "# Intentional homicides, male (per 100,000 male): 1990 vs 2018",
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2018)}"),
+       caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: 2022-06-14")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

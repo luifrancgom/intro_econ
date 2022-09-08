@@ -1,7 +1,7 @@
 ---
 title: "Labor Market"
 author: "Luis Francisco Gomez Lopez"
-date: 2021-10-14 13:35:31
+date: 2022-06-16 12:33:25
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -62,7 +62,7 @@ library(readxl)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 9]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 9]
 
 # Purpose
 
@@ -80,10 +80,13 @@ Examine the evolution and characteristics of the supply and demand of labor in C
 
 # Labor classification of the population
 
-```{r sep_col_labor, out.width = "90%"}
+```{r out.width = "90%"}
 
 #Plot
 ## Labor Market Colombia
+## Data
+## https://www.dane.gov.co > Estadísticas por tema > 
+## Mercado Laboral > Empleo y desempleo > Anexos  
 tibble(x = c( 0, 
               -1, 
               1,
@@ -92,9 +95,7 @@ tibble(x = c( 0,
               -2,
               2,
               -3,
-              -1,
-              1,
-              3),
+              -1),
        y = c( 0, 
               -1, 
               -1,
@@ -103,37 +104,40 @@ tibble(x = c( 0,
               -3,
               -3,
               -4,
-              -4,
-              -4,
               -4),
        indicator = c('Total Population (TP)',
-                     'Population below\n10 or 12 years\n(Rural or Urban)',
+                     'Population below\n15 years',
                      'Working Age\nPopulation\n(WAP)',
                      'Economically\nActive\nPopulation\n(EAP)',
                      'Economically\nInactive\nPopulation\n(EIP)',
                      'Employed (E)',
                      'Unemployed (U)',
                      'Full Employed\n(FE)',
-                     'Underemployed\n(UE)',
-                     'Visible\nUnemployment\n(VU)',
-                     'Invisible\nUnemployment\n(IU)'
+                     'Underemployed\n(UE)'
        ),
        level     = c('0', 
                      '1', '1', 
                      '2', '2', 
                      '3', '3',
-                     '4', '4', '4', '4'),
-       value     = c(50052623,
-                     50008928 - 40461502,  
-                     40461502,
-                     24722163,
-                     40461502 - 24722163, 
-                     21729244,
-                     2992919,
-                     21729244 - (6470721 + 2631981),
-                     6470721 + 2631981,
-                     2815798,
-                     177120)) %>% 
+                     '4', '4'),
+       # Población total
+       value     = c(50384974,
+                     # Población menor a 15 años
+                     50384974 - 38884307,  
+                     # Población en edad de trabajar
+                     38884307,
+                     # Población economicamente activa/ Fuerza de trabajo
+                     24718018,
+                     # Población Economicamente inactiva/ Población fuera de la fuerza laboral
+                     38884307 - 24718018,
+                     # Ocupados
+                     21957395,
+                     # Desocupados
+                     2760623,
+                     # Completamente empleados
+                     21593857 - 2075410,
+                     # Subocupados/ Subocupados
+                     2075410)) %>% 
   mutate(label_text = str_glue('{indicator}
                                  {value %>% 
                                     scales::number(big.mark = ",")}')) %>% 
@@ -146,8 +150,6 @@ tibble(x = c( 0,
   geom_segment(x = -2, y = -3, xend = 2, yend = -3) +
   geom_segment(x = -2, y = -3, xend = -2, yend = -4) +
   geom_segment(x = -3, y = -4, xend = -1, yend = -4) +
-  geom_segment(x = 2, y = -3, xend = 2, yend = -4) +
-  geom_segment(x = 1, y = -4, xend = 3, yend = -4) +
   geom_label(aes(fill = level), 
              color       = "white", 
              fontface    = "bold",
@@ -156,9 +158,9 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(title    = 'Labor classification of the population in Colombia',
-       subtitle = str_glue('Period: September 2021'),
+       subtitle = str_glue('Period: April 2022'),
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: 2021-10-29'),
+                              Last update: 2022-06-16'),
        fill     = "Level"
   ) + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -177,7 +179,7 @@ tibble(x = c( 0,
 
 - __Percentage of the working age population__ ("Porcentaje de población en edad de trabajar") 
 
-    + $\%PET = \frac{PET}{PT} \times 100$
+    + $\%WAP = \frac{WAP}{PT} \times 100$
     
 - __Labor participation rate (LPR)__ ("Tasa global de participación") 
 

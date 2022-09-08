@@ -1,7 +1,7 @@
 ---
 title: "Economic Growth"
 author: Luis Francisco Gomez Lopez
-date: 2021-09-06 10:48:17
+date: 2022-06-13 15:11:04
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -64,7 +64,7 @@ library(kableExtra)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 3]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 3]
 
 # Purpose
 
@@ -83,22 +83,28 @@ Analyze the determinants of economic growth
 # Economic growth from a long-term perspective
 
 ```{r out.width="90%"}
+# Data
+# https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en
+# > Excel
 data_madison_region_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2020.xlsx",
-                   sheet = 6,
-                   range = "A4:S26",
-                   col_names = FALSE,
-                   trim_ws = TRUE) %>% 
-  select(1, 5, 19) %>% 
-  set_names(nm = c("year", "Latin America", "World")) %>% 
-  filter(!(is.na(`Latin America`) | is.na(World))) %>% 
-  pivot_longer(cols = `Latin America`:`World`, 
+                                                         sheet = 6,
+                                                         range = "A4:S26",
+                                                         col_names = FALSE,
+                                                         trim_ws = TRUE) %>% 
+  select(1:9) %>% 
+  set_names(nm = c("year", 
+                   "Western Europe", "Eastern Europe",  
+                   "Western Offshoots", "Latin America", 
+                   "Asia (East)", "Asia (South and South-East)",
+                   "Middle East", "Sub-Sahara Africa")) %>% 
+  pivot_longer(cols = `Western Europe`:`Sub-Sahara Africa`, 
                names_to = "region", 
                values_to = "gpd_per_capita")
 
 
-data_madison_region_gdp_per_capita %>%
+data_madison_region_gdp_per_capita %>% 
   ggplot(aes(x = year,
-             y = gpd_per_capita)) +
+             y = gpd_per_capita, group = region)) +
   geom_point(aes(fill = region),
              color = "black", shape = 21,
              show.legend = FALSE) +
@@ -115,7 +121,6 @@ data_madison_region_gdp_per_capita %>%
                            Period: {str_c(c(unique(data_madison_region_gdp_per_capita$year)[1:13], '2016-2018'), collapse = ', ')}"),
        caption  = str_glue("Source: Maddison Project Database, version 2020 (Bolt and Zanden 2020)
                              Last update date: 2020-11-02")) +
-  scale_x_continuous(breaks = c(unique(data_madison_region_gdp_per_capita$year)[1:13], 2018)) +
   scale_y_continuous(labels = scales::number_format(scale    = 1e-3,
                                                     suffix   = "K",
                                                     accuracy = 1)) +
@@ -345,18 +350,23 @@ knitr::include_graphics("_000_images/003_labor_productivity_total_factor_product
 - Methodology applied to Colombia for selected years
 
 ```{r}
-data_ted_col <- readxl::read_excel("000_data/003_total_economy_database2_2021-08.xlsx",
-                   sheet = 2,
-                   range = "A5:AL2133",
-                   trim_ws = TRUE) %>% 
+# https://www.conference-board.org/data/economydatabase/
+# > Data 
+# You need to have and free account
+# Username: luifrancgom@gmail.com
+# Password: Unal21055814
+data_ted_col <- readxl::read_excel("000_data/003_total_economy_database2_2022.xlsx",
+                                   sheet = 2,
+                                   range = "A5:AM2133",
+                                   trim_ws = TRUE) %>% 
   set_names(nm = c(make_clean_names(string = c("REGION", "ISO", "COUNTRY", "NR", 
                                                "INDICATOR", "MEASURE")),
-                   as.character(1990:2021))) %>% 
+                   as.character(1990:2022))) %>% 
   filter(iso == "COL", 
          indicator %in% c("GDP", "Labor Quantity Contribution",
                           "Labor Quality Contribution", "Total Capital Contribution",
                           "Total Factor Productivity")) %>% 
-  select(measure, `1990`, `2000`, `2010`, `2020`)
+  select(measure, `1990`, `2000`, `2010`, `2022`)
 
 data_ted_col %>% 
   rename(Measure = measure) %>%
@@ -367,7 +377,7 @@ data_ted_col %>%
   row_spec(row = 2:3, background = '#18BC9C') %>%
   row_spec(row = 4, background = '#CCBE93') %>%
   row_spec(row = 5, background = '#FF7F00') %>%
-  footnote(general       = c('Source: The Conference Board Total Economy Database - Growth Accounting and Total Factor Productivity, 1990-2021', 'Last update: 2021-08'),
+  footnote(general       = c('Source: The Conference Board Total Economy Database - Growth Accounting and Total Factor Productivity, 1990-2021', 'Last update: 2022-06'),
            general_title = "",
            threeparttable = TRUE)
 ```

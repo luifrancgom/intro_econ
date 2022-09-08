@@ -1,7 +1,7 @@
 ---
 title: "Production and Income II"
 author: Luis Francisco Gomez Lopez
-date: 2021-08-30 22:47:43
+date: 2022-06-12 15:08:12
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -65,7 +65,7 @@ library(wbstats)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 2]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
 
 # Purpose
 
@@ -101,30 +101,33 @@ Understand how production is measured using the concept of Gross Domestic Produc
 - Expenditure/Final demand approach using chain volume measures and expressed in thousands of millions (Colombia)
 
 ```{r}
-gdp_expenditure_annual <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005-2019p-2020pr.xlsx", 
+# Data
+# Estadísticad por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
+# Cuentas nacionales anuales > Principales agregados > Principales agregados macroeconómicos
+gdp_expenditure_annual <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx", 
                                              sheet = 3, 
-                                             range = "E129:U147", 
+                                             range = "E129:V147", 
                                              col_names = FALSE, 
                                              trim_ws = TRUE)
 
 gdp_expenditure_annual_table <- gdp_expenditure_annual %>% 
   select(1, 12, ncol(gdp_expenditure_annual) - 1, ncol(gdp_expenditure_annual)) %>% 
   slice(1:2, 5, 7, 16:19) %>% 
-  rename(concept = `...1`, value_2015 = `...12`, value_2019 = `...16`, value_2020 = `...17`) %>% 
+  rename(concept = `...1`, value_2015 = `...12`, value_2020 = `...17`, value_2021 = `...18`) %>% 
   mutate(concept = case_when(
     concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final individual de los hogares y las ISFLH",
     concept == "Gasto de consumo final del gobierno general" ~ "Gasto de consumo final del gobierno general",
     TRUE ~ concept),
     value_2015 = round(as.numeric(value_2015), digits = 0),
-    value_2019 = round(as.numeric(value_2019), digits = 0),
-    value_2020 = round(as.numeric(value_2020), digits = 0))
+    value_2020 = round(as.numeric(value_2020), digits = 0),
+    value_2021 = round(as.numeric(value_2021), digits = 0))
 
 gdp_expenditure_annual_table_footnote <- gdp_expenditure_annual_table
 
 names(gdp_expenditure_annual_table_footnote)[1] <- "Concepto"
 names(gdp_expenditure_annual_table_footnote)[2] <- "2015"
-names(gdp_expenditure_annual_table_footnote)[3] <- "2019"
-names(gdp_expenditure_annual_table_footnote)[4] <- "2020"
+names(gdp_expenditure_annual_table_footnote)[3] <- "2020"
+names(gdp_expenditure_annual_table_footnote)[4] <- "2021"
 
 names(gdp_expenditure_annual_table_footnote)[3] <- paste0(names(gdp_expenditure_annual_table_footnote)[3],                                                 footnote_marker_alphabet(1, "latex"))
 names(gdp_expenditure_annual_table_footnote)[4] <- paste0(names(gdp_expenditure_annual_table_footnote)[4],                                                 footnote_marker_alphabet(2, "latex"))
@@ -140,7 +143,7 @@ gdp_expenditure_annual_table_footnote %>%
   row_spec(row = 6, background = '#FF7F00') %>% 
   row_spec(row = 7, background = '#e31a1c') %>% 
   row_spec(row = 8, background = '#CCBE93') %>% 
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Series encadenadas de volumen con año de referencia 2015', 'Last update: 2021-05-14'),
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Series encadenadas de volumen con año de referencia 2015', 'Last update: 2022-06-14'),
            general_title = "",
            alphabet = c('Provisional data',
                         'Preliminary data', 
@@ -153,30 +156,33 @@ gdp_expenditure_annual_table_footnote %>%
 - Expenditure/Final demand approach using current prices and expressed in thousands of millions (Colombia)
 
 ```{r}
-gdp_expenditure_annual_current <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005-2019p-2020pr.xlsx",
-                                             sheet = 2,
-                                             range = "E119:U136",
-                                             col_names = FALSE,
-                                             trim_ws = TRUE)
+# Data
+# Estadísticad por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
+# Cuentas nacionales anuales > Principales agregados > Principales agregados macroeconómicos
+gdp_expenditure_annual_current <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx",
+                                                     sheet = 2,
+                                                     range = "E119:V136",
+                                                     col_names = FALSE,
+                                                     trim_ws = TRUE)
 
 gdp_expenditure_annual_current_table <- gdp_expenditure_annual_current %>%
   select(1, 12, ncol(gdp_expenditure_annual_current) - 1, ncol(gdp_expenditure_annual_current)) %>%
   slice(1:2, 5, 7, 16:18) %>%
-  rename(concept = `...1`, value_2015 = `...12`, value_2019 = `...16`, value_2020 = `...17`) %>%
+  rename(concept = `...1`, value_2015 = `...12`, value_2020 = `...17`, value_2021 = `...18`) %>%
   mutate(concept = case_when(
     concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final individual de los hogares y las ISFLH",
     concept == "Gasto de consumo final del gobierno general" ~ "Gasto de consumo final del gobierno general",
     TRUE ~ concept),
     value_2015 = round(as.numeric(value_2015), digits = 0),
-    value_2019 = round(as.numeric(value_2019), digits = 0),
-    value_2020 = round(as.numeric(value_2020), digits = 0))
+    value_2020 = round(as.numeric(value_2020), digits = 0),
+    value_2021 = round(as.numeric(value_2021), digits = 0))
 
 gdp_expenditure_annual_current_table_footnote <- gdp_expenditure_annual_current_table
 
 names(gdp_expenditure_annual_current_table_footnote)[1] <- "Concepto"
 names(gdp_expenditure_annual_current_table_footnote)[2] <- "2015"
-names(gdp_expenditure_annual_current_table_footnote)[3] <- "2019"
-names(gdp_expenditure_annual_current_table_footnote)[4] <- "2020"
+names(gdp_expenditure_annual_current_table_footnote)[3] <- "2020"
+names(gdp_expenditure_annual_current_table_footnote)[4] <- "2021"
 
 names(gdp_expenditure_annual_current_table_footnote)[3] <- paste0(names(gdp_expenditure_annual_current_table_footnote)[3],                                                 footnote_marker_alphabet(1, "latex"))
 names(gdp_expenditure_annual_current_table_footnote)[4] <- paste0(names(gdp_expenditure_annual_current_table_footnote)[4],                                                 footnote_marker_alphabet(2, "latex"))
@@ -191,7 +197,7 @@ gdp_expenditure_annual_current_table_footnote %>%
   row_spec(row = c(1, 4:5), background = '#18BC9C') %>%
   row_spec(row = 6, background = '#FF7F00') %>%
   row_spec(row = 7, background = '#e31a1c') %>%
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Precios corrientes', 'Last update: 2021-05-14'),
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Precios corrientes', 'Last update: 2022-06-14'),
            general_title = "",
            alphabet = c('Provisional data',
                         'Preliminary data',
@@ -270,6 +276,9 @@ isic_L_U_table_footnote %>%
 # Economics sectors and GDP
 
 ```{r out.width="90%"}
+# Data
+# Estadísticas por tema > Cuentas nacionales >
+# Cuentas Nacionales Anuales > Agregados macroeconómicos - Retropolación base 2015 > Anexo Retropolación Base 2015
 gdp_sector_annual_current_1975_2013 <- readxl::read_excel("000_data/002_anexo_retropolacion_base_2015.xlsx",
                                                           sheet = 2,
                                                           range = "B13:AP26",
@@ -283,28 +292,28 @@ gdp_sector_annual_current_1975_2013 <- readxl::read_excel("000_data/002_anexo_re
                values_to = "value") %>% 
   mutate(year = as.integer(year))
 
-gdp_sector_annual_current_2014_2020 <- read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005-2019p-2020pr.xlsx", 
+gdp_sector_annual_current_2014_2021 <- read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx", 
                                                   sheet = 2, 
-                                                  range = "B15:U114",
-                                                  col_names = c("id", "id_25", "id_61", "sector", as.character(2005:2020))) %>% 
+                                                  range = "B15:V114",
+                                                  col_names = c("id", "id_25", "id_61", "sector", as.character(2005:2021))) %>% 
   mutate(id = replace(id, sector == "Impuestos menos subvenciones sobre los productos", "Impuestos - Subsidios")) %>% 
   filter(!is.na(id)) %>% 
   select(-c("id_25", "id_61")) %>% 
-  pivot_longer(cols = `2005`:`2020`, 
+  pivot_longer(cols = `2005`:`2021`, 
                names_to = "year",
                values_to = "value") %>% 
   mutate(year = as.integer(year)) %>% 
-  filter(year %in% 2014:2020)
+  filter(year %in% 2014:2021)
 
-gdp_sector_annual_current_1975_2020 <- gdp_sector_annual_current_1975_2013 %>%
-  bind_rows(gdp_sector_annual_current_2014_2020) %>% 
+gdp_sector_annual_current_1975_2021 <- gdp_sector_annual_current_1975_2013 %>%
+  bind_rows(gdp_sector_annual_current_2014_2021) %>% 
   group_by(year) %>% 
   mutate(pib = sum(value)) %>% 
   ungroup() %>% 
   mutate(pct_value = value / pib,
          text_id_pct_value = str_glue("{id}: {scales::percent(pct_value, accuracy = 0.01)}"))
 
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2020 %>% 
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021 %>% 
   # Specify the year
   filter(year %in% 1975)
 
@@ -318,7 +327,7 @@ gdp_sector_annual_current_year %>%
        subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2021-02-15") +
+       Update: 2022-06-12") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -332,7 +341,7 @@ gdp_sector_annual_current_year %>%
 # Economics sectors and GDP
 
 ```{r out.width="90%"}
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2020 %>% 
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021 %>% 
   # Specify the year
   filter(year %in% 2000)
 
@@ -346,7 +355,7 @@ gdp_sector_annual_current_year %>%
        subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2021-02-15") +
+       Update: 2022-06-14") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -360,9 +369,9 @@ gdp_sector_annual_current_year %>%
 # Economics sectors and GDP
 
 ```{r out.width="90%"}
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2020 %>% 
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021 %>% 
   # Specify the year
-  filter(year %in% 2020)
+  filter(year %in% 2021)
 
 gdp_sector_annual_current_year %>% 
   ggplot(aes(area = pct_value, fill = id, label = text_id_pct_value)) +
@@ -374,7 +383,7 @@ gdp_sector_annual_current_year %>%
        subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2021-02-15") +
+       Update: 2021-06-14") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

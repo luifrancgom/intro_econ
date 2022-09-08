@@ -1,7 +1,7 @@
 ---
 title: "Financial Market"
 author: Luis Francisco Gomez Lopez
-date: 2021-10-01 21:37:02
+date: 2022-06-16 11:56:24
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -65,7 +65,7 @@ library(readxl)
 
 - The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
-- This presentation is based on [@cardenas_santamaria_introduccion_2013, Chapter 8]
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 8]
 
 # Purpose
 
@@ -248,7 +248,7 @@ credit_private %>%
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(credit_private)}"),
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2021-09-15")) +
+                             Last update date: 2022-06-16")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -306,7 +306,7 @@ market_cap %>%
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(market_cap)}"),
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2021-09-15")) +
+                             Last update date: 2022-06-16")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -354,6 +354,9 @@ market_cap %>%
 # Principal instruments "Mercado no intermediado"
 
 ```{r out.width="90%"}
+# Data
+# https://www.banrep.gov.co/es > Estadísticas Económicas
+# > Tasas de interés y sector financiero > 2. Otras tasas de interés # > TES > Tasa cero cupón pesos
 tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv", 
                            locale = locale(decimal_mark = ",")) %>% 
   select(1, 3:4, 7, 11) %>%
@@ -398,6 +401,8 @@ tes_daily_t_10 %>%
 # Principal instruments "Mercado no intermediado"       
         
 ```{r out.width="90%"}
+# Data
+# https://www.bvc.com.co/pps/tibco/portalbvc > Índices > MSCI COLCAP # Información detallada > MSCI COLCAPf
 msci_colcap <- read_csv(file = "000_data/008_msci_colcap.csv",
                         skip = 1) %>%
   select(2, 4) %>%
@@ -415,7 +420,7 @@ msci_colcap %>%
        title    = "MSCI COLCAP Index",
        subtitle = str_glue("Periodicity: Daily"),
        caption  = str_glue("Source: Bolsa de Valores de Colombia (BVC)
-                             Last update date: 2021-10-07")) +
+                             Last update date: 2022-06-16")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -467,9 +472,11 @@ msci_colcap %>%
 # Banking market or "Mercado Intermediado"
 
 ```{r}
-bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xlsx", 
-           sheet = 1, 
-           range = "B14:G435") %>% 
+# https://www.superfinanciera.gov.co > INDUSTRIAS SUPERVISADAS > 
+# Entidades vigilidas por la superintendencia financiera de Colombia # > Lista general de entidades vigilidas por la superintendencia financiera de Colombia > Descargue el archivo en formato Excel
+bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
+                         sheet = 1, 
+                         range = "B15:P432") %>% 
   slice(-1) %>% 
   select(1:2,5:6) %>% 
   set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) %>% 
@@ -483,7 +490,7 @@ bank_table %>%
         digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
   kable_styling(font_size = 7) %>%
   row_spec(row = 0, bold = TRUE) %>% 
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2021-09-10'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2022-06-16'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -497,7 +504,7 @@ bank_table %>%
         digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
   kable_styling(font_size = 7) %>%  
   row_spec(row = 0, bold = TRUE) %>% 
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2021-09-10'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2022-06-16'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -526,7 +533,7 @@ i_rate_deposit_lending %>%
        title = "Deposit and lending interest rate in Colombia",
        subtitle = str_glue("Period: {min(i_rate_deposit_lending$date)}-{max(i_rate_deposit_lending$date)}"),
        caption = str_glue("Source: World Development Indicators (WDI) - World Bank
-                          Last update: 2021-09-15")) +
+                          Last update: 2022-06-16")) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
