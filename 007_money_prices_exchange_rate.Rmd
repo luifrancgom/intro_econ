@@ -1,7 +1,7 @@
 ---
 title: "Money, prices and the exchange rate"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-16 11:20:49
+date: 2023-01-10 19:19:49
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -217,7 +217,7 @@ wbstats::wb_data(country   = c("COL"),
          subtitle = str_glue("CPI code WDI: FP.CPI.TOTL
                              CPI units: none but Base Year 2010"),
          caption  = str_glue("Source: World Bank - World Development Indicators (WDI)
-                             Last update date: 2022-06-16")) +
+                             Last update date: 2022-12-22")) +
     theme(panel.border      = element_rect(fill = NA, color = "black"),
           plot.background   = element_rect(fill = "#f3fcfc"),
           panel.background  = element_rect(fill = "#f3f7fc"),
@@ -271,7 +271,7 @@ data %>%
          subtitle = str_glue("Variable code WDI: FP.CPI.TOTL.ZG
                              Variable units: annual percent Base Year 2010"),
          caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2022-06-16")) +
+                             Last update date: 2022-12-22")) +
     theme(panel.border      = element_rect(fill = NA, color = "black"),
           plot.background   = element_rect(fill = "#f3fcfc"),
           panel.background  = element_rect(fill = "#f3f7fc"),
@@ -313,9 +313,16 @@ data %>%
 # Exchange Rate and TRM COP/USD
 
 ```{r out.width="90%"}
-cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv", 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de cambio y sector externo > Tasas de cambio nominales
+              # Tasa Representativa del Mercado (TRM) > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cop_usd_trm <- read_csv2(file   = "000_data/007_trm_cop_usd_consolidado_series.csv", 
          locale = locale(decimal_mark = ".")) %>% 
-    set_names(nm = c("date", "trm")) %>% 
+    set_names(nm = c("date", "trm")) %>%
+    # https://www.banrep.gov.co/es > Estadísticas económicas > Sector externo, tasas de cambio y derivados >
+    # 2. Tasas de cambio > Banda Cambiaria
     left_join(read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
                        locale = locale(decimal_mark = ",")) %>% 
                   set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling")), 
@@ -363,22 +370,27 @@ cop_usd_trm %>%
 
 # Monetary policy intervention rate
 
-- In the link **http://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria** on __2022-06-16__ it was pointed out that:
+- In the link **https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria** on __2023-01-10__ it was pointed out that:
 
-    + *"La tasa de intervención de política monetaria es la tasa de interés mínima que el Banco de la República cobra a las entidades financieras por los préstamos que les hace mediante las operaciones de mercado abierto (OMA) que se otorgan en las subastas de expansión monetaria a un día. Esta tasa es el principal mecanismo de intervención de política monetaria usado por el Banco de la República para afectar la cantidad de dinero que circula en la economía."*
+    + *"La tasa de intervención de política monetaria o tasa de referencia es la tasa de interés mínima que el Banco de la República (BanRep) cobra a las entidades financieras por la liquidez que les suministra mediante las operaciones de mercado abierto (OMA). Esta tasa es el principal instrumento de intervención de política monetaria utilizado por el BanRep para afectar la cantidad de dinero que circula en la economía."*
 
 ```{r}
 
 # Political interest rate August 10, 2020 (Colombia)
-i_t <- 0.06 
+i_t <- 0.12 
 ```
 
-    + Also the *"tasa de intervención de política monetaria"* on __2022-06-16__ was `r scales::percent(i_t, accuracy = 0.01)`
+    + Also the *"tasa de intervención de política monetaria"* on __2023-01-10__ was `r scales::percent(i_t, accuracy = 0.01)`
     
 # Monetary policy intervention rate
 
 ```{r out.width="90%"}
-pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') %>% 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de política monetaria > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+pir_daily <- read_csv2(file = '000_data/007_tip_serie_historica_diaria.csv') %>% 
   set_names(nm = c('date', 'pir'))
 
 # Plot
@@ -411,9 +423,19 @@ static_plot1
 # Monetary policy intervention rate
 
 ```{r out.width="90%"}
-tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') %>% 
-  set_names(nm = c('date', 'tib')) 
-ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") %>% 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa interbancaria (TIB) > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+tib_daily <- read_csv2(file  = '000_data/007_tib_serie_historica_diaria.csv') %>% 
+  set_names(nm = c('date', 'tib'))
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Indicador Bancario de Referencia (IBR) overnight, efectiva > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+ibr_daily <- read_csv2(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") %>% 
   set_names(nm = c('date', 'ibr'))
 
 pir_tib_tbr_daily <- pir_daily %>% 
@@ -461,11 +483,26 @@ static_plot2
 # Monetary policy intervention rate
 
 ```{r out.width="90%"}
-cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') %>% 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 90 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_90 <- read_csv2(file  = '000_data/007_cdt_90_diaria.csv') %>% 
   set_names(nm = c('date', 'cdt_90')) 
-cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") %>% 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 180 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_180 <- read_csv2(file = "000_data/007_cdt_180_diaria.csv") %>% 
   set_names(nm = c('date', 'cdt_180'))
-cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") %>% 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 360 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_360 <- read_csv2(file = "000_data/007_cdt_360_diaria.csv") %>% 
   set_names(nm = c('date', 'cdt_360'))
 
 pir_cdt_90_180_360_daily <- pir_daily %>% 

@@ -1,7 +1,7 @@
 ---
 title: "Economy and institutions"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-14 09:28:34
+date: 2023-01-10 17:38:34
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -94,7 +94,7 @@ Analyze the role of institutions in the economy
 
 - Governance dimensions [@kaufmann_worldwide_2011, p 223]
 
-```{r out.width="95%"}
+```{r out.width="150%"}
 
 grViz("
 digraph boxes_and_circles {
@@ -150,8 +150,8 @@ digraph boxes_and_circles {
 
 ```{r out.width = "90%"}
 initial_year <- 1996
-last_year <- 2020
-middle_year <- ceiling((2019 - 1996) / 2) + initial_year
+last_year <- 2021
+middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
 
 # Percent Rank indicators
 wgi_col_1996_2019 <- wbstats::wb_data(indicator = c(
@@ -205,7 +205,7 @@ wgi_col_1996_2019 %>%
                            Percentile rank indicates the country's rank among all countries covered by the aggregate indicator,
                            with 0 corresponding to lowest rank, and 100 to highest rank"),
        caption = str_glue("Source: Worldwide Governance Indicators (WGI) - World Bank
-                          Last update: 2021-09-27")) +
+                          Last update: 2022-09-23")) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -357,33 +357,33 @@ db_col_2020 %>%
 # Crime
 
 ```{r out.width="90%"}
-homicide_1990_2018 <- wbstats::wb_data(# Intentional homicides (per 100,000 people)
+homicide_1990_2020 <- wbstats::wb_data(# Intentional homicides (per 100,000 people)
   indicator = "VC.IHR.PSRC.P5", 
   start_date = 1990, 
-  end_date = 2018) %>% 
-  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(1990, 2018)) %>% 
+  end_date = 2020) %>% 
+  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(1990, 2020)) %>% 
   select(iso2c, iso3c, country, date, VC.IHR.PSRC.P5) %>% 
   pivot_wider(names_from = date, values_from = VC.IHR.PSRC.P5) %>% 
   drop_na()
 
 
-homicide_1990_2018 %>% 
-  ggplot(aes(x = `1990`, y = `2018`)) + 
+homicide_1990_2020 %>% 
+  ggplot(aes(x = `1990`, y = `2020`)) + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_1990_2018 %>% 
+  geom_label_repel(data = homicide_1990_2020 %>% 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = str_glue("Intentional homicides (per 100,000 people): 1990 vs 2018"),
-                        subtitle = str_glue("Number of countries: {nrow(homicide_1990_2018)}"),
+       title = str_glue("Intentional homicides (per 100,000 people): 1990 vs 2020"),
+                        subtitle = str_glue("Number of countries: {nrow(homicide_1990_2020)}"),
                         caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: 2022-06-14")) + 
+                          Last update: 2022-12-22")) + 
          theme(panel.border    = element_rect(fill = NA, color = "black"),
                plot.background   = element_rect(fill = "#f3fcfc"),
                panel.background  = element_rect(fill = "#f3f7fc"),
@@ -398,32 +398,33 @@ homicide_1990_2018 %>%
 # Crime
 
 ```{r out.width="90%"}
-homicide_female_1990_2018 <- wbstats::wb_data(# Intentional homicides, female (per 100,000 female)
+homicide_female_1990_2020 <- wbstats::wb_data(
+  # Intentional homicides, female (per 100,000 female)
   indicator = "VC.IHR.PSRC.FE.P5", 
   start_date = 1990, 
-  end_date = 2018) %>% 
-  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(1990, 2018)) %>% 
+  end_date = 2020) %>% 
+  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(1990, 2020)) %>% 
   select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) %>% 
   pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) %>% 
   drop_na()
 
-homicide_female_1990_2018 %>% 
-  ggplot(aes(x = `1990`, y = `2018`)) + 
+homicide_female_1990_2020 %>% 
+  ggplot(aes(x = `1990`, y = `2020`)) + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_female_1990_2018 %>% 
+  geom_label_repel(data = homicide_female_1990_2020 %>% 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "# Intentional homicides, female (per 100,000 female): 1990 vs 2018",
-       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2018)}"),
+       title = "Intentional homicides, female (per 100,000 female): 1990 vs 2020",
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2020)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: 2022-06-14")) + 
+                          Last update: 2022-12-22")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -438,32 +439,33 @@ homicide_female_1990_2018 %>%
 # Crime
 
 ```{r out.width="90%"}
-homicide_male_1990_2018 <- wbstats::wb_data(# Intentional homicides, male (per 100,000 male)
+homicide_male_1990_2020 <- wbstats::wb_data(
+  # Intentional homicides, male (per 100,000 male)
   indicator = "VC.IHR.PSRC.MA.P5", 
   start_date = 1990, 
-  end_date = 2018) %>% 
-  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(1990, 2018)) %>% 
+  end_date = 2020) %>% 
+  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(1990, 2020)) %>% 
   select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) %>% 
   pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) %>% 
   drop_na()
 
-homicide_male_1990_2018 %>% 
-  ggplot(aes(x = `1990`, y = `2018`)) + 
+homicide_male_1990_2020 %>% 
+  ggplot(aes(x = `1990`, y = `2020`)) + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_male_1990_2018 %>% 
+  geom_label_repel(data = homicide_male_1990_2020 %>% 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "# Intentional homicides, male (per 100,000 male): 1990 vs 2018",
-       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2018)}"),
+       title = "Intentional homicides, male (per 100,000 male): 1990 vs 2020",
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2020)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: 2022-06-14")) + 
+                          Last update: 2022-12-22")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

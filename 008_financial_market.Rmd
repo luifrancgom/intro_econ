@@ -1,7 +1,7 @@
 ---
 title: "Financial Market"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-16 11:56:24
+date: 2023-01-10 20:31:24
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -85,7 +85,7 @@ Analyze the functioning of the financial market, identifying the types of interm
 
 - By supervised entities [@congreso_de_colombia_decreto_1993]
 
-```{r out.width="80%"}
+```{r out.width="160%"}
 grViz("
 digraph boxes_and_circles {
 
@@ -138,7 +138,7 @@ digraph boxes_and_circles {
 
 - By markets [@cardenas_santamaria_introduccion_2013, Chapter 8, p 321]
 
-```{r out.width="100%"}
+```{r out.width="160%"}
 grViz("
 digraph boxes_and_circles {
 
@@ -248,7 +248,7 @@ credit_private %>%
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(credit_private)}"),
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2022-06-16")) +
+                             Last update date: 2022-12-22")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -306,7 +306,7 @@ market_cap %>%
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(market_cap)}"),
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2022-06-16")) +
+                             Last update date: 2022-12-22")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -376,7 +376,7 @@ tes_daily_t_10 %>%
        title    = "Interest rates: TES zero coupon - 10 years",
        subtitle = str_glue("Periodicity: Daily"),
        caption  = str_glue("Source: Banco de la Republica
-                             Last update date: 2021-10-07")) +
+                             Last update date: 2022-01-10")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -401,11 +401,12 @@ tes_daily_t_10 %>%
 # Principal instruments "Mercado no intermediado"       
         
 ```{r out.width="90%"}
-# Data
-# https://www.bvc.com.co/pps/tibco/portalbvc > Índices > MSCI COLCAP # Información detallada > MSCI COLCAPf
-msci_colcap <- read_csv(file = "000_data/008_msci_colcap.csv",
-                        skip = 1) %>%
-  select(2, 4) %>%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas > Tasas de interés y sector financiero
+# 5. Mercado accionario > Mercado accionario > DESCARGAR Y CONSULTAR > Serie histórica diaria
+msci_colcap <- read_excel(path = "000_data/008_imbc_colcap_iqy.xlsx", 
+                          sheet = 1, 
+                          range = "A8:B3665") %>%
   set_names(nm = c("date", "value")) %>%
   mutate(date = ymd(date))
 
@@ -420,7 +421,7 @@ msci_colcap %>%
        title    = "MSCI COLCAP Index",
        subtitle = str_glue("Periodicity: Daily"),
        caption  = str_glue("Source: Bolsa de Valores de Colombia (BVC)
-                             Last update date: 2022-06-16")) +
+                             Last update date: 2023-10-01")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -474,9 +475,9 @@ msci_colcap %>%
 ```{r}
 # https://www.superfinanciera.gov.co > INDUSTRIAS SUPERVISADAS > 
 # Entidades vigilidas por la superintendencia financiera de Colombia # > Lista general de entidades vigilidas por la superintendencia financiera de Colombia > Descargue el archivo en formato Excel
-bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
+bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia2.xls",
                          sheet = 1, 
-                         range = "B15:P432") %>% 
+                         range = "B15:P445") %>% 
   slice(-1) %>% 
   select(1:2,5:6) %>% 
   set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) %>% 
@@ -490,7 +491,7 @@ bank_table %>%
         digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
   kable_styling(font_size = 7) %>%
   row_spec(row = 0, bold = TRUE) %>% 
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2022-06-16'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2023-01-10'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -504,7 +505,7 @@ bank_table %>%
         digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
   kable_styling(font_size = 7) %>%  
   row_spec(row = 0, bold = TRUE) %>% 
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2022-06-16'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2023-01-10'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -533,7 +534,7 @@ i_rate_deposit_lending %>%
        title = "Deposit and lending interest rate in Colombia",
        subtitle = str_glue("Period: {min(i_rate_deposit_lending$date)}-{max(i_rate_deposit_lending$date)}"),
        caption = str_glue("Source: World Development Indicators (WDI) - World Bank
-                          Last update: 2022-06-16")) +
+                          Last update: 2022-12-22")) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

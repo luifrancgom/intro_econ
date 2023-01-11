@@ -1,7 +1,7 @@
 ---
 title: "External sector II"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-15 18:09:54
+date: 2023-01-10 18:17:54
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -232,18 +232,18 @@ knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2000.p
 
 # Patterns of international trade: services
 
-- Colombian services exports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2022]
+- Colombian services exports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]
 
-```{r out.width="60%"}
-knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2019.png")
+```{r out.width="55%"}
+knitr::include_graphics(path = "000_data/005_col_export_ebops_version2002_2020.png")
 ```
 
 # Patterns of international trade: services
 
-- Colombian services imports __(EBOPS Version 2002)__ year 2019 [@oec_observatory_2022]
+- Colombian services imports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]
 
-```{r out.width="60%"}
-knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2019.png")
+```{r out.width="55%"}
+knitr::include_graphics(path = "000_data/005_col_import_ebops_version2002_2020.png")
 ```
 
 # Observatory of Economic Complexity (OEC)

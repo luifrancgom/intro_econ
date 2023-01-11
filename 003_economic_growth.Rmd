@@ -1,7 +1,7 @@
 ---
 title: "Economic Growth"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-13 15:11:04
+date: 2023-01-10 17:18:04
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -84,6 +84,9 @@ Analyze the determinants of economic growth
 
 ```{r out.width="90%"}
 # Data
+# https://www.rug.nl/ggdc/ > Historical Development > Historical Development
+# Maddison Historical Statistics > Releases > 2020 > Excel
+# Or using the direct link
 # https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2020?lang=en
 # > Excel
 data_madison_region_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2020.xlsx",
@@ -350,11 +353,12 @@ knitr::include_graphics("_000_images/003_labor_productivity_total_factor_product
 - Methodology applied to Colombia for selected years
 
 ```{r}
-# https://www.conference-board.org/data/economydatabase/
+# https://www.conference-board.org/data/economydatabase/ > Data > TED2
 # > Data 
-# You need to have and free account
+# You need to have a free account
 # Username: luifrancgom@gmail.com
 # Password: Unal21055814
+
 data_ted_col <- readxl::read_excel("000_data/003_total_economy_database2_2022.xlsx",
                                    sheet = 2,
                                    range = "A5:AM2133",

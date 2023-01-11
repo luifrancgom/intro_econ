@@ -3,6 +3,8 @@ title: "Syllabus Economía I (Introducción a la Economía) Module A AE"
 author: "Distance Learning Faculty (FAEDIS)"
 date: "2022-1"
 output:
+  pdf_document:
+    number_sections: yes
   html_document:
     df_print: paged
     highlight: tango
@@ -10,8 +12,6 @@ output:
     theme: flatly
     toc: yes
     toc_depth: 4
-  pdf_document:
-    number_sections: yes
 bibliography: intro_econ.bib
 link-citations: yes
 ---

@@ -1,7 +1,7 @@
 ---
 title: "Labor Market"
 author: "Luis Francisco Gomez Lopez"
-date: 2022-06-16 12:33:25
+date: 2023-01-10 21:14:25
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -121,23 +121,23 @@ tibble(x = c( 0,
                      '3', '3',
                      '4', '4'),
        # Población total
-       value     = c(50384974,
+       value     = c(50694857, 
                      # Población menor a 15 años
-                     50384974 - 38884307,  
+                     50694857 - 39200004,    
                      # Población en edad de trabajar
-                     38884307,
+                     39200004, 
                      # Población economicamente activa/ Fuerza de trabajo
-                     24718018,
+                     24846921, 
                      # Población Economicamente inactiva/ Población fuera de la fuerza laboral
-                     38884307 - 24718018,
+                     39200004 - 24846921, 
                      # Ocupados
-                     21957395,
+                     22486276, 
                      # Desocupados
-                     2760623,
+                     2360646, 
                      # Completamente empleados
-                     21593857 - 2075410,
+                     22486276 - 1999261, 
                      # Subocupados/ Subocupados
-                     2075410)) %>% 
+                     1999261))  %>% 
   mutate(label_text = str_glue('{indicator}
                                  {value %>% 
                                     scales::number(big.mark = ",")}')) %>% 
@@ -158,9 +158,9 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(title    = 'Labor classification of the population in Colombia',
-       subtitle = str_glue('Period: April 2022'),
+       subtitle = str_glue('Period: November 2022'),
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: 2022-06-16'),
+                              Last update: 2023-01-10'),
        fill     = "Level"
   ) + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -274,7 +274,7 @@ data %>%
 # There is only data for 1991 in the case of
 # unemployment rate
 start_date <- 1991
-end_date <- 2020
+end_date <- 2021
 
                                                         # GDP per capita growth (annual %)
 econ_growth_unemployment <- wbstats::wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
@@ -296,7 +296,7 @@ econ_growth_unemployment %>%
        title    = "Economic growth vs unemployment rate",
        subtitle = str_glue("Period: {start_date} - {end_date}"),
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2021-10-28")) +
+                             Last update date: 2022-12-22")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

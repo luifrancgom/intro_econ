@@ -1,7 +1,7 @@
 ---
 title: "External sector I"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-15 09:42:12
+date: 2023-01-10 17:58:12
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -84,7 +84,7 @@ $$Trade_t = \frac{X_t + M_t}{GDP_t} \times 100$$
 ```{r out.width="90%"}
 trade_usa_col_world <- wbstats::wb_data(indicator = "NE.TRD.GNFS.ZS",
                                         country = c("COL", "WLD", "USA")) %>%
-  filter(between(date, 1970, 2020))
+  filter(between(date, 1970, 2021))
 
 trade_usa_col_world %>%
   ggplot(aes(x = date, y = NE.TRD.GNFS.ZS)) +
@@ -97,7 +97,7 @@ trade_usa_col_world %>%
        title = "Trade (% of GDP) for Colombia, USA and the World",
        subtitle = str_glue("Period: {min(trade_usa_col_world$date)}-{max(trade_usa_col_world$date)}"),
        caption = str_glue("Source: World Development Indicators (WDI) - World Bank
-                          Last update: 2022-06-15")) +
+                          Last update: 2022-12-22")) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),

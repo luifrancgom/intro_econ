@@ -1,7 +1,7 @@
 ---
 title: "Production and Income II"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-12 15:08:12
+date: 2023-01-10 17:06:12
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -102,7 +102,7 @@ Understand how production is measured using the concept of Gross Domestic Produc
 
 ```{r}
 # Data
-# Estadísticad por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
+# Estadísticas por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
 # Cuentas nacionales anuales > Principales agregados > Principales agregados macroeconómicos
 gdp_expenditure_annual <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx", 
                                              sheet = 3, 

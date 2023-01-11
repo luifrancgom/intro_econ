@@ -1,7 +1,7 @@
 ---
 title: "Public Finances"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-16 11:18:20
+date: 2023-10-01 18:34:20
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -113,7 +113,7 @@ Explain the role of the State in the economy
 
 - Division based on [@international_monetary_fund_government_2014, fig 2.3] and [@ciefp_clasificacion_2019] using the **Código Único Institucional - CUIN**
 
-```{r out.width="100%"}
+```{r out.width="160%"}
 grViz("
 digraph boxes_and_circles {
 
@@ -164,7 +164,7 @@ digraph boxes_and_circles {
 
 - Division based on how information is reported in [@mhcp_marco_2021]
 
-```{r out.width="95%"}
+```{r out.width="160%"}
 grViz("
 digraph boxes_and_circles {
 
@@ -511,10 +511,10 @@ knitr::include_graphics(c("_000_images/006_regressive_tax.png",
 #         axis.text         = element_text(face = "bold"))
 ```
 
-- [@oecd_revenue_2021, p 2]
+- [@oecd_revenue_2022, p 2]
 
 ```{r out.width="90%"}
-knitr::include_graphics(path = "000_data/006_tax_to_GDP_OECD_2020.png")
+knitr::include_graphics(path = "000_data/006_tax_to_GDP_OECD_2021.png")
 ```
 
 # Revenues: taxes
@@ -586,10 +586,11 @@ knitr::include_graphics(path = "000_data/006_tax_to_GDP_OECD_2020.png")
 #         legend.title      = element_text(face = "bold"),
 #         axis.text         = element_text(face = "bold"))
 ```
-- [@oecd_revenue_2021, p 3]
+
+- [@oecd_revenue_2022, p 3]
 
 ```{r out.width="90%"}
-knitr::include_graphics(path = "000_data/006_tax_structure_vs_oedc_average.png")
+knitr::include_graphics(path = "000_data/006_tax_structure_vs_oedc_average_2020.png")
 ```
 
 # Expenditures
@@ -619,7 +620,7 @@ knitr::include_graphics(path = "000_data/006_tax_structure_vs_oedc_average.png")
 # Expenditures
 
 ```{r out.width="90%"}
-# https://www.pte.gov.co >  > Consultas sobre la gestión de los recursos públicos > GASTOS DE LA NACIÓN > Consultas: Consultas Personalizadas de Gastos
+# https://www.pte.gov.co  > Consultas sobre la gestión de los recursos públicos > GASTOS DE LA NACIÓN > Consultas: Consultas Personalizadas de Gastos
 pgn_2022_what_spent <- read_excel("000_data/006_en_que_se_gasta_PTE.xlsx",
                                   sheet = 1, 
                                   range = "E1:M5") %>%

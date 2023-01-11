@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 author: Luis Francisco Gomez Lopez
-date: 2022-06-13 11:06:20
+date: 2023-01-09 20:33:20
 output:
   beamer_presentation:
     colortheme: dolphin
@@ -157,7 +157,7 @@ pop_pyramid_tbl <- readxl::read_excel(path = "000_data/001_anexo_proyecciones_po
   pivot_longer(cols = hombres_0:mujeres_100, 
                names_to = "genero_edad", 
                values_to = "pop") %>% 
-  filter(ano %in% c(2022, 2022 + 30)) %>% 
+  filter(ano %in% c(2023, 2023 + 30)) %>% 
   separate(col = genero_edad, 
            into = c("genero", "edad"), 
            sep = "_", 
@@ -284,9 +284,9 @@ height_tbl %>%
 # https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
 # Sociedad > Pobreza y condiciones de vida >
 # Medición de Pobreza Monetaria y Desigualdad > Hogares
-household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2020.csv", 
-                                   delim = ";", 
-                                   locale = locale(decimal_mark = ",")) %>% 
+household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2021.csv", 
+                                   delim = ",", 
+                                   locale = locale(decimal_mark = ".")) %>% 
   janitor::clean_names() %>% 
   select(
          # Llave vivienda 
@@ -347,13 +347,13 @@ household_income_nper_tbl %>%
             size = 4) + 
   scale_x_continuous(limits = c(0, 0.3)) +
   labs(x = NULL,
-       y = "Income range (2020 COP)",
+       y = "Income range (2021 COP)",
        title = "Household income distribution in Colombia",
-       subtitle = str_glue("Year: 2020
+       subtitle = str_glue("Year: 2021
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}
                            Total households with an income of zero: {scales::number(ingtotug_zero, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2020
-                          Last update date: 2021-05-06')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
+                          Last update date: 2022-04-27')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -398,12 +398,12 @@ household_income_nper_tbl %>%
             size = 4) + 
   scale_x_continuous(limits = c(0, 5)) +
   labs(x = NULL,
-       y = "Income range (2020 COP)",
+       y = "Income range (2021 COP)",
        title = "Mean individuals per household by income range in Colombia",
-       subtitle = str_glue("Year: 2020
+       subtitle = str_glue("Year: 2021
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2020
-                          Last update date: 2021-05-06')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
+                          Last update date: 2021-04-27')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -438,6 +438,7 @@ household_income_nper_tbl %>%
 # Housing ownership
 
 ```{r out.width = "85%"}
+# Data
 household_housing_tbl <- household_tbl %>% 
   mutate(pct_fex_c = fex_c / total_fex_c) %>% 
   group_by(p5090) %>% 
@@ -468,10 +469,10 @@ household_housing_tbl %>%
   labs(x = NULL,
        y = NULL,
        title = "Housing ownership status of households in Colombia",
-       subtitle = str_glue("Year: 2020
+       subtitle = str_glue("Year: 2021
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2020
-                          Last update date: 2021-05-06')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
+                          Last update date: 2022-04-27')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -490,7 +491,10 @@ household_housing_tbl %>%
 # School education system and bilingualism
 
 ```{r out.width = "85%"}
-schools_tbl <- read_delim(file = "000_data/001_caratula_unica_sede_educativa.csv", 
+# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
+# Sociedad > Educación > Educación Formal 2020 > Obtener Microdatos >
+# Caratula única sede educativa
+schools_tbl <- read_delim(file = "000_data/001_caratula_unica_sede_educativa_2020.csv", 
                                    delim = ";", 
                                    locale = locale(decimal_mark = ","))
 
@@ -622,6 +626,10 @@ hogares individuales como productores de bienes y servicios para uso propio",
 
 ```{r out.width = "80%"}
 # Estadísticas por tema > Industria > Encuesta Anual Manufacturera (EAM) > Acceso a Microdatos Anomimizados > Encuesta Anual Manufacturera – EAM - 2020
+
+# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
+# Economía > Industria > Encuesta Anual Manufacturera – EAM - 2020 > 
+# Obtener Microdatos
 manufac_tbl <- read_delim(file = "000_data/001_encuesta_anual_manufacturera_2020.csv", 
                             delim = ",", 
                             locale = locale(decimal_mark = ",")) %>% 
@@ -673,6 +681,10 @@ manufac_tbl %>%
 # Egg wholesale prices
 
 ```{r out.width = "85%"}
+# Data
+# https://www.dane.gov.co/ > Precios y costos >
+# Precios > Sistema de Información de Precios Agropecuarios (SIPSA) >
+#  SERIES HISTÓRICAS POR COMPONENTE > Precios Mayoristas > Series históricas precios mayoristas
 egg_jan_2021_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx", 
                           sheet = 2, 
                           range = "A7:E4608") %>% 
@@ -680,9 +692,9 @@ egg_jan_2021_tbl <- read_excel(path = "000_data/001_series_historicas_precios_ma
   select(fecha, producto:precio_promedio_por_kilogramo) %>% 
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
 
-egg_jan_2022_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2022_may.xlsx", 
-                           sheet = 6, 
-                           range = "A7:E4489") %>% 
+egg_dic_2022_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2022_dic.xlsx", 
+                           sheet = 13, 
+                           range = "A7:E4481") %>% 
   janitor::clean_names() %>%
   select(fecha, producto:precio_promedio_por_kilogramo) %>%
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
@@ -692,19 +704,19 @@ mercado_list <- c("Cali, Siloé",
                   "Pereira, La 41",
                   "Valledupar, Mercado Nuevo")
 
-egg_jan_jan_tbl <- egg_jan_2021_tbl %>% 
-  bind_rows(egg_jan_2022_tbl) %>%
+egg_jan_dic_tbl <- egg_jan_2021_tbl %>% 
+  bind_rows(egg_dic_2022_tbl) %>%
   rename(precio = precio_promedio_por_kilogramo) %>% 
   mutate(fecha = ymd(fecha),
          label_mercado = ifelse(mercado %in% mercado_list, mercado, "")) 
 # %>% 
 #  mutate(producto = str_to_title(producto))
 
-n_market <- egg_jan_jan_tbl %>% 
+n_market <- egg_jan_dic_tbl %>% 
   count(mercado) %>% 
   nrow()
 
-egg_jan_jan_tbl %>% 
+egg_jan_dic_tbl %>% 
   ggplot(aes(precio, producto)) + 
   geom_point(aes(fill = producto),
              shape = 21,
@@ -726,7 +738,7 @@ egg_jan_jan_tbl %>%
        y = NULL, 
        title = str_glue("Egg mean wholesale prices in {n_market} Colombian markets"),
        caption = 'Source: DANE - Sistema de información de precios SIPSA
-                          Last update date: 2022-06-13')  + 
+                          Last update date: 2023-01-06')  + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -758,14 +770,15 @@ egg_jan_jan_tbl %>%
 
 - **Flow**: a variable that is measured over a period of time
 
-- Example "Declaración de Renta Iván Duque Márquez Año Gravable 2019":
+- Example "Declaración de Renta Gustavo Francisco Petro Urrego Año Gravable 2019":
 
     + https://www.funcionpublica.gov.co/fdci/consultaCiudadana
     
-        + Person type: NATURAL
-        + First name: Iván
-        + Surname: Duque
-        + Last surname: Márquez
+        + Tipo de persona: NATURAL
+        + Primer nombre: Gustavo
+        + Segundo nombre: Francisco
+        + Primer apellido: Petro
+        + Segundo apellido: Urrego
         
 # Flows and stocks
 
@@ -774,7 +787,7 @@ egg_jan_jan_tbl %>%
     + 2019-12-31
     
 ```{r out.width="60%"}
-knitr::include_graphics("000_data/001_patrimonio_duque.png")
+knitr::include_graphics("000_data/001_patrimonio_petro.png")
 ```
     
 - Rentas de trabajo (flow)
@@ -782,7 +795,7 @@ knitr::include_graphics("000_data/001_patrimonio_duque.png")
     + Between 2019-01-01 and 2019-12-31
 
 ```{r out.width="60%"}
-knitr::include_graphics("000_data/001_rentas_trabajo_duque.png")
+knitr::include_graphics("000_data/001_rentas_trabajo_petro.png")
 ```
 
 # Acknowledgments
