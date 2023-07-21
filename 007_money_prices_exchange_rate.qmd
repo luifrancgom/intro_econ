@@ -1,0 +1,583 @@
+---
+title: "Money, prices and the exchange rate"
+author: Luis Francisco Gomez Lopez
+date: 2023-07-19
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    linkcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+          \usepackage{fontawesome5}
+bibliography: intro_econ.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo      = FALSE, 
+                      warning   = FALSE, 
+                      message   = FALSE,
+                      fig.align = "center")
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+library(wbstats)
+library(tidyquant)
+```
+
+# Contents
+
+- Please Read Me
+- Purpose
+- Money and Central Banks
+- Inflation and Consumer Price Index
+- Exchange Rate and TRM COP/USD
+- Monetary policy intervention rate
+- Monetary policy transmission channels
+- Acknowledgments
+- References
+
+# Please Read Me
+
+- Check the message __Welcome greeting__ published in the News Bulletin Board.
+
+- Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 7]
+
+# Purpose
+
+Analyze the money market and introduce the concepts of inflation, nominal exchange rate and interest rate
+
+# Money and Central Banks
+
+- Money is an **asset** that fulfills in general 3 functions
+
+    + Medium of exchange
+    + Unit of account
+    + Store of value 
+    
+- A central bank is the institution that issues and administrates legal currency and exercises the function of banker of banks [@banco_de_la_republica_central_2021]
+
+- In the case of Colombia, some of the functions of the central bank are: 
+
+    + Keep inflation low and stable and achieve the highest sustainable level of output and employment
+    + Manage international reserves
+    + Act as the bank of bankers
+    + Issue currency
+    + Act as a government banker, fiscal agent and trustee
+
+# Money and Central Banks
+
+\small
+
+- Establishment date of central banking institutions[^1] [@herger_understanding_2019, p 15]
+
+```{r}
+tibble(Bank = c("Sveriges Riksbank",
+                "Bank of England",
+                "Banque de France", 
+                "Bank of Finland",
+                "Nederlandsche Bank",
+                "Austrian National Bank",
+                "Norges Bank",
+                "Danmarks Nationalbank", 
+                "Banco de Portugal",
+                "Belgian National Bank", 
+                "Banco de España", 
+                "German Reichsbank", 
+                "Bank of Japan",
+                "Banca d’Italia",
+                "Banco de la Republica (Colombia)"),
+       Established = c(1668, 1694, 1800, 1800, 1814, 1816,
+                       1816, 1818, 1846, 1850, 1874, 1876,
+                       1882, 1893, 1923)) %>% 
+  kable(format = "latex", booktabs = TRUE, 
+        escape = FALSE, linesep = "") %>%
+  kable_styling(font_size = 7)  %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = 15, background = unname(palette_light()[4]))
+```
+
+[^1]: For a list of central banks around the world check out **[https://www.bis.org/cbanks.htm](https://www.bis.org/cbanks.htm)**
+
+# Inflation and Consumer Price Index
+
+- __Inflation__ is a persistent increase in the price level:
+
+    + Inflation refers to a general increase in the price level
+    
+    + This increase must be persistent
+    
+    + A measure that represents the behavior of the price level is required where it is necessary to specify a basket of products
+
+- Review the videos found in:
+
+    + __Tercer corte 40% > Learning Resources > Links of interest__
+    
+# Inflation and Consumer Price Index
+
+- The __price level__ is an __index number__ [@ralph_practical_2015]
+
+    + An __index number__ is a quantity that by varying shows the changes of a magnitude over time or space
+
+- The variation in the __price level__ from one period to another is used to measure inflation
+
+- The value that the index number takes to measure the __price level__ will depend on the products that are taken into account in the basket that is used
+
+# Inflation and Consumer Price Index
+
+- Usually the __price level__ used to measure inflation in Colombia is called __Indice de Precios al Consumidor (IPC)__ or __Consumer Price Index (CPI)__
+
+    + In Colombia, this index measures the average variation of the prices of a basket of products representative of household consumption [@dane_metodologigeneral_2019]
+    
+    + You can check out the historical basket of products included in the __(IPC)__ or __(CPI)__ in: [@dane_metodologigeneral_2019] > Información adicional > Estructura histórica de ponderaciones y canasta de seguimiento del IPC
+    
+# Inflation and Consumer Price Index
+
+- The __CPI__ is build using information from __Encuesta Nacional de Presupuesto de los Hogares –ENPH- (2016-2017)__ where it is conducted every 10 years. 
+
+- Additionally, usually monthly, but in some cases bimonthly, quadrimestral and biannual, price information is collected for 443 items in 38 cities where divisions included in the __CPI__ are based on __Classification of Individual Consumption According to Purpose (COICOP)__ and adapted for Colombia.
+
+# Inflation and Consumer Price Index
+
+```{r table_coicop_cpi}
+
+#Table
+## Divisions COICOP (International version)  
+tibble(Division = c("01", "02", "03",
+                    "04", "05", "06",
+                    "07", "08", "09",
+                    "10", "11", "12"),
+       Name     = c("Food and non-alcoholic beverages",
+                    "Alcoholic beverages, tobacco and narcotics",
+                    "Clothing and footwear",
+                    "Housing, water, electricity, gas and other fuels",
+                    "Furnishings, household equipment and routine household maintenance",
+                    "Health",
+                    "Transport",
+                    "Information and communication",
+                    "Recreation, sport and culture",
+                    "Education services",
+                    "Restaurants and accommodation services",
+                    "Insurance and financial services")
+       ) %>% 
+  kable(format = "latex", booktabs = TRUE, caption = "COICOP divisions (International version)") %>% 
+  kable_styling(font_size = 9, latex_options = "striped") %>% 
+  row_spec(row = 0, bold = TRUE)
+```
+
+# Inflation and Consumer Price Index
+
+```{r cpi_col, out.width = "90%"}
+
+# Data
+cpi <- wbstats::wb_data(country   = c("COL"),
+                 indicator = c("FP.CPI.TOTL")) 
+
+cpi %>%
+    select(country, date, FP.CPI.TOTL) %>%
+    # Plot
+    ggplot(aes(x = date,
+               y = FP.CPI.TOTL)) +
+    geom_point(fill = palette_light()[[2]], color = "black", shape = 21) +
+    geom_line() +
+    geom_vline(xintercept = 2010,
+               color      = palette_light()[[1]]) +
+    geom_hline(yintercept = 100,
+               color      = palette_light()[[3]]) +
+    scale_x_continuous(breaks = seq(from = 1960, to = 2020, by = 10)) +
+    annotate(geom  = "label",
+             x     = 1980,
+             y     = 75,
+             label = str_glue("In 2010, the CPI takes the value
+                              of 100 because this is the year
+                              that is being taken as the base period"),
+             color = "white",
+             fill  = palette_light()[[1]]) +
+    labs(x        = "Year",
+         y        = "CPI (2010 = 100)",
+         title    = "Colombia Consumer price index (CPI)",
+         subtitle = str_glue("CPI code WDI: FP.CPI.TOTL
+                             CPI units: none but Base Year 2010"),
+         caption  = str_glue("Source: World Bank - World Development Indicators (WDI)
+                             Last update date: {unique(cpi$last_updated)}")) +
+    theme(panel.border      = element_rect(fill = NA, color = "black"),
+          plot.background   = element_rect(fill = "#f3fcfc"),
+          panel.background  = element_rect(fill = "#f3f7fc"),
+          legend.background = element_rect(fill = "#f3fcfc"),
+          plot.title        = element_text(face = "bold"),
+          axis.title        = element_text(face = "bold"),
+          legend.title      = element_text(face = "bold"),
+          axis.text         = element_text(face = "bold"))
+```
+
+# Inflation and Consumer Price Index
+
+```{r inflation_col, out.width = "90%"}
+
+# Plot
+## Colombia Inflation
+data <- wbstats::wb_data(country   = c("COL"),
+            indicator = c("FP.CPI.TOTL.ZG"))
+
+data %>%
+    select(country, date, FP.CPI.TOTL.ZG) %>%
+    ggplot(aes(x = date,
+               y = FP.CPI.TOTL.ZG)) +
+    geom_point(shape = 21, fill = palette_light()[[2]], color = "black") +
+    geom_smooth(data = data %>% filter(date >= 1991),
+                method   = "loess",
+                span     = 0.5,
+                alpha    = 0.2,
+                linetype = "twodash",
+                color = palette_light()[[6]]) +
+    geom_line() +
+    geom_vline(xintercept = 1991,
+               color      = palette_light()[[1]]) +
+    scale_x_continuous(breaks = seq(from = 1960, to = 2020, by = 10)) +
+    scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+    annotate(geom  = "label",
+             x     = 2010,
+             y     = 28,
+             label = str_glue("With the mandate of the
+                              1991 Constitution, the
+                              Bank of the Republic of
+                              Colombia has progressively
+                              complied with maintaining
+                              a low and stable inflation
+                              rate"),
+             color = "white",
+             fill  = palette_light()[[1]]) +
+    labs(x        = "Year",
+         y        = "Percent",
+         title    = "Inflation using CPI in Colombia",
+         subtitle = str_glue("Variable code WDI: FP.CPI.TOTL.ZG
+                             Variable units: annual percent Base Year 2010"),
+         caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(data$last_updated)}")) +
+    theme(panel.border      = element_rect(fill = NA, color = "black"),
+          plot.background   = element_rect(fill = "#f3fcfc"),
+          panel.background  = element_rect(fill = "#f3f7fc"),
+          legend.background = element_rect(fill = "#f3fcfc"),
+          plot.title        = element_text(face = "bold"),
+          axis.title        = element_text(face = "bold"),
+          legend.title      = element_text(face = "bold"),
+          axis.text         = element_text(face = "bold"))
+```
+
+# Inflation and Consumer Price Index
+
+- Calculating inflation using the __Consumer Price Index (CPI)__
+
+    + CPI annual periodicity
+    
+        $$Inflation_t = \frac{CPI_t - CPI_{t-1}}{CPI_{t-1}} \times 100$$
+        
+    + CPI monthly periodicity
+    
+        $$Inflation_t = \frac{CPI_t - CPI_{t-12}}{CPI_{t-12}} \times 100$$
+        
+# Exchange Rate and TRM COP/USD
+
+- An exchange rate is the amount of **units of national currency** that must be given in exchange for a **unit of foreign currency**
+
+- If the exchange rate between COP[^2] and USD[^3] is 3808 COP/USD, it means that 3808 COP must be given to obtain 1 USD
+
+- To have a reference of the exchange rate between COP and USD, the **"Superintendencia Financiera de Colombia (SFC)"** currently calculates and certifies an *average* exchange rate called **"Tasa Representativa del Mercado (TRM)"** on a daily basis
+
+- Also it is important to take into account the following terminology:
+
+    + **Devaluation**: TRM - COP/USD $(\Uparrow)$
+    + **Revaluation**: TRM - COP/USD $(\Downarrow)$
+
+[^2]: Colombian peso according to ISO 4217 code
+[^3]: United States dollar according to ISO 4217 code
+
+# Exchange Rate and TRM COP/USD
+
+```{r out.width="90%"}
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de cambio y sector externo > Tasas de cambio nominales
+              # Tasa Representativa del Mercado (TRM) > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") %>% 
+    set_names(nm = c("date", "trm")) %>%
+    # https://www.banrep.gov.co/es > Estadísticas económicas > Sector externo, tasas de cambio y derivados >
+    # 2. Tasas de cambio > Banda Cambiaria
+    left_join(read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
+                       locale = locale(decimal_mark = ",")) %>% 
+                  set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling")), 
+              by = "date") %>% 
+    select(-trm_medio) %>% 
+    pivot_longer(cols = trm:trm_ceiling)
+
+# Plot
+cop_usd_trm %>%
+  ggplot(aes(x = date, y = value, group = name)) +
+  geom_line(aes(color = name), 
+            show.legend = FALSE) +
+  geom_vline(xintercept = ymd("1994-01-24"),
+             color      = palette_light()[[4]]) +
+  geom_vline(xintercept = ymd("1999-09-25"),
+             color      = palette_light()[[4]]) +
+  annotate(x     = ymd("1997-01-01"), 
+           y     = 3500, 
+           geom  = "label",
+           color = "white",
+           fill  = palette_light()[[1]],
+           label = str_glue("On 1999-09-25
+                              the currency band 
+                              system was 
+                              abandoned by the 
+                              Bank of the
+                              Republic")) +
+  scale_color_tq() +
+  labs(x        = "",
+       y        = "COP/USD",
+       title    = "Daily TRM (COP/USD)", 
+       subtitle = str_glue("Period: {cop_usd_trm$date[1]} - {cop_usd_trm$date[length(cop_usd_trm$date)]},
+                             Observations: {length(filter(cop_usd_trm, name=='trm')$name)}"),
+       caption  = str_glue("Data source: Banco de la República (Colombia) & Superintendencia Financiera de Colombia (SFC) 
+                             Last update: {cop_usd_trm$date[length(cop_usd_trm$date)]}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Monetary policy intervention rate
+
+```{r}
+
+# Political interest rate 2023-07-19 (Colombia)
+i_t <- 0.1325 
+```
+
+- In the link **[https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria)** on __2023-07-19__ it was pointed out that:
+
+    + *"La tasa de intervención de política monetaria o tasa de referencia es la tasa de interés mínima que el Banco de la República (BanRep) cobra a las entidades financieras por la liquidez que les suministra mediante las operaciones de mercado abierto (OMA). Esta tasa es el principal instrumento de intervención de política monetaria utilizado por el BanRep para afectar la cantidad de dinero que circula en la economía."*
+
+    + Also the *"tasa de intervención de política monetaria"* on __2023-07-19__ was `r scales::percent(i_t, accuracy = 0.01)`
+    
+# Monetary policy intervention rate
+
+```{r out.width="90%"}
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de política monetaria > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') %>% 
+  set_names(nm = c('date', 'pir'))
+
+# Plot
+static_plot1 <- pir_daily %>% 
+  ggplot(aes(x = date, y = pir)) +
+  geom_line(color = palette_light()[[1]]) +
+  labs(x        = '', 
+       y        = 'Percent',
+       caption  = 'Source: Banco de la República - Colombia',
+       title    = 'Monetary policy intervention rate of the Bank of the Republic (Colombia)',
+       subtitle = str_glue('Interest rate expressed as annual effective overdue
+                             Frequency: daily')) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1, suffix = "%"),
+                     breaks = seq(from = 0, to = max(pir_daily$pir), by = 2.5)) + 
+  expand_limits(y = 0) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "none",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+static_plot1
+```
+
+
+# Monetary policy intervention rate
+
+```{r out.width="90%"}
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa interbancaria (TIB) > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') %>% 
+  set_names(nm = c('date', 'tib'))
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Indicador Bancario de Referencia (IBR) overnight, efectiva > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") %>% 
+  set_names(nm = c('date', 'ibr'))
+
+pir_tib_tbr_daily <- pir_daily %>% 
+  left_join(tib_daily, by = "date") %>% 
+  left_join(ibr_daily, by = "date") %>%
+  drop_na() %>% 
+  pivot_longer(cols = pir:ibr, names_to = "variable", values_to = "value") %>% 
+  mutate(variable = case_when(
+    variable == "pir" ~ "Monetary policy intervention rate",
+    variable == "tib" ~ "Tasa interbancaria (TIB)",
+    variable == "ibr" ~ "Indicador Bancario de Referencia (IBR)",
+    TRUE ~ variable))
+
+# Plot
+static_plot2 <- pir_tib_tbr_daily %>% 
+  ggplot(aes(x = date, 
+             y = value, 
+             group = variable,
+             color = variable)) +
+  geom_line(linewidth = 0.5, alpha = 0.5) +
+  labs(x        = '', 
+       y        = 'Percent',
+       color    = "",
+       caption  = 'Source: Banco de la República - Colombia',
+       title    = 'Monetary policy intervention rate, TIB and IBR',
+       subtitle = str_glue('Interest rates expressed as annual effective overdue
+                             Frequency: daily')) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1, suffix = "%"),
+                     breaks = seq(from = 0, to = 25, by = 2.5)) + 
+  scale_color_tq() +
+  expand_limits(y = 0) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+static_plot2
+```
+
+# Monetary policy intervention rate
+
+```{r out.width="90%"}
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 90 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') %>% 
+  set_names(nm = c('date', 'cdt_90')) 
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 180 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") %>% 
+  set_names(nm = c('date', 'cdt_180'))
+              # https://www.banrep.gov.co/es > Estadísticas económicas >
+              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
+              # Tasas de interés y sector financiero > Tasas de interés
+              # Tasa de Certificado de Depósito a Término (CDT) a 360 días > Diaria > DESCARGAR >
+              # Descargar datos en CSV
+cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") %>% 
+  set_names(nm = c('date', 'cdt_360'))
+
+pir_cdt_90_180_360_daily <- pir_daily %>% 
+  left_join(cdt_90, by = "date") %>% 
+  left_join(cdt_180, by = "date") %>%
+  left_join(cdt_360, by = "date") %>%
+  drop_na() %>% 
+  pivot_longer(cols = pir:cdt_360, names_to = "variable", values_to = "value") %>% 
+  mutate(variable = case_when(
+    variable == "pir" ~ "Monetary policy intervention rate",
+    variable == "cdt_90" ~ "CDT 90",
+    variable == "cdt_180" ~ "CDT 180",
+    variable == "cdt_360" ~ "CDT 360",
+    .default = variable),
+    variable = variable %>% 
+      fct_relevel(c("Monetary policy intervention rate",
+                    "CDT 90", "CDT 180", "CDT 360")))
+
+# Plot
+static_plot3 <- pir_cdt_90_180_360_daily %>% 
+  ggplot(aes(x = date, 
+             y = value, 
+             group = variable, 
+             color = variable)) +
+  geom_line(linewidth = 0.5, alpha = 0.5) +
+  labs(x        = '', 
+       y        = 'Percent',
+       color    = "",
+       caption  = 'Source: Banco de la República - Colombia',
+       title    = 'Monetary policy intervention rate and CDT interest rates',
+       subtitle = str_glue('Interest rates expressed as annual effective overdue
+                             Frequency: daily')) +
+  scale_y_continuous(labels = scales::number_format(accuracy = 0.1, suffix = "%"),
+                     breaks = seq(from = 0, to = 25, by = 2.5)) + 
+  scale_color_tq() +
+  expand_limits(y = 0) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+static_plot3 
+```
+
+# Monetary policy transmission channels
+
+![**Interest rate and credit** [@banrep_canales_2020, fig. Canal De Tasa De Interés Y De Crédito: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_1_tasa_interes_credito.jpg){#fig-canal_tasa_interes_credito fig-alt="Interest rate and credit" fig-align="center" width="450px" height="450px"}
+
+# Monetary policy transmission channels
+
+![**Exchange rate** [@banrep_canales_2020, fig. Canal De Tasa De Cambio: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_2_tasa_cambio.jpg){#fig-canal_tasa_de_cambio fig-alt="Tasa de Cambio" fig-align="center" width="450px" height="600px"}
+
+# Monetary policy transmission channels
+
+![**Expectations** [@banrep_canales_2020, fig. Canal De Las Expectativas: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_3_expectativas.jpg){#fig-canal_expectativas fig-alt="Expectativas" fig-align="center" width="400px" height="400px"}
+
+# Acknowledgments
+
+- To my family that supports me
+
+- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+
+- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+
+- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+
+# References {.allowframebreaks}

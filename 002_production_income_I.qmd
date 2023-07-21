@@ -1,0 +1,506 @@
+---
+title: "Production and Income I"
+author: "Luis Francisco Gomez Lopez"
+date: 2023-07-17
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    linkcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+bibliography: intro_econ.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo      = FALSE, 
+                      warning   = FALSE, 
+                      message   = FALSE,
+                      fig.align = "center")
+```
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(wbstats)
+library(tidyquant)
+```
+
+# Contents
+
+- Please Read Me
+- Purpose
+- Gross Domestic Product (GDP)
+- Economic Growth
+- Acknowledgments
+- References
+
+# Please Read Me
+
+- Check the message __Welcome greeting__ published in the News Bulletin Board.
+
+- Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
+
+# Purpose
+
+Understand how production is measured using the concept of Gross Domestic Product (GDP)
+
+# Gross Domestic Product (GDP)
+
+- What is? [@lequiller_understanding_2014, p 19]
+
+    + __Product__: means that we are trying to measure production without double counting
+    
+```{r out.width="40%"}
+knitr::include_graphics(path = "_000_images/001_image1.png")
+```
+
+# Gross Domestic Product (GDP)
+
+- What is? [@lequiller_understanding_2014, p 19]
+
+    + __Domestic__: means that the production to be taken into account is the one that is carried within a certain territory clearly delimited
+    
+```{r out.width="45%"}
+knitr::include_graphics(path = "_000_images/001_image2.png")
+```
+
+# Gross Domestic Product (GDP)
+
+- What is? [@lequiller_understanding_2014, p 19]
+
+    + __Gross__: means that depreciation is not deducted (in economy it is called consumption of fixed capital). In other words, the decrease in the value of the assets used in the production process due to physical deterioration, foreseeable wear or accidental damage is not deducted
+    
+```{r out.width="45%"}
+knitr::include_graphics(path = "_000_images/001_image3.png")
+```
+
+# Gross Domestic Product (GDP)
+
+- How is measure?
+
+    + 3 equivalent[^1] approaches are used [@lequiller_understanding_2014, p 31]
+    
+        + __Output/Production approach__: adding the aggregate value of all the production units in a territory, plus taxes minus subsidies on products 
+        
+        + __Income approach__: adding all the incomes that are perceived because of the contribution to the production process
+        
+        + __Expenditure/Final demand approach__: adding all uses that firms, non-profit  institutions, government bodies, households and the external sector give to production
+        
+    + Gross Domestic Product is a flow so is measured over a period of time. Usually you can find information about this varible in an monthly, quarterly or yearly periodicity
+    
+    + Initially Gross Domestic Product is expressed in **current** Local Currency Units (LCU)  
+        
+[^1]: In practice, discrepancies may occur
+        
+# Gross Domestic Product (GDP)
+
+- Output/Production approach (Colombia, Period: 2023-Q1)
+
+```{r}
+
+# Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
+# Información técnica
+gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_I_2023.xlsx", 
+                            sheet = 2, 
+                            range = "C15:BX29", 
+                            col_names = FALSE)
+
+gdp_agg_value_table <- gdp_agg_value %>% 
+  # it is possible that data for the last quarter is not available for the income approach
+  # select(1, ncol(gdp_agg_value - 1)) %>% 
+  select(1, ncol(gdp_agg_value)) %>% 
+  rename(concept = `...1`, value_2023_1 = `...74`) %>% 
+  mutate(value_2023_1 = round(value_2023_1, digits = 0))
+
+gdp_agg_value_table_footnote <- gdp_agg_value_table
+
+names(gdp_agg_value_table_footnote)[1] <- "Concepto"
+names(gdp_agg_value_table_footnote)[2] <- "Miles de Millones - COP"
+
+names(gdp_agg_value_table_footnote)[2] <- paste0(names(gdp_agg_value_table_footnote)[2],
+                                                 footnote_marker_alphabet(1, "latex"))
+
+gdp_agg_value_table_footnote %>% 
+  kable(booktabs = TRUE, escape = FALSE) %>% 
+  kable_styling(font_size = 4.8) %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = 13, background = '#18BC9C') %>%
+  row_spec(row = 14, background = '#CCBE93') %>%
+  row_spec(row = 15, background = '#e31a1c') %>% 
+  column_spec(column = 1, width = "3.4in") %>%
+  column_spec(column = 2, width = "1in", ) %>%
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque de la producción a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-05-15'), 
+           general_title = "",
+           alphabet = 'Preliminary data at current prices')
+```
+
+# Gross Domestic Product (GDP)
+
+- Income approach (Colombia, Period: 2023-Q1)
+
+```{r}
+# Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
+# Información técnica
+gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_I_2023.xlsx",
+                         sheet = 1,
+                         range = "C14:AG42",
+                         col_names = FALSE)
+
+gdp_income_table <- gdp_income %>%
+  select(1, ncol(gdp_income)) %>%
+  rename(concept = `...1`, value_2023_1 = `...31`) %>%
+  slice(1:3, 16, 29) %>%
+  mutate(value_2023_1 = round(value_2023_1, digits = 0))
+
+gdp_income_table_footnote <- gdp_income_table
+
+names(gdp_income_table_footnote)[1] <- "Concepto"
+names(gdp_income_table_footnote)[2] <- "Miles de Millones - COP"
+
+names(gdp_income_table_footnote)[2] <- paste0(names(gdp_income_table_footnote)[2],
+                                              footnote_marker_alphabet(1, "latex"))
+
+gdp_income_table_footnote %>%
+  kable(booktabs = TRUE, escape = FALSE) %>%
+  kable_styling(font_size = 7) %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  row_spec(row = 2, background = '#CCBE93') %>%
+  row_spec(row = 5, background = '#e31a1c') %>%
+  column_spec(column = 1, width = "2in") %>%
+  column_spec(column = 2, width = "2in", ) %>%
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - PIB por Ingreso - S1 Total Economía', 'Last update: 2023-06-30'),
+           general_title = "",
+           alphabet = 'Preliminary data at current prices', threeparttable = TRUE)
+```
+
+# Gross Domestic Product (GDP)
+
+- Expenditure/Final demand approach (Colombia, Period: 2023-Q1)
+
+```{r}
+# Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
+# Información técnica
+gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_I_2023.xlsx",
+                              sheet = 2,
+                              range = "B15:BW21",
+                              col_names = FALSE)
+
+gdp_expenditure_table <- gdp_expenditure %>%
+  # it is possible that data for the last quarter is not available for the income approach
+  # select(1, ncol(gdp_expenditure)-1) %>%
+  select(1, ncol(gdp_expenditure)) %>% 
+  slice(1:3, 5:7) %>%
+  rename(concept = `...1`, value_2023_1 = `...74`) %>%
+  mutate(concept = replace(concept,
+                           concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH2",
+                           "Gasto de consumo final individual de los hogares y las ISFLH"),
+         value_2023_1 = round(value_2023_1, digits = 0))
+
+gdp_expenditure_table_footnote <- gdp_expenditure_table
+
+names(gdp_expenditure_table_footnote)[1] <- "Concepto"
+names(gdp_expenditure_table_footnote)[2] <- "Miles de Millones - COP"
+
+names(gdp_expenditure_table_footnote)[2] <- paste0(names(gdp_expenditure_table_footnote)[2],
+                                                   footnote_marker_alphabet(1, "latex"))
+gdp_expenditure_table_footnote[[1,1]] <- paste0(gdp_expenditure_table_footnote[[1,1]],
+                                                footnote_marker_alphabet(2, "latex"))
+
+gdp_expenditure_table_footnote %>%
+  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>%
+  kable_styling(font_size = 7) %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  row_spec(row = 5, background = '#FF7F00') %>%
+  row_spec(row = 6, background = '#e31a1c') %>%
+  column_spec(column = 1, width = "2.6in") %>%
+  column_spec(column = 2, width = "1.5in", ) %>%
+  footnote(general       = linebreak(c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque del gasto a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-05-15')),
+           general_title = "",
+           alphabet = c('Preliminary data at current prices',
+                        'Instituciones sin fines de lucro que sirven a los hogares'), threeparttable = TRUE)
+
+```
+
+# Gross Domestic Product
+
+ - What adjustments are applied?[^2]
+ 
+    + **Inflation adjustments**
+    
+        + GDP is expressed in **constant** Local Currency Units (LCU)
+        
+    + **Season and calendar adjustments**
+    
+        + In Colombia this is applied to quarterly GDP [@dane_cuentas_2018]
+        
+    + **Population adjustments**
+    
+        + GDP is expressed in per capita terms
+        
+    + **Purchase Power Parity (PPP) adjustment**
+    
+        + It is used only to make international comparisons and it is led by the International Comparison Program (ICP)
+    
+[^2]: For an introduction of the first 3 adjustments check out [@hyndman_forecasting_2021, Chapter 3, Section 3.1 Transformations and adjustments]
+
+# Gross Domestic Product
+
+- An inflation adjustment is necessary because an arbitrary quantity of local currency units don't have the same purchase power in different periods
+
+```{r out.width="60%"}
+knitr::include_graphics(path = "_000_images/002_image1.png")
+```
+
+
+# Gross Domestic Product
+
+```{r out.width = "90%"}
+gdp_nominal_real_col <- wbstats::wb_data(country = c("COL"),
+                 indicator    = c("NY.GDP.MKTP.CN", "NY.GDP.MKTP.KN"),
+                 return_wide  = FALSE)
+
+gdp_nominal_real_col %>% 
+  select(country, date, value, indicator) %>%
+  ggplot(aes(x = date,
+             y = value)) +
+  geom_point(aes(fill = indicator), color = "black", shape = 21, show.legend = FALSE) +
+  geom_line(aes(color = indicator,
+                group = indicator)) +
+  geom_vline(xintercept = 2015,
+             color      = palette_light()[[1]]) +
+  labs(x        = "Year",
+       y        = "Billions (Long scale)",
+       color = NULL,
+       title    = "Nominal and Real GDP Colombia",
+       subtitle = str_glue("Nominal GDP code WDI: NY.GDP.MKTP.CN
+                            Nominal GDP units: current LCU
+                            Real GDP code WDI: NY.GDP.MKTP.KN
+                            Real GDP units: constant LCU Base Year 2015"),
+       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(gdp_nominal_real_col$last_updated)}")) +
+  scale_x_continuous(breaks = c(seq.int(from = 1960, to = 2000, by = 20), 2015, 2022)) +
+  scale_y_continuous(labels = scales::number_format(scale  = 1e-12,
+                                                    suffix = "B")) +
+  tidyquant::scale_color_tq() +
+  tidyquant::scale_fill_tq() +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Gross Domestic Product
+
+- Some countries have more population than others so they can produce more. Therefore it is necessary to express the GDP per inhabitant
+
+```{r out.width="50%"}
+knitr::include_graphics(path = "_000_images/002_image2.png")
+```
+
+# Gross Domestic Product
+
+```{r out.width = "90%"}
+real_gdp_per_capita_col <- wbstats::wb_data(country   = c("COL"),
+            indicator = c("NY.GDP.PCAP.KN"))
+
+real_gdp_per_capita_col %>% 
+    select(country, date, NY.GDP.PCAP.KN) %>%
+    ggplot(aes(x = date,
+               y = NY.GDP.PCAP.KN)) +
+    geom_point(color = "black", shape = 21, fill = palette_light()[[2]]) +
+    geom_line() +
+    geom_vline(xintercept = 2015,
+               color      = palette_light()[[1]]) +
+    expand_limits(y = 0) +
+    annotate(geom  = "label",
+             x     = 1980,
+             y     = 14e6,
+             label = str_glue("In the year 2015 Annual Real GDP per-capita
+                              was $16,933,517.5
+                              In the year 2015 the Annual Legal Minimum Wage
+                              was $7,732,200 (not including other additional
+                              benefits and working 12 months)"),
+             color = "white",
+             fill  = palette_light()[[1]],
+             size  = 4) +
+    labs(x        = "Year",
+         y        = "Millions",
+         title    = "Real GDP per-capita Colombia",
+         subtitle = str_glue("Variable code WDI: NY.GDP.PCAP.KN
+                             Variable units: constant LCU Base Year 2015"),
+         caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(real_gdp_per_capita_col$last_updated)}")) +
+    scale_x_continuous(breaks = c(seq.int(from = 1960, to = 2000, by = 20), 2015, 2022)) +
+    scale_y_continuous(labels = scales::number_format(scale    = 1e-6,
+                                                      suffix   = "M",
+                                                      accuracy = 1)) +
+    theme(panel.border      = element_rect(fill = NA, color = "black"),
+          plot.background   = element_rect(fill = "#f3fcfc"),
+          panel.background  = element_rect(fill = "#f3f7fc"),
+          legend.background = element_rect(fill = "#f3fcfc"),
+          plot.title        = element_text(face = "bold"),
+          axis.title        = element_text(face = "bold"),
+          legend.title      = element_text(face = "bold"),
+          axis.text         = element_text(face = "bold"))
+```
+
+# Gross Domestic Product
+
+- Purchasing power parity
+
+    + The amount of products that 1 local currency unit of an economy can buy in another economy
+    
+```{r out.width="50%"}
+knitr::include_graphics(path = "_000_images/002_image3.png")
+```
+
+
+# Gross Domestic Product
+
+```{r out.width = "90%"}
+gdp_per_capita_ppp_col_usa <- wbstats::wb_data(country   = c("COL", "USA"),
+                 # Only data for 1990 onwards
+                 start_date = 1990,
+                 end_date = 2020,
+            indicator = c("NY.GDP.PCAP.PP.KD"))
+
+gdp_per_capita_ppp_col_usa %>% 
+    select(country, date, NY.GDP.PCAP.PP.KD) %>%
+    ggplot(aes(x = date,
+               y = NY.GDP.PCAP.PP.KD)) +
+    geom_point(aes(fill = country),
+               color = "black", shape = 21,
+               show.legend = FALSE) +
+    geom_line(aes(color = country,
+                  group = country)) +
+    geom_vline(xintercept = 2017,
+               color      = palette_light()[[1]]) +
+    tidyquant::scale_color_tq() +
+    tidyquant::scale_fill_tq() +
+    expand_limits(y = 0) +
+    scale_x_continuous(breaks = c(seq.int(from = 1990, to = 2010, by = 10), 2017, 2020)) +
+    labs(x        = "Year",
+         y        = "Thousands",
+         color = NULL,
+         title    = "GDP per-capita purchasing power parity,  Colombia and USA",
+         subtitle = str_glue("Variable code WDI: NY.GDP.PCAP.KN
+                             Variable units: constant 2017 international USD"),
+         caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(gdp_per_capita_ppp_col_usa$last_updated)}")) +
+    scale_y_continuous(labels = scales::number_format(scale    = 1e-3,
+                                                      suffix   = "K",
+                                                      accuracy = 1)) +
+    theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Economic Growth 
+
+- The most common metric used to measure economic growth is the annual percent growth of real GDP per capita.
+
+    - If the periodicity of real GDP per capita is **yearly** and we don't want to make international comparisons the formula is: 
+
+$$\frac{\text{GDP per capita constant LCU}_t - \text{GDP per capita constant LCU}_{t-1}}{\text{GDP per capita constant LCU}_{t-1}} \times 100$$
+
+# Economic Growth 
+
+- The most common metric used to measure economic growth is the annual percent growth of real GDP per capita.
+
+    + If the periodicity of real GDP per capita is **quarterly** and we don't want to make international comparisons the formula is: 
+
+$$\frac{\text{GDP per capita constant LCU}_t - \text{GDP per capita constant LCU}_{t-4}}{\text{GDP per capita constant LCU}_{t-4}} \times 100$$
+
+# Economic Growth
+
+```{r out.width = "90%"}
+growth_real_gpd_per_capita_col <- wbstats::wb_data(country   = c("COL"),
+                 indicator = c("NY.GDP.PCAP.KD.ZG"))
+
+growth_real_gpd_per_capita_col %>% 
+  select(country, date, NY.GDP.PCAP.KD.ZG) %>%
+  # We don't have data for the year 1960
+  filter(!is.na(NY.GDP.PCAP.KD.ZG)) %>%
+  ggplot(aes(x = date,
+             y = NY.GDP.PCAP.KD.ZG)) +
+  geom_point(color = "black", fill = palette_light()[[2]], shape = 21) +
+  geom_line() +
+  geom_hline(yintercept = 0,
+             color      = palette_light()[[3]]) +
+  labs(x        = "Year",
+       y        = "Percent",
+       title    = "Growth real GDP per-capita Colombia",
+       subtitle = str_glue("Variable code WDI: NY.GDP.PCAP.KD.ZG
+                             Variable units: annual percent using constant LCU Base Year 2015"),
+       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(growth_real_gpd_per_capita_col$last_updated)}")) +
+  scale_x_continuous(breaks = c(1961, seq.int(from = 1980, to = 2020, by = 20))) +
+  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Acknowledgments
+
+- To my family that supports me
+
+- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+
+- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__ and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+
+- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+
+# Acknowledgments
+
+- To the icon designers __[Brecris](https://www.flaticon.com/authors/becris)__, __[Freepik](https://www.flaticon.com/authors/freepik)__, __[Iconixar](https://www.flaticon.com/authors/iconixar)__,
+__[Monkik](https://www.flaticon.com/authors/monkik)__ and __[Eucalyp](https://www.flaticon.com/authors/eucalyp)__ from __[Flaticon](https://www.flaticon.com/)__ for letting me use their work in this presentation as a free user
+
+# References

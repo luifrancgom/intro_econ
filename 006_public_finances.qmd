@@ -1,0 +1,689 @@
+---
+title: "Public Finances"
+author: Luis Francisco Gomez Lopez
+date: 2023-07-18
+format:
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    linkcolor: blue
+    include-in-header:
+      - text: |
+          \usepackage{booktabs}
+          \usepackage{longtable}
+          \usepackage{array}
+          \usepackage{multirow}
+          \usepackage{wrapfig}
+          \usepackage{float}
+          \usepackage{colortbl}
+          \usepackage{pdflscape}
+          \usepackage{tabu}
+          \usepackage{threeparttable}
+          \usepackage{threeparttablex}
+          \usepackage[normalem]{ulem}
+          \usepackage{makecell}
+          \usepackage{xcolor}
+          \usepackage{fontawesome5}
+bibliography: intro_econ.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo      = FALSE, 
+                      warning   = FALSE, 
+                      message   = FALSE,
+                      fig.align = "center")
+```
+
+```{r}
+library(DiagrammeR)
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(tidyquant)
+library(treemapify)
+library(janitor)
+```
+
+# Contents
+
+- Please Read Me
+- Purpose
+- Economic functions of government
+- Colombian public sector
+- Revenues: taxes 
+- Expenditures
+- Acknowledgments
+- References
+
+# Please Read Me
+
+- Check the message __Welcome greeting__ published in the News Bulletin Board.
+
+- Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+- This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
+
+# Purpose
+
+Explain the role of the State in the economy
+
+# Economic functions of government
+
+- What are the economic functions of government? [@council_for_economic_education_focus_2010, p 45-54]
+
+    + **Maintain the Legal and Social Framework**
+    
+        + Define and enforce property rights
+        + Establish a monetary system
+        
+    + **Maintain competition in the marketplace**
+    
+        + Create and enforce antitrust laws
+        + Regulate natural monopolies
+    
+    + **Provide public goods and services**
+    
+        + Some goods and services are not provided by the market in the quantities desired by society
+        
+# Economic functions of government
+
+- What are the economic functions of government? [@council_for_economic_education_focus_2010, p 45-54]
+
+    + **Correct for externalities**
+    
+        + Reduce negative externalities 
+        + Encourage increased production of goods and services that have positive externalities
+        
+    + **Stabilize the economy**
+    
+        + Reduce unemployment and inflation
+        + Promote economic growth
+        
+    + **Redistribute income**
+    
+        + Targeting public spending
+        + Collect taxes
+        
+# Colombian public sector
+
+- Division based on [@international_monetary_fund_government_2014, fig 2.3] and [@ciefp_clasificacion_2019] using the **Código Único Institucional - CUIN**
+
+```{r, out.width="90%", dev='png'}
+grViz("
+digraph boxes_and_circles {
+
+  graph [rankdir = TB]
+
+  node [shape = circle, color = '#2C3E50']
+ 
+  'Sector Público';
+
+  node [shape = oval, color = '#E31A1C']
+
+  'Sociedad\npública no\nfinanciera';
+  'Sociedad pública\nfinanciera';
+  'Gobierno\ngeneral'
+  
+  node [shape = rectangle, color = '#18BC9C']
+  
+  'Sociedad\nno\nfinanciera\npública';
+  'Banco\ncentral';
+  'Sociedades de depósitos\npúblicas excepto\nbanco central';
+  'Otras sociedades\nfinancieras públicas';
+  'Gobierno\ncentral';
+  'Gobierno\ndepartamental';
+  'Gobierno\nmunicipal';
+  'Seguridad\nsocial';
+  
+  'Sector Público' -> 'Sociedad\npública no\nfinanciera';
+  'Sector Público' -> 'Sociedad pública\nfinanciera';
+  'Sector Público' -> 'Gobierno\ngeneral';
+
+  'Sociedad\npública no\nfinanciera' -> 'Sociedad\nno\nfinanciera\npública';
+  'Sociedad pública\nfinanciera' -> 'Banco\ncentral';
+  'Sociedad pública\nfinanciera' -> 'Sociedades de depósitos\npúblicas excepto\nbanco central';
+  'Sociedad pública\nfinanciera' -> 'Otras sociedades\nfinancieras públicas';
+  'Gobierno\ngeneral' -> 'Gobierno\ncentral';
+  'Gobierno\ngeneral' -> 'Gobierno\ndepartamental';
+  'Gobierno\ngeneral' -> 'Gobierno\nmunicipal';
+  'Gobierno\ngeneral' -> 'Seguridad\nsocial';
+}
+")
+```
+        
+# Colombian public sector
+
+- Division based on how information is reported in [@mhcp_marco_2021]
+
+```{r, out.width="90%", dev='png'}
+grViz("
+digraph boxes_and_circles {
+
+  graph [rankdir = LR]
+
+  node [shape = circle, color = '#2C3E50']
+ 
+  'Sector Público\nConsolidado\n(SPC)';
+
+  node [shape = oval, color = '#E31A1C']
+
+  'Sector Público\nFinanciero\n(SPF)';
+  'Sector Público\nno Financiero\n(SPNF)';
+  
+  node [shape = oval, color = '#18BC9C']
+  
+  'Banco de\nla República';
+  'Fogafín';
+  'Gobierno\nGeneral (GG)';
+  'Empresas\nPúblicas';
+  'Sector Público\nno Modelado\n(SPNM)';
+  
+  node [shape = oval, color = '#CCBE93']
+  
+  'Gobierno\nCentral (GC)';
+  'Regionales y\nLocales';
+  'Seguridad\nSocial';
+  'Nivel\nNacional';
+  'Nivel\nLocal';
+  
+  node [shape = oval, color = '#FF7F00']
+  
+  'Gobierno\nNacional\nCentral (GNC)';
+  'Resto del\nNivel Central';
+  
+  'Sector Público\nConsolidado\n(SPC)' -> 'Sector Público\nFinanciero\n(SPF)';
+  'Sector Público\nConsolidado\n(SPC)' -> 'Sector Público\nno Financiero\n(SPNF)';
+  
+  'Sector Público\nFinanciero\n(SPF)' -> 'Banco de\nla República';
+  'Sector Público\nFinanciero\n(SPF)' -> 'Fogafín';
+  'Sector Público\nno Financiero\n(SPNF)' -> 'Gobierno\nGeneral (GG)';
+  'Sector Público\nno Financiero\n(SPNF)' -> 'Empresas\nPúblicas';
+  'Sector Público\nno Financiero\n(SPNF)' -> 'Sector Público\nno Modelado\n(SPNM)';
+  
+  'Gobierno\nGeneral (GG)' -> 'Gobierno\nCentral (GC)';
+  'Gobierno\nGeneral (GG)' -> 'Regionales y\nLocales';
+  'Gobierno\nGeneral (GG)' -> 'Seguridad\nSocial';
+  'Empresas\nPúblicas' ->'Nivel\nNacional';
+  'Empresas\nPúblicas' -> 'Nivel\nLocal';
+  
+  'Gobierno\nCentral (GC)' -> 'Gobierno\nNacional\nCentral (GNC)';
+  'Gobierno\nCentral (GC)' -> 'Resto del\nNivel Central';
+  
+}
+")
+```
+
+# Colombian public sector
+
+- Central National Government (Gobierno Nacional Central (GNC)) Fiscal Balance 
+
+    + The fiscal balance is the difference between the central national government’s revenues and its expenditures
+    
+    + It shows the extent to which expenditure in a given year is financed by the revenues collected in that year [@oecd_government_2021, p 68]
+    
+        + When the central national government spends more than it collects as revenues, it has a **fiscal deficit**
+        
+        + When the central national government spends less than it collects as revenues, it has a **fiscal surplus**
+        
+# Colombian public sector
+
+```{r}
+# Data
+# https://www.minhacienda.gov.co > Entidades Financieras 
+# > Balance Gobierno Nacional Central
+# > Balance Gobierno Nacional Central 1994-2021
+cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2022.xlsx", 
+                     sheet = 2, 
+                     range = "B5:AE100") %>%
+  rename(Concepto = "CONCEPTO") %>% 
+  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
+  select(Concepto, `2022`)
+
+cng_fb_table <- cng_fb %>% 
+  slice(2:5, 8:26,29)
+
+cng_fb_table_footnote <- cng_fb_table
+
+names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
+                                           footnote_marker_alphabet(1, "latex"))
+
+cng_fb_table_footnote %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 2, linesep = "") %>%
+  kable_styling(font_size = 5.2) %>%
+  add_indent(positions = c(2,21), level_of_indent = 2) %>%
+  add_indent(positions = 3, level_of_indent = 3) %>% 
+  add_indent(positions = c(4:20,22:24), level_of_indent = 5) %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = 1, bold = TRUE, background = unname(palette_light()[4])) %>% 
+  row_spec(row = c(2,21), bold = TRUE, background = unname(palette_light()[2])) %>% 
+  row_spec(row = 3, bold = TRUE, background = unname(palette_light()[3])) %>% 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+           general_title = "",
+           alphabet = '%PIB - Cierre fiscal',
+           threeparttable = TRUE)
+```
+
+# Colombian public sector
+
+```{r}
+cng_fb_table <- cng_fb %>% 
+  slice(1:3, 24, 30:44)
+
+cng_fb_table_footnote <- cng_fb_table
+
+names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
+                                           footnote_marker_alphabet(1, "latex"))
+
+cng_fb_table_footnote %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 2, linesep = "") %>%
+  kable_styling(font_size = 6) %>%  
+  add_indent(positions = c(2, 5:6), level_of_indent = 2) %>%
+  add_indent(positions = c(3:4), level_of_indent = 3) %>%
+  add_indent(positions = c(7:8, 16:17), level_of_indent = 5) %>%
+  add_indent(positions = c(9:15, 18:19), level_of_indent = 7) %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = 1, background = unname(palette_light()[4]), bold = TRUE) %>% 
+  row_spec(row = c(2, 5:6), bold = TRUE) %>%
+  row_spec(row = 3, background = unname(palette_light()[3])) %>% 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+           general_title = "",
+           alphabet = '%PIB - Cierre fiscal',
+           threeparttable = TRUE)
+```
+
+# Colombian public sector
+
+```{r}
+cng_fb_table <- cng_fb %>% 
+  slice(1:3, 24, 30:31, 45:55, 59:62)
+
+cng_fb_table_footnote <- cng_fb_table
+
+names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
+                                           footnote_marker_alphabet(1, "latex"))
+
+cng_fb_table_footnote %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 2, linesep = "") %>%
+  kable_styling(font_size = 5.5) %>%  
+  add_indent(positions = c(2, 5:6, 8:9, 21), level_of_indent = 2) %>%
+  add_indent(positions = c(3:4, 10, 14), level_of_indent = 3) %>%
+  add_indent(positions = c(15:16, 20), level_of_indent = 4) %>%
+  add_indent(positions = c(11:13, 17:19), level_of_indent = 5) %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = c(1,7), background = unname(palette_light()[4]), bold = TRUE) %>% 
+  row_spec(row = c(8:9, 21), background = unname(palette_light()[2]), bold = TRUE) %>%
+  row_spec(row = c(3, 16), background = unname(palette_light()[3])) %>% 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+           general_title = "",
+           alphabet = '%PIB - Cierre fiscal',
+           threeparttable = TRUE)
+```
+
+# Colombian public sector
+
+```{r}
+cng_fb_table <- cng_fb %>% 
+  slice(1:3, 24, 30:31, 45:48, 52, 62:69, 78:79)
+
+cng_fb_table_footnote <- cng_fb_table
+
+names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
+                                           footnote_marker_alphabet(1, "latex"))
+
+cng_fb_table_footnote %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 2, linesep = "") %>%
+  kable_styling(font_size = 5.5) %>% 
+  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) %>%
+  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) %>%
+  row_spec(row = 0, bold = TRUE)  %>% 
+  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) %>%
+  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
+  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
+  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+           general_title = "",
+           alphabet = '%PIB - Cierre fiscal',
+           threeparttable = TRUE)
+```
+
+# Colombian public sector
+
+```{r}
+cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2022.xlsx", 
+                     # Cambiando la hoja para mostrar las cifras
+                     # en miles de millones
+                     sheet = 1, 
+                     range = "B5:AE100") %>%
+  rename(Concepto = "CONCEPTO") %>% 
+  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
+  select(Concepto, `2022`) %>%
+  # Mostrando todas las cifras
+  mutate(`2022` = (`2022`*10^9) %>% scales::number(big.mark = ",", 
+                                                   accuracy = 0.1))
+
+cng_fb_table <- cng_fb %>% 
+  slice(1:3, 24, 30:31, 45:48, 52, 62:69, 78:79)
+
+cng_fb_table_footnote <- cng_fb_table
+
+names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
+                                           footnote_marker_alphabet(1, "latex"))
+
+cng_fb_table_footnote %>% 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 1, linesep = "") %>%
+  kable_styling(font_size = 5.5) %>% 
+  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) %>%
+  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) %>%
+  row_spec(row = 0, bold = TRUE) %>% 
+  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) %>%
+  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
+  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
+  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+           general_title = "",
+           alphabet = 'Pesos colombianos (COP)',
+           threeparttable = TRUE)
+```
+
+# Revenues: taxes
+
+- Useful resources
+
+    + **Global Revenue Statistics Database**
+    
+        + **[https://stats.oecd.org/](https://stats.oecd.org/)** > Data by theme > Public Sector, Taxation and Market Regulation > Taxation > Global Revenue Statistics Database > Global Revenue Statistics Database
+        
+    + **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+    
+        + **[https://www.ofiscal.org/publicaciones](https://www.ofiscal.org/publicaciones)** > guías ciudadanas
+        
+# Revenues: taxes
+
+- **Taxes**: "compulsory unrequited payments to the general  government  or  to  a  supranational  authority" [@oecd_revenue_2020, p 319]
+
+    + "Taxes are unrequited in the sense that benefits provided by government to taxpayers are not normally in proportion to their payments" [@oecd_revenue_2020, p 319]
+    
+    + "The term **tax** does not include fines, penalties and compulsory loans paid to government" [@oecd_revenue_2020, p 319]
+    
+    + Compulsory social security contributions and paid to general government are treated here as tax revenues [@oecd_revenue_2020, p 320]
+    
+# Revenues: taxes
+
+- **Classification of Taxes by the OECD** [@oecd_revenue_2020, p 317-318]
+
+    + 1000 Taxes on income, profits and capital gains (Impuestos sobre la renta, las utilidades y las ganancias de capital)
+    + 2000 Social security contributions (Contribuciones a la seguridad social)
+    + 3000 Taxes on payroll and workforce (Impuestos sobre la nómina y la fuerza de trabajo)
+    + 4000 Taxes on property (Impuestos sobre la propiedad)
+    + 5000 Taxes on goods and services (Impuestos sobre los bienes y servicios)
+    + 6000 Other taxes (Otros impuestos)
+
+# Revenues: taxes
+
+- According to the Colombia's political constitution:
+
+    + *"ARTICULO 363. El sistema tributario se funda en los principios de **equidad**, **eficiencia** y **progresividad**. ..."*
+    
+- **Equity**
+
+::: {#fig-horizontal_vs_vertical_equity layout-nrow=1 layout-valign="bottom"}
+![Horizontal](_000_images/006_horizontal_equity.png){#fig-horizontal width="190px" height="190px"}
+
+![Vertical](_000_images/006_vertical_equity.png){#fig-vertical width="190px" height="190px"}
+
+Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, p 8]
+:::
+
+# Revenues: taxes
+
+- **Efficiency**: taxes change the behavior of individuals and sometimes distort the economic activity by creating a deadweight loss. Therefore the idea is to have a tax system that minimize or mitigate these negative effects   
+
+# Revenues: taxes
+
+- **Progressivity**
+
+\footnotesize
+
+::: {#fig-regressive_proportional_progressive layout="[[45,-10,45], [-30, 40, -30]]"}
+![Regressive](_000_images/006_regressive_tax.png){#fig-regressive width="150px" height="150px"}
+
+![Proportional](_000_images/006_proportional_tax.png){#fig-proportional width="150px" height="150px"}
+
+![Progressive](_000_images/006_progressive_tax.png){#fig-progressive width="150px" height="150px"}
+
+Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, p 11]
+:::
+
+# Revenues: taxes
+
+```{r}
+# Data extracted from 
+## https://stats.oecd.org/ > Data by theme > Public Sector, Taxation
+## and Market Regulation > Taxation > Global Revenue Statistics
+## Database > Global Revenue Statistics Database
+global_revenue_statistics_data_base <- read_csv(file = '000_data/006_RS_GBL_tax_revenue_as_pct_of_gdp.zip')
+```
+
+
+```{r out.width="90%"}
+tax_revenue_as_pct_of_gdp <- global_revenue_statistics_data_base %>% 
+  clean_names() %>% 
+  filter(level_of_government == 'Total',
+         tax_revenue == 'Total tax revenue',
+         indicator == 'Tax revenue as % of GDP',
+         country %in% c('Latin America and the Caribbean',
+                        'OECD - Average',
+                        'Colombia')) %>% 
+  select(cou, country, year, value)
+
+tax_revenue_as_pct_of_gdp %>% 
+  mutate(country = fct_reorder(.f = country, .x = value)) %>% 
+  ggplot() + 
+  geom_line(aes(x=year, y=value, 
+                group=country, color=country)) + 
+  scale_y_continuous(labels = scales::number_format(accuracy = NULL, 
+                                                    suffix = '%')) +
+  scale_color_tq() +
+  labs(x='Year',
+       y='Percent',
+       color=NULL,
+       title = 'Total tax revenue as % of Gross Domestic Product',
+       subtitle = str_glue('Period: {min(tax_revenue_as_pct_of_gdp$year)} - {max(tax_revenue_as_pct_of_gdp$year)}'),
+       caption = str_glue('Source: Global Revenue Statistics Database - OECD
+                          Last update date: 2023-07-18')) +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Revenues: taxes
+
+```{r fig.width=9, fig.height=5}
+# Data extracted from 
+## https://stats.oecd.org/ > Data by theme > Public Sector, Taxation
+## and Market Regulation > Taxation > Global Revenue Statistics
+## Database > Global Revenue Statistics Database
+tax_structure <- global_revenue_statistics_data_base %>%
+  clean_names() %>% 
+  filter(level_of_government == 'Total',
+         indicator=='Tax revenue as % of total taxation',
+         tax %in% (c(1100, 1200, 1300, 2000, 3000, 4000,
+                    5111, 5112, 5113, 5120, 5130, 5200,
+                    5300, 6000) %>% as.character()),
+         year == 2020,
+         country %in% c('Colombia', 'OECD - Average', 'Latin America and the Caribbean')) %>% 
+  select(cou, country, tax, year, value) %>% 
+  mutate(tax = as.integer(tax),
+         tax_label_es = case_when(
+           tax %in% c(1100) ~ 'Impuesto sobre la renta de personas físicas',
+           tax %in% c(1200) ~ 'Impuesto sobre la renta de sociedades',
+           tax %in% c(1300, 3000, 6000) ~ 'Otros impuestos',
+           tax %in% c(2000) ~ 'Cotizaciones a la seguridad social',
+           tax %in% c(4000) ~ 'Impuestos sobre la propiedad',
+           tax %in% c(5111) ~ 'Impuesto sobre el valor añadido',
+           tax %in% c(5112, 5113, 5120, 5130, 5200, 5300) ~ 'Otros impuestos sobre bienes y servicios',
+           .default = NA_character_),
+         tax_label_en = case_when(
+           tax %in% c(1100) ~ 'Personal income tax',
+           tax %in% c(1200) ~ 'Corporate income tax',
+           tax %in% c(1300, 3000, 6000) ~ 'Other taxes',
+           tax %in% c(2000) ~ 'Social security contributions',
+           tax %in% c(4000) ~ 'Taxes on property',
+           tax %in% c(5111) ~ 'Value added taxes',
+           tax %in% c(5112, 5113, 5120, 5130, 5200, 5300) ~ 'Other taxes on goods and services',
+           .default = NA_character_))
+
+tax_structure_grouped <- tax_structure %>%
+  group_by(country, tax_label_es, tax_label_en) %>% 
+  summarise(value = sum(value)) %>%
+  ungroup() %>% 
+  mutate(country = case_when(
+    country == 'Colombia' ~ 'COL', 
+    country == 'OECD - Average' ~ 'OECD', 
+    country == 'Latin America and the Caribbean' ~ 'LAC',
+    .default = NA_character_))
+
+tax_structure_grouped %>% 
+  ggplot(aes(x=value, y=country, 
+             fill=tax_label_en, label=scales::number(value, accuracy = 0.1))) +
+  geom_col(color='black') +
+  geom_text(size = 3, position = position_stack(vjust = 0.5),
+            fontface = 'bold', color='white') +
+  scale_fill_tq() +
+  labs(x=NULL,
+       y=NULL,
+       fill=NULL, 
+       title = str_glue('Tax structures for Colombia (COL), Latin America and the Caribbean (LAC) and OECD
+                        Variable: Tax revenue as % of total taxation
+                        Period: {unique(tax_structure$year)}'),
+       caption = str_glue('Source: Global Revenue Statistics Database - OECD
+                          Last update date: 2023-07-18')) + 
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text.x       = element_blank(),
+        axis.text.y       = element_text(face = "bold"),
+        axis.ticks.x      = element_blank())
+```
+
+# Expenditures
+
+- Useful resources
+
+    - **Portal de transparencia económica**
+    
+        - **[https://www.pte.gov.co](https://www.pte.gov.co)** > PRESUPUESTO GENERAL DE LA NACIÓN > Ejecución
+        
+    + **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+    
+        - **[https://www.ofiscal.org/](https://www.ofiscal.org/)** > Guias
+        
+# Expenditures
+
+- **Presupuesto General de la Nación (PGN)**
+
+    + It is the most important financial management instrument of fiscal policy
+    
+    + This instrument presents the government's proposed revenues and spending for a specific period
+    
+    + Every year the "Presupuesto General de la Nación (PGN)" is define for the next year
+    
+    + The "Presupuesto General de la Nación (PGN)" must be approved by the congress and sanctioned as a law by the president
+    
+    + For more information check out **Guía ciudadana al Presupuesto General de la Nación** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2022]
+    
+      +   **[https://www.ofiscal.org/](https://www.ofiscal.org/)** > Guias
+
+# Expenditures
+
+```{r}
+# https://www.pte.gov.co  > PRESUPUESTO GENERAL DE LA NACIÓN >
+# Ejecución
+pgn_what_spent <- read_csv(file = '000_data/006_quien_gasta_PTE.csv', 
+                           locale = locale(decimal_mark = '.', 
+                                           encoding = 'iso-8859-3')) %>% 
+  arrange(desc(AsignacionVigente)) %>% 
+  clean_names() %>% 
+  mutate(nombre_sector = str_to_title(nombre_sector))
+```
+
+```{r out.width="90%"}
+pgn_what_spent_clean <- pgn_what_spent %>% 
+  select(nombre_sector, asignacion_vigente) %>% 
+  mutate(nombre_sector = case_when(
+    nombre_sector %in% pgn_what_spent$nombre_sector[1:11] ~ nombre_sector,
+    .default = 'Otros Sectores')) %>% 
+  group_by(nombre_sector) %>% 
+  summarise(asignacion_vigente = sum(asignacion_vigente)) %>% 
+  ungroup() %>% 
+  mutate(asignacion_vigente_pct = asignacion_vigente / sum(asignacion_vigente),
+         label = str_glue("{scales::percent(asignacion_vigente_pct, accuracy = 0.01)}
+                          {scales::number(asignacion_vigente, scale = 1e-12, suffix = 'B')}"),
+         nombre_sector = fct_reorder(.f = nombre_sector, .x = asignacion_vigente) %>% 
+                         fct_rev())
+
+pgn_what_spent_clean %>% 
+ggplot(aes(area = asignacion_vigente,
+           fill = nombre_sector,
+           label = label)) +
+  geom_treemap(color = "black") +
+  geom_treemap_text(place = "centre") +
+  scale_fill_tq() +
+  labs(fill = NULL,
+       title = str_glue("Who spends nation's general budget spent on in {unique(pgn_what_spent$anio)}?"),
+       subtitle = str_glue("Total national budget: {scales::number(sum(pgn_what_spent$asignacion_vigente), big.mark = ',')} COP
+                           Observation: B means billions in long scale (10^12)"),
+       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
+                          Last update date: 2023-07-19")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Acknowledgments
+
+- To my family that supports me
+
+- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+
+- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__,
+__[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, 
+__[readxl](https://CRAN.R-project.org/package=readxl)__, 
+__[knitr](https://CRAN.R-project.org/package=knitr)__, 
+__[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, 
+__[tidyquant](https://CRAN.R-project.org/package=tidyquant)__,
+__[janitor](https://CRAN.R-project.org/package=janitor)__,
+__[treemapify](https://CRAN.R-project.org/package=treemapify)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+
+- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+
+# References {.allowframebreaks}
