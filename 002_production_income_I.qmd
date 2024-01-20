@@ -1,7 +1,7 @@
 ---
 title: "Production and Income I"
 author: "Luis Francisco Gomez Lopez"
-date: 2023-07-17
+date: 2024-01-20
 format:
   beamer:
     colortheme: dolphin
@@ -69,39 +69,33 @@ Understand how production is measured using the concept of Gross Domestic Produc
 
 # Gross Domestic Product (GDP)
 
-- What is? [@lequiller_understanding_2014, p 19]
+- What is? [@lequiller_understanding_2014, p. 19]
 
     + __Product__: means that we are trying to measure production without double counting
     
-```{r out.width="40%"}
-knitr::include_graphics(path = "_000_images/001_image1.png")
-```
+![](_000_images/001_image1.png){width=40% fig-align="center"}
 
 # Gross Domestic Product (GDP)
 
-- What is? [@lequiller_understanding_2014, p 19]
+- What is? [@lequiller_understanding_2014, p. 19]
 
     + __Domestic__: means that the production to be taken into account is the one that is carried within a certain territory clearly delimited
-    
-```{r out.width="45%"}
-knitr::include_graphics(path = "_000_images/001_image2.png")
-```
+
+![](_000_images/001_image2.png){width=45% fig-align="center"}
 
 # Gross Domestic Product (GDP)
 
-- What is? [@lequiller_understanding_2014, p 19]
+- What is? [@lequiller_understanding_2014, p. 19]
 
     + __Gross__: means that depreciation is not deducted (in economy it is called consumption of fixed capital). In other words, the decrease in the value of the assets used in the production process due to physical deterioration, foreseeable wear or accidental damage is not deducted
     
-```{r out.width="45%"}
-knitr::include_graphics(path = "_000_images/001_image3.png")
-```
+![](_000_images/001_image3.png){width=45% fig-align="center"}
 
 # Gross Domestic Product (GDP)
 
 - How is measure?
 
-    + 3 equivalent[^1] approaches are used [@lequiller_understanding_2014, p 31]
+    + 3 equivalent[^1] approaches are used [@lequiller_understanding_2014, p. 31]
     
         + __Output/Production approach__: adding the aggregate value of all the production units in a territory, plus taxes minus subsidies on products 
         
@@ -117,25 +111,26 @@ knitr::include_graphics(path = "_000_images/001_image3.png")
         
 # Gross Domestic Product (GDP)
 
-- Output/Production approach (Colombia, Period: 2023-Q1)
+- Output/Production approach (Colombia, Period: 2023-Q3)
 
 ```{r}
 
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
-# Información técnica
-gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_I_2023.xlsx", 
+# Información técnica > Anexos estadísticos PIB producción >
+# PIB a precios corrientes
+gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_III_2023.xlsx", 
                             sheet = 2, 
-                            range = "C15:BX29", 
+                            range = "C15:BZ29", 
                             col_names = FALSE)
 
-gdp_agg_value_table <- gdp_agg_value %>% 
-  # it is possible that data for the last quarter is not available for the income approach
-  # select(1, ncol(gdp_agg_value - 1)) %>% 
-  select(1, ncol(gdp_agg_value)) %>% 
-  rename(concept = `...1`, value_2023_1 = `...74`) %>% 
-  mutate(value_2023_1 = round(value_2023_1, digits = 0))
+gdp_agg_value_table <- gdp_agg_value |> 
+  # it is possible that data for the last quarter is not available 
+  # for the income approach select(1, ncol(gdp_agg_value - 1)) |>  
+  select(1, ncol(gdp_agg_value)) |>  
+  rename(concept = `...1`, value_last = `...76`) |>  
+  mutate(value_last = round(value_last, digits = 0))
 
 gdp_agg_value_table_footnote <- gdp_agg_value_table
 
@@ -145,39 +140,40 @@ names(gdp_agg_value_table_footnote)[2] <- "Miles de Millones - COP"
 names(gdp_agg_value_table_footnote)[2] <- paste0(names(gdp_agg_value_table_footnote)[2],
                                                  footnote_marker_alphabet(1, "latex"))
 
-gdp_agg_value_table_footnote %>% 
-  kable(booktabs = TRUE, escape = FALSE) %>% 
-  kable_styling(font_size = 4.8) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
-  row_spec(row = 13, background = '#18BC9C') %>%
-  row_spec(row = 14, background = '#CCBE93') %>%
-  row_spec(row = 15, background = '#e31a1c') %>% 
-  column_spec(column = 1, width = "3.4in") %>%
-  column_spec(column = 2, width = "1in", ) %>%
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque de la producción a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-05-15'), 
+gdp_agg_value_table_footnote |>  
+  kable(booktabs = TRUE, escape = FALSE) |> 
+  kable_styling(font_size = 4.8) |>
+  row_spec(row = 0, bold = TRUE) |> 
+  row_spec(row = 13, background = '#18BC9C') |>
+  row_spec(row = 14, background = '#CCBE93') |>
+  row_spec(row = 15, background = '#e31a1c') |> 
+  column_spec(column = 1, width = "3.4in") |>
+  column_spec(column = 2, width = "1in", ) |>
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque de la producción a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-11-15'), 
            general_title = "",
            alphabet = 'Preliminary data at current prices')
 ```
 
 # Gross Domestic Product (GDP)
 
-- Income approach (Colombia, Period: 2023-Q1)
+- Income approach (Colombia, Period: 2023-Q3)
 
 ```{r}
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
-# Información técnica
-gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_I_2023.xlsx",
+# Información técnica > Anexos estadísticos PIB enfoque ingreso >
+# PIB a precios corrientes
+gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_III_2023.xlsx",
                          sheet = 1,
-                         range = "C14:AG42",
+                         range = "C14:AI42",
                          col_names = FALSE)
 
-gdp_income_table <- gdp_income %>%
-  select(1, ncol(gdp_income)) %>%
-  rename(concept = `...1`, value_2023_1 = `...31`) %>%
-  slice(1:3, 16, 29) %>%
-  mutate(value_2023_1 = round(value_2023_1, digits = 0))
+gdp_income_table <- gdp_income |>
+  select(1, ncol(gdp_income))  |> 
+  rename(concept = `...1`, value_last = `...33`) |>
+  slice(1:3, 16, 29) |>
+  mutate(value_last = round(value_last, digits = 0))
 
 gdp_income_table_footnote <- gdp_income_table
 
@@ -187,43 +183,44 @@ names(gdp_income_table_footnote)[2] <- "Miles de Millones - COP"
 names(gdp_income_table_footnote)[2] <- paste0(names(gdp_income_table_footnote)[2],
                                               footnote_marker_alphabet(1, "latex"))
 
-gdp_income_table_footnote %>%
-  kable(booktabs = TRUE, escape = FALSE) %>%
-  kable_styling(font_size = 7) %>%
-  row_spec(row = 0, bold = TRUE) %>%
-  row_spec(row = 2, background = '#CCBE93') %>%
-  row_spec(row = 5, background = '#e31a1c') %>%
-  column_spec(column = 1, width = "2in") %>%
-  column_spec(column = 2, width = "2in", ) %>%
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - PIB por Ingreso - S1 Total Economía', 'Last update: 2023-06-30'),
+gdp_income_table_footnote |>
+  kable(booktabs = TRUE, escape = FALSE) |>
+  kable_styling(font_size = 7) |>
+  row_spec(row = 0, bold = TRUE) |>
+  row_spec(row = 2, background = '#CCBE93') |>
+  row_spec(row = 5, background = '#e31a1c') |>
+  column_spec(column = 1, width = "2in") |>
+  column_spec(column = 2, width = "2in", ) |>
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Trimestrales - PIB por Ingreso - S1 Total Economía', 'Last update: 2023-12-27'),
            general_title = "",
            alphabet = 'Preliminary data at current prices', threeparttable = TRUE)
 ```
 
 # Gross Domestic Product (GDP)
 
-- Expenditure/Final demand approach (Colombia, Period: 2023-Q1)
+- Expenditure/Final demand approach (Colombia, Period: 2023-Q3)
 
 ```{r}
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Cuentas Nacionales > PIB nacional trimestral (coyuntural) >
-# Información técnica
-gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_I_2023.xlsx",
+# Información técnica > Anexos estadísticos PIB gasto >
+# PIB a precios corrientes
+gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_III_2023.xlsx",
                               sheet = 2,
-                              range = "B15:BW21",
+                              range = "B15:BY21",
                               col_names = FALSE)
 
-gdp_expenditure_table <- gdp_expenditure %>%
+gdp_expenditure_table <- gdp_expenditure |>
   # it is possible that data for the last quarter is not available for the income approach
-  # select(1, ncol(gdp_expenditure)-1) %>%
-  select(1, ncol(gdp_expenditure)) %>% 
-  slice(1:3, 5:7) %>%
-  rename(concept = `...1`, value_2023_1 = `...74`) %>%
+  # select(1, ncol(gdp_expenditure)-1) |>
+  select(1, ncol(gdp_expenditure)) |> 
+  slice(1:3, 5:7) |>
+  rename(concept = `...1`, value_last = `...76`) |>
   mutate(concept = replace(concept,
                            concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH2",
                            "Gasto de consumo final individual de los hogares y las ISFLH"),
-         value_2023_1 = round(value_2023_1, digits = 0))
+         value_last = round(value_last, digits = 0))
 
 gdp_expenditure_table_footnote <- gdp_expenditure_table
 
@@ -235,19 +232,18 @@ names(gdp_expenditure_table_footnote)[2] <- paste0(names(gdp_expenditure_table_f
 gdp_expenditure_table_footnote[[1,1]] <- paste0(gdp_expenditure_table_footnote[[1,1]],
                                                 footnote_marker_alphabet(2, "latex"))
 
-gdp_expenditure_table_footnote %>%
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) %>%
-  kable_styling(font_size = 7) %>%
-  row_spec(row = 0, bold = TRUE) %>%
-  row_spec(row = 5, background = '#FF7F00') %>%
-  row_spec(row = 6, background = '#e31a1c') %>%
-  column_spec(column = 1, width = "2.6in") %>%
-  column_spec(column = 2, width = "1.5in", ) %>%
-  footnote(general       = linebreak(c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque del gasto a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-05-15')),
+gdp_expenditure_table_footnote |>
+  kable(format = "latex", booktabs = TRUE, escape = FALSE) |>
+  kable_styling(font_size = 7) |>
+  row_spec(row = 0, bold = TRUE) |>
+  row_spec(row = 5, background = '#FF7F00') |>
+  row_spec(row = 6, background = '#e31a1c') |>
+  column_spec(column = 1, width = "2.6in") |>
+  column_spec(column = 2, width = "1.5in", ) |>
+  footnote(general       = linebreak(c('Source: DANE - Cuentas Nacionales Trimestrales - Producto Interno Bruto desde el enfoque del gasto a precios corrientes - Cuadro 1 Datos originales', 'Last update: 2023-11-15')),
            general_title = "",
            alphabet = c('Preliminary data at current prices',
                         'Instituciones sin fines de lucro que sirven a los hogares'), threeparttable = TRUE)
-
 ```
 
 # Gross Domestic Product
@@ -276,10 +272,7 @@ gdp_expenditure_table_footnote %>%
 
 - An inflation adjustment is necessary because an arbitrary quantity of local currency units don't have the same purchase power in different periods
 
-```{r out.width="60%"}
-knitr::include_graphics(path = "_000_images/002_image1.png")
-```
-
+![](_000_images/002_image1.png){width=60% fig-align="center"}
 
 # Gross Domestic Product
 
@@ -288,8 +281,8 @@ gdp_nominal_real_col <- wbstats::wb_data(country = c("COL"),
                  indicator    = c("NY.GDP.MKTP.CN", "NY.GDP.MKTP.KN"),
                  return_wide  = FALSE)
 
-gdp_nominal_real_col %>% 
-  select(country, date, value, indicator) %>%
+gdp_nominal_real_col |> 
+  select(country, date, value, indicator) |>
   ggplot(aes(x = date,
              y = value)) +
   geom_point(aes(fill = indicator), color = "black", shape = 21, show.legend = FALSE) +
@@ -327,9 +320,7 @@ gdp_nominal_real_col %>%
 
 - Some countries have more population than others so they can produce more. Therefore it is necessary to express the GDP per inhabitant
 
-```{r out.width="50%"}
-knitr::include_graphics(path = "_000_images/002_image2.png")
-```
+![](_000_images/002_image2.png){width=50% fig-align="center"}
 
 # Gross Domestic Product
 
@@ -337,8 +328,8 @@ knitr::include_graphics(path = "_000_images/002_image2.png")
 real_gdp_per_capita_col <- wbstats::wb_data(country   = c("COL"),
             indicator = c("NY.GDP.PCAP.KN"))
 
-real_gdp_per_capita_col %>% 
-    select(country, date, NY.GDP.PCAP.KN) %>%
+real_gdp_per_capita_col |> 
+    select(country, date, NY.GDP.PCAP.KN) |>
     ggplot(aes(x = date,
                y = NY.GDP.PCAP.KN)) +
     geom_point(color = "black", shape = 21, fill = palette_light()[[2]]) +
@@ -383,11 +374,8 @@ real_gdp_per_capita_col %>%
 - Purchasing power parity
 
     + The amount of products that 1 local currency unit of an economy can buy in another economy
-    
-```{r out.width="50%"}
-knitr::include_graphics(path = "_000_images/002_image3.png")
-```
 
+![](_000_images/002_image3.png){width=50% fig-align="center"}
 
 # Gross Domestic Product
 
@@ -398,8 +386,8 @@ gdp_per_capita_ppp_col_usa <- wbstats::wb_data(country   = c("COL", "USA"),
                  end_date = 2020,
             indicator = c("NY.GDP.PCAP.PP.KD"))
 
-gdp_per_capita_ppp_col_usa %>% 
-    select(country, date, NY.GDP.PCAP.PP.KD) %>%
+gdp_per_capita_ppp_col_usa |> 
+    select(country, date, NY.GDP.PCAP.PP.KD) |>
     ggplot(aes(x = date,
                y = NY.GDP.PCAP.PP.KD)) +
     geom_point(aes(fill = country),
@@ -457,10 +445,10 @@ $$\frac{\text{GDP per capita constant LCU}_t - \text{GDP per capita constant LCU
 growth_real_gpd_per_capita_col <- wbstats::wb_data(country   = c("COL"),
                  indicator = c("NY.GDP.PCAP.KD.ZG"))
 
-growth_real_gpd_per_capita_col %>% 
-  select(country, date, NY.GDP.PCAP.KD.ZG) %>%
+growth_real_gpd_per_capita_col |> 
+  select(country, date, NY.GDP.PCAP.KD.ZG) |>
   # We don't have data for the year 1960
-  filter(!is.na(NY.GDP.PCAP.KD.ZG)) %>%
+  filter(!is.na(NY.GDP.PCAP.KD.ZG)) |>
   ggplot(aes(x = date,
              y = NY.GDP.PCAP.KD.ZG)) +
   geom_point(color = "black", fill = palette_light()[[2]], shape = 21) +
@@ -494,7 +482,7 @@ growth_real_gpd_per_capita_col %>%
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__ and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__ and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
