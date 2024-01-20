@@ -194,11 +194,11 @@ tibble(x = c( 0,
 
 - __Unemployment rate (UR)__ ("Tasa de desempleo")
 
-    + $UR = \frac{U}{LB} \times 100$
+    + $UR = \frac{U}{LF} \times 100$
 
 - __Underemployment (UER)__ ("Tasa de subempleo")
 
-    + $UER = \frac{UE}{LB} \times 100$
+    + $UER = \frac{UE}{LF} \times 100$
 
 # Labor demand
 
@@ -383,9 +383,9 @@ read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls",
       + $log_e$: natural logarithm
       + $w_{it}$: wage of individual $i$ in period $t$
       + $w_o$: wage without any level of education an experience
-      + $Ed_{it}$: years of education of individual $i$ in period $t$
+      + $\epsilon_{it}$: years of education of individual $i$ in period $t$
       + $Ex_{it}$: potential experience of individual $i$ in period $t$ which is equal to the age minus the years of education minus six
-      + $e_{it}$: are other components of individual $i$ in period $t$ that might affect the wage
+      + $\epsilon_{it}$: are other components of individual $i$ in period $t$ that might affect the wage
       
 # Labor regulation 
 
