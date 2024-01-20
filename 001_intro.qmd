@@ -1,7 +1,7 @@
 ---
 title: "Introduction"
 author: "Luis Francisco Gomez Lopez"
-date: 2023-07-17
+date: 2024-01-18
 format:
   beamer:
     colortheme: dolphin
@@ -59,6 +59,7 @@ library(ggrepel)
 - School education system and bilingualism
 - Aggregate value
 - Egg wholesale prices
+- Flows and stocks
 - Acknowledgments
 - References
 
@@ -80,8 +81,8 @@ Identify the main characteristics of the Colombian economy, especially those tha
 
 - Set of economic factors and forces that influence the development of and organization.
 
-```{r econ_env_macro, out.width = "75%"}
-
+```{r econ_env_macro}
+#| out-width: 75%
 #Plot
 ggplot(data = tibble(x = 0, y = 0)) + 
     ## Company
@@ -140,43 +141,48 @@ ggplot(data = tibble(x = 0, y = 0)) +
 
 # Population
 
-```{r out.width = "85%"}
+```{r }
+#| out-width: 75%
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Demografía y población > Proyecciones de población >
 # Proyecciones y retroproyecciones de población nacional para el periodo 1950-2019 y 2020-2070 con base en el CNPV 2018 >
 # Serie nacional de población por área, sexo y edad para el periodo 2020-2070
+
+# Escoger el año
+ano_choose <- 2024
+
 pop_pyramid_tbl <- readxl::read_excel(path = "000_data/001_serie_nacional_de_poblacion_por_area_sexo_y_edad_para_el_periodo_2020_2070.xlsx", 
                                       sheet = 1, 
-                                      range = "C12:KX95") %>% 
-  janitor::clean_names() %>% 
-  filter(area_geografica == "Total") %>%
-  select(-c(area_geografica, total_hombres, total_mujeres)) %>% 
-  select(ano:mujeres_100_y_mas, total) %>%
-  rename(mujeres_100 = mujeres_100_y_mas, hombres_100 = hombres_100_y_mas) %>% 
+                                      range = "C12:KX95") |>  
+  janitor::clean_names() |>  
+  filter(area_geografica == "Total") |> 
+  select(-c(area_geografica, total_hombres, total_mujeres)) |> 
+  select(ano:mujeres_100_y_mas, total) |> 
+  rename(mujeres_100 = mujeres_100_y_mas, hombres_100 = hombres_100_y_mas) |> 
   pivot_longer(cols = hombres_0:mujeres_100, 
                names_to = "genero_edad", 
-               values_to = "pop") %>% 
-  filter(ano %in% c(2023, 2023 + 30)) %>% 
+               values_to = "pop") |>  
+  filter(ano %in% c(ano_choose, ano_choose + 30)) |>  
   separate(col = genero_edad, 
            into = c("genero", "edad"), 
            sep = "_", 
-           convert = TRUE) %>% 
+           convert = TRUE) |>  
   mutate(pct_pop = pop / total, 
-         .keep = "unused") %>% 
-  group_by(ano, genero) %>% 
+         .keep = "unused") |> 
+  group_by(ano, genero) |>  
   mutate(rango_edad = cut(edad, 
                           breaks = c(seq.int(0, 85, 5), "Inf"),
                           labels = c(str_c(seq(0,80,5), seq(4,85,5), sep = "-"),
                                      "85+"), 
                           right = FALSE)) %>% 
-  ungroup() %>% 
-  group_by(ano, genero, rango_edad) %>%
-  summarize(pct_pop = sum(pct_pop)) %>% 
+  ungroup() |> 
+  group_by(ano, genero, rango_edad) |> 
+  summarize(pct_pop = sum(pct_pop)) |>  
   ungroup()
 
 # Plot
-pop_pyramid_tbl %>% 
+pop_pyramid_tbl |>  
   ggplot(aes(x = ifelse(test = genero == "hombres", 
                         yes = -pct_pop, no = pct_pop) , 
              y = rango_edad,
@@ -220,7 +226,8 @@ pop_pyramid_tbl %>%
 
 # Mean height
 
-```{r out.width = "85%"}
+```{r }
+#| out-width: 85%
 # Data
 # https://ncdrisc.org/index.html > DATA DOWNLOADS >
 # HEIGHT > Country-specific data for all countries
@@ -265,7 +272,7 @@ height_tbl %>%
 
 # Household income
 
-- **ingtotug**: "Ingreso total de la unidad de gasto **antes** de imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, p 16-17]
+- **ingtotug**: "Ingreso total de la unidad de gasto **antes** de imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, pp. 16-17]
     
     + "Ingreso  monetario  primera  actividad  (IMPA)"
     + "Ingreso  en  especie  (IE)"
@@ -273,69 +280,73 @@ height_tbl %>%
     + "Ingreso monetario de desocupados e inactivos (IMDI)"
     + "Ingresos por otras fuentes (IOF)"
     
-- **ingtotugarr**: "Ingreso total de la unidad de gasto con imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, p 24-26]
+- **ingtotugarr**: "Ingreso total de la unidad de gasto con imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, pp. 24-26]
 
     + Modulo B Datos de la Vivienda: 11. Si tuviera que pagar arriendo por esta vivienda, ¿cuánto estima que tendría que pagar mensualmente? [@dane_cuestionario_2019, p 2]
     
 # Household income
 
-```{r out.width = "85%"}
+```{r }
+#| out-width: 85%
 # Data
 # https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
 # Sociedad > Pobreza y condiciones de vida >
-# Medición de Pobreza Monetaria y Desigualdad 2021 > Hogares
-household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2021.csv", 
-                                   delim = ",", 
-                                   locale = locale(decimal_mark = ".")) %>% 
-  janitor::clean_names() %>% 
+# Medición de Pobreza Monetaria y Desigualdad 2022 > Hogares
+household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2022.csv", 
+                            delim = ",", 
+                            locale = locale(decimal_mark = ".")) %>% 
+  janitor::clean_names() |>  
   select(
-         # Llave vivienda 
-         directorio,
-         # Llave hogar
-         secuencia_p,
-         # La vivienda ocupada por este hogar es:
-         # a. Propia, totalmente pagada 
-         # b. Propia, la están pagando 
-         # c. En arriendo o subarriendo 
-         # d. En usufructo 
-         # e. Posesión sin titulo (ocupante 
-         # f. Otra
-         p5090,
-         # Personas en el hogar
-         nper, 
-         # Ingreso total de la unidad de
-         # gasto antes de imputación de
-         # arriendo a propietarios y usufructuarios
-         ingtotug,
-         # Factor de expansión anualizado 
-         fex_c)
+    # Llave vivienda 
+    directorio,
+    # Llave hogar
+    secuencia_p,
+    # La vivienda ocupada por este hogar es:
+    # a. Propia, totalmente pagada 
+    # b. Propia, la están pagando 
+    # c. En arriendo o subarriendo 
+    # d. En usufructo 
+    # e. Posesión sin titulo (ocupante 
+    # f. Otra
+    p5090,
+    # Personas en el hogar
+    nper, 
+    # Ingreso total de la unidad de
+    # gasto antes de imputación de
+    # arriendo a propietarios y usufructuarios
+    ingtotug,
+    # Factor de expansión anualizado 
+    fex_c)
 
 ingtotug_zero <- filter(household_tbl, 
-                        ingtotug == 0) %>% 
-  .$fex_c %>% 
-  sum() %>% 
+                        ingtotug == 0) |>  
+  _$fex_c |>  
+  sum() |>  
   floor()
 
 total_fex_c <- summarize(household_tbl, 
                          sum_fex_c = sum(fex_c))$sum_fex_c
 
-household_income_nper_tbl <- household_tbl %>%
-  mutate(pct_fex_c = fex_c / total_fex_c) %>%
+household_income_nper_tbl <- household_tbl |> 
+  mutate(pct_fex_c = fex_c / total_fex_c) |> 
   mutate(range_ingtotug = cut(x = ingtotug,
                               breaks = c(seq.int(from = min(household_tbl$ingtotug),
                                                  by = 500000,
                                                  length.out = 20), 
                                          max(household_tbl$ingtotug) + 1),
                               right = FALSE,
-                              dig.lab = 9)) %>% 
-  group_by(range_ingtotug) %>% 
+                              # Check this if there is problem 
+                              # with the last range in relation
+                              # to the upper limit
+                              dig.lab = 9)) |>
+  group_by(range_ingtotug) |>  
   summarize(pct_fex_c = sum(pct_fex_c),
             mean_nper = mean(nper),
-            .groups = "drop") %>% 
+            .groups = "drop") |>  
   mutate(pct_fex_c_text = scales::percent(pct_fex_c, accuracy = 0.01),
          mean_nper_text = scales::number(mean_nper, accuracy = 0.01))
 
-household_income_nper_tbl %>% 
+household_income_nper_tbl |>  
   ggplot(aes(pct_fex_c, fct_rev(range_ingtotug))) +
   geom_point(shape = 21, 
              fill = "#E31A1C",
@@ -347,13 +358,13 @@ household_income_nper_tbl %>%
             size = 4) + 
   scale_x_continuous(limits = c(0, 0.3)) +
   labs(x = NULL,
-       y = "Income range (2021 COP)",
+       y = "Monthly mean income range (2022 COP)",
        title = "Household income distribution in Colombia",
-       subtitle = str_glue("Year: 2021
+       subtitle = str_glue("Year: 2022
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}
                            Total households with an income of zero: {scales::number(ingtotug_zero, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
-                          Last update date: 2022-04-27')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+                          Last update date: 2023-12-05')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -398,12 +409,12 @@ household_income_nper_tbl %>%
             size = 4) + 
   scale_x_continuous(limits = c(0, 5)) +
   labs(x = NULL,
-       y = "Income range (2021 COP)",
+       y = "Monthly mean income range (2022 COP)",
        title = "Mean individuals per household by income range in Colombia",
-       subtitle = str_glue("Year: 2021
+       subtitle = str_glue("Year: 2022
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
-                          Last update date: 2022-04-27')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+                          Last update date: 2023-12-05')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -421,27 +432,31 @@ household_income_nper_tbl %>%
 
 # Housing ownership
 
-- Housing (vivienda) ownership  status
+- Housing (vivienda) ownership  status[^3]
 
     + "Propia, totalmente pagada"
     + "Propia, la están pagando"
     + "En arriendo o subarriendo"
     + "En usufructo"
-    + "Posesión sin titulo (ocupante)"
+    + "Posesión sin título"
+    + "Propiedad colectiva"
     + "Otra"
 
 - The concept of housing (vivienda) is different from a household (hogar)
 
     + Zero or more households can live in a housing (vivienda)
-    + For a detail definition of a househould check out [@united_nations_principles_2017, p 38, 2.33]
+    + For a detail definition of a househould check out [@united_nations_principles_2017, p. 38, 2.33]
+
+[^3]: For a detail definition of these categories checkout [@dane_manual_2022, p. 35] 
 
 # Housing ownership
 
-```{r out.width = "85%"}
+```{r }
+#| out-width: 85%
 # Data
-household_housing_tbl <- household_tbl %>% 
-  mutate(pct_fex_c = fex_c / total_fex_c) %>% 
-  group_by(p5090) %>% 
+household_housing_tbl <- household_tbl |>  
+  mutate(pct_fex_c = fex_c / total_fex_c) |>  
+  group_by(p5090) |>  
   summarize(pct_fex_c = sum(pct_fex_c), .groups = "drop") %>% 
   mutate(pct_fex_c_text = scales::percent(pct_fex_c, accuracy = 0.01),
          p5090 = factor(p5090,
@@ -452,11 +467,13 @@ household_housing_tbl <- household_tbl %>%
                                    str_glue("En arriendo o 
                                             subarriendo"),
                                    "En usufructo",
-                                  str_glue("Posesión 
-                                           sin titulo (ocupante)"),
+                                   str_glue("Posesión 
+                                           sin título"),
+                                   str_glue("Propiedad 
+                                            colectiva"),
                                    "Otra")))
 
-household_housing_tbl %>% 
+household_housing_tbl |>  
   ggplot(aes(pct_fex_c, fct_rev(p5090))) +
   geom_point(shape = 21, 
              fill = "#E31A1C",
@@ -464,15 +481,15 @@ household_housing_tbl %>%
   geom_segment(aes(xend = 0, yend = fct_rev(p5090)), 
                color = "#2C3E50") + 
   geom_text(aes(label = pct_fex_c_text),
-             hjust = -0.5, size = 5) + 
+            hjust = -0.5, size = 5) + 
   scale_x_continuous(limits = c(0, 0.5)) +
   labs(x = NULL,
        y = NULL,
        title = "Housing ownership status of households in Colombia",
-       subtitle = str_glue("Year: 2021
+       subtitle = str_glue("Year: 2022
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2021
-                          Last update date: 2022-04-27')) + 
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+                          Last update date: 2023-12-05')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -490,15 +507,15 @@ household_housing_tbl %>%
 
 # School education system and bilingualism
 
-```{r out.width = "85%"}
+```{r }
+#| out-width: 85%
 # https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
-# Sociedad > Educación > Educación Formal 2020 > Obtener Microdatos >
+# Sociedad > Educación > Educación Formal 2022 > Obtener Microdatos >
 # Caratula única sede educativa
-schools_tbl <- read_delim(file = "000_data/001_caratula_unica_sede_educativa_2020.csv", 
-                                   delim = ";", 
-                                   locale = locale(decimal_mark = ","))
+schools_tbl <- read_csv(file = '000_data/001_caratula_unica_de_la_sede_educativa_2022.csv')
 
-schools_bilin_tbl <- schools_tbl %>%
+
+schools_bilin_tbl <- schools_tbl |> 
   count(# Sector 01 Oficial 02 No Oficial
     SECTOR_NOMBRE, 
     # ¿La sede educativa es bilingüe? 0 NO 1 SÍ
@@ -506,35 +523,36 @@ schools_bilin_tbl <- schools_tbl %>%
     #  ¿La sede educativa es bilingüe? 
     # No\Si 1 Programa académico 100% bilingüe 
     # 2 Bilingüismo como profundización y énfasis en el plan de estudios
-    TIPOBIL_NOMBRE) %>%
+    TIPOBIL_NOMBRE) |> 
   mutate(pct_n = n / nrow(schools_tbl),
          pct_n_text = scales::percent(pct_n, accuracy = 0.01),
          TIPOBIL_NOMBRE = case_when(
            ES_BILINGUE == "NO" ~ "No bilingüe",
+           is.na(ES_BILINGUE) == TRUE ~ "Sin información",
            TIPOBIL_NOMBRE == "Bilingüismo como profundización y énfasis en el plan de estudios" ~ "Profundización/énfasis",
            TIPOBIL_NOMBRE == "Programa académico 100% bilingüe" ~ "100% bilingüe",
            TIPOBIL_NOMBRE == " " ~ "Sin información",
            .default = TIPOBIL_NOMBRE),
          TIPOBIL_NOMBRE = fct_reorder2(TIPOBIL_NOMBRE, SECTOR_NOMBRE, pct_n))
 
-schools_bilin_tbl %>% 
+schools_bilin_tbl |>  
   ggplot(aes(TIPOBIL_NOMBRE, pct_n)) + 
   geom_col(color = "black",
            fill = "#2C3E50") +
   geom_text(aes(label = pct_n_text), 
-            vjust = -1,
+            vjust = -0.8,
             size = 5) + 
   scale_y_continuous(limits = c(0, 0.8)) +
   facet_wrap(vars(SECTOR_NOMBRE)) + 
   labs(x = NULL,
        y = NULL,
-       title = "Bilingualism level in the Colombian school education system",
-       subtitle = str_glue("Year: 2020 
-                           Number of educational establishments: {scales::number(sum(schools_bilin_tbl$n), big.mark = ',')} 
-                           Number of not official educational establishments: {scales::number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
-                           Number of official educational establishments: {scales::number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Educación Formal - 2020 - Carátula única sede educativa
-                          Last update date: 2022-06-13')) + 
+       title = "Bilingualism and educational establishments (preschool, elementary, middle and high school) in Colombia",
+       subtitle = str_glue("Año: 2022
+                           Total educational establishments: {scales::number(sum(schools_bilin_tbl$n), big.mark = ',')} 
+                           Total non official educational establishments: {scales::number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
+                           Total official educational establishments: {scales::number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"),
+       caption = str_glue('Fuente: DANE - Educación Formal - 2022 - Carátula única sede educativa
+                          Última fecha de actualización: 2023-08-15')) + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -563,7 +581,7 @@ schools_bilin_tbl %>%
 
 # Aggregate value
 
--  ISIC adapted for Colombia [@dane_clasicacion_2020, p 85]
+-  ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
 
 ```{r}
 tibble(Section = LETTERS[1:11],
@@ -593,7 +611,7 @@ actividades de saneamiento ambiental",
 
 # Aggregate value
 
--  ISIC adapted for Colombia [@dane_clasicacion_2020, p 85]
+-  ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
 
 ```{r}
 tibble(Section = LETTERS[12:21],
@@ -624,30 +642,28 @@ hogares individuales como productores de bienes y servicios para uso propio",
 
 - $\text{Aggregate value = Gross production - Intermediate consumption}$ 
 
-```{r out.width = "80%"}
+```{r }
+#| out-width: 80% 
 # Estadísticas por tema > Industria > Encuesta Anual Manufacturera (EAM) > Acceso a Microdatos Anomimizados > Encuesta Anual Manufacturera – EAM - 2020
 
 # https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
 # Economía > Industria > Encuesta Anual Manufacturera – EAM - 2020 > 
 # Obtener Microdatos
-manufac_tbl <- read_delim(file = "000_data/001_encuesta_anual_manufacturera_2020.csv", 
-                            delim = ",", 
-                            locale = locale(decimal_mark = ",")) %>% 
-  janitor::clean_names() %>%
+manufac_tbl <- read_csv(file = "000_data/001_encuesta_anual_manufacturera_2021.csv") |>  
+  janitor::clean_names() |> 
   select(nordemp, nordest,
          ciiu4, periodo,
-         valagri) %>% 
-  group_by(nordemp) %>% 
+         valagri) |>  
+  group_by(nordemp) |>  
   summarise(valagri = sum(valagri))
 
 total_nordemp <- nrow(manufac_tbl)
 
-total_valagri <- manufac_tbl %>% 
-  summarise(sum_valagri = sum(valagri)) %>% 
-  .$sum_valagri
+total_valagri <- manufac_tbl |>  
+  summarise(sum_valagri = sum(valagri)) |>  
+  _$sum_valagri
 
-
-manufac_tbl %>% 
+manufac_tbl |>  
   ggplot(aes(0, valagri)) +
   geom_point(shape = 21,
              fill = "#E31A1C",
@@ -658,13 +674,15 @@ manufac_tbl %>%
                                                     suffix = "M", 
                                                     big.mark = ",")) + 
   labs(x = NULL, 
-       y = "COP 2020 (M = Millions)", 
-       title = "Distribution of aggregate value in the manufacturing Colombian sector", 
-       subtitle = str_glue("Period: 2020
+       y = "COP 2021 (M = Millions)", 
+       title = "Distribution of aggregate value in the manufacturing Colombian sector",
+       # scales::label_number is a closure: typeof(label_number())
+       subtitle = str_glue("Period: 2021
+                           Total aggregate value: {number(total_valagri, scale = 1e-6, big.mark = ',', suffix = 'M')} COP
                            Number of companies: {total_nordemp}
                            Observation: Every point represents a company"),
-       caption = 'Source: DANE - Encuesta Anual Manufacturera – EAM - 2019
-                          Last update date: 2022-06-13') + 
+       caption = 'Source: DANE - Encuesta Anual Manufacturera – EAM - 2021
+                          Last update date: 2023-07-31') + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -686,33 +704,33 @@ manufac_tbl %>%
 # Precios > Sistema de Información de Precios Agropecuarios (SIPSA) >
 #  SERIES HISTÓRICAS POR COMPONENTE > Precios Mayoristas > Series históricas precios mayoristas
 egg_jan_2021_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx", 
-                          sheet = 2, 
-                          range = "A7:E4608") %>% 
-  janitor::clean_names() %>%
-  select(fecha, producto:precio_promedio_por_kilogramo) %>% 
+                               sheet = 2, 
+                               range = "A7:E4608") |> 
+  janitor::clean_names() |> 
+  select(fecha, producto:precio_promedio_por_kilogramo) |>  
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
 
-egg_junio_2023_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2023_junio.xlsx", 
-                               sheet = 7, 
-                               range = "A7:E4499") %>% 
-  janitor::clean_names() %>%
-  select(fecha, producto:precio_promedio_por_kilogramo) %>%
+egg_diciembre_2023_tbl <- read_excel(path = "000_data/001_series_historicas_precios_mayoristas_2023_diciembre.xlsx", 
+                                 sheet = 13, 
+                                 range = "A7:E4525") |>  
+  janitor::clean_names() |> 
+  select(fecha, producto:precio_promedio_por_kilogramo) |> 
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
 
 mercado_list <- c("Cali, Siloé",
                   "Pereira, La 41",
                   "Valledupar, Mercado Nuevo")
 
-egg_jan_dic_tbl <- egg_jan_2021_tbl %>% 
-  bind_rows(egg_junio_2023_tbl) %>%
-  rename(precio = precio_promedio_por_kilogramo) %>% 
+egg_jan_dic_tbl <- egg_jan_2021_tbl |>  
+  bind_rows(egg_diciembre_2023_tbl) |> 
+  rename(precio = precio_promedio_por_kilogramo) |>  
   mutate(fecha = ymd(fecha),
          label_mercado = ifelse(mercado %in% mercado_list, mercado, "")) 
-# %>% 
-#  mutate(producto = str_to_title(producto))
+# |>  
+# mutate(producto = str_to_title(producto))
 
-n_market <- egg_jan_dic_tbl %>% 
-  count(mercado) %>% 
+n_market <- egg_jan_dic_tbl |>  
+  count(mercado) |>  
   nrow()
 
 egg_jan_dic_tbl %>% 
@@ -737,7 +755,7 @@ egg_jan_dic_tbl %>%
        y = NULL, 
        title = str_glue("Egg mean wholesale prices in {n_market} Colombian markets"),
        caption = 'Source: DANE - Sistema de información de precios SIPSA
-                          Last update date: 2023-06-01')  + 
+                          Last update date: 2024-01-10')  + 
   theme(legend.position = "bottom",
         panel.border      = element_rect(fill = NA, 
                                          color = "black"),
@@ -805,7 +823,7 @@ knitr::include_graphics("000_data/001_rentas_trabajo_petro.png")
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__,
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__,
 __[readxl](https://CRAN.R-project.org/package=readxl)__,
 __[janitor](https://CRAN.R-project.org/package=janitor)__,
 __[scales](https://CRAN.R-project.org/package=scales)__,
