@@ -1,7 +1,7 @@
 ---
 title: "Economy and institutions"
 author: Luis Francisco Gomez Lopez
-date: 2023-07-17
+date: 2024-01-21
 format:
   beamer:
     colortheme: dolphin
@@ -72,7 +72,7 @@ Analyze the role of institutions in the economy
 
 # Definition of institutions
 
-- "Institutions are the rules of the game in a society or, more formally, are the humanly devised constraints that shape human interaction" [@north_institutions_1990, p 3]
+- "Institutions are the rules of the game in a society or, more formally, are the humanly devised constraints that shape human interaction" [@north_institutions_1990, p. 3]
 
 - Institutions can be informal or formal [@north_institutions_1991]
 
@@ -84,7 +84,7 @@ Analyze the role of institutions in the economy
 
 - Governance
 
-    + Set of traditions and institutions by which authority in a country is exercised where it includes [@kaufmann_worldwide_2011, p 222]:
+    + Set of traditions and institutions by which authority in a country is exercised where it includes [@kaufmann_worldwide_2011, p. 222]:
     
         + The process by which governments are selected, monitored and replaced
         + The capacity of the government to effectively formulate and implement sound policies
@@ -92,9 +92,10 @@ Analyze the role of institutions in the economy
         
 # Measuring formal institutions
 
-- Governance dimensions [@kaufmann_worldwide_2011, p 223]
+- Governance dimensions [@kaufmann_worldwide_2011, p. 223]
 
-```{r, out.width="90%", dev='png'}
+```{r }
+#| out-width: 90%
 
 grViz("
 digraph boxes_and_circles {
@@ -148,9 +149,11 @@ digraph boxes_and_circles {
 
 # Measuring formal institutions
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
+
 initial_year <- 1996
-last_year <- 2021
+last_year <- 2022
 middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
 
 # Percent Rank indicators
@@ -170,8 +173,8 @@ wgi_col <- wbstats::wb_data(indicator = c(
   country = "COL",
   start_date = initial_year,
   end_date = last_year,
-  return_wide = FALSE) %>%
-  filter(date %in% c(initial_year, middle_year, last_year)) %>%
+  return_wide = FALSE) |>
+  filter(date %in% c(initial_year, middle_year, last_year)) |>
   mutate(indicator = str_replace(string = indicator,
                                  pattern = ": Percentile Rank",
                                  replacement = ""),
@@ -184,11 +187,11 @@ wgi_col <- wbstats::wb_data(indicator = c(
                                  "Government Effectiveness",
                                  "Regulatory Quality",
                                  "Rule of Law",
-                                 "Control of Corruption") %>%
+                                 "Control of Corruption") |>
            fct_rev(),
-         date = as.factor(date) %>% fct_rev())
+         date = as.factor(date) |> fct_rev())
 
-wgi_col %>%
+wgi_col |>
   ggplot(aes(y = indicator, x = value, fill = date)) +
   geom_col(position = "dodge", color = "black") +
   geom_text(aes(label = round(value, digits = 2)),
@@ -276,7 +279,9 @@ Doing Business 2018 and Doing Business 2020** [@machen_investigation_2021]
     
 # Regulation of business activity
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
+
 initial_year <- 2020
 last_year <- 2020
 
@@ -305,7 +310,7 @@ db_col_2020 <- wbstats::wb_data(indicator = c(
                  country = "COL",
                  start_date = initial_year,
                  end_date = last_year,
-                 return_wide = FALSE) %>%
+                 return_wide = FALSE) |>
   mutate(indicator = str_replace(string = indicator,
                                  pattern = " - Score",
                                  replacement = ""),
@@ -324,10 +329,10 @@ db_col_2020 <- wbstats::wb_data(indicator = c(
                                  "Paying taxes",
                                  "Trading across borders",
                                  "Enforcing contracts",
-                                 "Resolving insolvency") %>%
+                                 "Resolving insolvency") |>
            fct_rev())
 
-db_col_2020 %>%
+db_col_2020 |>
   ggplot(aes(y = indicator, x = value)) +
   geom_col(aes(fill = indicator),
            position = "dodge", color = "black",
@@ -356,35 +361,46 @@ db_col_2020 %>%
 
 # Crime
 
-```{r out.width="90%"}
-homicide_1990_2020 <- wbstats::wb_data(# Intentional homicides (per 100,000 people)
-  indicator = "VC.IHR.PSRC.P5", 
-  start_date = 1990, 
-  end_date = 2020)
+```{r }
+#| out-width: 90%
 
-homicide_1990_2020_pivot_wider <- homicide_1990_2020 %>% 
-  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(1990, 2020)) %>% 
-  select(iso2c, iso3c, country, date, VC.IHR.PSRC.P5) %>% 
-  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.P5) %>% 
+initial_year <- 1990
+last_year <- 2021
+
+homicide <- wbstats::wb_data(# Intentional homicides (per 100,000 people)
+  indicator = "VC.IHR.PSRC.P5", 
+  start_date = initial_year, 
+  end_date = last_year)
+
+homicide_pivot_wider <- homicide |> 
+  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(initial_year, last_year)) |> 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.P5) |> 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.P5) |> 
   drop_na()
 
-homicide_1990_2020_pivot_wider %>% 
-  ggplot(aes(x = `1990`, y = `2020`))  + 
+names <- names(homicide_pivot_wider)
+
+homicide_pivot_wider |> 
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about: 
+  #### You have the column name as a character vector 
+  ggplot(aes(x = .data[[names[4]]], y = .data[[names[5]]]))  + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_1990_2020_pivot_wider %>% 
+  geom_label_repel(data = homicide_pivot_wider |> 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = str_glue("Intentional homicides (per 100,000 people): 1990 vs 2020"),
-       subtitle = str_glue("Number of countries: {nrow(homicide_1990_2020_pivot_wider)}"),
+       title = str_glue("Intentional homicides (per 100,000 people): {initial_year} vs {last_year}"),
+       subtitle = str_glue("Number of countries: {nrow(homicide_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide_1990_2020$last_updated)}")) + 
+                          Last update: {unique(homicide$last_updated)}")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -398,36 +414,47 @@ homicide_1990_2020_pivot_wider %>%
 
 # Crime
 
-```{r out.width="90%"}
-homicide_female_1990_2020 <- wbstats::wb_data(
+```{r }
+#| out-width: 90%
+
+initial_year <- 1990
+last_year <- 2021
+
+homicide_female <- wbstats::wb_data(
   # Intentional homicides, female (per 100,000 female)
   indicator = "VC.IHR.PSRC.FE.P5", 
-  start_date = 1990, 
-  end_date = 2020)
+  start_date = initial_year, 
+  end_date = last_year)
 
-homicide_female_1990_2020_pivot_wider <- homicide_female_1990_2020 %>% 
-  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(1990, 2020)) %>% 
-  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) %>% 
-  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) %>% 
+homicide_female_pivot_wider <- homicide_female |> 
+  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(initial_year, last_year)) |> 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) |> 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) |> 
   drop_na()
 
-homicide_female_1990_2020_pivot_wider %>% 
-  ggplot(aes(x = `1990`, y = `2020`)) + 
+names_female <- names(homicide_female_pivot_wider) 
+
+homicide_female_pivot_wider |> 
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about: 
+  #### You have the column name as a character vector 
+  ggplot(aes(x = .data[[names_female[4]]], y = .data[[names_female[5]]])) + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_female_1990_2020_pivot_wider %>% 
+  geom_label_repel(data = homicide_female_pivot_wider |> 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Intentional homicides, female (per 100,000 female): 1990 vs 2020",
-       subtitle = str_glue("Number of countries: {nrow(homicide_female_1990_2020_pivot_wider)}"),
+       title = "Intentional homicides, female (per 100,000 female): {initial_year} vs {last_year}",
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide_female_1990_2020$last_updated)}")) + 
+                          Last update: {unique(homicide_female$last_updated)}")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -441,36 +468,47 @@ homicide_female_1990_2020_pivot_wider %>%
 
 # Crime
 
-```{r out.width="90%"}
-homicide_male_1990_2020 <- wbstats::wb_data(
-  # Intentional homicides, male (per 100,000 male)
-  indicator = "VC.IHR.PSRC.MA.P5", 
-  start_date = 1990, 
-  end_date = 2020)
+```{r }
+#| out-width: 90%
 
-homicide_male_1990_2020_pivot_wider <- homicide_male_1990_2020 %>% 
-  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(1990, 2020)) %>% 
-  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) %>% 
-  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) %>% 
+initial_year <- 1990
+last_year <- 2021
+
+homicide_male <- wbstats::wb_data(
+  # Intentional homicides, male (per 100,000 male)
+  indicator = "VC.IHR.PSRC.MA.P5",
+  start_date = initial_year, 
+  end_date = last_year)
+
+homicide_male_pivot_wider <- homicide_male |> 
+  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(initial_year, last_year)) |> 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) |> 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) |> 
   drop_na()
 
-homicide_male_1990_2020_pivot_wider %>% 
-  ggplot(aes(x = `1990`, y = `2020`)) + 
+names_male <- names(homicide_male_pivot_wider) 
+
+homicide_male_pivot_wider |> 
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about: 
+  #### You have the column name as a character vector 
+  ggplot(aes(x = .data[[names_male[4]]], y = .data[[names_male[5]]])) + 
   geom_abline(slope = 1, color = 'black') +
   geom_point(shape = 21, 
              size = 4,
              fill = "red") + 
-  geom_label_repel(data = homicide_male_1990_2020_pivot_wider %>% 
+  geom_label_repel(data = homicide_male_pivot_wider |> 
                      filter(country == "Colombia"),
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Intentional homicides, male (per 100,000 male): 1990 vs 2020",
-       subtitle = str_glue("Number of countries: {nrow(homicide_male_1990_2020_pivot_wider)}"),
+       title = "Intentional homicides, male (per 100,000 male): {initial_year} vs {last_year}",
+       subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide_male_1990_2020$last_updated)}")) + 
+                          Last update: {unique(homicide_male$last_updated)}")) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -490,7 +528,7 @@ homicide_male_1990_2020_pivot_wider %>%
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
