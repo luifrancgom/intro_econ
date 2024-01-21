@@ -1,7 +1,7 @@
 ---
 title: "Economic Growth"
 author: "Luis Francisco Gomez Lopez"
-date: 2023-07-17
+date: 2024-01-20
 format:
   beamer:
     colortheme: dolphin
@@ -82,7 +82,8 @@ Analyze the determinants of economic growth
 
 # Economic growth from a long-term perspective
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
 # Data
 # https://www.rug.nl/ggdc/ > Historical Development > Historical Development
 # Maddison Historical Statistics > Releases > 2020 > Excel
@@ -93,19 +94,19 @@ data_madison_region_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2020.x
                                                          sheet = 6,
                                                          range = "A4:S26",
                                                          col_names = FALSE,
-                                                         trim_ws = TRUE) %>% 
-  select(1:9) %>% 
+                                                         trim_ws = TRUE) |> 
+  select(1:9) |> 
   set_names(nm = c("year", 
                    "Western Europe", "Eastern Europe",  
                    "Western Offshoots", "Latin America", 
                    "Asia (East)", "Asia (South and South-East)",
-                   "Middle East", "Sub-Sahara Africa")) %>% 
+                   "Middle East", "Sub-Sahara Africa")) |> 
   pivot_longer(cols = `Western Europe`:`Sub-Sahara Africa`, 
                names_to = "region", 
                values_to = "gpd_per_capita")
 
 
-data_madison_region_gdp_per_capita %>% 
+data_madison_region_gdp_per_capita |> 
   ggplot(aes(x = year,
              y = gpd_per_capita, group = region)) +
   geom_point(aes(fill = region),
@@ -142,17 +143,18 @@ data_madison_region_gdp_per_capita %>%
 
 # Economic growth paths
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
 data_madison_country_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2020.xlsx",
                    sheet = 3,
                    range = "A1:E21683",
                    trim_ws = TRUE)
 
-data_madison_country_usa_col_kor <- data_madison_country_gdp_per_capita %>%
+data_madison_country_usa_col_kor <- data_madison_country_gdp_per_capita |>
   filter(countrycode %in% c("USA", "COL", "KOR"),
          year %in% 1911:2018)
   
-data_madison_country_usa_col_kor %>% 
+data_madison_country_usa_col_kor |> 
   ggplot(aes(x = year,
              y = gdppc)) +
   geom_line(aes(color = country,
@@ -188,12 +190,13 @@ data_madison_country_usa_col_kor %>%
 
 # Economic growth paths
 
-```{r out.width="90%"}
-data_madison_country_hti_dom <- data_madison_country_gdp_per_capita %>%
+```{r }
+#| out-width: 90%
+data_madison_country_hti_dom <- data_madison_country_gdp_per_capita |>
   filter(countrycode %in% c("HTI", "DOM"),
          year %in% 1950:2018)
   
-data_madison_country_hti_dom %>% 
+data_madison_country_hti_dom |> 
   ggplot(aes(x = year,
              y = gdppc)) +
   geom_line(aes(color = country,
@@ -228,12 +231,13 @@ data_madison_country_hti_dom %>%
 
 # Economic growth paths
 
-```{r out.width="90%"}
-data_madison_country_col_ven <- data_madison_country_gdp_per_capita %>%
+```{r }
+#| out-width: 90%
+data_madison_country_col_ven <- data_madison_country_gdp_per_capita |>
   filter(countrycode %in% c("COL", "VEN"),
          year %in% 1900:2018)
   
-data_madison_country_col_ven %>% 
+data_madison_country_col_ven |> 
   ggplot(aes(x = year,
              y = gdppc)) +
   geom_line(aes(color = country,
@@ -269,17 +273,19 @@ data_madison_country_col_ven %>%
 # Economic growth in images
 
 ::: {#fig-shangai_financial_district_pudong layout-ncol="2"}
-![1987](_000_images/003_pudong_1987.png){#fig-r_1 width="210px" height="210px"}
 
-![2013](_000_images/003_pudong_2013.png){#fig-rstudio_ide_1 width="210px" height="210px"}
+![1987](_000_images/003_pudong_1987.png){#fig-pudong-1987 width="210px" height="210px"}
+
+![2013](_000_images/003_pudong_2013.png){#fig-pudong-2013 width="210px" height="210px"}
 
 Shanghai’s financial district of Pudong [@taylor_26_2013]
+
 :::
 
 # Economic growth in images
 
 ![Korean peninsula, nocturnal luminosity: September 24, 2012
- [@nasa_earth_observatory_korea_2012]](_000_images/003_north_south_koreas.png){#fig-korean_peninsula_nocturnal_luminosity fig-alt="Korean peninsula, nocturnal luminosity" fig-align="center" width="350px" height="350px"}
+ [@nasa_earth_observatory_korea_2012]](_000_images/003_north_south_koreas.png){#fig-korean-peninsula-nocturnal-luminosity fig-alt="Korean peninsula, nocturnal luminosity" fig-align="center" width="350px" height="350px"}
 
 # Economic growth in images
 
@@ -339,7 +345,7 @@ Other factors that affect the Gross Domestic Product different from labor and pr
     
 # Growth accounting
 
-![Labor productivity and total factor productivity [@de_vries_total_2017, page 21, fig 3]](_000_images/003_labor_productivity_total_factor_productivity.png){#fig-labor_factor_productivity_total_factor_productivity fig-alt="Labor productivity and total factor productivity" fig-align="center" width="400px" height="400px"}
+![Labor productivity and total factor productivity [@de_vries_total_2017, page 21, fig 3]](_000_images/003_labor_productivity_total_factor_productivity.png){#fig-labor-factor-productivity-total-factor-productivity fig-alt="Labor productivity and total factor productivity" fig-align="center" width="400px" height="400px"}
 
 # Growth accounting
 
@@ -352,27 +358,27 @@ Other factors that affect the Gross Domestic Product different from labor and pr
 # Username: l*********m@gmail.com
 # Password: U**********4
 
-data_ted_col <- read_csv(file = '000_data/003_tidy_TED2.zip') %>%
+data_ted_col <- read_csv(file = '000_data/003_tidy_TED2.zip') |>
   filter(unit_code == 'COL', 
          date %in% c(1990, 2010, 2023),
          variable_label %in% c('Growth in real GDP',
                                'Contribution of Labor Quality to real GDP growth',
                                'Contribution of Labor Quantity to real GDP growth',
                                'Contribution of Total Capital Services to real GDP growth',
-                               'Growth of Total Factor Productivity')) %>% 
-  select(date, variable_label, value) %>% 
+                               'Growth of Total Factor Productivity')) |> 
+  select(date, variable_label, value) |> 
   pivot_wider(id_cols = variable_label, 
-              names_from = date, values_from = value) %>% 
+              names_from = date, values_from = value) |> 
   rename(Measure = variable_label)
 
-data_ted_col %>%
-  kable(booktabs = TRUE, escape = FALSE, digits = 2) %>%
-  kable_styling(font_size = 9) %>% 
-  column_spec(column = 1, width = "2.5in") %>%
-  row_spec(row = 1, background = '#e31a1c') %>% 
-  row_spec(row = 2:3, background = '#18BC9C') %>%
-  row_spec(row = 4, background = '#CCBE93') %>%
-  row_spec(row = 5, background = '#FF7F00') %>%
+data_ted_col |>
+  kable(booktabs = TRUE, escape = FALSE, digits = 2) |>
+  kable_styling(font_size = 9) |> 
+  column_spec(column = 1, width = "2.5in") |>
+  row_spec(row = 1, background = '#e31a1c') |> 
+  row_spec(row = 2:3, background = '#18BC9C') |>
+  row_spec(row = 4, background = '#CCBE93') |>
+  row_spec(row = 5, background = '#FF7F00') |>
   footnote(general       = c('Source: Total Economy Database - Growth Accounting and Total Factor Productivity', 'Last update: 2023-04'),
            general_title = "",
            threeparttable = TRUE)
@@ -403,7 +409,7 @@ data_ted_col %>%
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
