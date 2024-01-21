@@ -276,7 +276,8 @@ gdp_expenditure_table_footnote |>
 
 # Gross Domestic Product
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
 gdp_nominal_real_col <- wbstats::wb_data(country = c("COL"),
                  indicator    = c("NY.GDP.MKTP.CN", "NY.GDP.MKTP.KN"),
                  return_wide  = FALSE)
@@ -324,7 +325,8 @@ gdp_nominal_real_col |>
 
 # Gross Domestic Product
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
 real_gdp_per_capita_col <- wbstats::wb_data(country   = c("COL"),
             indicator = c("NY.GDP.PCAP.KN"))
 
@@ -379,7 +381,8 @@ real_gdp_per_capita_col |>
 
 # Gross Domestic Product
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
 gdp_per_capita_ppp_col_usa <- wbstats::wb_data(country   = c("COL", "USA"),
                  # Only data for 1990 onwards
                  start_date = 1990,
@@ -441,7 +444,8 @@ $$\frac{\text{GDP per capita constant LCU}_t - \text{GDP per capita constant LCU
 
 # Economic Growth
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
 growth_real_gpd_per_capita_col <- wbstats::wb_data(country   = c("COL"),
                  indicator = c("NY.GDP.PCAP.KD.ZG"))
 
