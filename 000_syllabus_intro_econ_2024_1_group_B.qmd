@@ -117,7 +117,7 @@ tibble(Week = c(1:9),
 
 -   January 22
 
-    -   Start Block 2
+    -   Start Block 1
 
     -   **Virtual meeting Presentation Syllabus**
 
