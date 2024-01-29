@@ -1,7 +1,10 @@
 ---
 title: "External sector II"
 author: Luis Francisco Gomez Lopez
-date: 2023-07-18
+date: 2024-01-28
+execute: 
+  echo: false
+  warning: false
 format:
   beamer:
     colortheme: dolphin
@@ -9,6 +12,7 @@ format:
     theme: AnnArbor
     link-citations: true
     linkcolor: blue
+    fig-align: center
     include-in-header:
       - text: |
           \usepackage{booktabs}
@@ -28,13 +32,6 @@ format:
           \usepackage{fontawesome5}
 bibliography: intro_econ.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
 
 ```{r}
 library(tidyverse)
@@ -104,19 +101,22 @@ Explain the composition and determinants of Colombian foreign trade
         
 # Volume of international trade
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
+#| fig-align: center
+
 # Data
 data <- wbstats::wb_data(country   = "COL",
                          indicator = c("NE.IMP.GNFS.KN", "NE.EXP.GNFS.KN"),
-                         return_wide = FALSE) %>%
+                         return_wide = FALSE) |>
   filter(!is.na(value))
 
-data %>%
-  select(country, date, value, indicator_id) %>%
+data |>
+  select(country, date, value, indicator_id) |>
   mutate(indicator_id = case_when(
     indicator_id == "NE.IMP.GNFS.KN" ~ "Imports",
     indicator_id == "NE.EXP.GNFS.KN" ~ "Exports",
-    TRUE                             ~ indicator_id)) %>%
+    TRUE                             ~ indicator_id)) |>
 
   #Plot
   ggplot() +
@@ -171,19 +171,19 @@ data %>%
     
 # Patterns of international trade: goods
 
-![Colombian good exports __HS 4 digits (HS92) edition__ year 1995 [@oec_observatory_2022]](000_data/005_col_exports_1995_hs4_92.png){#fig-colombian_goods_exports_1995 fig-alt="Colombian goods exports 1995" fig-align="center" width="450px" height="450px"}
+![Colombian good exports __HS 4 digits (HS92) edition__ year 1995 [@oec_observatory_2022]](000_data/005_col_exports_1995_hs4_92.png){#fig-colombian-goods-exports-1995 fig-alt="Colombian goods exports 1995" width="450px" height="450px"}
 
 # Patterns of international trade: goods
 
-![Colombian good exports __HS 4 digits (HS92) edition__ year 2021 [@oec_observatory_2022]](000_data/005_col_exports_2021_hs4_92.png){#fig-colombian_goods_exports_2021 fig-alt="Colombian goods exports 2021" fig-align="center" width="450px" height="450px"}
+![Colombian good exports __HS 4 digits (HS92) edition__ year 2021 [@oec_observatory_2022]](000_data/005_col_exports_2021_hs4_92.png){#fig-colombian-goods-exports-2021 fig-alt="Colombian goods exports 2021" width="450px" height="450px"}
 
 # Patterns of international trade: goods
 
-![Colombian goods imports __HS 4 digits (HS92) edition__ year 1995 [@oec_observatory_2022]](000_data/005_col_imports_1995_hs4_92.png){#fig-colombian_goods_imports_1995 fig-alt="Colombian goods imports 1995" fig-align="center" width="450px" height="450px"}
+![Colombian goods imports __HS 4 digits (HS92) edition__ year 1995 [@oec_observatory_2022]](000_data/005_col_imports_1995_hs4_92.png){#fig-colombian-goods-imports-1995 fig-alt="Colombian goods imports 1995" width="450px" height="450px"}
 
 # Patterns of international trade: goods
 
-![Colombian goods imports __HS 4 digits (HS92) edition__ year 2021 [@oec_observatory_2022]](000_data/005_col_imports_2021_hs4_92.png){#fig-colombian_goods_imports_2021 fig-alt="Colombian goods imports 2021" fig-align="center" width="450px" height="450px"}
+![Colombian goods imports __HS 4 digits (HS92) edition__ year 2021 [@oec_observatory_2022]](000_data/005_col_imports_2021_hs4_92.png){#fig-colombian-goods-imports-2021 fig-alt="Colombian goods imports 2021" width="450px" height="450px"}
 
 # Extended Balance of Payments Services classification (EBOPS)
 
@@ -201,19 +201,19 @@ data %>%
     
 # Patterns of international trade: services
 
-![Colombian services exports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]](000_data/005_col_export_ebops_version2002_2000.png){#fig-colombian_services_exports_2000 fig-alt="Colombian services exports 2000" fig-align="center" width="280px" height="280px"}
+![Colombian services exports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]](000_data/005_col_export_ebops_version2002_2000.png){#fig-colombian-services-exports-2000 fig-alt="Colombian services exports 2000" width="280px" height="280px"}
 
 # Patterns of international trade: services
 
-![Colombian services exports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]](000_data/005_col_export_ebops_version2002_2020.png){#fig-colombian_services_exports_2020 fig-alt="Colombian services exports 2020" fig-align="center" width="250px" height="250px"}
+![Colombian services exports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]](000_data/005_col_export_ebops_version2002_2020.png){#fig-colombian-services-exports-2020 fig-alt="Colombian services exports 2020" width="250px" height="250px"}
 
 # Patterns of international trade: services
 
-![Colombian services imports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]](000_data/005_col_import_ebops_version2002_2000.png){#fig-colombian_services_imports_2000 fig-alt="Colombian services imports 2000" fig-align="center" width="280px" height="280px"}
+![Colombian services imports __(EBOPS Version 2002)__ year 2000 [@oec_observatory_2022]](000_data/005_col_import_ebops_version2002_2000.png){#fig-colombian-services-imports-2000 fig-alt="Colombian services imports 2000" width="280px" height="280px"}
 
 # Patterns of international trade: services
 
-![Colombian services imports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]](000_data/005_col_import_ebops_version2002_2020.png){#fig-colombian_services_imports_2020 fig-alt="Colombian services imports 2020" fig-align="center" width="250px" height="250px"}
+![Colombian services imports __(EBOPS Version 2002)__ year 2020 [@oec_observatory_2022]](000_data/005_col_import_ebops_version2002_2020.png){#fig-colombian-services-imports-2020 fig-alt="Colombian services imports 2020" width="250px" height="250px"}
 
 # Observatory of Economic Complexity (OEC)
 
@@ -243,7 +243,7 @@ data %>%
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
