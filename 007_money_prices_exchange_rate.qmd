@@ -1,7 +1,10 @@
 ---
 title: "Money, prices and the exchange rate"
 author: Luis Francisco Gomez Lopez
-date: 2023-07-19
+date: 2024-02-04
+execute: 
+  echo: false
+  warning: false
 format:
   beamer:
     colortheme: dolphin
@@ -9,6 +12,7 @@ format:
     theme: AnnArbor
     link-citations: true
     linkcolor: blue
+    fig-align: center
     include-in-header:
       - text: |
           \usepackage{booktabs}
@@ -28,13 +32,6 @@ format:
           \usepackage{fontawesome5}
 bibliography: intro_econ.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
 
 ```{r}
 library(tidyverse)
@@ -112,11 +109,11 @@ tibble(Bank = c("Sveriges Riksbank",
                 "Banco de la Republica (Colombia)"),
        Established = c(1668, 1694, 1800, 1800, 1814, 1816,
                        1816, 1818, 1846, 1850, 1874, 1876,
-                       1882, 1893, 1923)) %>% 
+                       1882, 1893, 1923)) |> 
   kable(format = "latex", booktabs = TRUE, 
-        escape = FALSE, linesep = "") %>%
-  kable_styling(font_size = 7)  %>%
-  row_spec(row = 0, bold = TRUE) %>% 
+        escape = FALSE, linesep = "") |>
+  kable_styling(font_size = 7)  |>
+  row_spec(row = 0, bold = TRUE) |> 
   row_spec(row = 15, background = unname(palette_light()[4]))
 ```
 
@@ -182,22 +179,22 @@ tibble(Division = c("01", "02", "03",
                     "Education services",
                     "Restaurants and accommodation services",
                     "Insurance and financial services")
-       ) %>% 
-  kable(format = "latex", booktabs = TRUE, caption = "COICOP divisions (International version)") %>% 
-  kable_styling(font_size = 9, latex_options = "striped") %>% 
+       ) |> 
+  kable(format = "latex", booktabs = TRUE, caption = "COICOP divisions (International version)") |> 
+  kable_styling(font_size = 9, latex_options = "striped") |> 
   row_spec(row = 0, bold = TRUE)
 ```
 
 # Inflation and Consumer Price Index
 
-```{r cpi_col, out.width = "90%"}
-
+```{r cpi_col}
+#| out-width: 90%
 # Data
 cpi <- wbstats::wb_data(country   = c("COL"),
                  indicator = c("FP.CPI.TOTL")) 
 
-cpi %>%
-    select(country, date, FP.CPI.TOTL) %>%
+cpi |>
+    select(country, date, FP.CPI.TOTL) |>
     # Plot
     ggplot(aes(x = date,
                y = FP.CPI.TOTL)) +
@@ -235,19 +232,19 @@ cpi %>%
 
 # Inflation and Consumer Price Index
 
-```{r inflation_col, out.width = "90%"}
-
+```{r inflation_col}
+#| out-width: 90%
 # Plot
 ## Colombia Inflation
 data <- wbstats::wb_data(country   = c("COL"),
             indicator = c("FP.CPI.TOTL.ZG"))
 
-data %>%
-    select(country, date, FP.CPI.TOTL.ZG) %>%
+data |>
+    select(country, date, FP.CPI.TOTL.ZG) |>
     ggplot(aes(x = date,
                y = FP.CPI.TOTL.ZG)) +
     geom_point(shape = 21, fill = palette_light()[[2]], color = "black") +
-    geom_smooth(data = data %>% filter(date >= 1991),
+    geom_smooth(data = data |> filter(date >= 1991),
                 method   = "loess",
                 span     = 0.5,
                 alpha    = 0.2,
@@ -317,25 +314,29 @@ data %>%
 
 # Exchange Rate and TRM COP/USD
 
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de cambio y sector externo > Tasas de cambio nominales
-              # Tasa Representativa del Mercado (TRM) > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") %>% 
-    set_names(nm = c("date", "trm")) %>%
-    # https://www.banrep.gov.co/es > Estadísticas económicas > Sector externo, tasas de cambio y derivados >
-    # 2. Tasas de cambio > Banda Cambiaria
-    left_join(read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
-                       locale = locale(decimal_mark = ",")) %>% 
-                  set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling")), 
-              by = "date") %>% 
-    select(-trm_medio) %>% 
-    pivot_longer(cols = trm:trm_ceiling)
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de cambio y sector externo > Tasas de cambio nominales
+# Tasa Representativa del Mercado (TRM) > Diaria > DESCARGAR >
+# Descargar datos en CSV
+cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") |> 
+  set_names(nm = c("date", "trm")) |>
+  # https://www.banrep.gov.co/es > Estadísticas económicas > Sector externo, tasas de cambio y derivados >
+  # 2. Tasas de cambio > Banda Cambiaria > 
+  # Serie histórica (24/01/1994 - 24/09/1999) >
+  # Exportar > Datos > CSV
+  left_join(read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
+                     locale = locale(decimal_mark = ",")) |> 
+              set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling")), 
+            by = "date") |> 
+  select(-trm_medio) |> 
+  pivot_longer(cols = trm:trm_ceiling)
 
 # Plot
-cop_usd_trm %>%
+cop_usd_trm |>
   ggplot(aes(x = date, y = value, group = name)) +
   geom_line(aes(color = name), 
             show.legend = FALSE) +
@@ -376,34 +377,38 @@ cop_usd_trm %>%
 
 ```{r}
 
-# Political interest rate 2023-07-19 (Colombia)
-i_t <- 0.1325 
+# Political interest rate 2024-02-01 (Colombia)
+i_t <- 0.1275
+date <- lubridate::ymd("2024-02-01")
 ```
 
-- In the link **[https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria)** on __2023-07-19__ it was pointed out that:
+- In the link **[https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria)** on __`r date`__ it was pointed out that:
 
     + *"La tasa de intervención de política monetaria o tasa de referencia es la tasa de interés mínima que el Banco de la República (BanRep) cobra a las entidades financieras por la liquidez que les suministra mediante las operaciones de mercado abierto (OMA). Esta tasa es el principal instrumento de intervención de política monetaria utilizado por el BanRep para afectar la cantidad de dinero que circula en la economía."*
 
-    + Also the *"tasa de intervención de política monetaria"* on __2023-07-19__ was `r scales::percent(i_t, accuracy = 0.01)`
+    + Also the *"tasa de intervención de política monetaria"* on __`r date`__ was __`r scales::percent(i_t, accuracy = 0.01)`__
     
 # Monetary policy intervention rate
 
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa de política monetaria > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') %>% 
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa de política monetaria > Diaria > DESCARGAR >
+# Descargar datos en CSV
+pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') |> 
   set_names(nm = c('date', 'pir'))
 
 # Plot
-static_plot1 <- pir_daily %>% 
+static_plot1 <- pir_daily |> 
   ggplot(aes(x = date, y = pir)) +
   geom_line(color = palette_light()[[1]]) +
   labs(x        = '', 
        y        = 'Percent',
-       caption  = 'Source: Banco de la República - Colombia',
+       caption  = str_glue('Source: Banco de la República - Colombia
+                           Last update: {pir_daily$date[length(pir_daily$date)]}'),
        title    = 'Monetary policy intervention rate of the Bank of the Republic (Colombia)',
        subtitle = str_glue('Interest rate expressed as annual effective overdue
                              Frequency: daily')) +
@@ -426,27 +431,31 @@ static_plot1
 
 # Monetary policy intervention rate
 
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa interbancaria (TIB) > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') %>% 
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa interbancaria (TIB) > Diaria > DESCARGAR >
+# Descargar datos en CSV
+tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') |> 
   set_names(nm = c('date', 'tib'))
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Indicador Bancario de Referencia (IBR) overnight, efectiva > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") %>% 
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Indicador Bancario de Referencia (IBR) overnight, efectiva > 
+# Diaria > DESCARGAR >
+# Descargar datos en CSV
+ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") |> 
   set_names(nm = c('date', 'ibr'))
 
-pir_tib_tbr_daily <- pir_daily %>% 
-  left_join(tib_daily, by = "date") %>% 
-  left_join(ibr_daily, by = "date") %>%
-  drop_na() %>% 
-  pivot_longer(cols = pir:ibr, names_to = "variable", values_to = "value") %>% 
+pir_tib_tbr_daily <- pir_daily |> 
+  left_join(tib_daily, by = "date") |> 
+  left_join(ibr_daily, by = "date") |>
+  drop_na() |> 
+  pivot_longer(cols = pir:ibr, names_to = "variable", values_to = "value") |> 
   mutate(variable = case_when(
     variable == "pir" ~ "Monetary policy intervention rate",
     variable == "tib" ~ "Tasa interbancaria (TIB)",
@@ -454,7 +463,7 @@ pir_tib_tbr_daily <- pir_daily %>%
     TRUE ~ variable))
 
 # Plot
-static_plot2 <- pir_tib_tbr_daily %>% 
+static_plot2 <- pir_tib_tbr_daily |> 
   ggplot(aes(x = date, 
              y = value, 
              group = variable,
@@ -463,7 +472,8 @@ static_plot2 <- pir_tib_tbr_daily %>%
   labs(x        = '', 
        y        = 'Percent',
        color    = "",
-       caption  = 'Source: Banco de la República - Colombia',
+       caption  = str_glue('Source: Banco de la República - Colombia
+                           Last update: {pir_tib_tbr_daily$date[length(pir_tib_tbr_daily$date)]}'),
        title    = 'Monetary policy intervention rate, TIB and IBR',
        subtitle = str_glue('Interest rates expressed as annual effective overdue
                              Frequency: daily')) +
@@ -486,47 +496,54 @@ static_plot2
 
 # Monetary policy intervention rate
 
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa de Certificado de Depósito a Término (CDT) a 90 días > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') %>% 
-  set_names(nm = c('date', 'cdt_90')) 
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa de Certificado de Depósito a Término (CDT) a 180 días > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") %>% 
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa de Certificado de Depósito a Término (CDT) a 90 días > 
+# Diaria > DESCARGAR >
+# Descargar datos en CSV
+cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') |> 
+  set_names(nm = c('date', 'cdt_90'))
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa de Certificado de Depósito a Término (CDT) a 180 días > 
+# Diaria > DESCARGAR >
+# Descargar datos en CSV
+cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") |> 
   set_names(nm = c('date', 'cdt_180'))
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa de Certificado de Depósito a Término (CDT) a 360 días > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") %>% 
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >  
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa de Certificado de Depósito a Término (CDT) a 360 días > 
+# Diaria > DESCARGAR >
+# Descargar datos en CSV
+cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") |> 
   set_names(nm = c('date', 'cdt_360'))
 
-pir_cdt_90_180_360_daily <- pir_daily %>% 
-  left_join(cdt_90, by = "date") %>% 
-  left_join(cdt_180, by = "date") %>%
-  left_join(cdt_360, by = "date") %>%
-  drop_na() %>% 
-  pivot_longer(cols = pir:cdt_360, names_to = "variable", values_to = "value") %>% 
+pir_cdt_90_180_360_daily <- pir_daily |>  
+  left_join(cdt_90, by = "date") |> 
+  left_join(cdt_180, by = "date") |>
+  left_join(cdt_360, by = "date") |>
+  drop_na() |> 
+  pivot_longer(cols = pir:cdt_360, names_to = "variable", values_to = "value") |> 
   mutate(variable = case_when(
     variable == "pir" ~ "Monetary policy intervention rate",
     variable == "cdt_90" ~ "CDT 90",
     variable == "cdt_180" ~ "CDT 180",
     variable == "cdt_360" ~ "CDT 360",
     .default = variable),
-    variable = variable %>% 
+    variable = variable |> 
       fct_relevel(c("Monetary policy intervention rate",
                     "CDT 90", "CDT 180", "CDT 360")))
 
 # Plot
-static_plot3 <- pir_cdt_90_180_360_daily %>% 
+static_plot3 <- pir_cdt_90_180_360_daily |> 
   ggplot(aes(x = date, 
              y = value, 
              group = variable, 
@@ -535,7 +552,8 @@ static_plot3 <- pir_cdt_90_180_360_daily %>%
   labs(x        = '', 
        y        = 'Percent',
        color    = "",
-       caption  = 'Source: Banco de la República - Colombia',
+       caption  = str_glue('Source: Banco de la República - Colombia
+                           Last update: {pir_cdt_90_180_360_daily$date[length(pir_cdt_90_180_360_daily$date)]}'),
        title    = 'Monetary policy intervention rate and CDT interest rates',
        subtitle = str_glue('Interest rates expressed as annual effective overdue
                              Frequency: daily')) +
@@ -558,15 +576,15 @@ static_plot3
 
 # Monetary policy transmission channels
 
-![**Interest rate and credit** [@banrep_canales_2020, fig. Canal De Tasa De Interés Y De Crédito: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_1_tasa_interes_credito.jpg){#fig-canal_tasa_interes_credito fig-alt="Interest rate and credit" fig-align="center" width="450px" height="450px"}
+![**Interest rate and credit** [@banrep_canales_2020, fig. Canal De Tasa De Interés Y De Crédito: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_1_tasa_interes_credito.jpg){#fig-canal-tasa-interes-credito fig-alt="Interest rate and credit" width="450px" height="450px"}
 
 # Monetary policy transmission channels
 
-![**Exchange rate** [@banrep_canales_2020, fig. Canal De Tasa De Cambio: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_2_tasa_cambio.jpg){#fig-canal_tasa_de_cambio fig-alt="Tasa de Cambio" fig-align="center" width="450px" height="600px"}
+![**Exchange rate** [@banrep_canales_2020, fig. Canal De Tasa De Cambio: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_2_tasa_cambio.jpg){#fig-canal-tasa-de-cambio fig-alt="Tasa de Cambio" width="450px" height="600px"}
 
 # Monetary policy transmission channels
 
-![**Expectations** [@banrep_canales_2020, fig. Canal De Las Expectativas: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_3_expectativas.jpg){#fig-canal_expectativas fig-alt="Expectativas" fig-align="center" width="400px" height="400px"}
+![**Expectations** [@banrep_canales_2020, fig. Canal De Las Expectativas: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_3_expectativas.jpg){#fig-canal-expectativas fig-alt="Expectativas" width="400px" height="400px"}
 
 # Acknowledgments
 
@@ -576,7 +594,7 @@ static_plot3
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
