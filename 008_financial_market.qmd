@@ -1,7 +1,10 @@
 ---
 title: "Financial Market"
 author: Luis Francisco Gomez Lopez
-date: 2023-07-20
+date: 2024-02-04
+execute: 
+  echo: false
+  warning: false
 format:
   beamer:
     colortheme: dolphin
@@ -9,6 +12,7 @@ format:
     theme: AnnArbor
     link-citations: true
     linkcolor: blue
+    fig-align: center
     include-in-header:
       - text: |
           \usepackage{booktabs}
@@ -28,13 +32,6 @@ format:
           \usepackage{fontawesome5}
 bibliography: intro_econ.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
 
 ```{r}
 library(DiagrammeR)
@@ -86,7 +83,10 @@ Analyze the functioning of the financial market, identifying the types of interm
 
 - By supervised entities [@congreso_de_colombia_decreto_1993]
 
-```{r, out.width="90%", dev='png'}
+```{r }
+#| out-width: 70%
+#| fig-align: center
+
 grViz("
 digraph boxes_and_circles {
 
@@ -139,7 +139,10 @@ digraph boxes_and_circles {
 
 - By markets [@cardenas_introduccion_2020, Chapter 8, p 264]
 
-```{r, out.width="90%", dev='png'}
+```{r }
+#| out-width: 95%
+#| fig-align: center
+
 grViz("
 digraph boxes_and_circles {
 
@@ -206,31 +209,44 @@ digraph boxes_and_circles {
 
 # Financial depth
 
-```{r out.width="90%"}
-start_date <- 2020
-end_date <- 2020
+```{r }
+#| out-width: 90%
 
-credit_private <- wbstats::wb_data(country = "countries_only",
-                               # Domestic credit to private sector (% of GDP)
-                               ## FS.AST.PRVT.GD.ZS
-                               #  GDP per capita, PPP (constant 2017 international $)
-                               ## NY.GDP.PCAP.PP.KD
-                               indicator    = c("FS.AST.PRVT.GD.ZS", "NY.GDP.PCAP.PP.KD"),
-                               start_date = start_date,
-                               end_date = end_date,
-                               return_wide  = TRUE) %>%
-  filter(!is.na(FS.AST.PRVT.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) %>%
+start_date <- 2022
+end_date <- 2022
+
+credit_private_long <- wbstats::wb_data(country = "countries_only",
+                                       # Domestic credit to private sector (% of GDP)
+                                       ## FS.AST.PRVT.GD.ZS
+                                       #  GDP per capita, PPP (constant 2017 international $)
+                                       ## NY.GDP.PCAP.PP.KD
+                                       indicator    = c("FS.AST.PRVT.GD.ZS", "NY.GDP.PCAP.PP.KD"),
+                                       start_date = start_date,
+                                       end_date = end_date,
+                                       return_wide = FALSE)
+
+credit_private_wide <- credit_private_long |> 
+  select(iso2c, iso3c, country, date, indicator_id, value) |> 
+  pivot_wider(id_cols = iso2c:date, 
+              names_from = indicator_id,
+              values_from = value) |> 
+  filter(!is.na(FS.AST.PRVT.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) |> 
   select(iso3c, country, date,
          FS.AST.PRVT.GD.ZS, NY.GDP.PCAP.PP.KD)
 
-credit_private %>%
+credit_private_wide_min_max_col <- credit_private_wide |> 
+  filter(FS.AST.PRVT.GD.ZS == min(FS.AST.PRVT.GD.ZS) |
+         FS.AST.PRVT.GD.ZS == max(FS.AST.PRVT.GD.ZS) |
+         iso3c == "COL")
+
+credit_private_wide |> 
   ggplot(aes(x = FS.AST.PRVT.GD.ZS,
              y = NY.GDP.PCAP.PP.KD)) +
   geom_point(color = "black",
              fill = unname(palette_light()[2]),
              shape = 21,
              show.legend = FALSE) +
-  geom_label_repel(data = filter(credit_private, iso3c %in% c("COL", "MAC", "SLE")),
+  geom_label_repel(data = filter(credit_private_wide, iso3c %in% credit_private_wide_min_max_col$iso3c),
                    aes(label = country),
                    seed = 1234,
                    size = 3,
@@ -247,10 +263,10 @@ credit_private %>%
        title    = "Financial depth vs Gross Domestic Product per-capita",
        subtitle = str_glue("Period: {start_date}
                            Axis scales: Logarithmic Base 10
-                           Number of territories: {nrow(credit_private)}"),
+                           Number of territories: {nrow(credit_private_wide)}"),
        # Change the update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2023-06-29")) +
+                             Last update date: {unique(credit_private_long$last_updated)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -264,31 +280,44 @@ credit_private %>%
 
 # Financial depth
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
+
 start_date <- 2020
 end_date <- 2020
 
-market_cap <- wbstats::wb_data(country = "countries_only",
-                 # Market capitalization of listed domestic companies (% of GDP)
-                 ## CM.MKT.LCAP.GD.ZS
-                 #  GDP per capita, PPP (constant 2017 international $)
-                 ## NY.GDP.PCAP.PP.KD
-                 indicator    = c("CM.MKT.LCAP.GD.ZS", "NY.GDP.PCAP.PP.KD"),
-                 start_date = start_date,
-                 end_date = end_date,
-                 return_wide  = TRUE) %>%
-  filter(!is.na(CM.MKT.LCAP.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) %>%
+market_cap_long <- wbstats::wb_data(country = "countries_only",
+                               # Market capitalization of listed domestic companies (% of GDP)
+                               ## CM.MKT.LCAP.GD.ZS
+                               #  GDP per capita, PPP (constant 2017 international $)
+                               ## NY.GDP.PCAP.PP.KD
+                               indicator    = c("CM.MKT.LCAP.GD.ZS", "NY.GDP.PCAP.PP.KD"),
+                               start_date = start_date,
+                               end_date = end_date,
+                               return_wide  = FALSE) 
+
+market_cap_wide <- market_cap_long |>
+  select(iso2c, iso3c, country, date, indicator_id, value) |>
+  pivot_wider(id_cols = iso2c:date, 
+              names_from = indicator_id,
+              values_from = value) |> 
+  filter(!is.na(CM.MKT.LCAP.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) |>
   select(iso3c, country, date,
          CM.MKT.LCAP.GD.ZS, NY.GDP.PCAP.PP.KD)
 
-market_cap %>%
+market_cap_wide_min_max_col <- market_cap_wide |> 
+  filter(CM.MKT.LCAP.GD.ZS == min(CM.MKT.LCAP.GD.ZS) |
+         CM.MKT.LCAP.GD.ZS == max(CM.MKT.LCAP.GD.ZS) |
+         iso3c == "COL")
+
+market_cap_wide |>
   ggplot(aes(x = CM.MKT.LCAP.GD.ZS,
              y = NY.GDP.PCAP.PP.KD)) +
   geom_point(color = "black",
              fill = unname(palette_light()[2]),
              shape = 21,
              show.legend = FALSE) +
-  geom_label_repel(data = filter(market_cap, iso3c %in% c("COL", "HKG")),
+  geom_label_repel(data = filter(market_cap_wide, iso3c %in% market_cap_wide_min_max_col$iso3c),
                    aes(label = country),
                    seed = 1234,
                    size = 3,
@@ -305,10 +334,10 @@ market_cap %>%
        title    = "Financial depth vs Gross Domestic Product per-capita",
        subtitle = str_glue("Period: {start_date}
                            Axis scales: Logarithmic Base 10
-                           Number of territories: {nrow(market_cap)}"),
+                           Number of territories: {nrow(market_cap_wide)}"),
        # Change the update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2023-06-29")) +
+                             Last update date: {unique(market_cap_long$last_updated)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -355,21 +384,23 @@ market_cap %>%
     
 # Principal instruments "Mercado no intermediado"
 
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Tasas de interés
-              # Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años 
-              # > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv") %>% 
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES > 
+# Tasas de interés y sector financiero > Tasas de interés
+# Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años 
+# > Diaria > DESCARGAR >
+# Descargar datos en CSV
+tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv") |> 
   set_names(nm = c("date", "t_10"))
 
-tes_daily_t_10 %>%
+tes_daily_t_10 |>
   ggplot(aes(x = date,
              y = t_10)) +
   geom_line(color = unname(palette_light()[1]),
-             show.legend = FALSE) +
+            show.legend = FALSE) +
   scale_y_continuous(labels = scales::number_format(suffix = "%", 
                                                     accuracy = 1)) +
   labs(x        = NULL,
@@ -402,17 +433,19 @@ tes_daily_t_10 %>%
 
 # Principal instruments "Mercado no intermediado"       
         
-```{r out.width="90%"}
-              # https://www.banrep.gov.co/es > Estadísticas económicas >
-              # !NUEVO! Estadísticas Banrep > CATÁLOGO DE SERIES > 
-              # Tasas de interés y sector financiero > Mercado accionario
-              # Índice COLCAP 
-              # > Diaria > DESCARGAR >
-              # Descargar datos en CSV
-msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv') %>%
+```{r }
+#| out-width: 90%
+
+# https://www.banrep.gov.co/es > Estadísticas económicas >
+# Gráficas interactivas > CATÁLOGO DE SERIES >
+# Tasas de interés y sector financiero > 
+# Mercado accionario > Índice COLCAP 
+# > Diaria > DESCARGAR >
+# Descargar datos en CSV
+msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv') |>
   set_names(nm = c("date", "colcap"))
 
-msci_colcap %>%
+msci_colcap |>
   ggplot(aes(x = date,
              y = colcap)) +
   geom_line(color = unname(palette_light()[1]),
@@ -476,25 +509,27 @@ msci_colcap %>%
 
 ```{r}
 # https://www.superfinanciera.gov.co > INDUSTRIAS SUPERVISADAS > 
-# Entidades vigilidas por la superintendencia financiera de Colombia # > Lista general de entidades vigilidas por la superintendencia financiera de Colombia > Descargue el archivo en formato Excel
+# Entidades vigilidas por la superintendencia financiera de Colombia >
+# Lista general de entidades vigilidas por la superintendencia financiera de Colombia > 
+# Descargue el archivo en formato Excel
 bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
                          sheet = 1, 
-                         range = "B15:P443") %>% 
-  slice(-1) %>% 
-  select(1:2,5:6) %>% 
-  set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) %>% 
+                         range = "B15:P445") |> 
+  slice(-1) |> 
+  select(1:2,5:6) |> 
+  set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) |> 
   filter(Type == 1)
 
 cut <- round(nrow(bank_table) / 2)
 
-bank_table %>%
-  slice(1:cut) %>% 
+bank_table |>
+  slice(1:cut) |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
-  kable_styling(font_size = 7) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
+        digits = 2, linesep = "", caption = "Supervised banking establishments") |>
+  kable_styling(font_size = 7) |>
+  row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2023-07-20'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2024-02-04'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -502,31 +537,33 @@ bank_table %>%
 # Banking market or "Mercado Intermediado"
 
 ```{r}
-bank_table %>%
-  slice(cut:nrow(bank_table)) %>% 
+bank_table |>
+  slice(cut:nrow(bank_table)) |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "", caption = "Supervised banking establishments") %>%
-  kable_styling(font_size = 7) %>%  
-  row_spec(row = 0, bold = TRUE) %>% 
+        digits = 2, linesep = "", caption = "Supervised banking establishments") |>
+  kable_styling(font_size = 7) |>  
+  row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2023-07-20'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2024-02-04'),
            general_title = "",
            threeparttable = TRUE)
 ```
 
 # Banking market or "Mercado Intermediado"
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
+
 i_rate_deposit_lending <- wbstats::wb_data(country = "COL",
                                    # Deposit interest rate (%)
                                    ## FR.INR.DPST
                                    # Lending interest rate (%)
                                    ## FR.INR.LEND
                                    indicator    = c("FR.INR.DPST", "FR.INR.LEND"),
-                                   return_wide  = FALSE) %>%
+                                   return_wide  = FALSE) |>
   filter(!is.na(value))
 
-i_rate_deposit_lending %>% 
+i_rate_deposit_lending |> 
   ggplot(aes(x = date,
              y = value)) +
   geom_line(aes(color = indicator)) +
@@ -558,7 +595,7 @@ i_rate_deposit_lending %>%
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, __[lubridate](https://CRAN.R-project.org/package=lubridate)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, __[lubridate](https://CRAN.R-project.org/package=lubridate)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
 - To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
 
