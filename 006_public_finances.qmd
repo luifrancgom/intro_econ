@@ -1,7 +1,10 @@
 ---
 title: "Public Finances"
 author: Luis Francisco Gomez Lopez
-date: 2023-07-18
+date: 2024-01-29
+execute: 
+  echo: false
+  warning: false
 format:
   beamer:
     colortheme: dolphin
@@ -9,6 +12,7 @@ format:
     theme: AnnArbor
     link-citations: true
     linkcolor: blue
+    fig-align: center
     include-in-header:
       - text: |
           \usepackage{booktabs}
@@ -45,6 +49,7 @@ library(kableExtra)
 library(tidyquant)
 library(treemapify)
 library(janitor)
+library(latex2exp)
 ```
 
 # Contents
@@ -74,7 +79,7 @@ Explain the role of the State in the economy
 
 # Economic functions of government
 
-- What are the economic functions of government? [@council_for_economic_education_focus_2010, p 45-54]
+- What are the economic functions of government? [@council_for_economic_education_focus_2010, pp. 45-54]
 
     + **Maintain the Legal and Social Framework**
     
@@ -92,7 +97,7 @@ Explain the role of the State in the economy
         
 # Economic functions of government
 
-- What are the economic functions of government? [@council_for_economic_education_focus_2010, p 45-54]
+- What are the economic functions of government? [@council_for_economic_education_focus_2010, pp. 45-54]
 
     + **Correct for externalities**
     
@@ -111,9 +116,12 @@ Explain the role of the State in the economy
         
 # Colombian public sector
 
-- Division based on [@international_monetary_fund_government_2014, fig 2.3] and [@ciefp_clasificacion_2019] using the **Código Único Institucional - CUIN**
+- Division based on [@international_monetary_fund_government_2014, fig 2.3] and [@ciefp_clasificacion_2021] using the **Clasificación entidades según Código Único Institucional - CUIN**
 
-```{r, out.width="90%", dev='png'}
+```{r }
+#| out-width: 90%
+#| fig-align: center
+
 grViz("
 digraph boxes_and_circles {
 
@@ -158,9 +166,19 @@ digraph boxes_and_circles {
         
 # Colombian public sector
 
-- Division based on how information is reported in [@mhcp_marco_2021]
+- Division based on how the difference balances are reported by MinHacienda[^1]
 
-```{r, out.width="90%", dev='png'}
+```{r }
+#| out-width: 90%
+#| fig-align: center
+
+## https://www.minhacienda.gov.co >
+## Entidades Financieras >
+## - 1. Balance Sector Público Consolidado
+## - 1.1 Balance Sector Público Financiero
+## - 1.2 Balance Sector Público No Financiero
+## - 1.2.1 Balance Gobierno General
+## - 1.2.1.1 Balance Gobierno Nacional Central
 grViz("
 digraph boxes_and_circles {
 
@@ -218,6 +236,8 @@ digraph boxes_and_circles {
 ")
 ```
 
+[^1]: [https://www.minhacienda.gov.co](https://www.minhacienda.gov.co) > Entidades Financieras > Política Fiscal 
+
 # Colombian public sector
 
 - Central National Government (Gobierno Nacional Central (GNC)) Fiscal Balance 
@@ -239,12 +259,12 @@ digraph boxes_and_circles {
 # > Balance Gobierno Nacional Central 1994-2021
 cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994-2022.xlsx", 
                      sheet = 2, 
-                     range = "B5:AE100") %>%
-  rename(Concepto = "CONCEPTO") %>% 
-  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
+                     range = "B5:AE100") |>
+  rename(Concepto = "CONCEPTO") |> 
+  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) |> 
   select(Concepto, `2022`)
 
-cng_fb_table <- cng_fb %>% 
+cng_fb_table <- cng_fb |> 
   slice(2:5, 8:26,29)
 
 cng_fb_table_footnote <- cng_fb_table
@@ -252,18 +272,24 @@ cng_fb_table_footnote <- cng_fb_table
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
                                            footnote_marker_alphabet(1, "latex"))
 
-cng_fb_table_footnote %>% 
+cng_fb_table_footnote |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") %>%
-  kable_styling(font_size = 5.2) %>%
-  add_indent(positions = c(2,21), level_of_indent = 2) %>%
-  add_indent(positions = 3, level_of_indent = 3) %>% 
-  add_indent(positions = c(4:20,22:24), level_of_indent = 5) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
-  row_spec(row = 1, bold = TRUE, background = unname(palette_light()[4])) %>% 
-  row_spec(row = c(2,21), bold = TRUE, background = unname(palette_light()[2])) %>% 
-  row_spec(row = 3, bold = TRUE, background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+        digits = 2,
+        # See https://bookdown.org/yihui/rmarkdown-cookbook/kable.html
+        # when booktabs = TRUE
+        ## If you want to remove the line spaces altogether, you may 
+        ## use linesep = ''
+        linesep = "") |>
+  kable_styling(font_size = 5.2) |>
+  add_indent(positions = c(2,21), level_of_indent = 2) |>
+  add_indent(positions = 3, level_of_indent = 3) |> 
+  add_indent(positions = c(4:20,22:24), level_of_indent = 5) |>
+  row_spec(row = 0, bold = TRUE) |> 
+  row_spec(row = 1, bold = TRUE, background = unname(palette_light()[4])) |> 
+  row_spec(row = c(2,21), bold = TRUE, background = unname(palette_light()[2])) |> 
+  row_spec(row = 3, bold = TRUE, background = unname(palette_light()[3])) |> 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 
+                             'Last update: 2023-09-22'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -272,7 +298,7 @@ cng_fb_table_footnote %>%
 # Colombian public sector
 
 ```{r}
-cng_fb_table <- cng_fb %>% 
+cng_fb_table <- cng_fb |> 
   slice(1:3, 24, 30:44)
 
 cng_fb_table_footnote <- cng_fb_table
@@ -280,19 +306,20 @@ cng_fb_table_footnote <- cng_fb_table
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
                                            footnote_marker_alphabet(1, "latex"))
 
-cng_fb_table_footnote %>% 
+cng_fb_table_footnote |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") %>%
-  kable_styling(font_size = 6) %>%  
-  add_indent(positions = c(2, 5:6), level_of_indent = 2) %>%
-  add_indent(positions = c(3:4), level_of_indent = 3) %>%
-  add_indent(positions = c(7:8, 16:17), level_of_indent = 5) %>%
-  add_indent(positions = c(9:15, 18:19), level_of_indent = 7) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
-  row_spec(row = 1, background = unname(palette_light()[4]), bold = TRUE) %>% 
-  row_spec(row = c(2, 5:6), bold = TRUE) %>%
-  row_spec(row = 3, background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+        digits = 2, linesep = "") |>
+  kable_styling(font_size = 6) |>  
+  add_indent(positions = c(2, 5:6), level_of_indent = 2) |>
+  add_indent(positions = c(3:4), level_of_indent = 3) |>
+  add_indent(positions = c(7:8, 16:17), level_of_indent = 5) |>
+  add_indent(positions = c(9:15, 18:19), level_of_indent = 7) |>
+  row_spec(row = 0, bold = TRUE) |> 
+  row_spec(row = 1, background = unname(palette_light()[4]), bold = TRUE) |> 
+  row_spec(row = c(2, 5:6), bold = TRUE) |>
+  row_spec(row = 3, background = unname(palette_light()[3])) |> 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 
+                             'Last update: 2023-09-11'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -301,7 +328,7 @@ cng_fb_table_footnote %>%
 # Colombian public sector
 
 ```{r}
-cng_fb_table <- cng_fb %>% 
+cng_fb_table <- cng_fb |> 
   slice(1:3, 24, 30:31, 45:55, 59:62)
 
 cng_fb_table_footnote <- cng_fb_table
@@ -309,19 +336,20 @@ cng_fb_table_footnote <- cng_fb_table
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
                                            footnote_marker_alphabet(1, "latex"))
 
-cng_fb_table_footnote %>% 
+cng_fb_table_footnote |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") %>%
-  kable_styling(font_size = 5.5) %>%  
-  add_indent(positions = c(2, 5:6, 8:9, 21), level_of_indent = 2) %>%
-  add_indent(positions = c(3:4, 10, 14), level_of_indent = 3) %>%
-  add_indent(positions = c(15:16, 20), level_of_indent = 4) %>%
-  add_indent(positions = c(11:13, 17:19), level_of_indent = 5) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
-  row_spec(row = c(1,7), background = unname(palette_light()[4]), bold = TRUE) %>% 
-  row_spec(row = c(8:9, 21), background = unname(palette_light()[2]), bold = TRUE) %>%
-  row_spec(row = c(3, 16), background = unname(palette_light()[3])) %>% 
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+        digits = 2, linesep = "") |>
+  kable_styling(font_size = 5.5) |>  
+  add_indent(positions = c(2, 5:6, 8:9, 21), level_of_indent = 2) |>
+  add_indent(positions = c(3:4, 10, 14), level_of_indent = 3) |>
+  add_indent(positions = c(15:16, 20), level_of_indent = 4) |>
+  add_indent(positions = c(11:13, 17:19), level_of_indent = 5) |>
+  row_spec(row = 0, bold = TRUE) |> 
+  row_spec(row = c(1,7), background = unname(palette_light()[4]), bold = TRUE) |> 
+  row_spec(row = c(8:9, 21), background = unname(palette_light()[2]), bold = TRUE) |>
+  row_spec(row = c(3, 16), background = unname(palette_light()[3])) |> 
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 
+                             'Last update: 2023-09-11'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -330,7 +358,7 @@ cng_fb_table_footnote %>%
 # Colombian public sector
 
 ```{r}
-cng_fb_table <- cng_fb %>% 
+cng_fb_table <- cng_fb |> 
   slice(1:3, 24, 30:31, 45:48, 52, 62:69, 78:79)
 
 cng_fb_table_footnote <- cng_fb_table
@@ -338,18 +366,19 @@ cng_fb_table_footnote <- cng_fb_table
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
                                            footnote_marker_alphabet(1, "latex"))
 
-cng_fb_table_footnote %>% 
+cng_fb_table_footnote |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") %>%
-  kable_styling(font_size = 5.5) %>% 
-  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) %>%
-  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) %>%
-  row_spec(row = 0, bold = TRUE)  %>% 
-  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) %>%
-  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
-  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
-  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+        digits = 2, linesep = "") |>
+  kable_styling(font_size = 5.5) |> 
+  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) |>
+  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) |>
+  row_spec(row = 0, bold = TRUE)  |> 
+  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) |>
+  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) |>
+  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) |>
+  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) |>
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 
+                             'Last update: 2023-09-11'),
            general_title = "",
            alphabet = '%PIB - Cierre fiscal',
            threeparttable = TRUE)
@@ -362,15 +391,15 @@ cng_fb <- read_excel(path = "000_data/006_balance_gobierno_nacional_central_1994
                      # Cambiando la hoja para mostrar las cifras
                      # en miles de millones
                      sheet = 1, 
-                     range = "B5:AE100") %>%
-  rename(Concepto = "CONCEPTO") %>% 
-  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) %>% 
-  select(Concepto, `2022`) %>%
+                     range = "B5:AE100") |>
+  rename(Concepto = "CONCEPTO") |> 
+  slice(-c(1:2,4,33,35,50,52,54,71,73,75,77,79,81,83,94)) |> 
+  select(Concepto, `2022`) |>
   # Mostrando todas las cifras
-  mutate(`2022` = (`2022`*10^9) %>% scales::number(big.mark = ",", 
+  mutate(`2022` = (`2022`*10^9) |> scales::number(big.mark = ",", 
                                                    accuracy = 0.1))
 
-cng_fb_table <- cng_fb %>% 
+cng_fb_table <- cng_fb |> 
   slice(1:3, 24, 30:31, 45:48, 52, 62:69, 78:79)
 
 cng_fb_table_footnote <- cng_fb_table
@@ -378,18 +407,19 @@ cng_fb_table_footnote <- cng_fb_table
 names(cng_fb_table_footnote)[2] <-  paste0(names(cng_fb_table_footnote)[2],
                                            footnote_marker_alphabet(1, "latex"))
 
-cng_fb_table_footnote %>% 
+cng_fb_table_footnote |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 1, linesep = "") %>%
-  kable_styling(font_size = 5.5) %>% 
-  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) %>%
-  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) %>%
-  row_spec(row = 0, bold = TRUE) %>% 
-  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) %>%
-  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) %>%
-  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) %>%
-  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) %>%
-  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 'Last update: 2023-07-18'),
+        digits = 1, linesep = "") |>
+  kable_styling(font_size = 5.5) |> 
+  add_indent(positions = c(2, 5:6, 8:9, 12, 14:17), level_of_indent = 2) |>
+  add_indent(positions = c(3:4, 10:11), level_of_indent = 3) |>
+  row_spec(row = 0, bold = TRUE) |> 
+  row_spec(row = c(1,7,13,18:19), background = unname(palette_light()[4]), bold = TRUE) |>
+  row_spec(row = 20, background = unname(palette_light()[2]), bold = TRUE) |>
+  row_spec(row = 21, background = unname(palette_light()[11]), bold = TRUE) |>
+  row_spec(row = c(10, 16), background = unname(palette_light()[3]), bold = TRUE) |>
+  footnote(general       = c('Source: Ministerio de Hacienda y Crédito Público - Balance Gobierno Nacional Central', 
+                             'Last update: 2023-09-11'),
            general_title = "",
            alphabet = 'Pesos colombianos (COP)',
            threeparttable = TRUE)
@@ -399,17 +429,17 @@ cng_fb_table_footnote %>%
 
 - Useful resources
 
-    + **Global Revenue Statistics Database**
+    - **Global Revenue Statistics Database**
     
-        + **[https://stats.oecd.org/](https://stats.oecd.org/)** > Data by theme > Public Sector, Taxation and Market Regulation > Taxation > Global Revenue Statistics Database > Global Revenue Statistics Database
+        - **[https://stats.oecd.org/](https://stats.oecd.org/)** > Data by theme > Public Sector, Taxation and Market Regulation > Taxation > Global Revenue Statistics Database > Global Revenue Statistics Database
         
-    + **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+    - **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
     
-        + **[https://www.ofiscal.org/publicaciones](https://www.ofiscal.org/publicaciones)** > guías ciudadanas
+        - **[https://www.ofiscal.org/publicaciones](https://www.ofiscal.org/publicaciones)** > guías ciudadanas > Tributación y gasto del Estado colombiano > Tributación y gasto del Estado colombiano > ver y descargar ↓
         
 # Revenues: taxes
 
-- **Taxes**: "compulsory unrequited payments to the general  government  or  to  a  supranational  authority" [@oecd_revenue_2020, p 319]
+- **Taxes**: "compulsory unrequited payments to the general  government  or  to  a  supranational  authority" [@oecd_revenue_2020, pp. 319]
 
     + "Taxes are unrequited in the sense that benefits provided by government to taxpayers are not normally in proportion to their payments" [@oecd_revenue_2020, p 319]
     
@@ -419,7 +449,7 @@ cng_fb_table_footnote %>%
     
 # Revenues: taxes
 
-- **Classification of Taxes by the OECD** [@oecd_revenue_2020, p 317-318]
+- **Classification of Taxes by the OECD** [@oecd_revenue_2020, pp. 317-318]
 
     + 1000 Taxes on income, profits and capital gains (Impuestos sobre la renta, las utilidades y las ganancias de capital)
     + 2000 Social security contributions (Contribuciones a la seguridad social)
@@ -437,11 +467,11 @@ cng_fb_table_footnote %>%
 - **Equity**
 
 ::: {#fig-horizontal_vs_vertical_equity layout-nrow=1 layout-valign="bottom"}
-![Horizontal](_000_images/006_horizontal_equity.png){#fig-horizontal width="190px" height="190px"}
+![Horizontal](_000_images/006_horizontal_equity.png){#fig-horizontal width="180px" height="180px"}
 
-![Vertical](_000_images/006_vertical_equity.png){#fig-vertical width="190px" height="190px"}
+![Vertical](_000_images/006_vertical_equity.png){#fig-vertical width="180px" height="180px"}
 
-Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, p 8]
+Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, pp. 8]
 :::
 
 # Revenues: taxes
@@ -461,7 +491,7 @@ Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciu
 
 ![Progressive](_000_images/006_progressive_tax.png){#fig-progressive width="150px" height="150px"}
 
-Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, p 11]
+Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, pp. 11]
 :::
 
 # Revenues: taxes
@@ -471,23 +501,37 @@ Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_univers
 ## https://stats.oecd.org/ > Data by theme > Public Sector, Taxation
 ## and Market Regulation > Taxation > Global Revenue Statistics
 ## Database > Global Revenue Statistics Database
-global_revenue_statistics_data_base <- read_csv(file = '000_data/006_RS_GBL_tax_revenue_as_pct_of_gdp.zip')
+
+## Download the complete data set
+### Country: Colombia
+###          Latin America and the Caribbean
+###          OECD - Average
+### Level of government[6/6]
+### Tax Revenue[65/65]
+### Indicator[4/4]
+### Year[32/32]
+global_revenue_statistics_data_base <- read_csv(file = '000_data/006_RS_GBL-en_COL_419_OAVG.zip')
+
+#### The file 006_RS_GBL_tax_revenue_as_pct_of_gdp.zip
+#### corresponds to an old version
 ```
 
 
-```{r out.width="90%"}
-tax_revenue_as_pct_of_gdp <- global_revenue_statistics_data_base %>% 
-  clean_names() %>% 
+```{r }
+#| out-width: 90%
+
+tax_revenue_as_pct_of_gdp <- global_revenue_statistics_data_base |> 
+  clean_names() |> 
   filter(level_of_government == 'Total',
          tax_revenue == 'Total tax revenue',
          indicator == 'Tax revenue as % of GDP',
          country %in% c('Latin America and the Caribbean',
                         'OECD - Average',
-                        'Colombia')) %>% 
+                        'Colombia')) |> 
   select(cou, country, year, value)
 
-tax_revenue_as_pct_of_gdp %>% 
-  mutate(country = fct_reorder(.f = country, .x = value)) %>% 
+tax_revenue_as_pct_of_gdp |> 
+  mutate(country = fct_reorder(.f = country, .x = value)) |> 
   ggplot() + 
   geom_line(aes(x=year, y=value, 
                 group=country, color=country)) + 
@@ -500,7 +544,7 @@ tax_revenue_as_pct_of_gdp %>%
        title = 'Total tax revenue as % of Gross Domestic Product',
        subtitle = str_glue('Period: {min(tax_revenue_as_pct_of_gdp$year)} - {max(tax_revenue_as_pct_of_gdp$year)}'),
        caption = str_glue('Source: Global Revenue Statistics Database - OECD
-                          Last update date: 2023-07-18')) +
+                          Last update date: 2021-12-16')) +
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -514,21 +558,24 @@ tax_revenue_as_pct_of_gdp %>%
 
 # Revenues: taxes
 
-```{r fig.width=9, fig.height=5}
+```{r }
+#| fig-width: 9
+#| fig-height: 5
+
 # Data extracted from 
 ## https://stats.oecd.org/ > Data by theme > Public Sector, Taxation
 ## and Market Regulation > Taxation > Global Revenue Statistics
 ## Database > Global Revenue Statistics Database
-tax_structure <- global_revenue_statistics_data_base %>%
-  clean_names() %>% 
+tax_structure <- global_revenue_statistics_data_base |>
+  clean_names() |> 
   filter(level_of_government == 'Total',
-         indicator=='Tax revenue as % of total taxation',
+         indicator =='Tax revenue as % of total taxation',
          tax %in% (c(1100, 1200, 1300, 2000, 3000, 4000,
                     5111, 5112, 5113, 5120, 5130, 5200,
-                    5300, 6000) %>% as.character()),
+                    5300, 6000) |> as.character()),
          year == 2020,
-         country %in% c('Colombia', 'OECD - Average', 'Latin America and the Caribbean')) %>% 
-  select(cou, country, tax, year, value) %>% 
+         country %in% c('Colombia', 'OECD - Average', 'Latin America and the Caribbean')) |> 
+  select(cou, country, tax, year, value) |> 
   mutate(tax = as.integer(tax),
          tax_label_es = case_when(
            tax %in% c(1100) ~ 'Impuesto sobre la renta de personas físicas',
@@ -549,17 +596,17 @@ tax_structure <- global_revenue_statistics_data_base %>%
            tax %in% c(5112, 5113, 5120, 5130, 5200, 5300) ~ 'Other taxes on goods and services',
            .default = NA_character_))
 
-tax_structure_grouped <- tax_structure %>%
-  group_by(country, tax_label_es, tax_label_en) %>% 
-  summarise(value = sum(value)) %>%
-  ungroup() %>% 
+tax_structure_grouped <- tax_structure |>
+  group_by(country, tax_label_es, tax_label_en) |> 
+  summarise(value = sum(value)) |>
+  ungroup() |> 
   mutate(country = case_when(
     country == 'Colombia' ~ 'COL', 
     country == 'OECD - Average' ~ 'OECD', 
     country == 'Latin America and the Caribbean' ~ 'LAC',
     .default = NA_character_))
 
-tax_structure_grouped %>% 
+tax_structure_grouped |> 
   ggplot(aes(x=value, y=country, 
              fill=tax_label_en, label=scales::number(value, accuracy = 0.1))) +
   geom_col(color='black') +
@@ -573,7 +620,7 @@ tax_structure_grouped %>%
                         Variable: Tax revenue as % of total taxation
                         Period: {unique(tax_structure$year)}'),
        caption = str_glue('Source: Global Revenue Statistics Database - OECD
-                          Last update date: 2023-07-18')) + 
+                          Last update date: 2021-12-16')) + 
   theme(panel.border    = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -595,9 +642,9 @@ tax_structure_grouped %>%
     
         - **[https://www.pte.gov.co](https://www.pte.gov.co)** > PRESUPUESTO GENERAL DE LA NACIÓN > Ejecución
         
-    + **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+    - **Guía ciudadana a la tributación  y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
     
-        - **[https://www.ofiscal.org/](https://www.ofiscal.org/)** > Guias
+        - **[https://www.ofiscal.org/publicaciones](https://www.ofiscal.org/publicaciones)** > guías ciudadanas > Tributación y gasto del Estado colombiano > Tributación y gasto del Estado colombiano > ver y descargar ↓
         
 # Expenditures
 
@@ -613,37 +660,39 @@ tax_structure_grouped %>%
     
     + For more information check out **Guía ciudadana al Presupuesto General de la Nación** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2022]
     
-      +   **[https://www.ofiscal.org/](https://www.ofiscal.org/)** > Guias
+      +   **[https://www.ofiscal.org/](https://www.ofiscal.org/)** > Guias > Presupuesto General de la Nación > ver y descargar ↓
 
 # Expenditures
 
 ```{r}
 # https://www.pte.gov.co  > PRESUPUESTO GENERAL DE LA NACIÓN >
 # Ejecución
-pgn_what_spent <- read_csv(file = '000_data/006_quien_gasta_PTE.csv', 
-                           locale = locale(decimal_mark = '.', 
-                                           encoding = 'iso-8859-3')) %>% 
-  arrange(desc(AsignacionVigente)) %>% 
-  clean_names() %>% 
+pgn_what_spent <- read_csv(file = "000_data/006_ejecucion_presupuestal_por_sector_pgn.csv",
+                 locale = locale(encoding = "latin1",
+                                 decimal_mark = '.')) |>
+  arrange(desc(AsignacionVigente)) |> 
+  clean_names() |> 
   mutate(nombre_sector = str_to_title(nombre_sector))
 ```
 
 ```{r out.width="90%"}
-pgn_what_spent_clean <- pgn_what_spent %>% 
-  select(nombre_sector, asignacion_vigente) %>% 
+#| out-width: 90%
+
+pgn_what_spent_clean <- pgn_what_spent |> 
+  select(nombre_sector, asignacion_vigente) |> 
   mutate(nombre_sector = case_when(
     nombre_sector %in% pgn_what_spent$nombre_sector[1:11] ~ nombre_sector,
-    .default = 'Otros Sectores')) %>% 
-  group_by(nombre_sector) %>% 
-  summarise(asignacion_vigente = sum(asignacion_vigente)) %>% 
-  ungroup() %>% 
+    .default = 'Otros Sectores')) |> 
+  group_by(nombre_sector) |> 
+  summarise(asignacion_vigente = sum(asignacion_vigente)) |> 
+  ungroup() |> 
   mutate(asignacion_vigente_pct = asignacion_vigente / sum(asignacion_vigente),
          label = str_glue("{scales::percent(asignacion_vigente_pct, accuracy = 0.01)}
                           {scales::number(asignacion_vigente, scale = 1e-12, suffix = 'B')}"),
-         nombre_sector = fct_reorder(.f = nombre_sector, .x = asignacion_vigente) %>% 
+         nombre_sector = fct_reorder(.f = nombre_sector, .x = asignacion_vigente) |> 
                          fct_rev())
 
-pgn_what_spent_clean %>% 
+pgn_what_spent_clean |> 
 ggplot(aes(area = asignacion_vigente,
            fill = nombre_sector,
            label = label)) +
@@ -653,7 +702,7 @@ ggplot(aes(area = asignacion_vigente,
   labs(fill = NULL,
        title = str_glue("Who spends nation's general budget spent on in {unique(pgn_what_spent$anio)}?"),
        subtitle = str_glue("Total national budget: {scales::number(sum(pgn_what_spent$asignacion_vigente), big.mark = ',')} COP
-                           Observation: B means billions in long scale (10^12)"),
+                           Observation: B means billions in long scale (10¹²)"),
        caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
                           Last update date: 2023-07-19")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -675,7 +724,7 @@ ggplot(aes(area = asignacion_vigente,
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__,
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__,
 __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, 
 __[readxl](https://CRAN.R-project.org/package=readxl)__, 
 __[knitr](https://CRAN.R-project.org/package=knitr)__, 
