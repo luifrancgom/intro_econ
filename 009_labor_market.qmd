@@ -1,7 +1,10 @@
 ---
 title: "Labor Market"
 author: "Luis Francisco Gomez Lopez"
-date: 2023-07-20
+date: 2024-02-06
+execute: 
+  echo: false
+  warning: false
 format:
   beamer:
     colortheme: dolphin
@@ -28,13 +31,6 @@ format:
           \usepackage{fontawesome5}
 bibliography: intro_econ.bib
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
 
 ```{r}
 library(tidyverse)
@@ -81,13 +77,16 @@ Examine the evolution and characteristics of the supply and demand of labor in C
 
 # Labor classification of the population
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
+#| fig-align: center
 
 #Plot
 ## Labor Market Colombia
 ## Data
 ## https://www.dane.gov.co > Estadísticas por tema > 
-## Mercado Laboral > Empleo y desempleo > Anexos  
+## Mercado Laboral > Empleo y desempleo > Anexos 
+## Total Nacional
 tibble(x = c( 0, 
               -1, 
               1,
@@ -122,26 +121,26 @@ tibble(x = c( 0,
                      '3', '3',
                      '4', '4'),
        # Población total
-       value     = c(50962460, 
+       value     = c(51269975, 
                      # Población menor a 15 años
-                     50962460 - 39475193,    
+                     51269975 - 39809296,    
                      # Población en edad de trabajar
-                     39475193, 
+                     39809296, 
                      # Fuerza de trabajo
-                     25208018, 
+                     25408676, 
                      # Población fuera de la fuerza laboral
-                     39475193 - 25208018, 
+                     39809296 - 25408676, 
                      # Ocupados
-                     22567452, 
+                     22864323, 
                      # Desocupados
-                     25208018 - 22567452, 
+                     25408676 - 22864323, 
                      # Completamente empleados
-                     22567452 - 2002349, 
+                     22864323 - 1816577, 
                      # Subocupados
-                     2002349))  %>% 
+                     1816577))  |> 
   mutate(label_text = str_glue('{indicator}
-                                 {value %>% 
-                                    scales::number(big.mark = ",")}')) %>% 
+                                 {value |> 
+                                    scales::number(big.mark = ",")}')) |> 
   ggplot(aes(x = x, y = y, label = label_text)) +
   geom_segment(x = 0, y = 0, xend = 0, yend = -1) +
   geom_segment(x = -1, y = -1, xend = 1, yend = -1) +
@@ -159,9 +158,9 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(title    = 'Labor classification of the population in Colombia',
-       subtitle = str_glue('Period: May 2023'),
+       subtitle = str_glue('Period: December 2023'),
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: 2023-06-30'),
+                              Last update: 2024-01-31'),
        fill     = "Level"
   ) + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -214,20 +213,23 @@ tibble(x = c( 0,
     
 # Labor market indicators
 
-```{r out.width = "90%"}
+```{r }
+#| out-width: 90%
+#| fig-align: center
+
 data <- wbstats::wb_data(country     = c('COL'),
                          indicator   = c('SL.UEM.TOTL.ZS', 'SL.EMP.TOTL.SP.ZS'), 
                          return_wide = FALSE)
 
-data_clean <- data %>% 
-  drop_na(value) %>% 
-  select(country, date, value, indicator) %>%
+data_clean <- data |> 
+  drop_na(value) |> 
+  select(country, date, value, indicator) |>
   mutate(indicator = case_when(
          indicator == 'Unemployment, total (% of total labor force) (modeled ILO estimate)' ~ 'Unemployment rate (UR) (ILO estimate))',
          indicator == 'Employment to population ratio, 15+, total (%) (modeled ILO estimate)' ~ 'Employment rate (ER) (ILO estimate))',
          .default = indicator))
 
-data_clean %>% 
+data_clean |> 
   ggplot(aes(x = date, 
                y = value)) + 
   geom_point(shape = 21, fill = palette_light()[[2]], color = "black") +
@@ -273,18 +275,21 @@ data_clean %>%
 
 - In times of low economic growth, companies reduce production and therefore hire fewer workers. 
 
-```{r out.width="75%"}
-                                        # GDP per capita growth (annual %)
+```{r }
+#| out-width: 75%
+#| fig-align: center
+
+# GDP per capita growth (annual %)
 econ_growth_unemployment <- wbstats::wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
                                                         # Unemployment, total (% of total labor force)
                                                         # It is calculated not but the ILO but by the Statistical Office of each country
                                                            "SL.UEM.TOTL.NE.ZS"), 
                                              country = "COL")
 
-econ_growth_unemployment_clean <- econ_growth_unemployment %>% 
+econ_growth_unemployment_clean <- econ_growth_unemployment |> 
   drop_na(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS) 
 
-econ_growth_unemployment_clean %>% 
+econ_growth_unemployment_clean |> 
   ggplot(aes(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
@@ -311,44 +316,47 @@ econ_growth_unemployment_clean %>%
 
 # Wages
 
-```{r out.width="90%"}
+```{r }
+#| out-width: 90%
+#| fig-align: center
+
 read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
            sheet = 7, 
            range = "A19:L23", 
-           col_names = FALSE) %>% 
-  select(1, 12) %>% 
-  set_names(nm = "wage_range", "value") %>% 
-  mutate(category = "Ninguno") %>% 
+           col_names = FALSE) |> 
+  select(1, 12) |> 
+  set_names(nm = "wage_range", "value") |> 
+  mutate(category = "Ninguno") |> 
   rbind(
     read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
                sheet = 7, 
                range = "A26:L30", 
-               col_names = FALSE) %>% 
-      select(1, 12) %>% 
-      set_names(nm = "wage_range", "value") %>% 
+               col_names = FALSE) |> 
+      select(1, 12) |> 
+      set_names(nm = "wage_range", "value") |> 
       mutate(category = "Bachiller") 
-  ) %>% 
+  ) |> 
   rbind(
     read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
                sheet = 7, 
                range = "A33:L37", 
-               col_names = FALSE) %>% 
-      select(1, 12) %>% 
-      set_names(nm = "wage_range", "value") %>% 
+               col_names = FALSE) |> 
+      select(1, 12) |> 
+      set_names(nm = "wage_range", "value") |> 
       mutate(category = "Técnico o tecnológico") 
-  ) %>% 
+  ) |> 
   rbind(
     read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
                sheet = 7, 
                range = "A40:L44", 
-               col_names = FALSE) %>% 
-      select(1, 12) %>% 
-      set_names(nm = "wage_range", "value") %>% 
+               col_names = FALSE) |> 
+      select(1, 12) |> 
+      set_names(nm = "wage_range", "value") |> 
       mutate(category = "Universitario y/o postgrado")
-  ) %>% 
+  ) |> 
   mutate(wage_range = as_factor(wage_range),
          category = as_factor(category),
-         value = value*100) %>% 
+         value = value*100) |> 
   ggplot(aes(y = wage_range, value)) +
   geom_col() +
   scale_x_continuous(labels = scales::number_format(scale = 1e-3, suffix = "K")) +
@@ -407,7 +415,9 @@ read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls",
 
 - Set of economic factors and forces that influence the development of and organization.
 
-```{r econ_env_macro, out.width = "75%"}
+```{r econ_env_macro}
+#| out-width: 75%
+#| fig-align: center
 
 #Plot
 ggplot(data = tibble(x = 0, y = 0)) + 
@@ -473,7 +483,7 @@ ggplot(data = tibble(x = 0, y = 0)) +
 
 - To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__,
+- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__,
 __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, 
 __[readxl](https://CRAN.R-project.org/package=readxl)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
 
