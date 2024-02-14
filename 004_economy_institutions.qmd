@@ -451,7 +451,7 @@ homicide_female_pivot_wider |>
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Intentional homicides, female (per 100,000 female): {initial_year} vs {last_year}",
+       title = str_glue("Intentional homicides, female (per 100,000 female): {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
                           Last update: {unique(homicide_female$last_updated)}")) + 
@@ -505,7 +505,7 @@ homicide_male_pivot_wider |>
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = "Intentional homicides, male (per 100,000 male): {initial_year} vs {last_year}",
+       title = str_glue("Intentional homicides, male (per 100,000 male): {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
                           Last update: {unique(homicide_male$last_updated)}")) + 
