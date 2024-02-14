@@ -87,6 +87,32 @@ Examine the evolution and characteristics of the supply and demand of labor in C
 ## https://www.dane.gov.co > Estadísticas por tema > 
 ## Mercado Laboral > Empleo y desempleo > Anexos 
 ## Total Nacional
+
+labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_dic_23.xlsx",
+                                   sheet = "Total nacional", 
+                                   range = "A23:A30", 
+                                   col_names = "concept")
+
+# This is the part that needs to be updated
+labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_dic_23.xlsx",
+                                           sheet = "Total nacional", 
+                                           range = "JQ23:JQ30",
+                                           col_names = "value") |> 
+  mutate(value = value*1e3)
+
+labor_classification <- bind_cols(labor_classification_concept,
+                                  labor_classification_last_data)
+
+poblacion_total <- labor_classification |> pull(2) |> _[1]
+poblacion_en_edad_de_trabajar <- labor_classification |> pull(2) |> _[2]
+poblacion_menor_a_15_anos <- poblacion_total - poblacion_en_edad_de_trabajar
+fuerza_de_trabajo <- labor_classification |> pull(2) |> _[3]
+poblacion_fuera_de_la_fuerza_de_trabajo <- poblacion_en_edad_de_trabajar - fuerza_de_trabajo
+poblacion_ocupada <- labor_classification |> pull(2) |> _[4]
+poblacion_desocupada <- fuerza_de_trabajo - poblacion_ocupada
+subocupados <- labor_classification |> pull(2) |> _[7]
+completamente_empleados <- poblacion_ocupada - subocupados
+
 tibble(x = c( 0, 
               -1, 
               1,
@@ -121,23 +147,23 @@ tibble(x = c( 0,
                      '3', '3',
                      '4', '4'),
        # Población total
-       value     = c(51269975, 
+       value     = c(poblacion_total, 
                      # Población menor a 15 años
-                     51269975 - 39809296,    
+                     poblacion_menor_a_15_anos,    
                      # Población en edad de trabajar
-                     39809296, 
+                     poblacion_en_edad_de_trabajar, 
                      # Fuerza de trabajo
-                     25408676, 
-                     # Población fuera de la fuerza laboral
-                     39809296 - 25408676, 
-                     # Ocupados
-                     22864323, 
-                     # Desocupados
-                     25408676 - 22864323, 
+                     fuerza_de_trabajo, 
+                     # Población fuera de la fuerza de trabajo
+                     poblacion_fuera_de_la_fuerza_de_trabajo, 
+                     # Población Ocupada
+                     poblacion_ocupada, 
+                     # Población Desocupada
+                     poblacion_desocupada, 
                      # Completamente empleados
-                     22864323 - 1816577, 
+                     completamente_empleados, 
                      # Subocupados
-                     1816577))  |> 
+                     subocupados))  |> 
   mutate(label_text = str_glue('{indicator}
                                  {value |> 
                                     scales::number(big.mark = ",")}')) |> 
@@ -158,7 +184,10 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(title    = 'Labor classification of the population in Colombia',
+                  # This part needs to be update manually
        subtitle = str_glue('Period: December 2023'),
+                  # This part needs to be update manually in relation
+                  # to the item "Last update"
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
                               Last update: 2024-01-31'),
        fill     = "Level"
@@ -279,17 +308,22 @@ data_clean |>
 #| out-width: 75%
 #| fig-align: center
 
-# GDP per capita growth (annual %)
-econ_growth_unemployment <- wbstats::wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
-                                                        # Unemployment, total (% of total labor force)
-                                                        # It is calculated not but the ILO but by the Statistical Office of each country
+                                             # GDP per capita growth (annual %)
+econ_growth_unemployment_long <- wbstats::wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
+                                                           # Unemployment, total (% of total labor force)
+                                                           # It is calculated not but the ILO but by the Statistical Office of each country
                                                            "SL.UEM.TOTL.NE.ZS"), 
-                                             country = "COL")
+                                                  country = "COL", 
+                                                  return_wide = FALSE)
 
-econ_growth_unemployment_clean <- econ_growth_unemployment |> 
-  drop_na(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS) 
+econ_growth_unemployment_wide <- econ_growth_unemployment_long |> 
+  select(iso2c, iso3c, country, date, indicator_id, value) |> 
+  pivot_wider(id_cols =  iso2c:date, 
+              names_from = indicator_id,
+              values_from = value) |> 
+  drop_na(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)
 
-econ_growth_unemployment_clean |> 
+econ_growth_unemployment_wide |> 
   ggplot(aes(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)) +
   geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
@@ -299,10 +333,10 @@ econ_growth_unemployment_clean |>
        y        = str_glue("Annual total unemployment (% of total labor force)"),
        color = NULL,
        title    = "Economic growth vs unemployment rate",
-       subtitle = str_glue("Period: {min(econ_growth_unemployment_clean$date)} - {max(econ_growth_unemployment_clean$date)}"),
+       subtitle = str_glue("Period: {min(econ_growth_unemployment_long$date)} - {max(econ_growth_unemployment_long$date)}"),
        # Update last update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: 2023-06-29")) +
+                             Last update date: {unique(econ_growth_unemployment_long$last_updated)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
