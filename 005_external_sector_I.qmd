@@ -159,10 +159,10 @@ bop_col_current_account_table <- bop_col |>
 bop_col_current_account_table_footnote <- bop_col_current_account_table
 
 
-names(bop_col_current_account_table_footnote)[2] <-paste0(names(bop_col_current_account_table_footnote)[2:3],
+names(bop_col_current_account_table_footnote)[2] <- paste0(names(bop_col_current_account_table_footnote)[2],
                                                             footnote_marker_alphabet(1, "latex"))
 
-names(bop_col_current_account_table_footnote)[3:4] <-  paste0(names(bop_col_current_account_table_footnote)[4],
+names(bop_col_current_account_table_footnote)[3:4] <-  paste0(names(bop_col_current_account_table_footnote)[3:4],
                                                             footnote_marker_alphabet(2, "latex"))
 
 bop_col_current_account_table_footnote |>
