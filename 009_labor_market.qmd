@@ -218,7 +218,7 @@ tibble(x = c( 0,
 
 - __Employment rate (ER)__ ("Tasa de ocupación")
 
-    + $UR = \frac{E}{WAP} \times 100$ 
+    + $ER = \frac{E}{WAP} \times 100$ 
 
 - __Unemployment rate (UR)__ ("Tasa de desempleo")
 
