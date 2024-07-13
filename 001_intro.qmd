@@ -1,5 +1,5 @@
 ---
-title: "Introduction"
+title: Introduction
 author: 
   - Luis Francisco Gómez López
 institute: 
