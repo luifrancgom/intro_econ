@@ -1,41 +1,38 @@
 ---
-title: "Production and Income II"
-author: "Luis Francisco Gomez Lopez"
-date: 2024-01-20
-format:
+title: Production and Income II
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
   beamer:
     colortheme: dolphin
     fonttheme: structurebold
     theme: AnnArbor
     link-citations: true
-    linkcolor: blue
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    keep-tex: true
     include-in-header:
-      - text: |
-          \usepackage{booktabs}
-          \usepackage{longtable}
-          \usepackage{array}
-          \usepackage{multirow}
-          \usepackage{wrapfig}
-          \usepackage{float}
-          \usepackage{colortbl}
-          \usepackage{pdflscape}
-          \usepackage{tabu}
-          \usepackage{threeparttable}
-          \usepackage{threeparttablex}
-          \usepackage[normalem]{ulem}
-          \usepackage{makecell}
-          \usepackage{xcolor}
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
 bibliography: intro_econ.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
-
 ```{r}
+#| label: libraries
+
 library(tidyverse)
 library(readxl)
 library(knitr)
@@ -46,104 +43,110 @@ library(tidyquant)
 library(wbstats)
 ```
 
-# Contents
-
-- Please Read Me
-- Purpose
-- Inflation adjustments in GPD
-- Economics sectors and GDP
-- Macroeconomic identity
-- Resource of interest 
-- Acknowledgments
-- References
-
 # Please Read Me
 
-- Check the message __Welcome greeting__ published in the News Bulletin Board.
+##
 
-- Dear student please edit your profile uploading a photo where your face is clearly visible.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
-- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
-- This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
 
 # Purpose
+
+##
 
 Understand how production is measured using the concept of Gross Domestic Product (GDP)
 
 # Inflation adjustments in GPD
 
-- Initially the Gross Domestic Product is expressed in current Local Currency Units (LCU) which is the sum of monetary values
+##
 
-- A particular monetary value is the product of a quantity and a unit price
+-   Initially the Gross Domestic Product is expressed in current Local Currency Units (LCU) which is the sum of monetary values
 
-- A change in the level of Gross Domestic Product, measure in current LCU, is a combination of changes in quantities and prices
+-   A particular monetary value is the product of a quantity and a unit price
 
-    + Inflation adjustments, applied to GDP, **try** to eliminate the changes of prices
-    
-    + There are 2 approaches to make inflation adjustments [@abs_demystifying_2003]:
-    
-        + **Constant price estimates**
-        + **Chain volume measures**
+-   A change in the level of Gross Domestic Product, measure in current LCU, is a combination of changes in quantities and prices
 
-# Inflation adjustments in GPD
+    -   Inflation adjustments, applied to GDP, **try** to eliminate the changes of prices
 
-- **Chain volume measures** is the alternative used by the Departamento Administrativo Nacional de Estadística (DANE) to make inflation adjustments
+    -   There are 2 approaches to make inflation adjustments [@abs_demystifying_2003]:
 
-    + A gentle introduction to this approach is explained in [@abs_demystifying_2003]
-    
-    + The monetary values adjusted using **chain volume measures** are not additive. This means that the sum of the components of an aggregate is not necessarily equal to the aggregate 
-    
-        + In addition to the values adjusted using **chain volume measures**, DANE reports a value known as statistical discrepancy because of non additivity
+        -   **Constant price estimates**
+        -   **Chain volume measures**
 
-# Inflation adjustments in GPD
+##
 
-- Expenditure/Final demand approach using chain volume measures and expressed in thousands of millions (Colombia)
+-   **Chain volume measures** is the alternative used by the Departamento Administrativo Nacional de Estadística (DANE) to make inflation adjustments
+
+    -   A gentle introduction to this approach is explained in [@abs_demystifying_2003]
+
+    -   The monetary values adjusted using **chain volume measures** are not additive. This means that the sum of the components of an aggregate is not necessarily equal to the aggregate
+
+        -   In addition to the values adjusted using **chain volume measures**, DANE reports a value known as statistical discrepancy because of non additivity
+
+##
 
 ```{r}
+#| label: tbl-expenditure-approach-chain-volume
+#| tbl-cap: Expenditure/Final demand approach using chain volume measures and expressed in thousands of millions (Colombia)
+
 # Data
-# Estadísticas por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
-# Cuentas nacionales anuales > Principales agregados > Principales agregados macroeconómicos
-gdp_expenditure_annual <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx", 
+# Estadísticas por tema > Cuentas Nacionales >  
+# Cuentas Nacionales Anuales >
+# Cuentas nacionales anuales > 
+# Principales agregados macroeconómicos  > 
+# Principales agregados macroeconómicos 2005-2023pr
+gdp_expenditure_annual <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2022p_2023pr.xlsx", 
                                              sheet = 3, 
-                                             range = "E129:V146", 
+                                             range = "E130:X147", 
                                              col_names = FALSE, 
                                              trim_ws = TRUE)
 
 gdp_expenditure_annual_table <- gdp_expenditure_annual |> 
   select(1, 12, ncol(gdp_expenditure_annual) - 1, ncol(gdp_expenditure_annual)) |> 
   slice(1:4, 6, 15:18) |>
-  rename(concept = `...1`, value_2015 = `...12`, value_2020 = `...17`, value_2021 = `...18`) |> 
+  rename(concept = `...1`, value_2015 = `...12`, 
+         value_2022 = `...19`, 
+         value_2023 = `...20`) |>
   mutate(concept = case_when(
-    concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLSH1" ~ "Gasto de consumo final individual de los hogares y las ISFLH",
-    concept == "Gasto de consumo final de las ISFLSH1" ~ "Gasto de consumo final de las ISFLSH",
+    concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final individual de los hogares y las ISFLH",
+    concept == "Gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final de las ISFLSH",
     TRUE ~ concept),
     value_2015 = round(as.numeric(value_2015), digits = 0),
-    value_2020 = round(as.numeric(value_2020), digits = 0),
-    value_2021 = round(as.numeric(value_2021), digits = 0))
+    value_2022 = round(as.numeric(value_2022), digits = 0),
+    value_2023 = round(as.numeric(value_2023), digits = 0))
 
 gdp_expenditure_annual_table_footnote <- gdp_expenditure_annual_table
 
 names(gdp_expenditure_annual_table_footnote)[1] <- "Concepto"
 names(gdp_expenditure_annual_table_footnote)[2] <- "2015"
-names(gdp_expenditure_annual_table_footnote)[3] <- "2020"
-names(gdp_expenditure_annual_table_footnote)[4] <- "2021"
+names(gdp_expenditure_annual_table_footnote)[3] <- "2022"
+names(gdp_expenditure_annual_table_footnote)[4] <- "2023"
 
 # Remember to change this in case there is Provisional data
 ## If this is the case you need to change to include
 ### footnote_marker_alphabet(1, "latex")
 ### footnote_marker_alphabet(2, "latex")
 ### footnote_marker_alphabet(3, "latex")
+
+## If there is no Provisional data then
+### footnote_marker_alphabet(1, "latex")
+### footnote_marker_alphabet(2, "latex")
 names(gdp_expenditure_annual_table_footnote)[3] <- paste0(names(gdp_expenditure_annual_table_footnote)[3],
-       footnote_marker_alphabet(1, "latex"))
+                                                          footnote_marker_alphabet(1, "latex"))
 names(gdp_expenditure_annual_table_footnote)[4] <- paste0(names(gdp_expenditure_annual_table_footnote)[4],
-       footnote_marker_alphabet(1, "latex"))
+                                                          footnote_marker_alphabet(2, "latex"))
 gdp_expenditure_annual_table_footnote[[1,1]] <- paste0(gdp_expenditure_annual_table_footnote[[1,1]],
-                                                       footnote_marker_alphabet(2, "latex"))
+                                                       footnote_marker_alphabet(3, "latex"))
 gdp_expenditure_annual_table_footnote[[3,1]] <- paste0(gdp_expenditure_annual_table_footnote[[3,1]],
-                                                       footnote_marker_alphabet(2, "latex"))
+                                                       footnote_marker_alphabet(3, "latex"))
 gdp_expenditure_annual_table_footnote |> 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) |>
+  kable(booktabs = TRUE, escape = FALSE,
+        format = "latex") |>
   kable_styling(font_size = 7) |>
   # Indent some rows
   add_indent(positions = c(2, 3), level_of_indent = 1) |> 
@@ -152,63 +155,76 @@ gdp_expenditure_annual_table_footnote |>
   row_spec(row = 7, background = '#FF7F00') |> 
   row_spec(row = 8, background = '#e31a1c') |> 
   row_spec(row = 9, background = '#CAB2D6') |> 
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Series encadenadas de volumen con año de referencia 2015', 'Last update: 2023-02-15'),
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Series encadenadas de volumen con año de referencia 2015', 
+                             'Last update: 2024-06-28'),
            general_title = "",
-           alphabet = c(#'Provisional data',
-                        'Preliminary data', 
-                        'Instituciones sin fines de lucro al servicio de los hogares'),
+           alphabet = c(
+             # Check if there is Provisional data
+             ## If not comment the next line
+             'Provisional data',
+             'Preliminary data', 
+             'Instituciones sin fines de lucro que sirven a los hogares'),
            threeparttable = TRUE)
 ```
 
-# Inflation adjustments in GPD
-
-- Expenditure/Final demand approach using current prices and expressed in thousands of millions (Colombia)
+##
 
 ```{r}
+#| label: tbl-expenditure-approach-current-prices
+#| tbl-cap: Expenditure/Final demand approach using current prices and expressed in thousands of millions (Colombia)
+
 # Data
-# Estadísticad por tema > Cuentas Nacionales >  Cuentas nacionales anuales >
-# Cuentas nacionales anuales > Principales agregados > Principales agregados macroeconómicos
-gdp_expenditure_annual_current <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx",
+# Estadísticas por tema > Cuentas Nacionales >  
+# Cuentas Nacionales Anuales >
+# Cuentas nacionales anuales > 
+# Principales agregados macroeconómicos  > 
+# Principales agregados macroeconómicos 2005-2023pr
+gdp_expenditure_annual_current <- readxl::read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2022p_2023pr.xlsx",
                                                      sheet = 2,
-                                                     range = "E119:V136",
+                                                     range = "E120:X137",
                                                      col_names = FALSE,
                                                      trim_ws = TRUE)
 
 gdp_expenditure_annual_current_table <- gdp_expenditure_annual_current |>
   select(1, 12, ncol(gdp_expenditure_annual_current) - 1, ncol(gdp_expenditure_annual_current)) |>
   slice(1:4, 6, 15:17) |>
-  rename(concept = `...1`, value_2015 = `...12`, value_2020 = `...17`, value_2021 = `...18`) |>
+  rename(concept = `...1`, value_2015 = `...12`, value_2022 = `...19`, value_2023 = `...20`) |>
   mutate(concept = case_when(
-    concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLSH1" ~ "Gasto de consumo final individual de los hogares y las ISFLSH",
-    concept == "Gasto de consumo final de las ISFLSH1" ~ "Gasto de consumo final de las ISFLSH",
+    concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final individual de los hogares y las ISFLSH",
+    concept == "Gasto de consumo final de las ISFLH1" ~ "Gasto de consumo final de las ISFLSH",
     TRUE ~ concept),
     value_2015 = round(as.numeric(value_2015), digits = 0),
-    value_2020 = round(as.numeric(value_2020), digits = 0),
-    value_2021 = round(as.numeric(value_2021), digits = 0))
+    value_2022 = round(as.numeric(value_2022), digits = 0),
+    value_2023 = round(as.numeric(value_2023), digits = 0))
 
 gdp_expenditure_annual_current_table_footnote <- gdp_expenditure_annual_current_table
 
 names(gdp_expenditure_annual_current_table_footnote)[1] <- "Concepto"
 names(gdp_expenditure_annual_current_table_footnote)[2] <- "2015"
-names(gdp_expenditure_annual_current_table_footnote)[3] <- "2020"
-names(gdp_expenditure_annual_current_table_footnote)[4] <- "2021"
+names(gdp_expenditure_annual_current_table_footnote)[3] <- "2022"
+names(gdp_expenditure_annual_current_table_footnote)[4] <- "2023"
 
 # Remember to change this in case there is Provisional data
 ## If this is the case you need to change to include
 ### footnote_marker_alphabet(1, "latex")
 ### footnote_marker_alphabet(2, "latex")
 ### footnote_marker_alphabet(3, "latex")
+
+## If there is no Provisional data then
+### footnote_marker_alphabet(1, "latex")
+### footnote_marker_alphabet(2, "latex")
 names(gdp_expenditure_annual_current_table_footnote)[3] <- paste0(names(gdp_expenditure_annual_current_table_footnote)[3],
                                                                   footnote_marker_alphabet(1, "latex"))
 names(gdp_expenditure_annual_current_table_footnote)[4] <- paste0(names(gdp_expenditure_annual_current_table_footnote)[4],
-                                                                  footnote_marker_alphabet(1, "latex"))
+                                                                  footnote_marker_alphabet(2, "latex"))
 gdp_expenditure_annual_current_table_footnote[[1,1]] <- paste0(gdp_expenditure_annual_current_table_footnote[[1,1]], 
-                                                               footnote_marker_alphabet(2, "latex"))
+                                                               footnote_marker_alphabet(3, "latex"))
 gdp_expenditure_annual_current_table_footnote[[3,1]] <- paste0(gdp_expenditure_annual_current_table_footnote[[3,1]], 
-                                                               footnote_marker_alphabet(2, "latex"))
+                                                               footnote_marker_alphabet(3, "latex"))
 
 gdp_expenditure_annual_current_table_footnote |>
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) |>
+  kable(booktabs = TRUE, escape = FALSE,
+        format = "latex") |>
   kable_styling(font_size = 7) |>
   # Indent some rows
   add_indent(positions = c(2, 3), level_of_indent = 1) |>
@@ -216,19 +232,26 @@ gdp_expenditure_annual_current_table_footnote |>
   row_spec(row = c(1, 4:6), background = '#18BC9C') |>
   row_spec(row = 7, background = '#FF7F00') |>
   row_spec(row = 8, background = '#e31a1c') |>
-  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Precios corrientes', 'Last update: 2023-02-15'),
+  footnote(general       = c('Source: DANE - Cuentas Nacionales Anuales - Producto Interno Bruto (PIB) - Precios corrientes', 
+                             'Last update: 2024-06-28'),
            general_title = "",
-           alphabet = c(# 'Provisional data',
-                        'Preliminary data',
-                        'Instituciones sin fines de lucro que sirven a los hogares'),
+           alphabet = c(
+             # Check if there is Provisional data
+             ## If not comment the next line
+             'Provisional data',
+             'Preliminary data',
+             'Instituciones sin fines de lucro que sirven a los hogares'),
            threeparttable = TRUE)
 ```
 
 # Economics sectors and GDP
 
--  ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
+##
 
 ```{r}
+#| label: tbl-isic-col-1
+#| tbl-cap: ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
+
 tibble(Section = LETTERS[1:11],
        Division = c("01-03", "05-09", "10-33",
                     "35", "36-39", "41-43",
@@ -246,19 +269,22 @@ actividades de saneamiento ambiental",
 "Alojamiento y servicios de comida",
 "Información y comunicaciones", 
 "Actividades financieras y de seguros")) |>  
-  kable(format = "latex", booktabs = TRUE) |>  
-  kable_styling(font_size = 9, latex_options = "striped") |> 
+  kable(booktabs = TRUE,
+        format = "latex") |>  
+  kable_styling(font_size = 9, 
+                latex_options = "striped") |> 
   row_spec(row = 0, bold = TRUE) |> 
   column_spec(column = 1, width = "0.3in") |> 
   column_spec(column = 2, width = "0.3in") |> 
   column_spec(column = 3, width = "3.4in")
 ```
 
-# Economics sectors and GDP
-
--  ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
+##
 
 ```{r}
+#| label: tbl-isic-col-2
+#| tbl-cap: ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
+
 isic_L_U_table <-  tibble(Section = LETTERS[12:21],
        Division = c("68", "69-75",
                     "77-82", "84", "85",
@@ -281,8 +307,10 @@ isic_L_U_table_footnote <- isic_L_U_table
 isic_L_U_table_footnote[[10,3]] <- paste0(isic_L_U_table_footnote[[10,3]], footnote_marker_alphabet(1, "latex"))
 
 isic_L_U_table_footnote |> 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE) |>  
-  kable_styling(font_size = 9, latex_options = "striped") |> 
+  kable(booktabs = TRUE, escape = FALSE,
+        format = "latex") |>  
+  kable_styling(font_size = 9, 
+                latex_options = "striped") |> 
   row_spec(row = 0, bold = TRUE) |> 
   column_spec(column = 1, width = "0.3in") |>  
   column_spec(column = 2, width = "0.3in") |> 
@@ -292,13 +320,17 @@ isic_L_U_table_footnote |>
            threeparttable = TRUE)
 ```
 
-# Economics sectors and GDP
+##
 
-```{r }
-#| out-width: 90%
+```{r}
+#| label: fig-sectors-share-gdp-col-1975
+#| fig-cap: Sectors and share in GDP for Colombia
+
 # Data
 # Estadísticas por tema > Cuentas nacionales >
-# Cuentas Nacionales Anuales > Agregados macroeconómicos - Retropolación base 2015 > Anexo Retropolación Base 2015
+# Cuentas Nacionales Anuales > 
+# Agregados macroeconómicos - Retropolación base 2015 > 
+# Anexo Retropolación Base 2015
 
 # Colors to use for the fill scale in
 # scale_fill_manual
@@ -323,45 +355,46 @@ gdp_sector_annual_current_1975_2013 <- readxl::read_excel("000_data/002_anexo_re
                values_to = "value") |> 
   mutate(year = as.integer(year))
 
-gdp_sector_annual_current_2014_2021 <- read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2020p_2021pr.xlsx", 
+gdp_sector_annual_current_2014_2023 <- read_excel("000_data/002_agregados_macroeconomicos_cuentas_nal_anuales_2005_2022p_2023pr.xlsx", 
                                                   sheet = 2, 
-                                                  range = "B14:V114",
+                                                  range = "B15:X115",
                                                   col_names = c("id", "id_25", "id_61", "sector", 
-                                                                as.character(2005:2021))) |> 
+                                                                as.character(2005:2023))) |> 
   mutate(id = replace(id, 
                       sector == "Impuestos menos subvenciones sobre los productos", 
                       "Impuestos - Subsidios")) |> 
   filter(!is.na(id)) |> 
   select(-c("id_25", "id_61")) |> 
-  pivot_longer(cols = `2005`:`2021`, 
+  pivot_longer(cols = `2005`:`2023`, 
                names_to = "year",
                values_to = "value") |> 
   mutate(year = as.integer(year)) |> 
-  filter(year %in% 2014:2021)
+  filter(year %in% 2014:2023)
 
-gdp_sector_annual_current_1975_2021 <- gdp_sector_annual_current_1975_2013 |>
-  bind_rows(gdp_sector_annual_current_2014_2021) |> 
+gdp_sector_annual_current_1975_2023 <- gdp_sector_annual_current_1975_2013 |>
+  bind_rows(gdp_sector_annual_current_2014_2023) |> 
   group_by(year) |> 
   mutate(pib = sum(value)) |> 
   ungroup() |> 
   mutate(pct_value = value / pib,
          text_id_pct_value = str_glue("{id}: {scales::percent(pct_value, accuracy = 0.01)}"))
 
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021 |> 
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2023 |> 
   # Specify the year
   filter(year %in% 1975)
 
 gdp_sector_annual_current_year |> 
-  ggplot(aes(area = pct_value, fill = id, label = text_id_pct_value)) +
+  ggplot(aes(area = pct_value, 
+             fill = id, 
+             label = text_id_pct_value)) +
   geom_treemap(color = "black",
                show.legend = FALSE) + 
   geom_treemap_text(place = "centre") + 
   scale_fill_manual(values = colors) +
-  labs(title = "Sectors and share in GDP for Colombia", 
-       subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
+  labs(subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2023-02-15") +
+       Update: 2021-02-15") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -372,25 +405,28 @@ gdp_sector_annual_current_year |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Economics sectors and GDP
+##
 
-```{r }
-#| out-width: 90%
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021  |>  
+```{r}
+#| label: fig-sectors-share-gdp-col-2000
+#| fig-cap: Sectors and share in GDP for Colombia
+
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2023  |>  
   # Specify the year
   filter(year %in% 2000)
 
 gdp_sector_annual_current_year |> 
-  ggplot(aes(area = pct_value, fill = id, label = text_id_pct_value)) +
+  ggplot(aes(area = pct_value, 
+             fill = id, 
+             label = text_id_pct_value)) +
   geom_treemap(color = "black",
                show.legend = FALSE) + 
   geom_treemap_text(place = "centre") + 
   scale_fill_manual(values = colors) +
-  labs(title = "Sectors and share in GDP for Colombia", 
-       subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
+  labs(subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2023-02-15") +
+       Update: 2021-02-15") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -401,13 +437,15 @@ gdp_sector_annual_current_year |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Economics sectors and GDP
+##
 
-```{r }
-#| out-width: 90%
-gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2021 |> 
+```{r}
+#| label: fig-sectors-share-gdp-col-2021
+#| fig-cap: Sectors and share in GDP for Colombia
+
+gdp_sector_annual_current_year <- gdp_sector_annual_current_1975_2023 |> 
   # Specify the year
-  filter(year %in% 2021)
+  filter(year %in% 2023)
 
 gdp_sector_annual_current_year |> 
   ggplot(aes(area = pct_value, fill = id, label = text_id_pct_value)) +
@@ -415,11 +453,10 @@ gdp_sector_annual_current_year |>
                show.legend = FALSE) + 
   geom_treemap_text(place = "centre") + 
   scale_fill_manual(values = colors) +
-  labs(title = "Sectors and share in GDP for Colombia", 
-       subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
+  labs(subtitle = str_glue("Period: {unique(gdp_sector_annual_current_year$year)}
                            Observation: Monetary values at current prices are used because of chain volume measures non-additivity"), 
        caption = "Source: DANE - Cuentas Nacionales Anuales - Retropolación Base 2015 - PIB enfoque de la producción y del gasto a precios corrientes
-       Update: 2023-02-15") +
+       Update: 2024-06-28") +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -432,7 +469,9 @@ gdp_sector_annual_current_year |>
 
 # Macroeconomic identity
 
-- Uses that firms, non-profit institutions, government bodies, households and the external sector give to production
+##
+
+-   Uses that firms, non-profit institutions, government bodies, households and the external sector give to production
 
 \small
 
@@ -444,9 +483,9 @@ $$\begin{split}
   = & C_t + G_t + I_t + X_t
   \end{split}$$
 
-# Macroeconomic identity
+##
 
-- Aggregate value generated by the production units in a territory, plus taxes minus subsidies on products, plus products produced outside the territory offered to the territory
+-   Aggregate value generated by the production units in a territory, plus taxes minus subsidies on products, plus products produced outside the territory offered to the territory
 
 $$\begin{split}
   \mathbf{Supply}_t  = & \text{Valor agregado bruto}_t + \\
@@ -457,7 +496,7 @@ $$\begin{split}
   = & GDP_t + M_t
   \end{split}$$
 
-# Macroeconomic identity
+##
 
 $$\begin{split}
   \mathbf{Supply}_t & = \mathbf{Demand}_t \\
@@ -465,9 +504,12 @@ $$\begin{split}
   GDP_t & = (C_t + G_t + I_t) + (X_t - M_t)
   \end{split}$$
 
-# Macroeconomic identity
+##
 
-```{r out.width="90%"}
+```{r}
+#| label: fig-share-gdp-components-col
+#| fig-cap: Share of GDP components in Colombia 
+
 gdp_agg_demand_pct <- wbstats::wb_data(country   = c('COL'), 
                                        indicator = c('NE.CON.PRVT.ZS',
                                                      'NE.CON.GOVT.ZS',
@@ -489,13 +531,13 @@ gdp_agg_demand_pct |>
              color = "black", 
              shape = 21, 
              show.legend = FALSE) +
-  geom_line(aes(color = indicator_short, group = indicator_short)) +
+  geom_line(aes(color = indicator_short, 
+                group = indicator_short)) +
   scale_color_tq() +
   scale_fill_tq() +
-  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+  scale_y_continuous(labels = scales::label_number(suffix = "%")) +
   labs(x        = "Year",
        y        = "Percent",
-       title    = "Share of GDP components in Colombia", 
        subtitle = str_glue("C (% GDP) code WDI: NE.CON.PRVT.CN
                            G (% GDP) code WDI: NE.CON.GOVT.CN 
                            I (% GDP) code WDI: NE.GDI.TOTL.CN 
@@ -517,23 +559,26 @@ gdp_agg_demand_pct |>
 
 # Resource of interest
 
+##
+
 If you want a summary about the topic of Gross Domestic Product check out[^1]:
 
-- [https://youtu.be/YXTjJSGWnsE](https://youtu.be/YXTjJSGWnsE)
+-   [https://youtu.be/YXTjJSGWnsE](https://youtu.be/YXTjJSGWnsE)
 
 [^1]: Banco de la República de Colombia - Cátedras de Macroeconomía y Banca Central
 
 # Acknowledgments
 
-- To my family that supports me
+##
 
-- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+-   To my family that supports me
 
-- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[treemapify](https://CRAN.R-project.org/package=treemapify)__,
-__[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__ and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
-- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**readxl**](https://CRAN.R-project.org/package=readxl), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**janitor**](https://CRAN.R-project.org/package=janitor), [**treemapify**](https://CRAN.R-project.org/package=treemapify), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**wbstats**](https://CRAN.R-project.org/package=wbstats) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
-# References
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References {.allowframebreaks}
