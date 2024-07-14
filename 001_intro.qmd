@@ -187,8 +187,10 @@ pop_pyramid_tbl |>
              fill = genero)) + 
   geom_col(color = "black") + 
   scale_x_continuous(breaks = seq(-0.06, 0.06, 0.02),
-                     labels = ~ scales::percent(abs(.), 
-                                                accuracy = 1), 
+                     labels = \(x) scales::number(x = abs(x),
+                                                  suffix = "%",
+                                                  scale = 100,
+                                                  accuracy = 1), 
                      limits = c(-0.05, 0.05)) +
   scale_fill_manual(labels = c("Men", "Women"),
                     values = c("#2C3E50", "#E31A1C")) + 
@@ -355,8 +357,12 @@ household_income_nper_tbl <- household_tbl |>
   summarize(pct_fex_c = sum(pct_fex_c),
             mean_nper = mean(nper),
             .groups = "drop") |>  
-  mutate(pct_fex_c_text = scales::percent(pct_fex_c, accuracy = 0.01),
-         mean_nper_text = scales::number(mean_nper, accuracy = 0.01))
+  mutate(pct_fex_c_text = scales::number(pct_fex_c,
+                                         suffix = "%",
+                                         scale = 100,
+                                         accuracy = 0.01),
+         mean_nper_text = scales::number(mean_nper, 
+                                         accuracy = 0.01))
 
 household_income_nper_tbl |>  
   ggplot(aes(pct_fex_c, fct_rev(range_ingtotug))) +
@@ -492,7 +498,10 @@ household_housing_tbl <- household_tbl |>
   mutate(pct_fex_c = fex_c / total_fex_c) |>  
   group_by(p5090) |>  
   summarize(pct_fex_c = sum(pct_fex_c), .groups = "drop") |> 
-  mutate(pct_fex_c_text = scales::percent(pct_fex_c, accuracy = 0.01),
+  mutate(pct_fex_c_text = scales::number(pct_fex_c,
+                                         suffix = "%",
+                                         scale = 100,
+                                         accuracy = 0.01),
          p5090 = factor(p5090,
                         labels = c(str_glue("Propia, 
                                             totalmente pagada"),
@@ -563,7 +572,10 @@ schools_bilin_tbl <- schools_tbl |>
     # 2 Bilingüismo como profundización y énfasis en el plan de estudios
     TIPOBIL_NOMBRE) |> 
   mutate(pct_n = n / nrow(schools_tbl),
-         pct_n_text = scales::percent(pct_n, accuracy = 0.01),
+         pct_n_text = scales::number(pct_n,
+                                     suffix = "%",
+                                     scale = 100,
+                                     accuracy = 0.01),
          TIPOBIL_NOMBRE = case_when(
            ES_BILINGUE == "NO" ~ "No bilingüe",
            is.na(ES_BILINGUE) == TRUE ~ "Sin información",
@@ -711,9 +723,9 @@ manufac_tbl |>
              size = 3,
              position = position_jitter(width = 0.2, 
                                         seed = 1234)) +
-  scale_y_continuous(labels = scales::number_format(scale = 1e-6, 
-                                                    suffix = "M", 
-                                                    big.mark = ",")) + 
+  scale_y_continuous(labels = scales::label_number(scale = 1e-6, 
+                                                   suffix = "M", 
+                                                   big.mark = ",")) + 
   labs(x = NULL, 
        y = "COP 2021 (M = Millions)", 
        title = "Aggregate value = Gross production - Intermediate consumption",
@@ -885,7 +897,7 @@ knitr::include_graphics("000_data/001_rentas_trabajo_petro.png")
 -   To the [**Business Science**](https://www.business-science.io/) and
     [**R4DS Online Learning**](https://www.rfordatasci.com/) communities
     where I learn [**R**](https://www.r-project.org/about.html) and
-    [$\pi$-thon](https://www.python.org/about/)
+    [**$\pi$-thon**](https://www.python.org/about/)
 
 -   To the [**R Core
     Team**](https://www.r-project.org/contributors.html), the creators
