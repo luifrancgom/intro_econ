@@ -1,43 +1,38 @@
 ---
 title: "Economy and institutions"
-author: Luis Francisco Gomez Lopez
-date: 2024-01-21
-format:
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
   beamer:
     colortheme: dolphin
     fonttheme: structurebold
     theme: AnnArbor
     link-citations: true
-    linkcolor: blue
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    keep-tex: true
     include-in-header:
-      - text: |
-          \usepackage{booktabs}
-          \usepackage{longtable}
-          \usepackage{array}
-          \usepackage{multirow}
-          \usepackage{wrapfig}
-          \usepackage{float}
-          \usepackage{colortbl}
-          \usepackage{pdflscape}
-          \usepackage{tabu}
-          \usepackage{threeparttable}
-          \usepackage{threeparttablex}
-          \usepackage[normalem]{ulem}
-          \usepackage{makecell}
-          \usepackage{xcolor}
-          \usepackage{fontawesome5}
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
 bibliography: intro_econ.bib
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo      = FALSE, 
-                      warning   = FALSE, 
-                      message   = FALSE,
-                      fig.align = "center")
-```
-
 ```{r }
-library(DiagrammeR)
+#| label: libraries
+
 library(tidyverse)
 library(wbstats)
 library(tidyquant)
@@ -45,113 +40,110 @@ library(janitor)
 library(ggrepel)
 ```
 
-# Contents
-
-- Please Read Me
-- Purpose
-- Definition of institutions
-- Measuring formal institutions
-- Regulation of business activity
-- Crime
-- Acknowledgments
-- References
-
 # Please Read Me
 
-- Check the message __Welcome greeting__ published in the News Bulletin Board.
+## 
 
-- Dear student please edit your profile uploading a photo where your face is clearly visible.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
-- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
-- This presentation is based on [@cardenas_introduccion_2020, Chapter 4]
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 4]
 
 # Purpose
+
+## 
 
 Analyze the role of institutions in the economy
 
 # Definition of institutions
 
-- "Institutions are the rules of the game in a society or, more formally, are the humanly devised constraints that shape human interaction" [@north_institutions_1990, p. 3]
+## 
 
-- Institutions can be informal or formal [@north_institutions_1991]
+-   "Institutions are the rules of the game in a society or, more formally, are the humanly devised constraints that shape human interaction" [@north_institutions_1990, p. 3]
 
-    + **Informal**: sanctions,  taboos,  customs,  traditions,  and  codes  of conduct
-    
-    + **Formal**: constitutions, laws,  property right
-    
+-   Institutions can be informal or formal [@north_institutions_1991]
+
+    -   **Informal**: sanctions, taboos, customs, traditions, and codes of conduct
+
+    -   **Formal**: constitutions, laws, property right
+
 # Measuring formal institutions
 
-- Governance
+## 
 
-    + Set of traditions and institutions by which authority in a country is exercised where it includes [@kaufmann_worldwide_2011, p. 222]:
-    
-        + The process by which governments are selected, monitored and replaced
-        + The capacity of the government to effectively formulate and implement sound policies
-        + The respect of citizens and the state for the institutions that govern economic and social interactions among them
+-   Governance
+
+    -   Set of traditions and institutions by which authority in a country is exercised where it includes [@kaufmann_worldwide_2011, p. 222]:
+
+        -   The process by which governments are selected, monitored and replaced
+        -   The capacity of the government to effectively formulate and implement sound policies
+        -   The respect of citizens and the state for the institutions that govern economic and social interactions among them
         
-# Measuring formal institutions
+## 
 
-- Governance dimensions [@kaufmann_worldwide_2011, p. 223]
+```{dot}
+//| label: fig-governance-indicators
+//| fig-cap: Governance dimensions [@kaufmann_worldwide_2011, p. 223]
+//| fig-width: 5
+//| fig-height: 2
 
-```{r }
-#| out-width: 90%
-
-grViz("
 digraph boxes_and_circles {
 
   graph [rankdir = LR]
 
-  node [shape = circle, color = '#2C3E50']
- 
-  'Governance';
+  node [shape = circle, color = "#2C3E50"]
 
-  node [shape = oval, color = '#E31A1C']
+  "Governance";
 
-  'Process by which governments\nare selected, monitored, and\nreplaced';
-  'Capacity of the government to\neffectively formulate and implement\nsound policies';
-  'Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them';
-  
-  node [shape = oval, color = '#18BC9C']
-  
-  'Voice and\nAccountability';
-  'Political Stability and\nAbsence of Violence/Terrorism';
-  'Government\neffectiveness';
-  'Regulatory\nquality'
-  'Rule of law'
-  'Control of\ncorruption'
-  
-  'Governance' -> 'Process by which governments\nare selected, monitored, and\nreplaced';
-  'Governance' -> 'Capacity of the government to\neffectively formulate and implement\nsound policies';
-  'Governance' -> 'Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them';
-  
-  'Process by which governments\nare selected, monitored, and\nreplaced' -> 'Voice and\nAccountability';
-  'Process by which governments\nare selected, monitored, and\nreplaced' -> 'Political Stability and\nAbsence of Violence/Terrorism';
-  'Capacity of the government to\neffectively formulate and implement\nsound policies' -> 'Government\neffectiveness';
-  'Capacity of the government to\neffectively formulate and implement\nsound policies' -> 'Regulatory\nquality';
-  'Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them' -> 'Rule of law';
-  'Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them' -> 'Control of\ncorruption';
+  node [shape = oval, color = "#E31A1C"]
+
+  "Process by which governments\nare selected, monitored, and\nreplaced";
+  "Capacity of the government to\neffectively formulate and implement\nsound policies";
+  "Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them";
+
+  node [shape = oval, color = "#18BC9C"]
+
+  "Voice and\nAccountability";
+  "Political Stability and\nAbsence of Violence/Terrorism";
+  "Government\neffectiveness";
+  "Regulatory\nquality";
+  "Rule of law";
+  "Control of\ncorruption";
+
+  "Governance" -> "Process by which governments\nare selected, monitored, and\nreplaced";
+  "Governance" -> "Capacity of the government to\neffectively formulate and implement\nsound policies";
+  "Governance" -> "Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them";
+
+  "Process by which governments\nare selected, monitored, and\nreplaced" -> "Voice and\nAccountability";
+  "Process by which governments\nare selected, monitored, and\nreplaced" -> "Political Stability and\nAbsence of Violence/Terrorism";
+  "Capacity of the government to\neffectively formulate and implement\nsound policies" -> "Government\neffectiveness";
+  "Capacity of the government to\neffectively formulate and implement\nsound policies" -> "Regulatory\nquality";
+  "Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them" -> "Rule of law";
+  "Respect of citizens and the state\nfor the institutions that govern economic and\nsocial interactions among them" -> "Control of\ncorruption";
 }
-")
 ```
 
-# Measuring formal institutions
+## 
 
-- Where can I find data?
+-   Where can I find data?
 
-    + Worldwide Governance Indicators (WGI) - WorldBank
-    
-        + [https://databank.worldbank.org/source/worldwide-governance-indicators](https://databank.worldbank.org/source/worldwide-governance-indicators)
-    
-- What is the methodology?
+    -   Worldwide Governance Indicators (WGI) - WorldBank
 
-    + [https://info.worldbank.org/governance/wgi/](https://info.worldbank.org/governance/wgi/) > Documentation
+        -   [https://databank.worldbank.org/source/worldwide-governance-indicators](https://databank.worldbank.org/source/worldwide-governance-indicators)
 
-# Measuring formal institutions
+-   What is the methodology?
 
-```{r }
-#| out-width: 90%
+    -   [https://info.worldbank.org/governance/wgi/](https://info.worldbank.org/governance/wgi/) \> Documentation
 
+## 
+
+```{r}
+#| label: fig-governance-dimensions-col
+#| fig-cap: Governance dimensions for Colombia
+       
 initial_year <- 1996
 last_year <- 2022
 middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
@@ -203,7 +195,6 @@ wgi_col |>
   labs(x = NULL,
        y = NULL,
        fill = NULL,
-       title = "Governance dimensions for Colombia",
        subtitle = str_glue("All indicators are expressed as percentile ranks
                            Percentile rank indicates the country's rank among all countries covered by the aggregate indicator,
                            with 0 corresponding to lowest rank, and 100 to highest rank"),
@@ -220,149 +211,13 @@ wgi_col |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Regulation of business activity
-
-\definecolor{tq_red}{RGB}{227, 26, 28}
-
-- The report *Doing  Business*  analyzes  regulation  that  encourages  efficiency  and  supports  freedom  to  do  business [@world_bank_doing_2020, p 2]
-
-- Where can I find data?
-
-    + Doing Business - World Bank: 
-    
-        + [https://www.doingbusiness.org/](https://www.doingbusiness.org/) > Explore Data Details > Select and economy: Colombia > Download Profile
-        
-        + [https://databank.worldbank.org/source/doing-business](https://databank.worldbank.org/source/doing-business)
-        
-- What is the methodology?
-
-    + [https://www.doingbusiness.org/](https://www.doingbusiness.org/) > Methodology
-    
-- **\textcolor{tq_red}{Warning:} Investigation of Data Irregularities in  
-Doing Business 2018 and Doing Business 2020** [@machen_investigation_2021]
-
-# Regulation of business activity
-
-\definecolor{tq_blue}{RGB}{44, 62, 80}
-\definecolor{tq_steel_blue}{RGB}{166, 206, 227}
-\definecolor{tq_navy_blue}{RGB}{31, 120, 180}
-
-- Opening a business
-
-    + \textcolor{tq_blue}{\faIcon{store-alt}} Starting a business
-    
-- Getting a location
-
-    + \textcolor{tq_steel_blue}{\faIcon{tools}} Dealing with construction permits
-    + \textcolor{tq_steel_blue}{\faIcon{bolt}} Getting electricity
-    + \textcolor{tq_steel_blue}{\faIcon{city}} Registering property
-    
-- Accessing finance
-
-    + \textcolor{tq_navy_blue}{\faIcon[regular]{credit-card}} Getting credit
-    + \textcolor{tq_navy_blue}{\faIcon{user-shield}} Protecting minority investors
-        
-# Regulation of business activity
-
-\definecolor{tq_light_green}{RGB}{178, 223, 138}
-\definecolor{tq_orange}{RGB}{255, 127, 0}
-
-- Dealing withday-to-day operations
-
-    + \textcolor{tq_light_green}{\faIcon{file-invoice-dollar}} Paying taxes
-    + \textcolor{tq_light_green}{\faIcon{truck-moving}} Trading across borders
-
-- Operating in a secure business environment
-
-    + \textcolor{tq_orange}{\faIcon{file-signature}} Enforcing contracts
-    + \textcolor{tq_orange}{\faIcon{gavel}} Resolving insolvency
-    
-# Regulation of business activity
-
-```{r }
-#| out-width: 90%
-
-initial_year <- 2020
-last_year <- 2020
-
-# Score indicators
-db_col_2020 <- wbstats::wb_data(indicator = c(
-                               # Starting a business
-                               "IC.REG.STRT.BUS.DFRN",
-                               # Dealing with construction permits
-                               "IC.CNST.PRMT.DFRN.DB1619",
-                               # Getting electricity
-                               "IC.ELC.ACES.DFRN.DB1619",
-                               # Registering property
-                               "IC.REG.PRRT.DFRN.DB1719",
-                               # Getting credit
-                               "IC.CRED.ACC.CRD.DB1519.DFRN",
-                               # Protecting minority investors
-                               "PROT.MINOR.INV.DFRN.DB1519",
-                               # Paying taxes,
-                               "PAY.TAX.DB1719.DRFN",
-                               # Trading across borders
-                               "TRD.ACRS.BRDR.DB1619.DFRN",
-                               # Enforcing contracts
-                               "ENF.CONT.COEN.DB1719.DFRN",
-                               # Resolving insolvency,
-                               "RESLV.ISV.DB1519.DFRN"),
-                 country = "COL",
-                 start_date = initial_year,
-                 end_date = last_year,
-                 return_wide = FALSE) |>
-  mutate(indicator = str_replace(string = indicator,
-                                 pattern = " - Score",
-                                 replacement = ""),
-         indicator = str_replace(string = indicator,
-                                 pattern = r"(\(.*\))",
-                                 replacement = ""),
-         indicator = str_trim(string = indicator,
-                              side = "both"),
-         indicator = fct_relevel(indicator,
-                                 "Starting a business",
-                                 "Dealing with construction permits",
-                                 "Getting electricity",
-                                 "Registering property",
-                                 "Getting credit",
-                                 "Protecting minority investors",
-                                 "Paying taxes",
-                                 "Trading across borders",
-                                 "Enforcing contracts",
-                                 "Resolving insolvency") |>
-           fct_rev())
-
-db_col_2020 |>
-  ggplot(aes(y = indicator, x = value)) +
-  geom_col(aes(fill = indicator),
-           position = "dodge", color = "black",
-           show.legend = FALSE) +
-  geom_text(aes(label = round(value, digits = 2)),
-            position = position_dodge(width = 1),
-            hjust = -0.2) +
-  scale_fill_tq() +
-  labs(x = NULL,
-       y = NULL,
-       title = "Doing business topics for Colombia in 2020",
-       subtitle = str_glue("All indicators are expressed as scores
-                           0 = lowest performance to 100 = best performance"),
-       caption = str_glue("Source: Doing Business - World Bank
-                          Last update: {unique(db_col_2020$last_updated)}")) +
-  theme(panel.border    = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-```
-
 # Crime
 
-```{r }
-#| out-width: 90%
+## 
+
+```{r}
+#| label: fig-intentional-homicides-col 
+#| fig-cap: Intentional homicides (per 100,000 people)
 
 initial_year <- 1990
 last_year <- 2021
@@ -397,7 +252,7 @@ homicide_pivot_wider |>
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = str_glue("Intentional homicides (per 100,000 people): {initial_year} vs {last_year}"),
+       title = str_glue("Period: {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
                           Last update: {unique(homicide$last_updated)}")) + 
@@ -412,10 +267,11 @@ homicide_pivot_wider |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Crime
+## 
 
-```{r }
-#| out-width: 90%
+```{r}
+#| label: fig-intentional-homicides-female-col 
+#| fig-cap: Intentional homicides, female (per 100,000 female)
 
 initial_year <- 1990
 last_year <- 2021
@@ -451,7 +307,7 @@ homicide_female_pivot_wider |>
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = str_glue("Intentional homicides, female (per 100,000 female): {initial_year} vs {last_year}"),
+       title = str_glue("Period: {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
                           Last update: {unique(homicide_female$last_updated)}")) + 
@@ -466,10 +322,11 @@ homicide_female_pivot_wider |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Crime
+## 
 
-```{r }
-#| out-width: 90%
+```{r}
+#| label: fig-intentional-homicides-male-col 
+#| fig-cap: Intentional homicides, male (per 100,000 male)
 
 initial_year <- 1990
 last_year <- 2021
@@ -505,7 +362,7 @@ homicide_male_pivot_wider |>
                    box.padding = 1) + 
   scale_fill_tq() +
   labs(fill = NULL, 
-       title = str_glue("Intentional homicides, male (per 100,000 male): {initial_year} vs {last_year}"),
+       title = str_glue("Period: {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
                           Last update: {unique(homicide_male$last_updated)}")) + 
@@ -520,16 +377,156 @@ homicide_male_pivot_wider |>
         axis.text         = element_text(face = "bold"))
 ```
 
+##
+
+```{r}
+#| label: fig-map-homicides-col 
+#| fig-cap: Intentional homicides (per 100,000 people) by department
+
+crime_col_2023 <- read_rds(file = "000_data/004_crime_col_2023.rds")
+
+crime_col_2023 |> 
+  ggplot(aes(fill = homicidio_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = "#1F78B4", 
+                      high = "#E31A1C") +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
+       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update: 2024-05-01")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "right",
+        plot.subtitle     = element_text(face = "bold"),
+        axis.text         = element_blank(),
+        axis.ticks        = element_blank())
+```
+
+##
+
+```{r}
+#| label: fig-map-theft-from-person-col 
+#| fig-cap: Theft from person[^1] (per 100,000 people) by department
+
+crime_col_2023 |> 
+  ggplot(aes(fill = hurto_personas_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = "#1F78B4", 
+                      high = "#E31A1C") +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
+       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update: 2024-05-01")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "right",
+        plot.subtitle     = element_text(face = "bold"),
+        axis.text         = element_blank(),
+        axis.ticks        = element_blank())
+```
+
+[^1]: *Hurto a personas* in spanish
+
+##
+
+```{r}
+#| label: fig-map-theft-from-commercial-establishments-col 
+#| fig-cap: Theft from commercial establishments[^2] (per 100,000 people) by department
+
+crime_col_2023 |> 
+  ggplot(aes(fill = hurto_comerciales_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = "#1F78B4", 
+                      high = "#E31A1C") +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
+       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update: 2024-05-01")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "right",
+        plot.subtitle     = element_text(face = "bold"),
+        axis.text         = element_blank(),
+        axis.ticks        = element_blank())
+```
+
+[^2]: *Hurto a comercio* in spanish
+
+##
+
+```{r}
+#| label: fig-map-robbery-financial-institutions-col 
+#| fig-cap: Robbery of Financial Institutions[^3] (per 100,000 people) by department
+
+crime_col_2023 |> 
+  ggplot(aes(fill = hurto_financieras_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = "#1F78B4", 
+                      high = "#E31A1C") +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
+       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update: 2024-05-01")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "right",
+        plot.subtitle     = element_text(face = "bold"),
+        axis.text         = element_blank(),
+        axis.ticks        = element_blank())
+```
+
+[^3]: *Hurto a entidades financieras* in spanish
+
+##
+
+```{r}
+#| label: fig-map-kidnapping-col 
+#| fig-cap: Kidnapping (per 100,000 people) by department
+
+crime_col_2023 |> 
+  ggplot(aes(fill = secuestro_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = "#1F78B4", 
+                      high = "#E31A1C") +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
+       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update: 2024-05-01")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "right",
+        plot.subtitle     = element_text(face = "bold"),
+        axis.text         = element_blank(),
+        axis.ticks        = element_blank())  
+```
+
 # Acknowledgments
 
-- To my family that supports me
+## 
 
-- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+-   To my family that supports me
 
-- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[janitor](https://CRAN.R-project.org/package=janitor)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
-- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**janitor**](https://CRAN.R-project.org/package=janitor), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), [**sf**]( https://CRAN.R-project.org/package=sf) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
 
 # References {.allowframebreaks}
