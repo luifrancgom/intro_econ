@@ -30,7 +30,7 @@ lang: en
 bibliography: intro_econ.bib
 ---
 
-```{r }
+```{r}
 #| label: libraries
 
 library(tidyverse)
