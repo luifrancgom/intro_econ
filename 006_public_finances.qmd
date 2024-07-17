@@ -28,9 +28,6 @@ knitr:
     out-width: 85%
 lang: en
 bibliography: intro_econ.bib
-editor: 
-  markdown: 
-    wrap: 72
 ---
 
 ```{r}
@@ -48,29 +45,25 @@ library(latex2exp)
 
 # Please Read Me
 
-##
+## 
 
--   Check the message **Welcome greeting** published in the News
-    Bulletin Board.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
--   Dear student please edit your profile uploading a photo where your
-    face is clearly visible.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
--   The purpose of the virtual meetings is to answer questions and not
-    to make a summary of the study material.
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
--   This presentation is based on [@cardenas_introduccion_2020, Chapter
-    6]
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
 
 # Purpose
 
-##
+## 
 
 Explain the role of the State in the economy
 
 # Economic functions of government
 
-##
+## 
 
 -   What are the economic functions of government? [@council_for_economic_education_focus_2010, pp. 45-54]
 
@@ -86,18 +79,16 @@ Explain the role of the State in the economy
 
     -   **Provide public goods and services**
 
-        -   Some goods and services are not provided by the market in
-            the quantities desired by society
+        -   Some goods and services are not provided by the market in the quantities desired by society
 
-##
+## 
 
 -   What are the economic functions of government? [@council_for_economic_education_focus_2010, pp. 45-54]
 
     -   **Correct for externalities**
 
         -   Reduce negative externalities
-        -   Encourage increased production of goods and services that
-            have positive externalities
+        -   Encourage increased production of goods and services that have positive externalities
 
     -   **Stabilize the economy**
 
@@ -111,7 +102,7 @@ Explain the role of the State in the economy
 
 # Colombian public sector
 
-##
+## 
 
 ```{dot}
 //| label: fig-division-public-sector-cuin-col
@@ -165,7 +156,7 @@ digraph boxes_and_circles {
 }
 ```
 
-##
+## 
 
 ```{dot}
 //| label: fig-division-public-sector-minhacienda-col
@@ -235,9 +226,7 @@ digraph boxes_and_circles {
 }
 ```
 
-[^1]: [https://www.minhacienda.gov.co](https://www.minhacienda.gov.co) \> Entidades Financieras \> Política Fiscal
-
-##
+## 
 
 -   Central National Government (Gobierno Nacional Central (GNC)) Fiscal Balance
 
@@ -249,7 +238,7 @@ digraph boxes_and_circles {
 
         -   When the central national government spends less than it collects as revenues, it has a **fiscal surplus**
 
-##
+## 
 
 ```{r}
 #| label: tbl-ingresos-tributarios-no-tributarios-col
@@ -300,7 +289,7 @@ cng_fb_table_footnote |>
            threeparttable = TRUE)
 ```
 
-##
+## 
 
 ```{r}
 #| label: tbl-ingresos-totales-col
@@ -333,7 +322,7 @@ cng_fb_table_footnote |>
            threeparttable = TRUE)
 ```
 
-##
+## 
 
 ```{r}
 #| label: tbl-ingresos-pagos-totales-col
@@ -366,7 +355,7 @@ cng_fb_table_footnote |>
            threeparttable = TRUE)
 ```
 
-##
+## 
 
 ```{r}
 #| label: tbl-balance-fiscal-gobierno-nacional-central-pct-pib-col
@@ -398,7 +387,7 @@ cng_fb_table_footnote |>
            threeparttable = TRUE)
 ```
 
-##
+## 
 
 ```{r}
 #| label: tbl-balance-fiscal-gobierno-nacional-central-col
@@ -445,7 +434,7 @@ cng_fb_table_footnote |>
 
 # Revenues: taxes
 
-##
+## 
 
 -   Useful resources
 
@@ -457,7 +446,7 @@ cng_fb_table_footnote |>
 
         -   [**https://www.ofiscal.org/publicaciones**](https://www.ofiscal.org/publicaciones) \> guías ciudadanas \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
 
-##
+## 
 
 -   **Taxes**: "compulsory unrequited payments to the general government or to a supranational authority" [@oecd_revenue_2020, pp. 319]
 
@@ -467,7 +456,7 @@ cng_fb_table_footnote |>
 
     -   Compulsory social security contributions and paid to general government are treated here as tax revenues [@oecd_revenue_2020, p 320]
 
-##
+## 
 
 -   **Classification of Taxes by the OECD** [@oecd_revenue_2020, pp. 317-318]
 
@@ -478,7 +467,7 @@ cng_fb_table_footnote |>
     -   5000 Taxes on goods and services (Impuestos sobre los bienes y servicios)
     -   6000 Other taxes (Otros impuestos)
 
-##
+## 
 
 -   According to the Colombia's political constitution:
 
@@ -494,11 +483,11 @@ cng_fb_table_footnote |>
 Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, pp. 8]
 :::
 
-##
+## 
 
 -   **Efficiency**: taxes change the behavior of individuals and sometimes distort the economic activity by creating a deadweight loss. Therefore the idea is to have a tax system that minimize or mitigate these negative effects
 
-##
+## 
 
 -   **Progressivity**
 
@@ -514,7 +503,7 @@ Horizontal and vertical [@observatorio_fiscal_de_la_universidad_javeriana_guiciu
 Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018, pp. 11]
 :::
 
-##
+## 
 
 ```{r}
 #| include: false
@@ -607,7 +596,7 @@ tax_revenue_as_pct_of_gdp |>
         axis.text         = element_text(face = "bold"))
 ```
 
-##
+## 
 
 ```{r}
 #| label: fig-tax-structure-col-lac-oecd
@@ -695,7 +684,7 @@ tax_structure_grouped |>
 
 # Expenditures
 
-##
+## 
 
 -   Useful resources
 
@@ -706,12 +695,12 @@ tax_structure_grouped |>
     -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
 
         -   [**https://www.ofiscal.org/publicaciones**](https://www.ofiscal.org/publicaciones) \> guías ciudadanas \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
-    
+
     -   **Presupuesto en Perspectiva Económica (PePE)**
-    
+
         -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Interactúa \> PePE
 
-##
+## 
 
 -   **Presupuesto General de la Nación (PGN)**
 
@@ -727,7 +716,7 @@ tax_structure_grouped |>
 
         -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Guias \> Presupuesto General de la Nación \> ver y descargar ↓
 
-##
+## 
 
 ```{r}
 #| include: false
@@ -788,13 +777,13 @@ pgn_what_spent_clean |>
 
 # Acknowledgments
 
-##
+## 
 
 -   To my family that supports me
 
 -   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
--   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [$\pi$-thon](https://www.python.org/about/)
 
 -   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**readxl**](https://CRAN.R-project.org/package=readxl), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**janitor**](https://CRAN.R-project.org/package=janitor), [**treemapify**](https://CRAN.R-project.org/package=treemapify), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 

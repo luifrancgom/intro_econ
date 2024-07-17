@@ -28,9 +28,6 @@ knitr:
     out-width: 85%
 lang: en
 bibliography: intro_econ.bib
-editor: 
-  markdown: 
-    wrap: 72
 ---
 
 ```{r}
