@@ -31,6 +31,8 @@ bibliography: intro_econ.bib
 ---
 
 ```{r}
+#| label: libraries
+
 library(tidyverse)
 library(wbstats)
 library(tidyquant)
