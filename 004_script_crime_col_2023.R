@@ -15,7 +15,7 @@ map_col_depto <- st_read(dsn = "000_data/004_departamentos_colombia_2023-08_shp/
 ## Demografía y población >
 ## Proyecciones de población >
 ## Proyecciones y retroproyecciones de población departamental para el periodo 1985-2019 y 2020-2050 con base en el CNPV 2018 >
-## icono anexoSerie departamental de población por área, para el periodo 2020-2050
+## Serie departamental de población por área, para el periodo 2020-2050
 ### Fecha: 2023-03-04
 pop_col <- read_excel(path = "000_data/004_serie_departamental_de_poblacion_por_area_2020-2050.xlsx", 
                       sheet = 1, 

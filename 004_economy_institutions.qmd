@@ -393,8 +393,11 @@ crime_col_2023 |>
                       high = "#E31A1C") +
   labs(fill = NULL,
        subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
-       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
-                          Last update: 2024-05-01")) +
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: 2024-05-01
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -419,8 +422,11 @@ crime_col_2023 |>
                       high = "#E31A1C") +
   labs(fill = NULL,
        subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
-       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
-                          Last update: 2024-05-01")) +
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: 2024-05-01
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -447,8 +453,11 @@ crime_col_2023 |>
                       high = "#E31A1C") +
   labs(fill = NULL,
        subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
-       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
-                          Last update: 2024-05-01")) +
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: 2024-05-01
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -475,8 +484,11 @@ crime_col_2023 |>
                       high = "#E31A1C") +
   labs(fill = NULL,
        subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
-       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
-                          Last update: 2024-05-01")) +
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: 2024-05-01
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -503,8 +515,11 @@ crime_col_2023 |>
                       high = "#E31A1C") +
   labs(fill = NULL,
        subtitle = str_glue("Year: {unique(crime_col_2023$year)}"),
-       caption = str_glue("Source: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
-                          Last update: 2024-05-01")) +
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: 2024-05-01
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
