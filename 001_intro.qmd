@@ -47,24 +47,19 @@ library(ggrepel)
 
 ## 
 
--   Check the message **Welcome greeting** published in the News
-    Bulletin Board.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
--   Dear student please edit your profile uploading a photo where your
-    face is clearly visible.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
--   The purpose of the virtual meetings is to answer questions and not
-    to make a summary of the study material.
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
--   This presentation is based on [@cardenas_introduccion_2020, Chapter
-    1]
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 1]
 
 # Purpose
 
 ## 
 
-Identify the main characteristics of the Colombian economy, especially
-those that differentiate it from other economies
+Identify the main characteristics of the Colombian economy, especially those that differentiate it from other economies
 
 # Economic environment and the Company
 
@@ -275,9 +270,7 @@ height_tbl |>
 
 ## 
 
--   **ingtotug**: *"Ingreso total de la unidad de gasto **antes** de
-    imputación de arriendo a propietarios y usufructuarios"*
-    [@dnp_pobreza_2012, pp. 16-17]
+-   **ingtotug**: *"Ingreso total de la unidad de gasto **antes** de imputación de arriendo a propietarios y usufructuarios"* [@dnp_pobreza_2012, pp. 16-17]
 
     -   *Ingreso monetario primera actividad (IMPA)*
     -   *Ingreso en especie (IE)*
@@ -285,13 +278,9 @@ height_tbl |>
     -   *Ingreso monetario de desocupados e inactivos (IMDI)*
     -   *Ingresos por otras fuentes (IOF)*
 
--   **ingtotugarr**: "Ingreso total de la unidad de gasto con imputación
-    de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, pp.
-    24-26]
+-   **ingtotugarr**: "Ingreso total de la unidad de gasto con imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, pp. 24-26]
 
-    -   Modulo B Datos de la Vivienda: 11. Si tuviera que pagar arriendo
-        por esta vivienda, ¿cuánto estima que tendría que pagar
-        mensualmente? [@dane_cuestionario_2019, p 2]
+    -   Modulo B Datos de la Vivienda: 11. Si tuviera que pagar arriendo por esta vivienda, ¿cuánto estima que tendría que pagar mensualmente? [@dane_cuestionario_2019, p 2]
 
 ## 
 
@@ -396,23 +385,17 @@ household_income_nper_tbl |>
 
 ## 
 
--   If you want to explore more about this topic using data from the
-    year 2019 check out[^1]:
+-   If you want to explore more about this topic using data from the year 2019 check out[^1]:
 
-    -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se
-        ubica su hogar según su ingreso →
+    -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso →
 
         -   <https://www.ofiscal.org/ingresosxhogares>
 
--   If you want to explore more about this topic from around the world
-    in a visual way check out[^2]:
+-   If you want to explore more about this topic from around the world in a visual way check out[^2]:
 
-    -   [See how the rest of the world lives, organized by
-        income](https://youtu.be/u4L130DkdOw) (Configure spanish
-        subtitles in the setting options)
+    -   [See how the rest of the world lives, organized by income](https://youtu.be/u4L130DkdOw) (Configure spanish subtitles in the setting options)
 
-    -   <https://www.gapminder.org> \> Resources \> Tools \> Dollar
-        Street
+    -   <https://www.gapminder.org> \> Resources \> Tools \> Dollar Street
 
         -   <https://www.gapminder.org/dollar-street>
 
@@ -474,15 +457,12 @@ household_income_nper_tbl |>
     -   *Propiedad colectiva*
     -   *Otra*
 
--   The concept of housing (vivienda) is different from a household
-    (hogar)
+-   The concept of housing (vivienda) is different from a household (hogar)
 
     -   Zero or more households can live in a housing (vivienda)
-    -   For a detail definition of a househould check out
-        [@united_nations_principles_2017, p. 38, 2.33]
+    -   For a detail definition of a househould check out [@united_nations_principles_2017, p. 38, 2.33]
 
-[^3]: For a detail definition of these categories checkout
-    [@dane_manual_2022, p. 35]
+[^3]: For a detail definition of these categories checkout [@dane_manual_2022, p. 35]
 
 ## 
 
@@ -849,8 +829,7 @@ egg_jan_june_tbl |>
 
 -   **Flow**: a variable that is measured over a period of time
 
--   Example *Declaración de Renta Gustavo Francisco Petro Urrego Año
-    Gravable 2019*:
+-   Example *Declaración de Renta Gustavo Francisco Petro Urrego Año Gravable 2019*:
 
     -   <https://www.funcionpublica.gov.co/fdci/consultaCiudadana>
 
@@ -888,35 +867,12 @@ knitr::include_graphics("000_data/001_rentas_trabajo_petro.png")
 
 -   To my family that supports me
 
--   To the taxpayers of Colombia and the [**UMNG
-    students**](https://www.umng.edu.co/estudiante) who pay my salary
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
--   To the [**Business Science**](https://www.business-science.io/) and
-    [**R4DS Online Learning**](https://www.rfordatasci.com/) communities
-    where I learn [**R**](https://www.r-project.org/about.html) and
-    [**$\pi$-thon**](https://www.python.org/about/)
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [$\pi$-thon](https://www.python.org/about/)
 
--   To the [**R Core
-    Team**](https://www.r-project.org/contributors.html), the creators
-    of [**RStudio IDE**](https://rstudio.com/products/rstudio/),
-    [**Quarto**](https://quarto.org/) and the authors and maintainers of
-    the packages
-    [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
-    [**readxl**](https://CRAN.R-project.org/package=readxl),
-    [**janitor**](https://CRAN.R-project.org/package=janitor),
-    [**scales**](https://CRAN.R-project.org/package=scales),
-    [**knitr**](https://CRAN.R-project.org/package=knitr),
-    [**kableExtra**](https://CRAN.R-project.org/package=kableExtra),
-    [**lubridate**](https://CRAN.R-project.org/package=lubridate),
-    [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), and
-    [**tinytex**](https://CRAN.R-project.org/package=tinytex) for
-    allowing me to access these tools without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**readxl**](https://CRAN.R-project.org/package=readxl), [**janitor**](https://CRAN.R-project.org/package=janitor), [**scales**](https://CRAN.R-project.org/package=scales), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**lubridate**](https://CRAN.R-project.org/package=lubridate), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
--   To the [**Linux kernel
-    community**](https://www.kernel.org/category/about.html) for
-    allowing me the possibility to use some [**Linux
-    distributions**](https://static.lwn.net/Distributions/) as my main
-    [**OS**](https://en.wikipedia.org/wiki/Operating_system) without
-    paying for a license
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
 
 # References {.allowframebreaks}
