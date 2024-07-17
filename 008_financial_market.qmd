@@ -1,39 +1,38 @@
 ---
 title: "Financial Market"
-author: Luis Francisco Gomez Lopez
-date: 2024-02-04
-execute: 
-  echo: false
-  warning: false
-format:
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
   beamer:
     colortheme: dolphin
     fonttheme: structurebold
     theme: AnnArbor
     link-citations: true
-    linkcolor: blue
-    fig-align: center
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    keep-tex: true
     include-in-header:
-      - text: |
-          \usepackage{booktabs}
-          \usepackage{longtable}
-          \usepackage{array}
-          \usepackage{multirow}
-          \usepackage{wrapfig}
-          \usepackage{float}
-          \usepackage{colortbl}
-          \usepackage{pdflscape}
-          \usepackage{tabu}
-          \usepackage{threeparttable}
-          \usepackage{threeparttablex}
-          \usepackage[normalem]{ulem}
-          \usepackage{makecell}
-          \usepackage{xcolor}
-          \usepackage{fontawesome5}
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
 bibliography: intro_econ.bib
 ---
 
 ```{r}
+#| label: libraries
+
 library(DiagrammeR)
 library(tidyverse)
 library(wbstats)
@@ -45,180 +44,175 @@ library(kableExtra)
 library(readxl)
 ```
 
-# Contents
-
-- Please Read Me
-- Purpose
-- Structure of the Colombian financial system
-- Financial depth
-- Principal instruments "Mercado no intermediado"
-- Acknowledgments
-- References
-
 # Please Read Me
 
-- Check the message __Welcome greeting__ published in the News Bulletin Board.
+## 
 
-- Dear student please edit your profile uploading a photo where your face is clearly visible.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
-- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
-- This presentation is based on [@cardenas_introduccion_2020, Chapter 8]
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 8]
 
 # Purpose
+
+## 
 
 Analyze the functioning of the financial market, identifying the types of intermediaries and instruments that are part of it
 
 # Structure of the Colombian financial system
 
-- The financial system is the set of entities whose main function is to channel the money of savers to those who wish to make investments 
+## 
 
-    + We are only going to focus on supervised financial entities. Therefore entities outside the law or unregulated are not going to be analyzed
-    
-    + Also ponzi schemes, pyramids or unregulated investment scheme are not analyzed. 
-    
-        + However if you are interested in this topic check out [@carvajal_ponzi_2009]  and [@hofstetter_ponzi_2018]
+-   The financial system is the set of entities whose main function is to channel the money of savers to those who wish to make investments
 
-# Structure of the Colombian financial system
+    -   We are only going to focus on supervised financial entities. Therefore entities outside the law or unregulated are not going to be analyzed
 
-- By supervised entities [@congreso_de_colombia_decreto_1993]
+    -   Also ponzi schemes, pyramids or unregulated investment scheme are not analyzed.
 
-```{r }
-#| out-width: 70%
-#| fig-align: center
+        -   However if you are interested in this topic check out [@carvajal_ponzi_2009] and [@hofstetter_ponzi_2018]
 
-grViz("
+## 
+
+```{dot}
+//| label: fig-financial-system-structure-supervised-col
+//| fig-cap: Financial system structure by supervised entities [@congreso_de_colombia_decreto_1993]
+//| fig-width: 7
+//| fig-height: 2.7
+
 digraph boxes_and_circles {
 
   graph [rankdir = LR]
 
-  node [shape = circle, color = '#2C3E50']
+  node [shape = circle, color = "#2C3E50"]
  
-  'Sector Financiero';
+  "Sector Financiero";
 
-  node [shape = oval, color = '#E31A1C']
+  node [shape = oval, color = "#E31A1C"]
 
-  'Establecimientos\nde crédito';
-  'Sociedades de\nservicios financieros';
-  'Sociedades de\nCapitalización';
-  'Entidades Aseguradores\ne Intermediarios';
+  "Establecimientos\nde crédito";
+  "Sociedades de\nservicios financieros";
+  "Sociedades de\nCapitalización";
+  "Entidades Aseguradores\ne Intermediarios";
   
-  node [shape = oval, color = '#18BC9C']
+  node [shape = oval, color = "#18BC9C"]
   
-  'Establecimientos bancarios';
-  'Corporaciones Financieras';
-  'Compañías de Financiamiento';
-  'Cooperativas Financieras';
-  'Sociedades fiduciarias';
-  'Almacenes generales de depósito';
-  'Sociedades administradoras de\nFondos de Pensiones y de Cesantías';
-  'Entidades aseguradoras';
-  'Intermediarios de seguros';
-  'Intermediarios de reaseguros';
+  "Establecimientos bancarios";
+  "Corporaciones Financieras";
+  "Compañías de Financiamiento";
+  "Cooperativas Financieras";
+  "Sociedades fiduciarias";
+  "Almacenes generales de depósito";
+  "Sociedades administradoras de\nFondos de Pensiones y de Cesantías";
+  "Entidades aseguradoras";
+  "Intermediarios de seguros";
+  "Intermediarios de reaseguros";
   
-  'Sector Financiero' -> 'Establecimientos\nde crédito';
-  'Sector Financiero' -> 'Sociedades de\nservicios financieros';
-  'Sector Financiero' -> 'Sociedades de\nCapitalización';
-  'Sector Financiero' -> 'Entidades Aseguradores\ne Intermediarios';
+  "Sector Financiero" -> "Establecimientos\nde crédito";
+  "Sector Financiero" -> "Sociedades de\nservicios financieros";
+  "Sector Financiero" -> "Sociedades de\nCapitalización";
+  "Sector Financiero" -> "Entidades Aseguradores\ne Intermediarios";
   
-  'Establecimientos\nde crédito' -> 'Establecimientos bancarios';
-  'Establecimientos\nde crédito' -> 'Corporaciones Financieras';
-  'Establecimientos\nde crédito' -> 'Compañías de Financiamiento';
-  'Establecimientos\nde crédito' -> 'Cooperativas Financieras';
-  'Sociedades de\nservicios financieros' -> 'Sociedades fiduciarias';
-  'Sociedades de\nservicios financieros' -> 'Almacenes generales de depósito';
-  'Sociedades de\nservicios financieros' -> 'Sociedades administradoras de\nFondos de Pensiones y de Cesantías';
-  'Entidades Aseguradores\ne Intermediarios' -> 'Entidades aseguradoras';
-  'Entidades Aseguradores\ne Intermediarios' -> 'Intermediarios de seguros';
-  'Entidades Aseguradores\ne Intermediarios' -> 'Intermediarios de reaseguros';
+  "Establecimientos\nde crédito" -> "Establecimientos bancarios";
+  "Establecimientos\nde crédito" -> "Corporaciones Financieras";
+  "Establecimientos\nde crédito" -> "Compañías de Financiamiento";
+  "Establecimientos\nde crédito" -> "Cooperativas Financieras";
+  "Sociedades de\nservicios financieros" -> "Sociedades fiduciarias";
+  "Sociedades de\nservicios financieros" -> "Almacenes generales de depósito";
+  "Sociedades de\nservicios financieros" -> "Sociedades administradoras de\nFondos de Pensiones y de Cesantías";
+  "Entidades Aseguradores\ne Intermediarios" -> "Entidades aseguradoras";
+  "Entidades Aseguradores\ne Intermediarios" -> "Intermediarios de seguros";
+  "Entidades Aseguradores\ne Intermediarios" -> "Intermediarios de reaseguros";
 }
-")
 ```
 
-# Structure of the Colombian financial system
+## 
 
-- By markets [@cardenas_introduccion_2020, Chapter 8, p 264]
+```{dot}
+//| label: fig-financial-system-structure-markets-col
+//| fig-cap: Financial system structure by markets entities [@cardenas_introduccion_2020, Chapter 8, p 264]
+//| fig-width: 4.5
+//| fig-height: 4
 
-```{r }
-#| out-width: 95%
-#| fig-align: center
-
-grViz("
 digraph boxes_and_circles {
 
   graph [rankdir = LR]
 
-  node [shape = circle, color = '#2C3E50']
+  node [shape = circle, color = "#2C3E50"]
  
-  'Sector Financiero';
+  "Sector Financiero";
 
-  node [shape = oval, color = '#E31A1C']
+  node [shape = oval, color = "#E31A1C"]
 
-  'Mercado monetario';
-  'Mercado de capitales';
-  'Mercado de divisas';
-  'Otros mercados financieros';
+  "Mercado monetario";
+  "Mercado de capitales";
+  "Mercado de divisas";
+  "Otros mercados financieros";
   
-  node [shape = oval, color = '#18BC9C']
+  node [shape = oval, color = "#18BC9C"]
   
-  'Bancario';
-  'No bancario';
+  "Bancario";
+  "No bancario";
   
-  node [shape = oval, color = '#CCBE93']
+  node [shape = oval, color = "#CCBE93"]
   
-  'Bancos';
-  'Otros intermediarios';
-  'Acciones';
-  'Renta fija';
-  'Derivados';
-  'Otros mercados';
+  "Bancos";
+  "Otros intermediarios";
+  "Acciones";
+  "Renta fija";
+  "Derivados";
+  "Otros mercados";
   
-  'Sector Financiero' -> 'Mercado monetario';
-  'Sector Financiero' -> 'Otros mercados financieros';
-  'Sector Financiero' -> 'Mercado de divisas';
-  'Sector Financiero' -> 'Mercado de capitales';
+  "Sector Financiero" -> "Mercado monetario";
+  "Sector Financiero" -> "Otros mercados financieros";
+  "Sector Financiero" -> "Mercado de divisas";
+  "Sector Financiero" -> "Mercado de capitales";
   
-  'Mercado de capitales' -> 'Bancario';
-  'Mercado de capitales' -> 'No bancario';
+  "Mercado de capitales" -> "Bancario";
+  "Mercado de capitales" -> "No bancario";
   
-  'Bancario' -> 'Bancos';
-  'Bancario' -> 'Otros intermediarios';
-  'No bancario' -> 'Acciones';
-  'No bancario' -> 'Renta fija';
-  'No bancario' -> 'Derivados';
-  'No bancario' -> 'Otros mercados';
+  "Bancario" -> "Bancos";
+  "Bancario" -> "Otros intermediarios";
+  "No bancario" -> "Acciones";
+  "No bancario" -> "Renta fija";
+  "No bancario" -> "Derivados";
+  "No bancario" -> "Otros mercados";
 }
-")
 ```
 
 # Financial depth
 
-- "Financial depth captures the financial sector relative to the economy. It is the size of banks, other financial institutions, and financial markets in a country, taken together and compared to a measure of economic output" [@world_bank_financial_2016]
+## 
 
-- How it is measure using quantity indicators?[^1]
+-   *"Financial depth captures the financial sector relative to the economy. It is the size of banks, other financial institutions, and financial markets in a country, taken together and compared to a measure of economic output"* [@world_bank_financial_2016]
 
-    + **Domestic credit to private sector (% of GDP)**
-    + **Market capitalization of listed domestic companies (% of GDP)**
-    
-        + Share price times the number of shares outstanding (including their several classes) for listed domestic companies
-    
-- According to the literature the "evidence suggests that both financial intermediaries and markets matter for growth and that reverse causality alone is not driving this relationship" [@levine_chapter_2005, p 866]
+-   How it is measure using quantity indicators?[^1]
 
+    -   **Domestic credit to private sector (% of GDP)**
 
-[^1]: These indicators doesn't measure the quality of financial depth 
+    -   **Market capitalization of listed domestic companies (% of GDP)**
 
-# Financial depth
+        -   Share price times the number of shares outstanding (including their several classes) for listed domestic companies
 
-```{r }
-#| out-width: 90%
+-   According to the literature the *"evidence suggests that both financial intermediaries and markets matter for growth and that reverse causality alone is not driving this relationship"* [@levine_chapter_2005, p 866]
 
-start_date <- 2022
-end_date <- 2022
+[^1]: These indicators doesn't measure the quality of financial depth
+
+## 
+
+```{r}
+#| label: fig-domestic-credit-private-sector-gdp-pc-col
+#| fig-cap: Financial depth vs Gross Domestic Product per-capita
+
+start_date <- 2023
+end_date <- 2023
 
 credit_private_long <- wbstats::wb_data(country = "countries_only",
                                        # Domestic credit to private sector (% of GDP)
                                        ## FS.AST.PRVT.GD.ZS
-                                       #  GDP per capita, PPP (constant 2017 international $)
+                                       #  GDP per capita, PPP (constant 2021 international $)
                                        ## NY.GDP.PCAP.PP.KD
                                        indicator    = c("FS.AST.PRVT.GD.ZS", "NY.GDP.PCAP.PP.KD"),
                                        start_date = start_date,
@@ -254,17 +248,15 @@ credit_private_wide |>
                    box.padding = 1,
                    force = 2,
                    max.overlaps = Inf) +
-  scale_x_log10(labels = scales::number_format()) +
-  scale_y_log10(labels = scales::number_format()) +
+  scale_x_log10(labels = scales::label_number()) +
+  scale_y_log10(labels = scales::label_number()) +
   labs(x        = "Domestic credit to private sector (% of GDP)",
        y        = str_glue("GDP per capita, PPP
-                           (constant 2017 international $)"),
+                           (constant 2021 international $)"),
        color = NULL,
-       title    = "Financial depth vs Gross Domestic Product per-capita",
        subtitle = str_glue("Period: {start_date}
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(credit_private_wide)}"),
-       # Change the update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
                              Last update date: {unique(credit_private_long$last_updated)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -278,18 +270,19 @@ credit_private_wide |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Financial depth
+## 
 
-```{r }
-#| out-width: 90%
+```{r}
+#| label: fig-market-capitalization-gdp-pc-col
+#| fig-cap: Financial depth vs Gross Domestic Product per-capita
 
-start_date <- 2020
-end_date <- 2020
+start_date <- 2022
+end_date <- 2022
 
 market_cap_long <- wbstats::wb_data(country = "countries_only",
                                # Market capitalization of listed domestic companies (% of GDP)
                                ## CM.MKT.LCAP.GD.ZS
-                               #  GDP per capita, PPP (constant 2017 international $)
+                               #  GDP per capita, PPP (constant 2021 international $)
                                ## NY.GDP.PCAP.PP.KD
                                indicator    = c("CM.MKT.LCAP.GD.ZS", "NY.GDP.PCAP.PP.KD"),
                                start_date = start_date,
@@ -326,16 +319,14 @@ market_cap_wide |>
                    force = 2,
                    max.overlaps = Inf) +
   scale_x_log10() +
-  scale_y_log10(labels = scales::number_format()) +
+  scale_y_log10(labels = scales::label_number()) +
   labs(x        = "Market capitalization of listed domestic companies (% of GDP)",
        y        = str_glue("GDP per capita, PPP
-                           (constant 2017 international $)"),
+                           (constant 2021 international $)"),
        color = NULL,
-       title    = "Financial depth vs Gross Domestic Product per-capita",
        subtitle = str_glue("Period: {start_date}
                            Axis scales: Logarithmic Base 10
                            Number of territories: {nrow(market_cap_wide)}"),
-       # Change the update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
                              Last update date: {unique(market_cap_long$last_updated)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -351,47 +342,56 @@ market_cap_wide |>
 
 # Uncertainty in financial markets
 
-- Financing is essentially the exchange of a sum of money today for a promise to return more money in the future. Therefore it is not surprising that such exchange can be problematic
+## 
 
-    + **Information asymmetry**: in an exchange one party has more or better information than the other
+-   Financing is essentially the exchange of a sum of money today for a promise to return more money in the future. Therefore it is not surprising that such exchange can be problematic
 
-        + **Adverse selection**
-        + **Moral hazard**
-        
-# Uncertainty in financial markets
+    -   **Information asymmetry**: in an exchange one party has more or better information than the other
 
-- **Adverse selection** occurs when it is not possible to identify the quality of a product for a party that participates in a transaction. Therefore bad products are sold with good products where the consequence is that bad products take off good products from the market [@durlauf_adverse_1987]
+        -   **Adverse selection**
+        -   **Moral hazard**
 
-    + In the context of financial markets **adverse selection** occurs when an increase in interest rates induces good debtors to stop requesting loans, so that only those individuals with a higher probability of not paying the loan end up requesting loans
-    
-# Uncertainty in financial markets
+## 
 
-- **Moral hazard** is "any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly" [@krugman_return_2009, p 63]
+-   **Adverse selection** occurs when it is not possible to identify the quality of a product for a party that participates in a transaction. Therefore bad products are sold with good products where the consequence is that bad products take off good products from the market [@durlauf_adverse_1987]
 
-    + In the context of financial markets **moral hazard** occurs when debtors take riskier actions that increase the probability of default
-    
-# Principal instruments "Mercado no intermediado"
+    -   In the context of financial markets **adverse selection** occurs when an increase in interest rates induces good debtors to stop requesting loans, so that only those individuals with a higher probability of not paying the loan end up requesting loans
 
-- **Fixed income (Renta fija)**: provides returns in the form of regular interest payments and repayments of the principal
+## 
 
-    + Títulos de tesorería (TES)
-    
-        + Debt securities issued by the national government and administered by the Banco de la República. 
-        
-        + The national government use this instrument to finance its activities
-        
-    + Certificados de Depósito a Término (CDT)
-    
-# Principal instruments "Mercado no intermediado"
+-   **Moral hazard** is *"any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly"* [@krugman_return_2009, p 63]
 
-```{r }
-#| out-width: 90%
+    -   In the context of financial markets **moral hazard** occurs when debtors take riskier actions that increase the probability of default
 
-# https://www.banrep.gov.co/es > Estadísticas económicas >
-# Gráficas interactivas > CATÁLOGO DE SERIES > 
-# Tasas de interés y sector financiero > Tasas de interés
+# Principal instruments *"Mercado no intermediado"*
+
+## 
+
+-   **Fixed income (Renta fija)**: provides returns in the form of regular interest payments and repayments of the principal
+
+    -   Títulos de tesorería (TES)
+
+        -   Debt securities issued by the national government and administered by the Banco de la República.
+
+        -   The national government use this instrument to finance its activities
+
+    -   Certificados de Depósito a Término (CDT)
+
+## 
+
+```{r}
+#| label: fig-cero-cupon-tes-10-anos-col
+#| fig-cap: Interest rates TES zero coupon (COP, 10 years)
+
+# https://www.banrep.gov.co/es > 
+# Estadísticas económicas >
+# Gráficas interactivas >
+# CATÁLOGO DE SERIES > 
+# Tasas de interés y sector financiero > 
+# Tasas de interés
 # Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años 
-# > Diaria > DESCARGAR >
+# > Diaria > 
+# DESCARGAR >
 # Descargar datos en CSV
 tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv") |> 
   set_names(nm = c("date", "t_10"))
@@ -401,12 +401,11 @@ tes_daily_t_10 |>
              y = t_10)) +
   geom_line(color = unname(palette_light()[1]),
             show.legend = FALSE) +
-  scale_y_continuous(labels = scales::number_format(suffix = "%", 
-                                                    accuracy = 1)) +
+  scale_y_continuous(labels = scales::label_number(suffix = "%", 
+                                                   accuracy = 1)) +
   labs(x        = NULL,
        y        = "Percent",
        color = NULL,
-       title    = "Interest rates: TES zero coupon, COP - 10 years",
        subtitle = str_glue("Periodicity: Daily"),
        caption  = str_glue("Source: Banco de la Republica
                              Last update date: {last(tes_daily_t_10$date)}")) +
@@ -421,26 +420,31 @@ tes_daily_t_10 |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Principal instruments "Mercado no intermediado"
+## 
 
-- **Equity (Renta variable)**:
+-   **Equity (Renta variable)**:
 
-    + Shares/Stocks
-    
-        + These instruments are issued by companies to raise funds from the general public
-        
-        + They represent a fractional ownership in the company that issue them
+    -   Shares/Stocks
 
-# Principal instruments "Mercado no intermediado"       
-        
-```{r }
-#| out-width: 90%
+        -   These instruments are issued by companies to raise funds from the general public
 
-# https://www.banrep.gov.co/es > Estadísticas económicas >
-# Gráficas interactivas > CATÁLOGO DE SERIES >
+        -   They represent a fractional ownership in the company that issue them
+
+## 
+
+```{r}
+#| label: fig-msci-colcap-index-col
+#| fig-cap: MSCI COLCAP Index
+
+# https://www.banrep.gov.co/es > 
+# Estadísticas económicas >
+# Gráficas interactivas > 
+# CATÁLOGO DE SERIES >
 # Tasas de interés y sector financiero > 
-# Mercado accionario > Índice COLCAP 
-# > Diaria > DESCARGAR >
+# Mercado accionario > 
+# Índice COLCAP > 
+# Diaria > 
+# DESCARGAR >
 # Descargar datos en CSV
 msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv') |>
   set_names(nm = c("date", "colcap"))
@@ -453,7 +457,6 @@ msci_colcap |>
   labs(x        = NULL,
        y        = NULL,
        color = NULL,
-       title    = "MSCI COLCAP Index",
        subtitle = str_glue("Periodicity: Daily"),
        caption  = str_glue("Source: Bolsa de Valores de Colombia (BVC)
                              Last update date: {last(msci_colcap$date)}")) +
@@ -468,49 +471,56 @@ msci_colcap |>
         axis.text         = element_text(face = "bold"))
 ```
 
-# Banking market or "Mercado Intermediado" 
+# Banking market or *"Mercado Intermediado"*
 
-- **What is a bank?**
+## 
 
-  + "A bank is an institution **whose current operations** consist in granting loans and receiving deposits from the public" [@freixas_microeconomics_2008, p 1]
-  
-      + Therefore the core activities of banks are related to deposits and loans
-      
-- **What functions banks perform?**¨ [@freixas_microeconomics_2008, p 2]
+-   **What is a bank?**
 
-    + Offering liquidity and payment services
-    + Transforming assets
-    + Managing risks
-    + Processing information and monitoring borrowers
-    
-# Banking market or "Mercado Intermediado"
+    -   *"A bank is an institution **whose current operations** consist in granting loans and receiving deposits from the public"* [@freixas_microeconomics_2008, p 1]
 
-- **Offering liquidity and payment services** [@freixas_microeconomics_2008, p 2-4]
+        -   Therefore the core activities of banks are related to deposits and loans
 
-    + Banks offer short term credits to companies and individuals and have created networks that facilitate the transfer of funds between the bank accounts of economic agents
-    
-- **Transforming assets** [@freixas_microeconomics_2008, p 5-6]
+-   **What functions banks perform?** [@freixas_microeconomics_2008, p 2]
 
-    + **Convenience of denomination**: banks collect small deposits to offer large loans
-    + **Quality transformation**: bank deposits offer better risk-return characteristics than direct investments
-    + **Maturity transformation**: banks transform securities with short maturities, offered to depositors, into securities with long maturities, which borrowers desire
-    
-# Banking market or "Mercado Intermediado"
+    -   Offering liquidity and payment services
+    -   Transforming assets
+    -   Managing risks
+    -   Processing information and monitoring borrowers
 
-- **Managing risks**: 
+##
 
-    + **Credit risk**: it is related to the the probability that a loan is no repaid
-    + **Interest rate risk**: it is related to the difference between deposit rates, which change more, and lending rates, which are more stable
-    + **Liquidity risk**: it is related to the difficulty a bank has in selling a loan compared to the ease with which a depositor withdraws his savings
-    
-- In the case of the Colombian context the framework to manage risks is known as **Sistema Integral de Administración de Riesgos (SIAR)** [@superintendencia_financiera_de_colombia_circular_2021, chapter 31]
+-   **Offering liquidity and payment services** [@freixas_microeconomics_2008, p 2-4]
 
-# Banking market or "Mercado Intermediado"
+    -   Banks offer short term credits to companies and individuals and have created networks that facilitate the transfer of funds between the bank accounts of economic agents
+
+-   **Transforming assets** [@freixas_microeconomics_2008, p 5-6]
+
+    -   **Convenience of denomination**: banks collect small deposits to offer large loans
+    -   **Quality transformation**: bank deposits offer better risk-return characteristics than direct investments
+    -   **Maturity transformation**: banks transform securities with short maturities, offered to depositors, into securities with long maturities, which borrowers desire
+
+##
+
+-   **Managing risks**:
+
+    -   **Credit risk**: it is related to the the probability that a loan is no repaid
+    -   **Interest rate risk**: it is related to the difference between deposit rates, which change more, and lending rates, which are more stable
+    -   **Liquidity risk**: it is related to the difficulty a bank has in selling a loan compared to the ease with which a depositor withdraws his savings
+
+-   In the case of the Colombian context the framework to manage risks is known as **Sistema Integral de Administración de Riesgos (SIAR)** [@superintendencia_financiera_de_colombia_circular_2021, chapter 31]
+
+##
 
 ```{r}
-# https://www.superfinanciera.gov.co > INDUSTRIAS SUPERVISADAS > 
-# Entidades vigilidas por la superintendencia financiera de Colombia >
-# Lista general de entidades vigilidas por la superintendencia financiera de Colombia > 
+#| label: tbl-supervised-banking-establishments-1-col
+#| tbl-cap: Supervised banking establishments
+
+# https://www.superfinanciera.gov.co > 
+# Entidades vigiladas y controladas > 
+# Entidades vigilidas por la Superfinanciera >
+# Entidades vigiladas por la Superintendencia Financiera de Colombia >
+# Lista general de entidades vigiladas por la Superintendencia Financiera de Colombia > 
 # Descargue el archivo en formato Excel
 bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
                          sheet = 1, 
@@ -525,34 +535,40 @@ cut <- round(nrow(bank_table) / 2)
 bank_table |>
   slice(1:cut) |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "", caption = "Supervised banking establishments") |>
+        digits = 2, linesep = "") |>
   kable_styling(font_size = 7) |>
   row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2024-02-04'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
+                             'Last update: 2024-07-17'),
            general_title = "",
            threeparttable = TRUE)
 ```
 
-# Banking market or "Mercado Intermediado"
+##
 
 ```{r}
+#| label: tbl-supervised-banking-establishments-2-col
+#| tbl-cap: Supervised banking establishments
+
 bank_table |>
-  slice(cut:nrow(bank_table)) |> 
+  slice((cut+1):nrow(bank_table)) |> 
   kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "", caption = "Supervised banking establishments") |>
+        digits = 2, linesep = "") |>
   kable_styling(font_size = 7) |>  
   row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 'Last update: 2024-02-04'),
+  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
+                             'Last update: 2024-07-17'),
            general_title = "",
            threeparttable = TRUE)
 ```
 
-# Banking market or "Mercado Intermediado"
+##
 
-```{r }
-#| out-width: 90%
+```{r}
+#| label: fig-deposit-lending-interest-rate-col
+#| fig-cap: Deposit and lending interest rate in Colombia
 
 i_rate_deposit_lending <- wbstats::wb_data(country = "COL",
                                    # Deposit interest rate (%)
@@ -567,12 +583,11 @@ i_rate_deposit_lending |>
   ggplot(aes(x = date,
              y = value)) +
   geom_line(aes(color = indicator)) +
-  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+  scale_y_continuous(labels = scales::label_number(suffix = "%")) +
   scale_color_tq() +
   labs(x = NULL,
        y = NULL,
        color = NULL,
-       title = "Deposit and lending interest rate in Colombia",
        subtitle = str_glue("Period: {min(i_rate_deposit_lending$date)}-{max(i_rate_deposit_lending$date)}"),
        caption = str_glue("Source: World Development Indicators (WDI) - World Bank
                           Last update: {unique(i_rate_deposit_lending$last_updated)}")) +
@@ -589,14 +604,14 @@ i_rate_deposit_lending |>
 
 # Acknowledgments
 
-- To my family that supports me
+-   To my family that supports me
 
-- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
-- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[DiagrammeR](https://CRAN.R-project.org/package=DiagrammeR)__, __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__, __[wbstats](https://CRAN.R-project.org/package=wbstats)__, __[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, __[ggrepel](https://CRAN.R-project.org/package=ggrepel)__, __[lubridate](https://CRAN.R-project.org/package=lubridate)__, __[knitr](https://CRAN.R-project.org/package=knitr)__, __[kableExtra](https://CRAN.R-project.org/package=kableExtra)__, __[readxl](https://CRAN.R-project.org/package=readxl)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), [**lubridate**](https://CRAN.R-project.org/package=lubridate), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**readxl**](https://CRAN.R-project.org/package=readxl), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
-- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
 
 # References {.allowframebreaks}
