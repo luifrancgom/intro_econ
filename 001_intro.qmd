@@ -869,7 +869,7 @@ knitr::include_graphics("000_data/001_rentas_trabajo_petro.png")
 
 -   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
--   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [$\pi$-thon](https://www.python.org/about/)
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
 -   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**readxl**](https://CRAN.R-project.org/package=readxl), [**janitor**](https://CRAN.R-project.org/package=janitor), [**scales**](https://CRAN.R-project.org/package=scales), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**lubridate**](https://CRAN.R-project.org/package=lubridate), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
