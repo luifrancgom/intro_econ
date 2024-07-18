@@ -1,103 +1,99 @@
 ---
 title: "Labor Market"
-author: "Luis Francisco Gomez Lopez"
-date: 2024-02-06
-execute: 
-  echo: false
-  warning: false
-format:
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
   beamer:
     colortheme: dolphin
     fonttheme: structurebold
     theme: AnnArbor
     link-citations: true
-    linkcolor: blue
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    keep-tex: true
     include-in-header:
-      - text: |
-          \usepackage{booktabs}
-          \usepackage{longtable}
-          \usepackage{array}
-          \usepackage{multirow}
-          \usepackage{wrapfig}
-          \usepackage{float}
-          \usepackage{colortbl}
-          \usepackage{pdflscape}
-          \usepackage{tabu}
-          \usepackage{threeparttable}
-          \usepackage{threeparttablex}
-          \usepackage[normalem]{ulem}
-          \usepackage{makecell}
-          \usepackage{xcolor}
-          \usepackage{fontawesome5}
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
 bibliography: intro_econ.bib
 ---
 
 ```{r}
+#| label: libraries
+
 library(tidyverse)
 library(tidyquant)
 library(readxl)
 ```
 
-# Contents
-
-- Please Read Me
-- Purpose
-- Labor classification of the population
-- Labor market indicators
-- Labor demand
-- Wages
-- Labor regulation
-- Economic environment and the Company
-- Acknowledgments
-- References
-
 # Please Read Me
 
-- Check the message __Welcome greeting__ published in the News Bulletin Board.
+##
 
-- Dear student please edit your profile uploading a photo where your face is clearly visible.
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
 
-- The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
-- This presentation is based on [@cardenas_introduccion_2020, Chapter 9]
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 9]
 
 # Purpose
+
+##
 
 Examine the evolution and characteristics of the supply and demand of labor in Colombia
 
 # Labor classification of the population
 
-- To understand the indicators of the labor market from an economic perspective, it is necessary to classify the population from a labor point of view. Initially, the total population of a territory could be included but in practice the __Total Population (TP)__ that is included __doesn't__ cover [@hussmanns_surveys_1990, chapter 2]:
+##
 
-    + Members of the armed forces because this information is considered secret or because it is not easy to obtain information when its members are in barracks and military areas.
-    
-    + Residents in institutions such as people who are not part of the military forces but reside in military facilities, residents of penal or correctional centers and hospital residents.
+-   To understand the indicators of the labor market from an economic perspective, it is necessary to classify the population from a labor point of view. Initially, the total population of a territory could be included but in practice the **Total Population (TP)** that is included **doesn't** cover [@hussmanns_surveys_1990, chapter 2]:
 
-- In that sense, the **Total Population (TP)** covers the non-institutional civilian population residing in households.
+    -   Members of the armed forces because this information is considered secret or because it is not easy to obtain information when its members are in barracks and military areas.
 
-# Labor classification of the population
+    -   Residents in institutions such as people who are not part of the military forces but reside in military facilities, residents of penal or correctional centers and hospital residents.
 
-```{r }
-#| out-width: 90%
-#| fig-align: center
+-   In that sense, the **Total Population (TP)** covers the non-institutional civilian population residing in households.
 
+##
+
+```{r}
+#| label: fig-labor-classification-col
+#| fig-cap: Labor classification of the population in Colombia
+       
 #Plot
 ## Labor Market Colombia
 ## Data
-## https://www.dane.gov.co > Estadísticas por tema > 
-## Mercado Laboral > Empleo y desempleo > Anexos 
-## Total Nacional
+## https://www.dane.gov.co > 
+## Estadísticas por tema > 
+## Mercado Laboral > 
+## Empleo y desempleo > 
+## Documento >
+## Anexos
 
-labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_dic_23.xlsx",
-                                   sheet = "Total nacional", 
-                                   range = "A23:A30", 
-                                   col_names = "concept")
+labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_may_24.xlsx",
+                                           sheet = "Total nacional", 
+                                           range = "A23:A30", 
+                                           col_names = "concept")
 
 # This is the part that needs to be updated
-labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_dic_23.xlsx",
-                                           sheet = "Total nacional", 
-                                           range = "JQ23:JQ30",
-                                           col_names = "value") |> 
+labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_may_24.xlsx",
+                                             sheet = "Total nacional", 
+                                             range = "JV23:JV30",
+                                             col_names = "value") |> 
   mutate(value = value*1e3)
 
 labor_classification <- bind_cols(labor_classification_concept,
@@ -183,13 +179,12 @@ tibble(x = c( 0,
   scale_fill_tq() +
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
-  labs(title    = 'Labor classification of the population in Colombia',
-                  # This part needs to be update manually
-       subtitle = str_glue('Period: December 2023'),
-                  # This part needs to be update manually in relation
-                  # to the item "Last update"
+  labs(# This part needs to be update manually
+       subtitle = str_glue('Period: May 2024'),
+       # This part needs to be update manually in relation
+       # to the item "Last update"
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: 2024-01-31'),
+                              Last update: 2024-06-28'),
        fill     = "Level"
   ) + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
@@ -206,45 +201,35 @@ tibble(x = c( 0,
 
 # Labor market indicators
 
-- __Percentage of the working age population__ ("Porcentaje de población en edad de trabajar") 
+##
 
-    + $\%WAP = \frac{WAP}{PT} \times 100$
-    
-- __Labor participation rate (LPR)__ ("Tasa global de participación") 
+-   **Percentage of the working age population** ("Porcentaje de población en edad de trabajar")
 
-    + $LPR = \frac{LF}{WAP} \times 100$
-    
-# Labor market indicators
+    -   $\%WAP = \frac{WAP}{PT} \times 100$
 
-- __Employment rate (ER)__ ("Tasa de ocupación")
+-   **Labor participation rate (LPR)** ("Tasa global de participación")
 
-    + $ER = \frac{E}{WAP} \times 100$ 
+    -   $LPR = \frac{LF}{WAP} \times 100$
 
-- __Unemployment rate (UR)__ ("Tasa de desempleo")
+##
 
-    + $UR = \frac{U}{LF} \times 100$
+-   **Employment rate (ER)** ("Tasa de ocupación")
 
-- __Underemployment (UER)__ ("Tasa de subempleo")
+    -   $ER = \frac{E}{WAP} \times 100$
 
-    + $UER = \frac{UE}{LF} \times 100$
+-   **Unemployment rate (UR)** ("Tasa de desempleo")
 
-# Labor demand
+    -   $UR = \frac{U}{LF} \times 100$
 
-- The labor demand is the process by which the economy generates job vacancies
+-   **Underemployment (UER)** ("Tasa de subempleo")
 
-- How companies decide how many workers to contract?
+    -   $UER = \frac{UE}{LF} \times 100$
 
-    + Demand of the products that offer by the company
-    + Wages (the price of labor)
-    + Labor regulation
-    + The costs of other inputs different form labor and used in production
-    + The technology used by companies
-    
-# Labor market indicators
+##
 
-```{r }
-#| out-width: 90%
-#| fig-align: center
+```{r}
+#| label: fig-ur-er-col
+#| fig-cap: Annual Unemployment rate (UR) and Employment rate (ER) in Colombia
 
 data <- wbstats::wb_data(country     = c('COL'),
                          indicator   = c('SL.UEM.TOTL.ZS', 'SL.EMP.TOTL.SP.ZS'), 
@@ -271,12 +256,11 @@ data_clean |>
                nrow     = 2, 
                scales   = "free_y") +
   scale_x_continuous(breaks = c(1991, 1999, 2010, max(data_clean$date))) +
-  scale_y_continuous(labels = scales::number_format(accuracy = 1,
-                                                      suffix = "%")) +
+  scale_y_continuous(labels = scales::label_number(accuracy = 1,
+                                                   suffix = "%")) +
   coord_cartesian(xlim = c(min(data_clean$date), max(data_clean$date))) +
   labs(x        = 'Year',
        y        = 'Percent',
-       title    = 'Annual Unemployment rate (UR) and Employment rate (ER) in Colombia', 
        subtitle = str_glue('UR code WDI: SL.UEM.TOTL.ZS
                              UR units: percent
                              ER code WDI: SL.EMP.TOTL.SP.ZS
@@ -302,11 +286,23 @@ data_clean |>
 
 # Labor demand
 
-- In times of low economic growth, companies reduce production and therefore hire fewer workers. 
+##
 
-```{r }
-#| out-width: 75%
-#| fig-align: center
+-   The labor demand is the process by which the economy generates job vacancies
+
+-   How companies decide how many workers to contract?
+
+    -   Demand of the products that offer by the company
+    -   Wages (the price of labor)
+    -   Labor regulation
+    -   The costs of other inputs different form labor and used in production
+    -   The technology used by companies
+
+##
+
+```{r}
+#| label: fig-economic-growth-ur-col
+#| fig-cap: Economic growth vs unemployment rate
 
                                              # GDP per capita growth (annual %)
 econ_growth_unemployment_long <- wbstats::wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
@@ -325,14 +321,16 @@ econ_growth_unemployment_wide <- econ_growth_unemployment_long |>
 
 econ_growth_unemployment_wide |> 
   ggplot(aes(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)) +
+  geom_smooth(method = "lm",
+              color = "#E31A1C",
+              se = FALSE) +
   geom_point() + 
-  geom_smooth(method = "lm", se = FALSE) +
-  scale_x_continuous(labels = scales::number_format(suffix = "%")) +
-  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+  scale_x_continuous(labels = scales::label_number(suffix = "%")) +
+  scale_y_continuous(labels = scales::label_number(suffix = "%")) +
   labs(x        = "GDP per capita growth (annual %)",
        y        = str_glue("Annual total unemployment (% of total labor force)"),
        color = NULL,
-       title    = "Economic growth vs unemployment rate",
+       title    = "In times of low economic growth, companies reduce production and therefore hire fewer workers",
        subtitle = str_glue("Period: {min(econ_growth_unemployment_long$date)} - {max(econ_growth_unemployment_long$date)}"),
        # Update last update date manually
        caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
@@ -350,56 +348,50 @@ econ_growth_unemployment_wide |>
 
 # Wages
 
-```{r }
-#| out-width: 90%
-#| fig-align: center
+##
 
-read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
-           sheet = 7, 
-           range = "A19:L23", 
-           col_names = FALSE) |> 
-  select(1, 12) |> 
-  set_names(nm = "wage_range", "value") |> 
-  mutate(category = "Ninguno") |> 
-  rbind(
-    read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
-               sheet = 7, 
-               range = "A26:L30", 
-               col_names = FALSE) |> 
-      select(1, 12) |> 
-      set_names(nm = "wage_range", "value") |> 
-      mutate(category = "Bachiller") 
-  ) |> 
-  rbind(
-    read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
-               sheet = 7, 
-               range = "A33:L37", 
-               col_names = FALSE) |> 
-      select(1, 12) |> 
-      set_names(nm = "wage_range", "value") |> 
-      mutate(category = "Técnico o tecnológico") 
-  ) |> 
-  rbind(
-    read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls", 
-               sheet = 7, 
-               range = "A40:L44", 
-               col_names = FALSE) |> 
-      select(1, 12) |> 
-      set_names(nm = "wage_range", "value") |> 
-      mutate(category = "Universitario y/o postgrado")
-  ) |> 
-  mutate(wage_range = as_factor(wage_range),
-         category = as_factor(category),
-         value = value*100) |> 
-  ggplot(aes(y = wage_range, value)) +
-  geom_col() +
-  scale_x_continuous(labels = scales::number_format(scale = 1e-3, suffix = "K")) +
-  facet_wrap(facets = vars(category)) + 
-  labs(x = "Número de trabajadores en miles (K)",
-       y = NULL,
-       title = "Población ocupada según último título educativo obtenido y rangos de ingresos",
-       subtitle = str_glue("Periodo: 2020
-                           En la categoría 'No informa' se incluye los trabajadores sin renumeración")) +
+```{r}
+#| include: false
+
+# Importing data
+group_ingreso_nivel_educativo_categories <- read_rds(file = "000_data/009_income_educational_level_geih.rds")
+
+levels_geih <- read_rds(file = "000_data/009_levels.rds")
+
+# Generating variables
+year <- 2024
+month <- "05"
+
+level_1 <- levels_geih$educativo[1:4]
+level_2 <- levels_geih$educativo[5:6]
+level_3 <- levels_geih$educativo[7:10]
+level_4 <- levels_geih$educativo[11:13]
+
+nivel_ingreso_levels <- levels_geih$ingreso
+
+ncol <- 2
+```
+
+```{r}
+#| label: fig-income-education-level-1
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+group_ingreso_nivel_educativo_categories |> 
+         # Filter data  
+  filter(nivel_educativo %in% level_1) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = scales::label_number(scale = 1e-3,
+                                                   big.mark = ",",
+                                                   suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -416,42 +408,158 @@ read_excel(path = "000_data/009_anexos_GEIH_fuerza_laboral_educacion_2020.xls",
                                                     unit = "pt"), face = "bold"))
 ```
 
-# Wages
+##
 
-- Mincer equation
+```{r}
+#| label: fig-income-education-level-2
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
 
-  + $log_e(w_{it}) = log_e(w_o) + \beta_1Ed_{it} +  \beta_2Ex_{it} + \beta_2Ex_{it}^2 + \epsilon_{it}$
+group_ingreso_nivel_educativo_categories |> 
+         # Filter data  
+  filter(nivel_educativo %in% level_2) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = scales::label_number(scale = 1e-3,
+                                                   big.mark = ",",
+                                                   suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"),
+        strip.background.x = element_rect(color = "black", fill = "#fefff0"),
+        strip.text.x = element_text(margin = margin(t = 5,
+                                                    r = 5,
+                                                    b = 5,
+                                                    l = 5, 
+                                                    unit = "pt"), face = "bold"))
+```
 
-      + $log_e$: natural logarithm
-      + $w_{it}$: wage of individual $i$ in period $t$
-      + $w_o$: wage without any level of education an experience
-      + $\epsilon_{it}$: years of education of individual $i$ in period $t$
-      + $Ex_{it}$: potential experience of individual $i$ in period $t$ which is equal to the age minus the years of education minus six
-      + $\epsilon_{it}$: are other components of individual $i$ in period $t$ that might affect the wage
-      
-# Labor regulation 
+##
 
-- The labor regulation refers to:
+```{r}
+#| label: fig-income-education-level-3
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
 
-    + The laws governing labor contracts 
-    + Laws governing labor relations that empower unions to represent workers collectively
-    + Social security laws governing the response to social needs such as unemployment, maternity, old age, disability, death and sickness
+group_ingreso_nivel_educativo_categories |> 
+         # Filter data  
+  filter(nivel_educativo %in% level_3) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = scales::label_number(scale = 1e-3,
+                                                   big.mark = ",",
+                                                   suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"),
+        strip.background.x = element_rect(color = "black", fill = "#fefff0"),
+        strip.text.x = element_text(margin = margin(t = 5,
+                                                    r = 5,
+                                                    b = 5,
+                                                    l = 5, 
+                                                    unit = "pt"), face = "bold"))
+```
+
+##
+
+```{r}
+#| label: fig-income-education-level-4
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+group_ingreso_nivel_educativo_categories |> 
+         # Filter data  
+  filter(nivel_educativo %in% level_4) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = scales::label_number(scale = 1e-3,
+                                                   big.mark = ",",
+                                                   suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"),
+        strip.background.x = element_rect(color = "black", fill = "#fefff0"),
+        strip.text.x = element_text(margin = margin(t = 5,
+                                                    r = 5,
+                                                    b = 5,
+                                                    l = 5, 
+                                                    unit = "pt"), face = "bold"))
+```
+
+##
+
+-   Mincer equation
+
+    -   $log_e(w_{it}) = log_e(w_o) + \beta_1Ed_{it} +  \beta_2Ex_{it} + \beta_2Ex_{it}^2 + \epsilon_{it}$
+
+        -   $log_e$: natural logarithm
+        -   $w_{it}$: wage of individual $i$ in period $t$
+        -   $w_o$: wage without any level of education an experience
+        -   $\epsilon_{it}$: years of education of individual $i$ in period $t$
+        -   $Ex_{it}$: potential experience of individual $i$ in period $t$ which is equal to the age minus the years of education minus six
+        -   $\epsilon_{it}$: are other components of individual $i$ in period $t$ that might affect the wage
 
 # Labor regulation
 
-- Resources
+##
 
-    + **Calculadora Laboral - Mintrabajo**
+-   The labor regulation refers to:
+
+    -   The laws governing labor contracts
+    -   Laws governing labor relations that empower unions to represent workers collectively
+    -   Social security laws governing the response to social needs such as unemployment, maternity, old age, disability, death and sickness
+
+##
+
+-   Resources
+
+    -   **Calculadora Laboral - Mintrabajo**
     
-        + [https://www.mintrabajo.gov.co/atencion-al-ciudadano/tramites-y-servicios/mi-calculadora](https://www.mintrabajo.gov.co/atencion-al-ciudadano/tramites-y-servicios/mi-calculadora)
-        
+        -   [https://www.mintrabajo.gov.co/web/guest/inicio](https://www.mintrabajo.gov.co/web/guest/inicio) \> Atención al Ciudadano \> Trámites y Servicios \> Mi Calculadora
+
 # Economic environment and the Company
 
-- Set of economic factors and forces that influence the development of and organization.
+##
 
-```{r econ_env_macro}
-#| out-width: 75%
-#| fig-align: center
+```{r}
+#| label: fig-econ-env-macro
+#| fig-cap: Set of economic factors and forces that influence the development of an organization
 
 #Plot
 ggplot(data = tibble(x = 0, y = 0)) + 
@@ -467,15 +575,15 @@ ggplot(data = tibble(x = 0, y = 0)) +
                   ymin = -0.4,
                   ymax =  0.4),
               alpha = 0.3,
-              fill  = "red",
-              color = "red") +
+              fill  = "#E31A1C",
+              color = "#E31A1C") +
     ## Micro environment
     geom_rect(aes(xmin = -2,
                   xmax =  2,
                   ymin = -2,
                   ymax =  2),
               alpha = 0.25,
-              color = "blue") +
+              color = "#2C3E50") +
     annotate(geom = "text", 
              x        = 0, 
              y        = 1,
@@ -493,7 +601,7 @@ ggplot(data = tibble(x = 0, y = 0)) +
                   ymin = -3,
                   ymax =  3),
               alpha = 0.1,
-              color = "purple") +
+              color = "#6A3D9A") +
     annotate(geom     = "text", 
              x        = 0, 
              y        = 2.5,
@@ -511,16 +619,16 @@ ggplot(data = tibble(x = 0, y = 0)) +
 
 # Acknowledgments
 
-- To my family that supports me
+##
 
-- To the taxpayers of Colombia and the __[UMNG students](https://www.umng.edu.co/estudiante)__ who pay my salary
+-   To my family that supports me
 
-- To the __[Business Science](https://www.business-science.io/)__ and __[R4DS Online Learning](https://www.rfordatasci.com/)__ communities where I learn __[R](https://www.r-project.org/about.html)__ 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
 
-- To the __[R Core Team](https://www.r-project.org/contributors.html)__, the creators of __[RStudio IDE](https://rstudio.com/products/rstudio/)__, __[Quarto](https://quarto.org/)__ and the authors and maintainers of the packages  __[tidyverse](https://CRAN.R-project.org/package=tidyverse)__,
-__[tidyquant](https://CRAN.R-project.org/package=tidyquant)__, 
-__[readxl](https://CRAN.R-project.org/package=readxl)__, and __[tinytex](https://CRAN.R-project.org/package=tinytex)__ for allowing me to access these tools without paying for a license
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
-- To the __[Linux kernel community](https://www.kernel.org/category/about.html)__ for allowing me the possibility to use some __[Linux distributions](https://static.lwn.net/Distributions/)__ as my main __[OS](https://en.wikipedia.org/wiki/Operating_system)__ without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**readxl**](https://CRAN.R-project.org/package=readxl), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
 
 # References {.allowframebreaks}
