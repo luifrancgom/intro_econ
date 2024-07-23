@@ -87,9 +87,9 @@ In this context, business managers need to understand the economic environment o
     -   Interpret economic data based on information from the organizational environment for decision-making.
 
     -   Understand the proximate and fundamental determinants of growth through economic theory in order to comprehend how it affects the competitiveness of organizations.
-    
+
     -   Identify the economic environment of the organization through the fields of public, monetary, and financial economics in order to justify investment and financing decisions.
-    
+
     -   Understand the economic concepts of the labor market from the field of labor economics in order to improve the organizational environment and promote personal and professional development.
 
 -   Competencies SABE curriculum
@@ -127,7 +127,7 @@ tibble(Week = c(1:9),
 
         -   **Meeting time**: 19:00 - 19:45 hours
         -   **Prerequisites**:
-            -   Review the course program in advance, which can be downloaded by following the route *Primer corte 30% \> Learning Resources \> Support material \> Presentations \> 000_syllabus_intro_econ_2024_2*
+            -   Review the course program in advance, which can be downloaded by following the route **Primer corte 30% \> Learning Resources \> Support material \> Presentations \> 000_syllabus_intro_econ_2024_2**
             -   Have a headset with a built-in microphone to isolate noise from the environment
 
 -   July 23
@@ -167,7 +167,7 @@ tibble(Week = c(1:9),
         -   **Closing time**: 22:00 hours
         -   **Prerequisites**:
             -   Have answered the Questionnaire 1 before 22:00 hours
-            
+
 -   August 6
 
     -   **Virtual meeting Economic Growth**
@@ -178,7 +178,7 @@ tibble(Week = c(1:9),
 
 -   August 10
 
-    -   **Oral presentation Midterm Exam 2 Opening**
+    -   **Oral presentation Midterm Exam 1 Opening**
         -   **Opening time**: 16:00 hours
         -   **Closing time**: 18:00 hours
         -   **Prerequisites**:
