@@ -5,89 +5,136 @@ author:
     email: luis.gomezl@unimilitar.edu.co
     affiliations:
       - name: Universidad Militar Nueva Granada
-date: 2024-01-15
+date: 2025-01-13
 format:
   html: 
     number-sections: true
     toc: true
     embed-resources: true
+execute: 
+  echo: false
+  warning: false
+  message: false
+params:
+  meeting_info:
+    value:
+      phone: +57 3124541536
+      days: [Tuesday, Wednesday, Friday]
+      start_hour: 16:00
+      end_hour: 17:00
+  block:
+    value:
+      start_date: 2025-01-20
+      end_date: 2025-03-22
+engine: knitr
 bibliography: intro_econ.bib
 editor: visual
 ---
 
-```{r setup}
-#| include: false
-knitr::opts_chunk$set(echo    = FALSE, 
-                      warning = FALSE, 
-                      message = FALSE)
-```
+```{r}
+#| label: libraries
 
-```{r libraries}
 library(tidyverse)
+library(glue)
 library(knitr)
 ```
 
-```{css}
-p {
-  text-align: justify;
-}
+```{=html}
+<style>
+  p { 
+    text-align: justify;
+  }
+</style>
 ```
 
 # Professor and meeting hours with students
 
+```{r}
+params
+```
+
+```{r}
+#| label: meeting-info
+
+# Days ----
+if(length(params$meeting_info$days) > 1) {
+  days_str <- glue_collapse(params$meeting_info$days, 
+                            sep = ", ", last = " or ") 
+} else {
+  days_str <- params$meeting_info$days[1]
+}
+```
+
 -   **Name**
 
-    -   Luis Francisco Gomez López
+    -   `r rmarkdown::metadata$author[[1]]$name`
 
 -   **Communication through the virtual classroom**
 
-    -   Every Saturday between 07:00 hours and 07:45 hours:
+    -   For doubts and concerns of the topics of the course, please use the *Forum: Questions or concerns* that can be accessed at the top of the platform
 
-        -   *Primer Corte 30% \> Virtual Meetings \> Meeting hours with students*
+        -   In this way, doubts and concerns can be shared with all students and all course participants can contribute to the learning process
 
-    -   Doubts and concerns of the topics of the course, please use the *Forum: Questions or concerns* that can be accessed at the top of the platform
+    -   Complaints regarding grades, please send an email to [**`{r} rmarkdown::metadata$author[[1]]$email`**](mailto:%60r%20rmarkdown::metadata$author%5B%5B1%5D%5D$email%60)
 
-        -   In this way, doubts can be shared with all students and all course participants can contribute to the learning process
+        -   Please wait for grades to be published on the News Bulletin Board before submitting any complaints. Complaints should be based on the feedback provided and must consider the evaluation parameters.
 
-    -   Complaints regarding grades, please send an email to [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}
+    -   For urgent issues, please call me to `{r} params$meeting_info$phone` between `{r} params$meeting_info$start_hour` hours and `{r} params$meeting_info$end_hour` hours on `{r} days_str`. Please do not send me whatsapp messages or call me on weekends.
 
-        -   To make any complaints, you are asked to wait first for the grades to be published on the News Bulletin Board and to be made based on the feedbacks that will be made taking into account the evaluation parameters
-
-        -   Urgent issues, you can call me to +57 3124541536 Monday, Wednesday and Friday between 16:00 hours and 17:00 hours. Please do not send me whatsapp messages or call me on weekends.
-
-# Presentation and objectives of the subject
+# Presentation of the subject
 
 ## Description
+
+```{r}
+#| label: block
+
+# Dates ----
+start_date <- ymd(params$block$start_date) 
+end_date   <- ymd(params$block$end_date)
+
+str_start_end_date <- paste(format(start_date, 
+                                   format = "%B %d"),
+                            " - ",
+                            format(end_date, 
+                                   format = "%B %d"), 
+                            sep = "",
+                            ", ",
+                            year(start_date))
+```
 
 -   Credits: 4
 -   Type: Theoretical-Practice
 -   Area of Knowledge: Professional
 -   Semester: 1
--   Block: 1 (January 22 - April 1, 2024)
+-   Block: 1 (`{r} str_start_end_date`)
 
 ## Justification
 
-Comprehensive training of business managers involves knowledge of aspects related to multiple disciplines. One of the disciplines that have greater importance for such instruction is economics, where it allows you to recognize the economic environment in which the different organizations participate.
+To succeed in today's globalized business environment, administrators require a comprehensive understanding of various disciplines. Among these, economics is particularly vital. A strong grasp of economic principles enables administrators to effectively analyze the economic landscape in which their organizations operate.
 
-In this context, business managers need to understand the economic environment of a country in which a company operates by using economic indicators in the decision-making processes of a business.
+Effective economic training equips prospective administrators with the theoretical knowledge and practical skills necessary for sound decision-making. This ensures the optimal utilization of an organization's resources.
+
+Therefore, a foundational understanding of economics is crucial for business administrators. It empowers them to make informed decisions based on economic criteria, comprehend market dynamics, and anticipate the economic behavior of stakeholders such as customers, intermediaries, suppliers, and competitors.
 
 ## General objective
 
-Introduce and familiarize students with the economic environment of the Colombian economy to understand how it affects an organization that operates in our country
+To familiarize students with the main economic concepts and their relevance in the current Colombian economic situation, through the analysis of data and simple technical tools.
 
-# Competencies
+## Learning outcomes
 
--   Global competencies:
+-   Course learning outcome:
 
-    -   Formulate strategies through planning and prospective techniques to contribute to the competitive improvement of the organization
+    -   Diagnose the economic environment of the organization by utilizing economic theory to contribute to the improvement of the company's competitiveness.
 
-    -   Make investment decisions based on the financial information of the organization and its external environment to generate value for the business.
+-   Course specific learning outcomes:
 
--   Specific competencies:
+    -   Interpret economic data based on information from the organizational environment for decision-making.
 
-    -   Identify the external forces that affect an organization using tools from economic theory to develop and formulate strategies that create value for the business.
+    -   Understand the proximate and fundamental determinants of growth through economic theory to comprehend how it affects the competitiveness of organizations.
 
-    -   Interpret the economic information that affects the organization to make investment and financing decisions.
+    -   Identify the economic environment of the organization through the fields of public, monetary, and financial economics to justify investment and financing decisions.
+
+    -   Understand the economic concepts of the labor market from the field of labor economics to improve the organizational environment and promote personal and professional development
 
 -   Competencies SABE curriculum
 
@@ -106,8 +153,8 @@ tibble(Week = c(1:9),
                               times = 9)),
        Chapter        = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
        `Initial page` = c(  1,  19,  53,  81, 115, 167, 225, 263, 303),
-       `Final page`   = c( 18,  52,  80, 114, 166, 224, 262, 302, 348)) %>%
-    mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) %>% 
+       `Final page`   = c( 18,  52,  80, 114, 166, 224, 262, 302, 348)) |> 
+    mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |> 
     kable()
 ```
 
@@ -308,7 +355,7 @@ tibble(Week = c(1:9),
 
 ## Process in case of no presentation
 
--   Students who do not present a **Questionare** due to force majeure or illness, must send the respective excuse scanned through the [**luis.gomezl\@unimilitar.edu.co**](mailto:luis.gomezl@unimilitar.edu.co){.email}. If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the **Midterm Exam 1** or **Midterm Exam 2** or **Final Exam** according to the case.
+-   Students who do not present a **Questionare** due to force majeure or illness, must send the respective excuse scanned through the [**`r rmarkdown::metadata$author[[1]]$email`**](mailto:%60%7Br%7D%20rmarkdown::metadata$author%5B%5B1%5D%5D$email%60). If it is not sent, the note will be zero. Once the excuse has been satisfactorily received, the student should **not** present the activity and the corresponding grade will be equal to the immediately subsequent grade obtained in the **Midterm Exam 1** or **Midterm Exam 2** or **Final Exam** according to the case.
 
 -   Students who do not present a **Midterm Exam 1** or **Midterm Exam 2** or the **Final Exam**, must send and email to [**admon.distancia\@unimilitar.edu.co**](mailto:admon.distancia@unimilitar.edu.co){.email} two days before or two days after the closing date of these activities. However, this request can be made only once during the course. If it is not requested under these conditions, the grade will be zero.
 
@@ -320,7 +367,7 @@ You can use any artificial intelligence tool and in particular any Large Languag
 
 -   [@cardenas_introduccion_2020, Chapters 1-9]
 
-    -   https://www.umng.edu.co/inicio \> Biblioteca \> Inicio Bases virtuales y libros electrónicos \> AlfaOmega \> Ingresar usuario y contraseña [^1] \> Buscar "Introducción a la economía colombiana 4ed" \> Leer
+    -   <a href="https://www.umng.edu.co/inicio" target="_blank" rel="noopener noreferrer">https://www.umng.edu.co/</a> \> Biblioteca \> Ingrese acá a Bases virtuales y libros electrónicos \> AlfaOmega \> Ingresar usuario y contraseña [^1] \> Buscar "Introducción a la economía colombiana 4ed" \> Leer
 
 [^1]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
 

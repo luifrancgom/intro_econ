@@ -321,7 +321,7 @@ You can use any artificial intelligence tool and in particular any Large Languag
 
 -   [@cardenas_introduccion_2020, Chapters 1-9]
 
-    -   [https://www.umng.edu.co/inicio](https://www.umng.edu.co/inicio) \> Biblioteca \> Inicio Bases virtuales y libros electrónicos \> Ingresar usuario y contraseña [^1] \> Buscar "Introducción a la economía colombiana 4ed" \> Leer
+    -   <https://www.umng.edu.co/inicio> \> Biblioteca \> Inicio Bases virtuales y libros electrónicos \> AlfaOmega \> Ingresar usuario y contraseña [^1] \> Buscar "Introducción a la economía colombiana 4ed" \> Leer
 
 [^1]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
 
