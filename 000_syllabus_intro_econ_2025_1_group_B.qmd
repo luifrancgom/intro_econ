@@ -30,8 +30,8 @@ params:
     value:
       meeting_dates: [3, 5]
       dates_recess: null
-      start_presentation_hour: 20:00
-      end_presentation_hour: 20:45  
+      start_presentation_hour: 19:00
+      end_presentation_hour: 19:45  
       start_virtual_meeting_hour: 19:00
       end_virtual_meeting_hour: 20:30
       start_activity_hour: 00:00

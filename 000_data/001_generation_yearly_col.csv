@@ -1,0 +1,290 @@
+﻿sep=;
+country_or_region;year;variable;generation_twh
+Colombia;2000;Bioenergy;0.5
+Colombia;2000;Clean;32.26
+Colombia;2000;Coal;2.08
+Colombia;2000;Fossil;10.55
+Colombia;2000;Gas;8.25
+Colombia;2000;Hydro;31.75
+Colombia;2000;Nuclear;0
+Colombia;2000;Other Fossil;0.22
+Colombia;2000;Other Renewables;0
+Colombia;2000;Solar;0.01
+Colombia;2000;Wind;0
+Colombia;2000;Wind and solar;0.01
+Colombia;2001;Bioenergy;0.5
+Colombia;2001;Clean;31.99
+Colombia;2001;Coal;2.23
+Colombia;2001;Fossil;11.15
+Colombia;2001;Gas;8.69
+Colombia;2001;Hydro;31.48
+Colombia;2001;Nuclear;0
+Colombia;2001;Other Fossil;0.23
+Colombia;2001;Other Renewables;0
+Colombia;2001;Solar;0.01
+Colombia;2001;Wind;0
+Colombia;2001;Wind and solar;0.01
+Colombia;2002;Bioenergy;0.49
+Colombia;2002;Clean;34.13
+Colombia;2002;Coal;2.17
+Colombia;2002;Fossil;10.58
+Colombia;2002;Gas;8.18
+Colombia;2002;Hydro;33.63
+Colombia;2002;Nuclear;0
+Colombia;2002;Other Fossil;0.23
+Colombia;2002;Other Renewables;0
+Colombia;2002;Solar;0.01
+Colombia;2002;Wind;0
+Colombia;2002;Wind and solar;0.01
+Colombia;2003;Bioenergy;0.5
+Colombia;2003;Clean;36.32
+Colombia;2003;Coal;2.81
+Colombia;2003;Fossil;9.88
+Colombia;2003;Gas;6.83
+Colombia;2003;Hydro;35.81
+Colombia;2003;Nuclear;0
+Colombia;2003;Other Fossil;0.24
+Colombia;2003;Other Renewables;0
+Colombia;2003;Solar;0.01
+Colombia;2003;Wind;0
+Colombia;2003;Wind and solar;0.01
+Colombia;2004;Bioenergy;0.47
+Colombia;2004;Clean;40.21
+Colombia;2004;Coal;1.86
+Colombia;2004;Fossil;9.12
+Colombia;2004;Gas;7.01
+Colombia;2004;Hydro;39.68
+Colombia;2004;Nuclear;0
+Colombia;2004;Other Fossil;0.25
+Colombia;2004;Other Renewables;0
+Colombia;2004;Solar;0.01
+Colombia;2004;Wind;0.05
+Colombia;2004;Wind and solar;0.06
+Colombia;2005;Bioenergy;0.5
+Colombia;2005;Clean;39.96
+Colombia;2005;Coal;2.33
+Colombia;2005;Fossil;9.98
+Colombia;2005;Gas;7.4
+Colombia;2005;Hydro;39.4
+Colombia;2005;Nuclear;0
+Colombia;2005;Other Fossil;0.25
+Colombia;2005;Other Renewables;0
+Colombia;2005;Solar;0.01
+Colombia;2005;Wind;0.05
+Colombia;2005;Wind and solar;0.06
+Colombia;2006;Bioenergy;0.53
+Colombia;2006;Clean;42.91
+Colombia;2006;Coal;2.84
+Colombia;2006;Fossil;10.43
+Colombia;2006;Gas;7.38
+Colombia;2006;Hydro;42.31
+Colombia;2006;Nuclear;0
+Colombia;2006;Other Fossil;0.21
+Colombia;2006;Other Renewables;0
+Colombia;2006;Solar;0.01
+Colombia;2006;Wind;0.06
+Colombia;2006;Wind and solar;0.07
+Colombia;2007;Bioenergy;0.53
+Colombia;2007;Clean;44.59
+Colombia;2007;Coal;3.39
+Colombia;2007;Fossil;10.2
+Colombia;2007;Gas;6.57
+Colombia;2007;Hydro;44
+Colombia;2007;Nuclear;0
+Colombia;2007;Other Fossil;0.24
+Colombia;2007;Other Renewables;0
+Colombia;2007;Solar;0.01
+Colombia;2007;Wind;0.05
+Colombia;2007;Wind and solar;0.06
+Colombia;2008;Bioenergy;0.54
+Colombia;2008;Clean;46.54
+Colombia;2008;Coal;2.92
+Colombia;2008;Fossil;8.94
+Colombia;2008;Gas;5.76
+Colombia;2008;Hydro;45.94
+Colombia;2008;Nuclear;0
+Colombia;2008;Other Fossil;0.26
+Colombia;2008;Other Renewables;0
+Colombia;2008;Solar;0.01
+Colombia;2008;Wind;0.05
+Colombia;2008;Wind and solar;0.06
+Colombia;2009;Bioenergy;0.54
+Colombia;2009;Clean;41.25
+Colombia;2009;Coal;4.17
+Colombia;2009;Fossil;15.5
+Colombia;2009;Gas;10.94
+Colombia;2009;Hydro;40.64
+Colombia;2009;Nuclear;0
+Colombia;2009;Other Fossil;0.39
+Colombia;2009;Other Renewables;0
+Colombia;2009;Solar;0.01
+Colombia;2009;Wind;0.06
+Colombia;2009;Wind and solar;0.07
+Colombia;2010;Bioenergy;2.42
+Colombia;2010;Clean;42.47
+Colombia;2010;Coal;4.04
+Colombia;2010;Fossil;17.76
+Colombia;2010;Gas;11.97
+Colombia;2010;Hydro;40
+Colombia;2010;Nuclear;0
+Colombia;2010;Other Fossil;1.75
+Colombia;2010;Other Renewables;0
+Colombia;2010;Solar;0.01
+Colombia;2010;Wind;0.04
+Colombia;2010;Wind and solar;0.05
+Colombia;2011;Bioenergy;2
+Colombia;2011;Clean;50.44
+Colombia;2011;Coal;2.25
+Colombia;2011;Fossil;11.26
+Colombia;2011;Gas;7.64
+Colombia;2011;Hydro;48.39
+Colombia;2011;Nuclear;0
+Colombia;2011;Other Fossil;1.37
+Colombia;2011;Other Renewables;0
+Colombia;2011;Solar;0.01
+Colombia;2011;Wind;0.04
+Colombia;2011;Wind and solar;0.05
+Colombia;2012;Bioenergy;1.95
+Colombia;2012;Clean;49.12
+Colombia;2012;Coal;3.36
+Colombia;2012;Fossil;13.94
+Colombia;2012;Gas;8.99
+Colombia;2012;Hydro;47.11
+Colombia;2012;Nuclear;0
+Colombia;2012;Other Fossil;1.59
+Colombia;2012;Other Renewables;0
+Colombia;2012;Solar;0.01
+Colombia;2012;Wind;0.05
+Colombia;2012;Wind and solar;0.06
+Colombia;2013;Bioenergy;1.05
+Colombia;2013;Clean;50.88
+Colombia;2013;Coal;6.04
+Colombia;2013;Fossil;22.63
+Colombia;2013;Gas;15.36
+Colombia;2013;Hydro;49.76
+Colombia;2013;Nuclear;0
+Colombia;2013;Other Fossil;1.23
+Colombia;2013;Other Renewables;0
+Colombia;2013;Solar;0.01
+Colombia;2013;Wind;0.06
+Colombia;2013;Wind and solar;0.07
+Colombia;2014;Bioenergy;1.35
+Colombia;2014;Clean;48.68
+Colombia;2014;Coal;5.46
+Colombia;2014;Fossil;21.78
+Colombia;2014;Gas;14.24
+Colombia;2014;Hydro;47.25
+Colombia;2014;Nuclear;0
+Colombia;2014;Other Fossil;2.08
+Colombia;2014;Other Renewables;0
+Colombia;2014;Solar;0.01
+Colombia;2014;Wind;0.07
+Colombia;2014;Wind and solar;0.08
+Colombia;2015;Bioenergy;1.37
+Colombia;2015;Clean;49.39
+Colombia;2015;Coal;7.06
+Colombia;2015;Fossil;28.58
+Colombia;2015;Gas;17.95
+Colombia;2015;Hydro;47.94
+Colombia;2015;Nuclear;0
+Colombia;2015;Other Fossil;3.57
+Colombia;2015;Other Renewables;0
+Colombia;2015;Solar;0.01
+Colombia;2015;Wind;0.07
+Colombia;2015;Wind and solar;0.08
+Colombia;2016;Bioenergy;1.46
+Colombia;2016;Clean;49.98
+Colombia;2016;Coal;6.18
+Colombia;2016;Fossil;26.19
+Colombia;2016;Gas;15.9
+Colombia;2016;Hydro;48.46
+Colombia;2016;Nuclear;0
+Colombia;2016;Other Fossil;4.11
+Colombia;2016;Other Renewables;0
+Colombia;2016;Solar;0.01
+Colombia;2016;Wind;0.05
+Colombia;2016;Wind and solar;0.06
+Colombia;2017;Bioenergy;1.42
+Colombia;2017;Clean;62.07
+Colombia;2017;Coal;3.15
+Colombia;2017;Fossil;16.4
+Colombia;2017;Gas;11.01
+Colombia;2017;Hydro;60.64
+Colombia;2017;Nuclear;0
+Colombia;2017;Other Fossil;2.24
+Colombia;2017;Other Renewables;0
+Colombia;2017;Solar;0.01
+Colombia;2017;Wind;0
+Colombia;2017;Wind and solar;0.01
+Colombia;2018;Bioenergy;1.45
+Colombia;2018;Clean;59.7
+Colombia;2018;Coal;4.52
+Colombia;2018;Fossil;18.51
+Colombia;2018;Gas;11.62
+Colombia;2018;Hydro;58.19
+Colombia;2018;Nuclear;0
+Colombia;2018;Other Fossil;2.37
+Colombia;2018;Other Renewables;0
+Colombia;2018;Solar;0.02
+Colombia;2018;Wind;0.04
+Colombia;2018;Wind and solar;0.06
+Colombia;2019;Bioenergy;1.57
+Colombia;2019;Clean;54.74
+Colombia;2019;Coal;8.13
+Colombia;2019;Fossil;24.04
+Colombia;2019;Gas;13.16
+Colombia;2019;Hydro;52.98
+Colombia;2019;Nuclear;0
+Colombia;2019;Other Fossil;2.75
+Colombia;2019;Other Renewables;0
+Colombia;2019;Solar;0.13
+Colombia;2019;Wind;0.06
+Colombia;2019;Wind and solar;0.19
+Colombia;2020;Bioenergy;2.15
+Colombia;2020;Clean;50.79
+Colombia;2020;Coal;9.37
+Colombia;2020;Fossil;27.21
+Colombia;2020;Gas;15.19
+Colombia;2020;Hydro;48.44
+Colombia;2020;Nuclear;0
+Colombia;2020;Other Fossil;2.65
+Colombia;2020;Other Renewables;0
+Colombia;2020;Solar;0.19
+Colombia;2020;Wind;0.01
+Colombia;2020;Wind and solar;0.2
+Colombia;2021;Bioenergy;2.24
+Colombia;2021;Clean;63.33
+Colombia;2021;Coal;4.5
+Colombia;2021;Fossil;21.09
+Colombia;2021;Gas;13.76
+Colombia;2021;Hydro;60.7
+Colombia;2021;Nuclear;0
+Colombia;2021;Other Fossil;2.83
+Colombia;2021;Other Renewables;0
+Colombia;2021;Solar;0.33
+Colombia;2021;Wind;0.06
+Colombia;2021;Wind and solar;0.39
+Colombia;2022;Bioenergy;2.18
+Colombia;2022;Clean;61.3
+Colombia;2022;Coal;4.4
+Colombia;2022;Fossil;23.91
+Colombia;2022;Gas;16.76
+Colombia;2022;Hydro;58.73
+Colombia;2022;Nuclear;0
+Colombia;2022;Other Fossil;2.75
+Colombia;2022;Other Renewables;0
+Colombia;2022;Solar;0.33
+Colombia;2022;Wind;0.06
+Colombia;2022;Wind and solar;0.39
+Colombia;2023;Bioenergy;2.18
+Colombia;2023;Clean;57.67
+Colombia;2023;Coal;8.51
+Colombia;2023;Fossil;29.07
+Colombia;2023;Gas;17.6
+Colombia;2023;Hydro;54.24
+Colombia;2023;Nuclear;0
+Colombia;2023;Other Fossil;2.96
+Colombia;2023;Other Renewables;0
+Colombia;2023;Solar;1.04
+Colombia;2023;Wind;0.21
+Colombia;2023;Wind and solar;1.25
