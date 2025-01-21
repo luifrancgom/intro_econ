@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
@@ -52,6 +51,8 @@ library(wbstats)
 -   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
 
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
 
@@ -328,7 +329,7 @@ isic_L_U_table_footnote |>
 
 # Data
 # Estadísticas por tema > Cuentas nacionales >
-# Cuentas Nacionales Anuales > 
+# Cuentas Nacionales Anuales >
 # Agregados macroeconómicos - Retropolación base 2015 > 
 # Anexo Retropolación Base 2015
 
@@ -554,7 +555,9 @@ gdp_agg_demand_pct |>
         plot.title        = element_text(face = "bold"),
         axis.title        = element_text(face = "bold"),
         legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+        axis.text         = element_text(face = "bold"),
+        axis.text.x       = element_text(size = 12),
+        axis.text.y       = element_text(size = 12))
 ```
 
 # Resource of interest
