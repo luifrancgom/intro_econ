@@ -1,0 +1,264 @@
+---
+title: Economic Growth
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    include-in-header:
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
+bibliography: intro_econ.bib
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(knitr)
+library(janitor)
+library(kableExtra)
+library(wbstats)
+library(ggrepel)
+```
+
+# Please Read Me
+
+## 
+
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 3]
+
+# Purpose
+
+## 
+
+Analyze the determinants of economic growth
+
+# Inputs to obtain GDP
+
+## 
+
+Gross domestic product is obtained by using the following inputs:
+
+-   Labor
+
+    -   Quantity of labor:
+        -   Employment[^2]
+        -   Hours worked
+    -   Quality of Labor:
+        -   Employment by educational attainment
+        -   Compensation by educational attainment
+
+[^2]: Includes individuals employed aged 15 years or over where this age range is necessary for international comparisons.
+
+## 
+
+Gross domestic product is obtained by using the following inputs[^3]:
+
+-   Produced non-financial fixed assets[^4]
+
+    -   Dwellings
+    -   Other buildings and structures
+        -   Buildings other than dwellings
+        -   Other structures
+        -   Land improvements
+    -   Machinery and equipment
+        -   Transport equipment
+        -   Information and Computer Technology (ICT) equipment
+        -   Other machinery and equipment
+    -   Weapons systems
+    -   Cultivated biological resources
+
+[^3]: These categories are taken from [@united_nations_system_2009, p. 555]
+
+[^4]: Other non-financial assets can be included but these are the ones that are usually measured. For more information check out [@oecd_measuring_2009] and [@oecd_measuring_2001]
+
+## 
+
+Other factors that affect the Gross Domestic Product different from labor and produced non-financial fixed assets
+
+-   These factors are not directly observable but are used in growth accounting to calculate **Total Factor Productivity/Multifactor productivity** as an approximation to technological change
+
+    -   Technological change is defined as changes in the Gross Domestic Product that are not due to changes in inputs
+
+# Growth accounting
+
+## 
+
+![Labor productivity and total factor productivity [@de_vries_total_2022, page 21, fig 6]](_000_images/003_labor_productivity_total_factor_productivity.png){#fig-labor-factor-productivity-total-factor-productivity fig-alt="Labor productivity and total factor productivity" fig-align="center" width="400px" height="250px"}
+
+## 
+
+```{r}
+#| label: tbl-growth-accounting-col
+#| tbl-cap: Growth accounting applied to Colombia for selected years
+
+# https://www.conference-board.org/us/ > 
+# myTBC Member Sign In > Data >
+# Data Central > TCB DATASETS > 
+# Total Economy Database - Growth Accounting and Total Factor Productivity
+# You need to have a free account
+# Username: l*********m@gmail.com
+# Password: U**********4
+data_ted_col <- read_csv(file = '000_data/003_tidy_TED2.csv.gz') |>
+  filter(unit_code == 'COL', 
+         date %in% c(1990, 2010, 2020, 2024),
+         variable_label %in% c('Growth in real GDP',
+                               'Contribution of Labor Quality to real GDP growth',
+                               'Contribution of Labor Quantity to real GDP growth',
+                               'Contribution of Total Capital Services to real GDP growth',
+                               'Growth of Total Factor Productivity')) |> 
+  select(date, variable_label, values) |> 
+  pivot_wider(id_cols = variable_label, 
+              names_from = date, values_from = values) |> 
+  rename(Measure = variable_label)
+
+data_ted_col |>
+  kable(booktabs = TRUE, 
+        escape = FALSE, 
+        digits = 2, 
+        format = "latex") |>
+  kable_styling(font_size = 9) |> 
+  column_spec(column = 1, width = "2.5in") |>
+  row_spec(row = 1, background = '#e31a1c') |> 
+  row_spec(row = 2:3, background = '#18BC9C') |>
+  row_spec(row = 4, background = '#CCBE93') |>
+  row_spec(row = 5, background = '#FF7F00') |>
+  footnote(general       = c('Source: Total Economy Database - Growth Accounting and Total Factor Productivity', 
+                             'Last update: 2024'),
+           general_title = "",
+           threeparttable = TRUE)
+```
+
+# Case study: number of hours worked
+
+##
+
+```{r}
+#| label: fig-gdp-emp-hw
+#| fig-cap: Mean income vs hours worked by employees
+
+year <- 2022
+
+gdp_per_person_employed <- wbstats::wb_data(start_date = year,
+                                            end_date   = year,
+                                            indicator = c('SL.GDP.PCAP.EM.KD'), 
+                                            return_wide = FALSE)
+
+gdp_per_person_employed_clean <- gdp_per_person_employed |> 
+  select(iso3c, country, date, value)
+
+# This part needs to be update manually
+average_annual_hours_actually_worked_per_worker <- read_csv(file = "000_data/003_average_annual_hours_actually_worked_per_worker.csv")
+
+average_annual_hours_actually_worked_per_worker_clean <- average_annual_hours_actually_worked_per_worker |>  
+  clean_names() |> 
+  filter(time_period == {{year}}) |>
+  # Worker status = Employees
+  ## provides a more focused view of working hours 
+  ## specifically for those in traditional employment 
+  ## relationships.
+  filter(worker_status_2 == "Employees") |> 
+  select(ref_area, obs_value)
+
+gdp_emp_hw <- average_annual_hours_actually_worked_per_worker_clean |> 
+  inner_join(y = gdp_per_person_employed_clean, 
+             by = join_by(ref_area == iso3c)) |> 
+  relocate(obs_value, .before = value)
+
+gdp_emp_hw |> 
+  ggplot(aes(x = obs_value, y = value, 
+             label = country)) + 
+  geom_point() + 
+  geom_text_repel(min.segment.length = 0, 
+                  seed = 1234) +
+  scale_y_continuous(labels = scales::label_number(big.mark = ",")) +
+  labs(x = str_glue("{unique(average_annual_hours_actually_worked_per_worker$STRUCTURE_NAME)
+}"),
+       y = str_glue("{unique(gdp_per_person_employed$indicator) }"),
+       subtitle = str_glue("Year: {year}
+                           Number of countries: {nrow(gdp_emp_hw)}"),
+                          # For last update source 1 check out in the page
+                          # in overview
+                          ## This needs to be update manually
+       caption = str_glue("Source 1: OECD Data Explorer - OCDE
+                          Source 2: World Development Indicators (WDI) − World Bank
+                          Last update source 1: 2025-01-09
+                          Last update source 1: {unique(gdp_per_person_employed$last_updated)}")) +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"),
+        axis.text.x       = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         size = 12),
+        axis.text.y       = element_text(size = 12))
+```
+
+# Proximate and fundamental determinants of economic growth
+
+## 
+
+-   Proximate determinants
+
+    -   Increase in workers and worked hours
+    -   Increase in produced non-financial fixed assets
+    -   Increase in educational attainment, experience and skills (lifelong learning)
+    -   Increase in overall efficiency of production (total factor productivity)
+
+## 
+
+-   Fundamental determinants
+
+    -   Better institutions [@cardenas_introduccion_2020, Chapter 4]
+    -   Integration into the global economy [@cardenas_introduccion_2020, Chapter 5]
+    -   Geographical conditions
+
+# Acknowledgments
+
+## 
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**knitr**](https://CRAN.R-project.org/package=knitr), [**janitor**](https://CRAN.R-project.org/package=janitor), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra),
+[**wbstats**](https://CRAN.R-project.org/package=wbstats),
+[**ggrepel**](https://CRAN.R-project.org/package=ggrepel) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References {.allowframebreaks}

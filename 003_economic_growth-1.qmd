@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
@@ -49,6 +48,8 @@ library(kableExtra)
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 3]
 
 # Purpose
@@ -81,7 +82,8 @@ Analyze the determinants of economic growth
 
 # Data
 # https://www.rug.nl/ggdc/ > 
-# Historical Development > Historical Development >
+# Historical Development > 
+# Historical Development >
 # Maddison Historical Statistics > 
 # Releases > 
 # 2023 > 
@@ -112,8 +114,7 @@ data_madison_region_gdp_per_capita |>
                 group = region)) +
   scale_x_continuous(breaks = c(seq(from = min(data_madison_region_gdp_per_capita$year),
                                     to   = 2020,
-                                    by   = 10),
-                                max(data_madison_region_gdp_per_capita$year))) +
+                                    by   = 10))) +
   scale_y_continuous(labels = scales::label_number(scale    = 1e-3,
                                                    suffix   = "K",
                                                    accuracy = 1)) +
@@ -137,7 +138,9 @@ data_madison_region_gdp_per_capita |>
         legend.title      = element_text(face = "bold"),
         axis.text         = element_text(face = "bold"),
         axis.text.x       = element_text(angle = 90,
-                                         vjust = 0.5))
+                                         vjust = 0.5,
+                                         size = 12),
+        axis.text.y       = element_text(size = 12))
 ```
 
 # Economic growth paths
@@ -187,7 +190,11 @@ data_madison_country_usa_col_kor |>
         plot.title        = element_text(face = "bold"),
         axis.title        = element_text(face = "bold"),
         legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+        axis.text         = element_text(face = "bold"),
+        axis.text.x       = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         size = 12),
+        axis.text.y       = element_text(size = 12))
 ```
 
 ## 
@@ -229,7 +236,11 @@ data_madison_country_hti_dom |>
         plot.title        = element_text(face = "bold"),
         axis.title        = element_text(face = "bold"),
         legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+        axis.text         = element_text(face = "bold"),
+        axis.text.x       = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         size = 12),
+        axis.text.y       = element_text(size = 12))
 ```
 
 ## 
@@ -271,7 +282,11 @@ data_madison_country_col_ven |>
         plot.title        = element_text(face = "bold"),
         axis.title        = element_text(face = "bold"),
         legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
+        axis.text         = element_text(face = "bold"),
+        axis.text.x       = element_text(angle = 90,
+                                         vjust = 0.5,
+                                         size = 12),
+        axis.text.y       = element_text(size = 12))
 ```
 
 # Economic growth in images
@@ -288,7 +303,7 @@ Shanghai’s financial district of Pudong [@taylor_26_2013]
 
 ## 
 
-![Korean peninsula, nocturnal luminosity: September 24, 2012 [@nasa_earth_observatory_korea_2012]](_000_images/003_north_south_koreas.png){#fig-korean-peninsula-nocturnal-luminosity fig-alt="Korean peninsula, nocturnal luminosity" fig-align="center" width="350px" height="350px"}
+![Korean peninsula, nocturnal luminosity: September 24, 2012 [@nasa_earth_observatory_korea_2012]](_000_images/003_north_south_koreas.png){#fig-korean-peninsula-nocturnal-luminosity fig-alt="Korean peninsula, nocturnal luminosity" fig-align="center" width="350px" height="250px"}
 
 ## 
 
@@ -304,117 +319,6 @@ Shanghai’s financial district of Pudong [@taylor_26_2013]
         -   Las Vegas, Nevada, USA
 
 [^1]: Timelapse is a global, zoomable video that lets you see how the Earth has changed over the past 32 years.
-
-# Inputs to obtain GDP
-
-## 
-
-Gross domestic product is obtained by using the following inputs:
-
--   Labor
-
-    -   Quantity of labor:
-        -   Employment[^2]
-        -   Hours worked
-    -   Quality of Labor:
-        -   Employment by educational attainment
-        -   Compensation by educational attainment
-
-[^2]: Includes individuals employed aged 15 years or over where this age range is necessary for international comparisons.
-
-## 
-
-Gross domestic product is obtained by using the following inputs:
-
--   Produced non-financial fixed assets[^3]
-
-    -   Dwellings
-    -   Buildings other than dwellings
-    -   Other structures
-    -   Land improvements
-    -   Transport equipment
-    -   Information and Computer Technology (ICT) equipment
-    -   Other machinery and equipment
-    -   Weapons systems
-    -   Cultivated biological resources
-
-[^3]: Other non-financial assets can be included but these are the ones that are usually measured. For more information check out [@oecd_measuring_2009] and [@oecd_measuring_2001]
-
-## 
-
-Other factors that affect the Gross Domestic Product different from labor and produced non-financial fixed assets
-
--   These factors are not directly observable but are used in growth accounting to calculate **Total Factor Productivity/Multifactor productivity** as an approximation to technological change
-
-    -   Technological change is defined as changes in the Gross Domestic Product that are not due to changes in inputs
-
-# Growth accounting
-
-## 
-
-![Labor productivity and total factor productivity [@de_vries_total_2017, page 21, fig 3]](_000_images/003_labor_productivity_total_factor_productivity.png){#fig-labor-factor-productivity-total-factor-productivity fig-alt="Labor productivity and total factor productivity" fig-align="center" width="400px" height="400px"}
-
-## 
-
-```{r}
-#| label: tbl-growth-accounting-col
-#| tbl-cap: Growth accounting applied to Colombia for selected years
-
-# https://www.conference-board.org/us/ > 
-# myTBC Member Sign In > Data >
-# Data Central > TCB DATASETS > 
-# Total Economy Database - Growth Accounting and Total Factor Productivity
-# You need to have a free account
-# Username: l*********m@gmail.com
-# Password: U**********4
-data_ted_col <- read_csv(file = '000_data/003_tidy_TED2.csv.gz') |>
-  filter(unit_code == 'COL', 
-         date %in% c(1990, 2010, 2020, 2024),
-         variable_label %in% c('Growth in real GDP',
-                               'Contribution of Labor Quality to real GDP growth',
-                               'Contribution of Labor Quantity to real GDP growth',
-                               'Contribution of Total Capital Services to real GDP growth',
-                               'Growth of Total Factor Productivity')) |> 
-  select(date, variable_label, values) |> 
-  pivot_wider(id_cols = variable_label, 
-              names_from = date, values_from = values) |> 
-  rename(Measure = variable_label)
-
-data_ted_col |>
-  kable(booktabs = TRUE, 
-        escape = FALSE, 
-        digits = 2, 
-        format = "latex") |>
-  kable_styling(font_size = 9) |> 
-  column_spec(column = 1, width = "2.5in") |>
-  row_spec(row = 1, background = '#e31a1c') |> 
-  row_spec(row = 2:3, background = '#18BC9C') |>
-  row_spec(row = 4, background = '#CCBE93') |>
-  row_spec(row = 5, background = '#FF7F00') |>
-  footnote(general       = c('Source: Total Economy Database - Growth Accounting and Total Factor Productivity', 
-                             'Last update: 2024'),
-           general_title = "",
-           threeparttable = TRUE)
-```
-
-# Proximate and fundamental determinants of economic growth
-
-## 
-
--   Proximate determinants
-
-    -   Increase in workers and worked hours
-    -   Increase in produced non-financial fixed assets
-    -   Increase in educational attainment, experience and skills (lifelong learning)
-    -   Increase in overall efficiency of production (total factor productivity)
-
-## 
-
--   Fundamental determinants
-
-    -   Better institutions [@cardenas_introduccion_2020, Chapter 4]
-    -   Integration into the global economy [@cardenas_introduccion_2020, Chapter 5]
-    -   Geographical conditions
 
 # Acknowledgments
 
