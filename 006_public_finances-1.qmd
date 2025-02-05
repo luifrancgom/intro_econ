@@ -53,6 +53,8 @@ library(latex2exp)
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
 
 # Purpose
@@ -164,13 +166,33 @@ digraph boxes_and_circles {
 //| fig-width: 5
 //| fig-height: 2
 
-## https://www.minhacienda.gov.co >
-## Entidades Financieras >
-## - 1. Balance Sector Público Consolidado
-## - 1.1 Balance Sector Público Financiero
-## - 1.2 Balance Sector Público No Financiero
-## - 1.2.1 Balance Gobierno General
-## - 1.2.1.1 Balance Gobierno Nacional Central
+# https://www.minhacienda.gov.co > 
+# Procesos Misionales > 
+# Procesos Misionales > 
+# Política Fiscal > 
+# Política Fiscal >
+# Cifras de Política Fiscal > 
+
+## Estadísticas de finanzas públicas con base en estándares internacionales > 
+## Estadísticas oficiales > 
+## MHCP: Estadísticas oficiales del Sector Públicos Consolidado >
+## Balance Sector Público Consolidado >
+## Cifras históricas SPC 2001-2019
+
+## SPNF >
+## SPNF >
+## Balance SPNF
+
+## Gobierno General >
+## Gobierno General >
+## Balance Gobierno General
+## Gobierno General (por subsector) 2008 2023
+
+### - 1. Balance Sector Público Consolidado
+### - 1.1 Balance Sector Público Financiero
+### - 1.2 Balance Sector Público No Financiero
+### - 1.2.1 Balance Gobierno General
+### - 1.2.1.1 Balance Gobierno Nacional Central
 digraph boxes_and_circles {
 
   graph [rankdir = LR]
@@ -225,6 +247,8 @@ digraph boxes_and_circles {
   
 }
 ```
+
+[^1]: https://www.minhacienda.gov.co/politica-fiscal
 
 ## 
 
@@ -680,99 +704,6 @@ tax_structure_grouped |>
         axis.text.x       = element_blank(),
         axis.text.y       = element_text(face = "bold"),
         axis.ticks.x      = element_blank())
-```
-
-# Expenditures
-
-## 
-
--   Useful resources
-
-    -   **Portal de transparencia económica**
-
-        -   [**https://www.pte.gov.co**](https://www.pte.gov.co) \> PRESUPUESTO GENERAL DE LA NACIÓN \> Ejecución
-
-    -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
-
-        -   [**https://www.ofiscal.org/publicaciones**](https://www.ofiscal.org/publicaciones) \> guías ciudadanas \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
-
-    -   **Presupuesto en Perspectiva Económica (PePE)**
-
-        -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Interactúa \> PePE
-
-## 
-
--   **Presupuesto General de la Nación (PGN)**
-
-    -   It is the most important financial management instrument of fiscal policy
-
-    -   This instrument presents the government's proposed revenues and spending for a specific period
-
-    -   Every year the "Presupuesto General de la Nación (PGN)" is define for the next year
-
-    -   The "Presupuesto General de la Nación (PGN)" must be approved by the congress and sanctioned as a law by the president
-
-    -   For more information check out **Guía ciudadana al Presupuesto General de la Nación** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2022]
-
-        -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Guias \> Presupuesto General de la Nación \> ver y descargar ↓
-
-## 
-
-```{r}
-#| include: false
-
-# https://www.pte.gov.co  > 
-# PRESUPUESTO GENERAL DE LA NACIÓN >
-# Ejecución >
-# Ejecución por Sector para la Vigencia Actual
-pgn_what_spent <- read_csv(file = "000_data/006_ejecucion_presupuestal_por_sector_pgn.csv",
-                           locale = locale(encoding = "latin1",
-                                           decimal_mark = '.')) |>
-  arrange(desc(AsignacionVigente)) |> 
-  clean_names() |> 
-  mutate(nombre_sector = str_to_title(nombre_sector))
-```
-
-```{r}
-#| label: fig-pgn-col
-#| fig-cap: Who spends nation's general budget spent on?
-
-pgn_what_spent_clean <- pgn_what_spent |> 
-  select(nombre_sector, asignacion_vigente) |> 
-  mutate(nombre_sector = case_when(
-    nombre_sector %in% pgn_what_spent$nombre_sector[1:11] ~ nombre_sector,
-    .default = 'Otros Sectores')) |> 
-  group_by(nombre_sector) |> 
-  summarise(asignacion_vigente = sum(asignacion_vigente)) |> 
-  ungroup() |> 
-  mutate(asignacion_vigente_pct = asignacion_vigente / sum(asignacion_vigente),
-         label = str_glue("{scales::number(asignacion_vigente_pct, scale = 1e2, accuracy = 0.01, suffix = '%')}
-                          {scales::number(asignacion_vigente, scale = 1e-12, accuracy = 0.01, suffix = 'B')}"),
-         nombre_sector = fct_reorder(.f = nombre_sector, .x = asignacion_vigente) |> 
-           fct_rev())
-
-pgn_what_spent_clean |> 
-  ggplot(aes(area = asignacion_vigente,
-             fill = nombre_sector,
-             label = label)) +
-  geom_treemap(color = "black") +
-  geom_treemap_text(place = "centre") +
-  scale_fill_tq() +
-  labs(fill = NULL,
-       title = str_glue("Year: {unique(pgn_what_spent$anio)}"),
-       subtitle = str_glue("Total national budget: {scales::number(sum(pgn_what_spent$asignacion_vigente), big.mark = ',')} COP
-                           Observation: B means billions in long scale (10¹²)"),
-       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
-                          Last update date: 2024-07-16")) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
 ```
 
 # Acknowledgments

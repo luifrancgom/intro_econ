@@ -1,0 +1,173 @@
+---
+title: "Public Finances I"
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    keep-tex: true
+    include-in-header:
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
+bibliography: intro_econ.bib
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(tidyquant)
+library(treemapify)
+library(janitor)
+library(latex2exp)
+```
+
+# Please Read Me
+
+## 
+
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
+
+# Purpose
+
+## 
+
+Explain the role of the State in the economy
+
+# Expenditures
+
+## 
+
+-   Useful resources
+
+    -   **Portal de transparencia económica**
+
+        -   [**https://www.pte.gov.co**](https://www.pte.gov.co) \> PRESUPUESTO GENERAL DE LA NACIÓN \> Ejecución
+
+    -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+
+        -   [**https://www.ofiscal.org/publicaciones**](https://www.ofiscal.org/publicaciones) \> guías ciudadanas \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
+
+    -   **Presupuesto en Perspectiva Económica (PePE)**
+
+        -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Interactúa \> PePE
+
+## 
+
+-   **Presupuesto General de la Nación (PGN)**
+
+    -   It is the most important financial management instrument of fiscal policy
+
+    -   This instrument presents the government's proposed revenues and spending for a specific period
+
+    -   Every year the "Presupuesto General de la Nación (PGN)" is define for the next year
+
+    -   The "Presupuesto General de la Nación (PGN)" must be approved by the congress and sanctioned as a law by the president
+
+    -   For more information check out **Guía ciudadana al Presupuesto General de la Nación** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2022]
+
+        -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Guias \> Presupuesto General de la Nación \> ver y descargar ↓
+
+## 
+
+```{r}
+#| include: false
+
+# https://www.pte.gov.co  > 
+# PRESUPUESTO GENERAL DE LA NACIÓN >
+# Ejecución >
+# Ejecución por Sector para la Vigencia Actual
+pgn_what_spent <- read_csv(file = "000_data/006_ejecucion_presupuestal_por_sector_pgn.csv",
+                           locale = locale(encoding = "latin1",
+                                           decimal_mark = '.')) |>
+  arrange(desc(AsignacionVigente)) |> 
+  clean_names() |> 
+  mutate(nombre_sector = str_to_title(nombre_sector))
+```
+
+```{r}
+#| label: fig-pgn-col
+#| fig-cap: Who spends nation's general budget spent on?
+
+pgn_what_spent_clean <- pgn_what_spent |> 
+  select(nombre_sector, asignacion_vigente) |> 
+  mutate(nombre_sector = case_when(
+    nombre_sector %in% pgn_what_spent$nombre_sector[1:11] ~ nombre_sector,
+    .default = 'Otros Sectores')) |> 
+  group_by(nombre_sector) |> 
+  summarise(asignacion_vigente = sum(asignacion_vigente)) |> 
+  ungroup() |> 
+  mutate(asignacion_vigente_pct = asignacion_vigente / sum(asignacion_vigente),
+         label = str_glue("{scales::number(asignacion_vigente_pct, scale = 1e2, accuracy = 0.01, suffix = '%')}
+                          {scales::number(asignacion_vigente, scale = 1e-12, accuracy = 0.01, suffix = 'B')}"),
+         nombre_sector = fct_reorder(.f = nombre_sector, .x = asignacion_vigente) |> 
+           fct_rev())
+
+pgn_what_spent_clean |> 
+  ggplot(aes(area = asignacion_vigente,
+             fill = nombre_sector,
+             label = label)) +
+  geom_treemap(color = "black") +
+  geom_treemap_text(place = "centre") +
+  scale_fill_tq() +
+  labs(fill = NULL,
+       title = str_glue("Year: {unique(pgn_what_spent$anio)}"),
+       subtitle = str_glue("Total national budget: {scales::number(sum(pgn_what_spent$asignacion_vigente), big.mark = ',')} COP
+                           Observation: B means billions in long scale (10¹²)"),
+       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
+                          Last update date: 2024-07-16")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Acknowledgments
+
+## 
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**readxl**](https://CRAN.R-project.org/package=readxl), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**janitor**](https://CRAN.R-project.org/package=janitor), [**treemapify**](https://CRAN.R-project.org/package=treemapify), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References {.allowframebreaks}
