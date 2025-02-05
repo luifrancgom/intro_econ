@@ -1,0 +1,725 @@
+---
+title: "External sector I"
+author: 
+  - Luis Francisco Gómez López
+institute: 
+  - FAEDIS
+date: last-modified
+format: 
+  beamer:
+    colortheme: dolphin
+    fonttheme: structurebold
+    theme: AnnArbor
+    link-citations: true
+    colorlinks: true
+    toc: true
+    slide-level: 2
+    section-titles: false
+    include-in-header:
+      file: 000_tex_files/preamble.tex
+fig-cap-location: bottom
+tbl-cap-location: top
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
+bibliography: intro_econ.bib
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(wbstats)
+library(tidyquant)
+library(readxl)
+library(knitr)
+library(kableExtra)
+library(imfr)
+library(janitor)
+```
+
+# Please Read Me
+
+## 
+
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 5]
+
+# Purpose
+
+##
+
+Explain the composition and determinants of Colombian foreign trade
+
+# Trade in Colombia and around the World
+
+##
+
+-   Trade is the sum of exports and imports of goods and services measured as a share of gross domestic product in a defined territory
+
+$$Trade_t = \frac{X_t + M_t}{GDP_t} \times 100$$
+
+-   We can calculate this metric for a specific country or region and even for the World
+
+-   Also it is important so point out that $Trade_t$ can be greater than $100$. Even in some countries we have that $\frac{X_t}{GDP_t} \times 100 \geq 100$ or $\frac{M_t}{GDP_t} \times 100 \geq 100$
+
+##
+
+```{r}
+#| label: fig-trade-col-usa-world
+#| fig-cap: Trade (% of GDP) for Colombia, USA and the World
+
+trade_usa_col_world <- wbstats::wb_data(indicator = "NE.TRD.GNFS.ZS",
+                                        country = c("COL", "WLD", "USA")) |>
+  filter(between(date, 1970, 2023))
+
+trade_usa_col_world |>
+  ggplot(aes(x = date, y = NE.TRD.GNFS.ZS)) +
+  geom_line(aes(color = country, group = country)) +
+  scale_color_tq() +
+  scale_y_continuous(labels = scales::number_format(suffix = "%")) +
+  labs(x = NULL,
+       y = NULL,
+       color = NULL,
+       subtitle = str_glue("Period: {min(trade_usa_col_world$date)}-{max(trade_usa_col_world$date)}"),
+       caption = str_glue("Source: World Development Indicators (WDI) - World Bank
+                          Last update: {unique(trade_usa_col_world$last_updated)}")) +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+# Balance of payments
+
+##
+
+-   The balance of payments is a "statistical statement that summarizes transactions between residents and nonresidents during a period" [@international_monetary_fund_balance_2009, paragraph 2.12]
+
+-   It consist of the following accounts:
+
+    -   **Current account**
+
+        -   Goods and services account
+        -   Primary income account
+        -   Secondary income account
+
+    -   **Capital account**
+
+    -   **Financial account**
+
+-   In the case of Colombia you can find the balance of payments in
+
+    -   [https://www.banrep.gov.co/](https://www.banrep.gov.co/) \> Estadísticas económicas \> ¡Nuevo portal de estadísticas económicas! \> Series de estadísticas económicas \> Tablas preconstruidas \> Sector externo, tasas de cambio y derivados \> Sector externo \> Balanza de pagos \> Series recientes \> Resumen
+
+##
+
+-   **Current account**: "shows flows of goods, services, primary income, and secondary income between residents and nonresidents" [@international_monetary_fund_balance_2009, paragraph 2.14]
+
+    -   **Goods and services account**: "shows transactions in items that are outcomes of production activities" [@international_monetary_fund_balance_2009, paragraph 10.1]
+
+    -   **Primary income account**: "captures returns for the provision of labor and financial assets and renting of natural resources" [@international_monetary_fund_balance_2009, paragraph 11.5] between resident and nonresident institutional units
+
+    -   **Secondary income account**: shows current transfers between residents and nonresidents [@international_monetary_fund_balance_2009, paragraph 12.1]
+
+##
+
+```{r}
+#| label: tbl-annual-summary-balance-of-payments-current-account-col
+#| tbl-cap: Balance of payments current account Colombia (Annual summary)
+
+# Data
+## https://www.banrep.gov.co/ \> 
+## Estadísticas económicas \> 
+## ¡Nuevo portal de estadísticas económicas! \> 
+## Series de estadísticas económicas \> 
+## Tablas preconstruidas \> Sector externo, tasas de cambio y derivados \> 
+## Sector externo \> 
+## Balanza de pagos \> 
+## Series recientes \> 
+## Resumen
+### Si necesita descargar la información incluida en alguna de las tablas preconstruidas, ubíquese sobre cualquier dato, pulse clic alterno (derecho) en el mouse y seleccione la opción Exportar, en la cual sugerimos descargar la versión en Excel. Recuerde que esta acción solo está disponible en la versión de escritorio del Portal de Estadísticas Económicas.
+#### https://www.banrep.gov.co/es/preguntas-frecuentes/como-encontrar-series-sobre-balanza-pagos-nuevo-portal-estadisticas-economicas
+bop_col <- read_csv(file = "000_data/005_balanza_de_pagos_resumen.csv")
+
+bop_col_clean <- bop_col |> 
+  clean_names() |> 
+  filter(fecha_dd_mm_yyyy_year %in% 2022:2024) |> 
+  filter(periodicidad_de_la_informacion_trimestral_anual == "Anual") |> 
+  select(x1, cuentas, valor, fecha_dd_mm_yyyy_year) |> 
+  pivot_wider(id_cols = c(x1, cuentas), 
+              names_from = fecha_dd_mm_yyyy_year, 
+              values_from = valor) |> 
+  rename(Account = cuentas)
+
+# Current account
+bop_col_current_account_table <- bop_col_clean |> 
+  select(-x1) |> 
+  slice(1:18)
+
+bop_col_current_account_table_footnote <- bop_col_current_account_table
+
+names(bop_col_current_account_table_footnote)[2:3] <- paste0(names(bop_col_current_account_table_footnote)[2:3],
+                                                           footnote_marker_alphabet(1, "latex"))
+
+names(bop_col_current_account_table_footnote)[4] <-  paste0(names(bop_col_current_account_table_footnote)[4],
+                                                              footnote_marker_alphabet(2, "latex"))
+
+bop_col_current_account_table_footnote |>
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 0, linesep = "") |>
+  kable_styling(font_size = 6)  |> 
+  row_spec(1, bold = TRUE, background = '#e31a1c') |> 
+  row_spec(c(4, 13, 16), bold = TRUE, background = '#18BC9C') |> 
+  row_spec(row = c(7,10), background = '#CCBE93') |>
+  footnote(general       = c('Source: Banco de la República - Colombia', 
+                             'Last update: 2025-02-03'),
+           general_title = "",
+           number = 'Methodology: Sixth version of the Balance of Payments Manual',
+           alphabet = c('Preliminar data (Millions of current USD)', 
+                        'Provisional data (Millions of current USD)'), 
+           threeparttable = TRUE)
+```
+
+##
+
+```{r}
+#| include: false
+
+# Documentation
+## https://www.imf.org/en/Home > 
+## DATA >
+## IMF Data Portal > 
+## Datasets > 
+## Balance of Payments (BOP) >
+## Archive >  
+## Publications and Methodological Notes >
+## <Select the last documentation available>
+### For example: BOP Introductory Notes, as of November 2023
+
+# Data
+## https://www.imf.org/en/Home > 
+## DATA >
+## IMF Data Portal > 
+## Datasets > 
+## Balance of Payments (BOP) >
+## Query
+
+# Package imfr version 2
+## data_bases <- imf_databases(times = 1) |> as_tibble()
+## data_bases |> filter(database_id == "BOP")
+## parameters <- imf_parameters(database_id = "BOP", times = 1)
+## parameters |> class()
+## parameters |> str(max.level = 1)
+## parameters |> _$indicator |> as_tibble()
+### See https://github.com/christophergandrud/imfr
+
+# Alternative if imfr version 2 fails
+## imf.data
+### https://CRAN.R-project.org/package=imf.data
+### https://pedrobtz.github.io/imf.data/
+#### start_year <- 2000
+#### end_year <- 2023
+
+#### data_bases <- list_datasets() |> as_tibble()
+#### data_bases |> filter(ID  == "BOP")
+#### BOP <- load_datasets(id = "BOP")
+#### BOP |> str(max.level = 1)
+
+##### You need to pivot the table
+###### BOP$get_series(freq = "A", 
+######                ref_area = "CO", 
+######                indicator = c("BCA_BP6_USD",
+######                              # Balance of Goods
+######                              "BG_BP6_USD",
+######                              # Balance of services
+######                              "BS_BP6_USD",
+######                              # Balance of Primary Income
+######                              "BIP_BP6_USD",
+######                              # Balance of Secondary Income
+######                              "BIS_BP6_USD"),
+######                start_period = start_year,
+######                end_period = end_year)
+####### Also check out https://github.com/pedrobtz/imf.data/issues/9
+
+start_year <- 2000
+end_year <- 2023
+
+bop_col_current_account <- imf_dataset(database_id = "BOP",
+                                       freq = 'A',
+                                       ref_area = 'CO',
+                                       # Current Account
+                                       indicator = c("BCA_BP6_USD",
+                                                     # Balance of Goods
+                                                     "BG_BP6_USD",
+                                                     # Balance of services
+                                                     "BS_BP6_USD",
+                                                     # Balance of Primary Income
+                                                     "BIP_BP6_USD",
+                                                     # Balance of Secondary Income
+                                                     "BIS_BP6_USD"),
+                                       start_year = start_year,
+                                       end_year = end_year)
+```
+
+```{r}
+#| label: fig-current-account-components-col 
+#| fig-cap: Current account and its components for Colombia
+       
+bop_col_components_current_account <- bop_col_current_account |> 
+  as_tibble() |> 
+  select(date, value, indicator) |> 
+  filter(indicator %in% c("BG_BP6_USD",
+                          "BS_BP6_USD",
+                          "BIP_BP6_USD",
+                          "BIS_BP6_USD")) |>
+  mutate(indicator = fct_relevel(indicator,
+                                 c("BG_BP6_USD",
+                                   "BS_BP6_USD",
+                                   "BIP_BP6_USD",
+                                   "BIS_BP6_USD")),
+         date = as.integer(date),
+         value = as.numeric(value))
+
+bop_col_single_current_account <- bop_col_current_account |> 
+  as_tibble() |> 
+  select(date, value, indicator) |> 
+  filter(indicator %in% "BCA_BP6_USD") |>
+  mutate(date = as.integer(date),
+         value = as.numeric(value))
+  
+bop_col_components_current_account |>
+  ggplot() +
+  geom_col(aes(x = date,
+               y = value,
+               fill = indicator),
+           color = "black", 
+           position = 'stack') +
+  geom_line(data = bop_col_single_current_account,
+            aes(x = date, y = value,
+                color = indicator)) +
+  scale_fill_manual(values = unname(palette_light()[1:4]),
+                    labels = c("Balance of Goods",
+                               "Balance of services",
+                               "Balance of Primary Income",
+                               "Balance of Secondary Income")) +
+  scale_color_manual(values = "#FF7F00",
+                     labels = "Current account") +
+  guides(fill = guide_legend(nrow = 2, ncol = 2, order = 2),
+         color = guide_legend(order = 1)) +
+  labs(x = NULL,
+       y = NULL,
+       fill = NULL,
+       color = NULL,
+       subtitle = str_glue("Variable units: Millions of USD"),
+       caption = "Source: International Monetary Fund - Balance of Payments Statistics (BOPS)") +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+##
+
+-   **Capital account**
+
+    -   The capital account shows credit and debit entries for nonproduced nonfinancial assets and capital transfers between residents and nonresidents [@international_monetary_fund_balance_2009, paragraph 2.16]
+
+    -   The Capital account does not appear in the balance of payments of Colombia because the sources of information currently available do not allow the identification and registration of capital transfers
+
+##
+
+-   **Financial account**: The financial account records transactions that involve financial assets and liabilities and that take place between residents and nonresidents [@international_monetary_fund_balance_2009, paragraph 8.1]
+
+    -   **Direct Investment**: "is a category of cross-border investment associated with a resident in one economy having control or a significant degree of influence on the management of an enterprise that is resident in another economy" [@international_monetary_fund_balance_2009, paragraph 6.8]
+    -   **Portfolio investment**: "is defined as cross-border transactions and positions involving debt or equity securities, other than those included in direct investment or reserve assets" [@international_monetary_fund_balance_2009, paragraph 6.54]
+
+##
+
+-   **Financial account**: "records transactions that involve financial assets and liabilities and that take place between residents and nonresidents" [@international_monetary_fund_balance_2009, paragraph 8.1]
+
+    -   **Financial Derivatives (Other Than Reserves) and Employee Stock Options**:
+
+        -   "A financial derivative contract is a financial instrument that is linked to another specific financial instrument or indicator or commodity and through which specific financial risks" ... "can be traded in their own right in financial markets" [@international_monetary_fund_balance_2009, paragraph 5.80]
+
+        -   "Employee stock options are options to buy the equity of a company, offered to employees of the company as a form of remuneration" [@international_monetary_fund_balance_2009, paragraph 5.96]
+
+##
+
+-   **Financial account**: "records transactions that involve financial assets and liabilities and that take place between residents and nonresidents" [@international_monetary_fund_balance_2009, paragraph 8.1]
+
+    -   **Other Investment** [@international_monetary_fund_balance_2009, paragraph 8.42-8.54]
+    -   **Reserve Assets** [@international_monetary_fund_balance_2009, paragraph 8.55-8.57]
+
+##
+
+```{r}
+#| label: tbl-annual-summary-balance-of-payments-financial-account-col
+#| tbl-cap: Balance of payments financial account Colombia (Annual summary)
+
+# Financial account
+bop_col_financial_account_table <- bop_col_clean |> 
+  select(-x1) |>
+  slice(19:41)
+
+bop_col_financial_account_table_footnote <- bop_col_financial_account_table
+
+names(bop_col_financial_account_table_footnote)[2:3] <-  paste0(names(bop_col_financial_account_table_footnote)[2:3],
+                                                              footnote_marker_alphabet(1, "latex"))
+
+names(bop_col_financial_account_table_footnote)[4] <-  paste0(names(bop_col_financial_account_table_footnote)[4],
+                                                                footnote_marker_alphabet(2, "latex"))
+
+bop_col_financial_account_table_footnote |>
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 0, linesep = "") |>
+  kable_styling(font_size = 4.3)  |>
+  row_spec(c(1, 23), bold = TRUE, background = '#e31a1c') |> 
+  row_spec(c(2, 9, 16, 19, 22), bold = TRUE, background = '#18BC9C') |> 
+  row_spec(row = c(3, 6, 10, 13, 17, 18, 20, 21), background = '#CCBE93') |>
+  footnote(general       = c('Source: Banco de la República - Colombia', 'Last update: 2024-07-16'),
+           general_title = "",
+           number = c('Methodology: Sixth version of the Balance of Payments Manual'),
+           alphabet = c('Preliminar data (Millions of current USD)', 
+                        'Provisional data (Millions of current USD)'), 
+           threeparttable = TRUE)
+```
+
+##
+
+```{r}
+#| include: false
+
+# Documentation
+## https://www.imf.org/en/Home > DATA >
+## IMF elibrary-Data > Datasets > 
+## Balance of Payments (BOP) >
+## Archive >  
+## Publications and Methodological Notes >
+## <Select the last documentation available>
+### For example: BOP Introductory Notes, as of November 2023
+
+# Data
+## ## https://www.imf.org/en/Home > DATA >
+## IMF elibrary-Data > Datasets > 
+## Balance of Payments (BOP) >
+## Query
+
+# Package imfr version 2
+## data_bases <- imf_databases(times = 1) |> as_tibble()
+## data_bases |> filter(database_id == "BOP")
+## parameters <- imf_parameters(database_id = "BOP", times = 1)
+## parameters |> class()
+## parameters |> str(max.level = 1)
+## parameters |> _$indicator |> as_tibble()
+### See https://github.com/christophergandrud/imfr
+
+# Alternative if imfr version 2 fails
+## imf.data
+### https://CRAN.R-project.org/package=imf.data
+### https://pedrobtz.github.io/imf.data/
+#### start_year <- 2000
+#### end_year <- 2022
+
+#### data_bases <- list_datasets() |> as_tibble()
+#### data_bases |> filter(ID  == "BOP")
+#### BOP <- load_datasets(id = "BOP")
+#### BOP |> str(max.level = 1)
+
+##### You need to pivot the table
+###### BOP$get_series(freq = "A", 
+######                ref_area = "CO",
+######                            # Financial Account  
+######                indicator = c("BFFR_BP6_USD",
+######                              # Direct Investment
+######                              "BFD_BP6_USD",
+######                              # Portfolio investment
+######                              "BFP_BP6_USD",
+######                              # Financial Derivatives (Other Than Reserves) and ESOS        
+######                              "BFF_BP6_USD",
+######                              # Other investment,
+######                              "BFOFR_BP6_USD",
+######                              # Reserve Assets
+######                              "BFRAFR_BP6_USD"),
+######                start_period = start_year,
+######                end_period = end_year)
+
+bop_col_financial_account <- imf_dataset(database_id = "BOP",
+                                       freq = 'A',
+                                       ref_area = 'CO',
+                                       # Financial Account
+                                       indicator = c("BFFR_BP6_USD",
+                                                     # Direct Investment
+                                                     "BFD_BP6_USD",
+                                                     # Portfolio investment
+                                                     "BFP_BP6_USD",
+                                                     # Financial Derivatives (Other Than Reserves) and ESOS
+                                                     "BFF_BP6_USD",
+                                                     # Other investment
+                                                     "BFOFR_BP6_USD",
+                                                     # Reserve Assets
+                                                     "BFRAFR_BP6_USD"),
+                                       start_year = start_year,
+                                       end_year = end_year)
+```
+
+```{r}
+#| label: fig-financial-account-components-col 
+#| fig-cap: Financial account and its components for Colombia
+
+bop_col_components_financial_account <- bop_col_financial_account |> 
+  as_tibble() |> 
+  select(date, value, indicator) |> 
+  filter(indicator %in% c("BFD_BP6_USD",
+                          "BFP_BP6_USD",
+                          "BFF_BP6_USD",
+                          "BFOFR_BP6_USD",
+                          "BFRAFR_BP6_USD")) |>
+  mutate(indicator = fct_relevel(indicator,
+                                 c("BFD_BP6_USD",
+                                   "BFP_BP6_USD",
+                                   "BFF_BP6_USD",
+                                   "BFOFR_BP6_USD",
+                                   "BFRAFR_BP6_USD")),
+         date = as.integer(date),
+         value = as.numeric(value))
+
+bop_col_single_financial_account <- bop_col_financial_account |> 
+  as_tibble() |> 
+  select(date, value, indicator) |> 
+  filter(indicator %in% "BFFR_BP6_USD") |>
+  mutate(date = as.integer(date),
+         value = as.numeric(value))
+
+bop_col_components_financial_account |>
+  ggplot() +
+  geom_col(aes(x = date,
+               y = value,
+               fill = indicator),
+           color = "black", 
+           position = 'stack') +
+  geom_line(data = bop_col_single_financial_account,
+            aes(x = date, y = value,
+                color = indicator)) +
+  scale_fill_manual(values = unname(palette_light()[1:5]),
+                    labels = c("Direct Investment",
+                               "Portfolio investment",
+                               "Financial Derivatives (Other Than Reserves) and ESOS",
+                               "Other investment",
+                               "Reserve Assets")) +
+  scale_color_manual(values = "#FF7F00",
+                     labels = "Current account") +
+  guides(fill = guide_legend(nrow = 3, ncol = 2, order = 2),
+         color = guide_legend(order = 1)) +
+  labs(x = NULL,
+       y = NULL,
+       fill = NULL,
+       color = NULL,
+       subtitle = str_glue("Variable units: Millions of USD"),
+       caption = "Source: International Monetary Fund - Balance of Payments Statistics (BOPS)") +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+##
+
+-   **Net errors and omissions**
+
+    -   Financial account - (Current account + Capital account) = Net errors and omissions
+
+##
+
+```{r }
+#| include: false
+
+# Documentation
+## https://www.imf.org/en/Home > DATA >
+## IMF elibrary-Data > Datasets > 
+## Balance of Payments (BOP) >
+## Archive >  
+## Publications and Methodological Notes >
+## <Select the last documentation available>
+### For example: BOP Introductory Notes, as of November 2023
+
+# Data
+## ## https://www.imf.org/en/Home > DATA >
+## IMF elibrary-Data > Datasets > 
+## Balance of Payments (BOP) >
+## Query
+
+# Package imfr version 2
+## data_bases <- imf_databases(times = 1) |> as_tibble()
+## data_bases |> filter(database_id == "BOP")
+## parameters <- imf_parameters(database_id = "BOP", times = 1)
+## parameters |> class()
+## parameters |> str(max.level = 1)
+## parameters |> _$indicator |> as_tibble()
+### See https://github.com/christophergandrud/imfr
+
+# Alternative if imfr version 2 fails
+## imf.data
+### https://CRAN.R-project.org/package=imf.data
+### https://pedrobtz.github.io/imf.data/
+#### start_year <- 2000
+#### end_year <- 2022
+
+#### data_bases <- list_datasets() |> as_tibble()
+#### data_bases |> filter(ID  == "BOP")
+#### BOP <- load_datasets(id = "BOP")
+#### BOP |> str(max.level = 1)
+
+##### You need to pivot the table
+###### BOP$get_series(freq = "A", 
+######                ref_area = "CO", 
+######                            # Net errors and omissions 
+######                indicator = c("BOPFR_BP6_USD"),
+######                start_period = start_year,
+######                end_period = end_year)
+
+bop_col_net_errors_omissions <- imf_dataset(database_id = "BOP",
+                                       freq = 'A',
+                                       ref_area = 'CO',
+                                       # Net errors and omissions
+                                       indicator = c("BOPFR_BP6_USD"),
+                                       start_year = start_year,
+                                       end_year = end_year)
+```
+
+```{r}
+#| label: fig-net-errors-omissions-col 
+#| fig-cap: Net Errors and Omissions for Colombia
+
+bop_col_net_errors_omissions |>
+  as_tibble() |> 
+  select(date, value, indicator) |> 
+  mutate(date = as.integer(date),
+         value = as.numeric(value)) |>
+  ggplot() +
+  geom_line(aes(x = date, y = value,
+                color = indicator)) +
+  geom_hline(yintercept = 0,
+             color = "black") +
+  scale_color_manual(values = "#FF7F00",
+                     labels = "Net Errors and Omissions") +
+  labs(x = NULL,
+       y = NULL,
+       fill = NULL,
+       color = NULL,
+       subtitle = str_glue("Variable units: Millions of USD"),
+       caption = "Source: International Monetary Fund - Balance of Payments Statistics (BOPS)") +
+  theme(panel.border    = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+```
+
+##
+
+-   **Accounting Framework**
+
+    -   **Double-entry bookkeeping**
+
+        -   For every transaction between an Colombia resident and the rest of the world, the balance of payments will record two entries [@rba_balance_2021]
+
+    -   **Credits** $(+)$
+
+        -   Outflows of real resources (exports)
+        -   Decrease in financial assest
+        -   Increase in liabilities
+
+    -   **Debits** $(-)$
+
+        -   Inflows of real resources (imports)
+        -   Increase in financial assest
+        -   Decrease in liabilities
+
+##
+
+-   Examples taken from [@rba_balance_2021] and adapted for Colombia
+
+    1.  A Colombian mining company exports \$100 million of iron ore to a private Chinese steel maker
+
+    2.  Colombian residents go on overseas to Panama and spend a total of \$5 million. The Colombian residents pay by using money deposited in their Colombian bank accounts
+
+    3.  Colombian resident, buys \$20 million of shares in a company listed on the New York Stock Exchange, equivalent to less than 10 per cent of the voting rights in that company. The shares are paid for using money from the resident's bank account in Colombia
+
+##
+
+```{r}
+#| label: tbl-sample-balance-of-payments
+#| tbl-cap: Sample of Balance of Payments
+
+table_bop_example <- tibble("Account" = c("Current account", "Trade balance", "Goods", "Services",
+                     "Financial account", "Portfolio investment", "Other investment","", 
+                     "Balance of payments"),
+       "Credit" = c("100", "100", "100¹", "",
+                    "25", "", "5²", "20³",
+                    "125"),
+       "Debit" = c("-5", "-5", "", "-5²",
+                   "-120", "-20³", "-100¹", "",
+                   "-125"),
+       "Net" = c("95", "95", "100", "-5",
+                 "-95", "-20", "-75", "",
+                 "0"))
+
+table_bop_example |> 
+  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
+        digits = 0, linesep = "") |>
+  kable_styling(font_size = 12) |>
+  add_indent(positions = c(2, 6, 7), level_of_indent = 1) |>
+  add_indent(positions = c(3, 4), level_of_indent = 2) |>
+  row_spec(row = c(0, 1, 5, 9), bold = TRUE) |> 
+  footnote(general       = "*The superscripts indicate the examples' transactions",
+           general_title = "", 
+           threeparttable = TRUE)
+```
+
+# Acknowledgments
+
+##
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**readxl**](https://CRAN.R-project.org/package=readxl), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**imfr**](https://github.com/christophergandrud/imfr),
+[**janitor**](https://CRAN.R-project.org/package=janitor) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+-   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
+
+# References {.allowframebreaks}
