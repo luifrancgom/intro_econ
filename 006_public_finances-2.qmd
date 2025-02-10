@@ -1,5 +1,5 @@
 ---
-title: "Public Finances I"
+title: "Public Finances II"
 author: 
   - Luis Francisco Gómez López
 institute: 
@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
