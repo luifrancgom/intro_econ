@@ -348,14 +348,59 @@ pgn_education_clean <- pgn_education |>
   mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente)) |> 
   mutate(apropiacion_vigente_pct_label = scales::number(x = apropiacion_vigente_pct, 
                                                         scale = 100, 
-                                                        accuracy = 0.01)) |> 
+                                                        accuracy = 0.01, 
+                                                        suffix = " %")) |> 
   arrange(desc(apropiacion_vigente_pct_label)) |> 
   select(nombre_entidad, apropiacion_vigente_pct_label)
 ```
 
-- Resources assigned to the Education sector in the year `r last_year - 1`
+- Resources assigned to the Education sector in the year `r last_year - 1` according to the **Presupuesto General de la Nación**
 
-    - `r sum(pgn_education$apropiacion_vigente) |> scales::number(big.mark = ",")`
+    - `r sum(pgn_education$apropiacion_vigente) |> scales::number(big.mark = ",")` COP
+
+- Number of entities in the Education sector in the year `r last_year - 1` according to the **Presupuesto General de la Nación**
+
+    - `r nrow(pgn_education_clean)`
+
+##
+
+```{r}
+#| include: false
+
+n_entities <- nrow(pgn_education_clean)
+first_n_entities <- ceiling(x = n_entities / 2)  
+last_n_entities  <- n_entities - first_n_entities
+```
+
+```{r}
+#| label: tbl-participation-entities-education-sector-1
+#| tbl-cap: !expr 'paste0("Participation in the resources assigned for each entity in the education sector (Year ", last_year - 1, ")")'
+
+pgn_education_clean |>
+  slice_head(n = first_n_entities) |> 
+  kable(format = "latex", 
+        booktabs = TRUE, 
+        col.names = c("Entity", "Percentage participation in the resources assigned")) |>
+  kable_styling(font_size = 5,
+                latex_options = "striped") |>
+  row_spec(row = 0, bold = TRUE)
+```
+
+##
+
+```{r}
+#| label: tbl-participation-entities-education-sector-2
+#| tbl-cap: !expr 'paste0("Participation in the resources assigned for each entity in the education sector (Year ", last_year - 1, ")")'
+
+pgn_education_clean |>
+  slice_tail(n = last_n_entities) |> 
+  kable(format = "latex", 
+        booktabs = TRUE, 
+        col.names = c("Entity", "Percentage participation in the resources assigned")) |>
+  kable_styling(font_size = 5,
+                latex_options = "striped") |>
+  row_spec(row = 0, bold = TRUE)
+```
 
 # Acknowledgments
 
