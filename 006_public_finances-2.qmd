@@ -74,7 +74,7 @@ Explain the role of the State in the economy
 
     -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
 
-        -   [**https://www.ofiscal.org/publicaciones**](https://www.ofiscal.org/publicaciones) \> guías ciudadanas \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
+        -   [**https://www.ofiscal.org/**](https://www.ofiscal.org/) \> Guias \> Tributación y gasto del Estado colombiano \> ver y descargar ↓
 
     -   **Presupuesto en Perspectiva Económica (PePE)**
 
@@ -134,8 +134,47 @@ middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
 ```
 
 ```{r}
+#| label: tbl-classification-by-sector-png-1
+#| tbl-cap: Classification by sector - PNG
+
+sector <- png_ano_mes_sector |> 
+  distinct(sector)
+
+rows_sector <- nrow(sector)
+first_rows  <- ceiling(x = (rows_sector / 2))
+last_rows   <- rows_sector - first_rows
+
+sector |>
+  slice_head(n = first_rows) |> 
+  kable(format = "latex", 
+        booktabs = TRUE, 
+        col.names = c("Sector")) |>
+  kable_styling(font_size = 8,
+                latex_options = "striped") |>
+  row_spec(row = 0, bold = TRUE)
+```
+
+##
+
+```{r}
+#| label: tbl-classification-by-sector-png-2
+#| tbl-cap: Classification by sector - PNG
+
+sector |>
+  slice_tail(n = first_rows) |> 
+  kable(format = "latex", 
+        booktabs = TRUE, 
+        col.names = c("Sector")) |>
+  kable_styling(font_size = 8,
+                latex_options = "striped") |>
+  row_spec(row = 0, bold = TRUE)
+```
+
+##
+
+```{r}
 #| label: fig-pgn-col-initial-year
-#| fig-cap: Who spends nation's general budget spent on in?
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", initial_year, "?")'
 
 # Initial year
 png_initial_year <- png_ano_mes_sector |> 
@@ -184,7 +223,7 @@ png_spent_initial_year |>
 
 ```{r}
 #| label: fig-pgn-col-middle-year
-#| fig-cap: Who spends nation's general budget spent on in?
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", middle_year, "?")'
 
 # Middle year  
 png_middle_year <- png_ano_mes_sector |> 
@@ -233,7 +272,7 @@ png_spent_middle_year |>
 
 ```{r}
 #| label: fig-pgn-col-last-year
-#| fig-cap: Who spends nation's general budget spent on in?
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", last_year, "?")'
 
 # Last year
 ## You need to change this
@@ -281,6 +320,37 @@ png_spent_last_year |>
         axis.title        = element_text(face = "bold"),
         legend.title      = element_text(face = "bold"),
         axis.text         = element_text(face = "bold"))
+```
+
+# Case study: Education sector
+
+##
+
+```{r}
+#| include: false
+
+# Education entities
+pgn_education <- pgn |>
+  clean_names() |> 
+  mutate(sector = str_to_title(sector)) |> 
+  mutate(nombre_entidad = str_to_title(nombre_entidad)) |> 
+  filter(ano == {{last_year}} - 1) |> 
+  filter(mes == "Diciembre") |>
+  filter(sector == "Educacion") |> 
+  select(nombre_entidad,
+         apropiacion_vigente) |> 
+  group_by(nombre_entidad) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup()
+
+# Clean data
+pgn_education_clean <- pgn_education |> 
+  mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente)) |> 
+  mutate(apropiacion_vigente_pct_label = scales::number(x = apropiacion_vigente_pct, 
+                                                        scale = 100, 
+                                                        accuracy = 0.01)) |> 
+  arrange(desc(apropiacion_vigente_pct_label)) |> 
+  select(nombre_entidad, apropiacion_vigente_pct_label)
 ```
 
 # Acknowledgments
