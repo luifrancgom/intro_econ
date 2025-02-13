@@ -441,7 +441,7 @@ institutions$_{\scriptscriptstyle t}$ & $\Rightarrow$ & political & & & institut
 & & & & $\Rightarrow$ & & & & of resources$_{\scriptscriptstyle t+1}$\\
 & & & & & & & & \\
 distribution & & de facto & & & political & & & \\ 
-of resources$_{\scriptscriptstyle t}$ & $\Rightarrow$ & political & & & institutions$_{\scriptscriptstyle t}$ & & & \\
+of resources$_{\scriptscriptstyle t}$ & $\Rightarrow$ & political & & & institutions$_{\scriptscriptstyle t + 1}$ & & & \\
 & & power$_{\scriptscriptstyle t}$ & & & & & &
 \end{tabular}
 
