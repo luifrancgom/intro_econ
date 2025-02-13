@@ -353,6 +353,10 @@ pgn_education_clean <- pgn_education |>
   select(nombre_entidad, apropiacion_vigente_pct_label)
 ```
 
+- Resources assigned to the Education sector in the year `r last_year - 1`
+
+    - `r sum(pgn_education$apropiacion_vigente) |> scales::number(big.mark = ",")`
+
 # Acknowledgments
 
 ## 
