@@ -1,5 +1,5 @@
 ---
-title: "Money, prices and the exchange rate"
+title: "Money, prices and the exchange rate I"
 author: 
   - Luis Francisco Gómez López
 institute: 
@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
@@ -50,6 +49,8 @@ library(tidyquant)
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 7]
 
 # Purpose
@@ -62,23 +63,39 @@ Analyze the money market and introduce the concepts of inflation, nominal exchan
 
 ##
 
--   Money is an **asset** that fulfills in general 3 functions
+-   Money is an **asset**[^1] that fulfills in general 3 functions
 
     -   Medium of exchange
     -   Unit of account
     -   Store of value
 
--   A central bank[^1] is the institution that issues and administrates legal currency and exercises the function of banker of banks [@banco_de_la_republica_central_2021]
+-   *"A central bank[^2] is the institution that issues and administrates legal currency and exercises the function of banker of banks"* [@banco_de_la_republica_central_2021]
 
--   In the case of Colombia, some of the functions of the central bank are:
-
-    -   Keep inflation low and stable and achieve the highest sustainable level of output and employment
-    -   Manage international reserves
-    -   Act as the bank of bankers
-    -   Issue currency
-    -   Act as a government banker, fiscal agent and trustee
+[^1]: This part is important because for example a credit card can fulfills the 3 functions but it is not an asset as defined by [@ifrs_conceptual_2018, chap. 4]
     
-[^1]: For a list of central banks around the world see [**https://www.bis.org/cbanks.htm**](https://www.bis.org/cbanks.htm)
+[^2]: For a list of central banks around the world see [**https://www.bis.org/cbanks.htm**](https://www.bis.org/cbanks.htm)
+
+##
+
+-   In the case of Colombia, some of the functions of the central bank are [@banrep_funciones_2025]:
+
+    - Maintain a low and stable inflation rate in order to preserve the purchasing power of money (**Monetary Policy - Política monetaria**)
+
+    - Intervene in the foreign exchange market in such a way that the interventions are consistent with the inflation targeting strategy (**Foreign exchange intervention policy - Política de intervención cambiaria**).
+    
+    - Regulate the activity of credit institutions, control the liquidity of the financial system and ensure the proper functioning of payments in the economy (**Credit policity - Política crediticia**).
+
+##
+
+-   In the case of Colombia, some of the functions of the central bank are [@banrep_funciones_2025]:
+
+    - Manage the international reserves[^3] (**Reservar internacionales**)
+    
+    - Lender of last resort for credit institutions (**Prestamista de última instancia de los establecimientos de crédito**)
+    
+    - Support the government in certain economic operations for the management of its liquidity, its payments, and its financial portfolio (**Government fiscal agent - Agente fiscal del gobierno**)
+    
+[^3]: For more information about the international reserves you can check out [@banrep_reservas_2025]
 
 ##
 
@@ -147,9 +164,11 @@ tibble(Bank = c("Sveriges Riksbank",
 
 ##
 
--   The **CPI** is build using information from **Encuesta Nacional de Presupuesto de los Hogares –ENPH- (2016-2017)** where it is conducted every 10 years.
+-   The **CPI** is build using information from **Encuesta Nacional de Presupuesto de los Hogares –ENPH- (2016-2017)** where it is conducted every 10 years [@dane_metodologigeneral_2019, section 2.1.5].
 
--   Additionally, usually monthly, but in some cases bimonthly, quadrimestral and biannual, price information is collected for 443 items in 38 cities where divisions included in the **CPI** are based on **Classification of Individual Consumption According to Purpose (COICOP)** and adapted for Colombia.
+-   Additionally, usually monthly, but in some cases bimonthly, quadrimestral and biannual, price information is collected for approximately 443[^4] items in 38 cities where divisions included in the **CPI** are based on **Classification of Individual Consumption According to Purpose (COICOP)** [@united_nations_classification_2023] and adapted for Colombia.
+
+[^4]: This can change sometimes every year
 
 ##
 
@@ -230,7 +249,7 @@ cpi |>
 
 ```{r}
 #| label: fig-cpi-inflation-col
-#| fig-cap: Inflation using CPI for Colombia
+#| fig-cap: Inflation using Consumer price index (CPI) for Colombia
          
 data <- wbstats::wb_data(country   = c("COL"),
             indicator = c("FP.CPI.TOTL.ZG"))
@@ -295,9 +314,17 @@ data |>
 
 ##
 
+```{r}
+#| include: false
+
+# 2025-02-24
+trm <- 4073
+```
+
+
 -   An exchange rate is the amount of **units of national currency** that must be given in exchange for a **unit of foreign currency**
 
--   If the exchange rate between COP[^2] and USD[^3] is 3808 COP/USD, it means that 3808 COP must be given to obtain 1 USD
+-   If the exchange rate between COP[^5] and USD[^6] is `r trm` COP/USD, it means that `r trm` COP must be given to obtain 1 USD
 
 -   To have a reference of the exchange rate between COP and USD, the **"Superintendencia Financiera de Colombia (SFC)"** currently calculates and certifies an *average* exchange rate called **"Tasa Representativa del Mercado (TRM)"** on a daily basis
 
@@ -306,26 +333,25 @@ data |>
     -   **Devaluation**: TRM - COP/USD $(\Uparrow)$
     -   **Revaluation**: TRM - COP/USD $(\Downarrow)$
 
-[^2]: Colombian peso according to ISO 4217 code
+[^5]: Colombian peso according to ISO 4217 code
 
-[^3]: United States dollar according to ISO 4217 code
+[^6]: United States dollar according to ISO 4217 code
 
 ##
 
 ```{r}
 #| label: fig-daily-trm-cop-usd
-#| fig-cap: Daily TRM (COP/USD)
+#| fig-cap: Daily Tasa Representativa del Mercado - TRM (COP/USD)
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Sector externo, tasas de cambio y derivados > 
-# Tasas de cambio nominales > 
-# Tasa Representativa del Mercado (TRM) > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Sector externo, tasas de cambio y derivados >
+# Tasa de cambio del peso colombiano por dolar - USD >
+# Tasa de cambio Representativa del Mercado (TRM)
+
 cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") |> 
   set_names(nm = c("date", "trm")) |>
   # https://www.banrep.gov.co/es > 
@@ -378,248 +404,6 @@ cop_usd_trm |>
         legend.title      = element_text(face = "bold"),
         axis.text         = element_text(face = "bold"))
 ```
-
-# Monetary policy intervention rate
-
-##
-
-```{r}
-
-# Political interest rate 2024-07-02 (Colombia)
-i_t <- 0.1125
-date <- lubridate::ymd("2024-07-02")
-```
-
--   In the link [**https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria**](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria) on **`r date`** it was pointed out that:
-
-    -   *"La tasa de intervención de política monetaria o tasa de referencia es la tasa de interés mínima que el Banco de la República (BanRep) cobra a las entidades financieras por la liquidez que les suministra mediante las operaciones de mercado abierto (OMA). Esta tasa es el principal instrumento de intervención de política monetaria utilizado por el BanRep para afectar la cantidad de dinero que circula en la economía."*
-
-    -   Also the *"tasa de intervención de política monetaria"* on **`r date`** was **`r scales::number(i_t, scale = 1e2, accuracy = 0.01, suffix = "%")`**
-
-##
-
-```{r}
-#| label: fig-daily-pir-col
-#| fig-cap: Monetary policy intervention rate of the Bank of the Republic (Colombia)
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés >
-# Tasa de política monetaria > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') |> 
-  set_names(nm = c('date', 'pir'))
-
-# Plot
-static_plot1 <- pir_daily |> 
-  ggplot(aes(x = date, y = pir)) +
-  geom_line(color = palette_light()[[1]]) +
-  labs(x        = '', 
-       y        = 'Percent',
-       caption  = str_glue('Source: Banco de la República - Colombia
-                           Last update: {pir_daily$date[length(pir_daily$date)]}'),
-       subtitle = str_glue('Interest rate expressed as annual effective overdue
-                             Frequency: daily')) +
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1, suffix = "%"),
-                     breaks = seq(from = 0, to = max(pir_daily$pir), by = 2.5)) + 
-  expand_limits(y = 0) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "none",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-
-static_plot1
-```
-
-##
-
-```{r}
-#| label: fig-daily-pir-tib-ibr-col
-#| fig-cap: Monetary policy intervention rate, TIB and IBR
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa interbancaria (TIB) > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') |> 
-  set_names(nm = c('date', 'tib'))
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Indicador Bancario de Referencia (IBR) overnight, efectiva > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") |> 
-  set_names(nm = c('date', 'ibr'))
-
-pir_tib_tbr_daily <- pir_daily |> 
-  left_join(tib_daily, by = "date") |> 
-  left_join(ibr_daily, by = "date") |>
-  drop_na() |> 
-  pivot_longer(cols = pir:ibr, names_to = "variable", values_to = "value") |> 
-  mutate(variable = case_when(
-    variable == "pir" ~ "Monetary policy intervention rate",
-    variable == "tib" ~ "Tasa interbancaria (TIB)",
-    variable == "ibr" ~ "Indicador Bancario de Referencia (IBR)",
-    TRUE ~ variable))
-
-# Plot
-static_plot2 <- pir_tib_tbr_daily |> 
-  ggplot(aes(x = date, 
-             y = value, 
-             group = variable,
-             color = variable)) +
-  geom_line(linewidth = 0.5, alpha = 0.5) +
-  labs(x        = '', 
-       y        = 'Percent',
-       color    = "",
-       caption  = str_glue('Source: Banco de la República - Colombia
-                           Last update: {pir_tib_tbr_daily$date[length(pir_tib_tbr_daily$date)]}'),
-       subtitle = str_glue('Interest rates expressed as annual effective overdue
-                             Frequency: daily')) +
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1, suffix = "%"),
-                     breaks = seq(from = 0, to = 25, by = 2.5)) + 
-  scale_color_tq() +
-  expand_limits(y = 0) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-
-static_plot2
-```
-
-##
-
-```{r}
-#| label: fig-daily-pir-cdt-90-180-360-col
-#| fig-cap: Monetary policy intervention rate and CDT interest rates
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés >
-# Tasa de Certificado de Depósito a Término (CDT) a 90 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') |> 
-  set_names(nm = c('date', 'cdt_90'))
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de Certificado de Depósito a Término (CDT) a 180 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") |> 
-  set_names(nm = c('date', 'cdt_180'))
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de Certificado de Depósito a Término (CDT) a 360 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") |> 
-  set_names(nm = c('date', 'cdt_360'))
-
-pir_cdt_90_180_360_daily <- pir_daily |>  
-  left_join(cdt_90, by = "date") |> 
-  left_join(cdt_180, by = "date") |>
-  left_join(cdt_360, by = "date") |>
-  drop_na() |> 
-  pivot_longer(cols = pir:cdt_360, names_to = "variable", values_to = "value") |> 
-  mutate(variable = case_when(
-    variable == "pir" ~ "Monetary policy intervention rate",
-    variable == "cdt_90" ~ "CDT 90",
-    variable == "cdt_180" ~ "CDT 180",
-    variable == "cdt_360" ~ "CDT 360",
-    .default = variable),
-    variable = variable |> 
-      fct_relevel(c("Monetary policy intervention rate",
-                    "CDT 90", "CDT 180", "CDT 360")))
-
-# Plot
-static_plot3 <- pir_cdt_90_180_360_daily |> 
-  ggplot(aes(x = date, 
-             y = value, 
-             group = variable, 
-             color = variable)) +
-  geom_line(linewidth = 0.5, alpha = 0.5) +
-  labs(x        = '', 
-       y        = 'Percent',
-       color    = "",
-       caption  = str_glue('Source: Banco de la República - Colombia
-                           Last update: {pir_cdt_90_180_360_daily$date[length(pir_cdt_90_180_360_daily$date)]}'),
-       subtitle = str_glue('Interest rates expressed as annual effective overdue
-                             Frequency: daily')) +
-  scale_y_continuous(labels = scales::label_number(accuracy = 0.1, suffix = "%"),
-                     breaks = seq(from = 0, to = 25, by = 2.5)) + 
-  scale_color_tq() +
-  expand_limits(y = 0) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-
-static_plot3 
-```
-
-# Monetary policy transmission channels
-
-##
-
-![**Interest rate and credit** [@banrep_canales_2020, fig. Canal De Tasa De Interés Y De Crédito: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_1_tasa_interes_credito.jpg){#fig-canal-tasa-interes-credito fig-alt="Interest rate and credit" width="450px" height="450px"}
-
-##
-
-![**Exchange rate** [@banrep_canales_2020, fig. Canal De Tasa De Cambio: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_2_tasa_cambio.jpg){#fig-canal-tasa-de-cambio fig-alt="Tasa de Cambio" width="450px" height="600px"}
-
-##
-
-![**Expectations** [@banrep_canales_2020, fig. Canal De Las Expectativas: Ejemplo Gráfico]](_000_images/007_econo_canales_transmision_3_expectativas.jpg){#fig-canal-expectativas fig-alt="Expectativas" width="400px" height="400px"}
 
 # Acknowledgments
 
