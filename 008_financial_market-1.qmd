@@ -1,5 +1,5 @@
 ---
-title: "Financial Market"
+title: "Financial Market I"
 author: 
   - Luis Francisco Gómez López
 institute: 
@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
@@ -54,6 +53,8 @@ library(readxl)
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
 
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
+
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 8]
 
 # Purpose
@@ -79,7 +80,7 @@ Analyze the functioning of the financial market, identifying the types of interm
 ```{dot}
 //| label: fig-financial-system-structure-supervised-col
 //| fig-cap: Financial system structure by supervised entities [@congreso_de_colombia_decreto_1993]
-//| fig-width: 7
+//| fig-width: 4.5
 //| fig-height: 2.7
 
 digraph boxes_and_circles {
@@ -132,9 +133,9 @@ digraph boxes_and_circles {
 
 ```{dot}
 //| label: fig-financial-system-structure-markets-col
-//| fig-cap: Financial system structure by markets entities [@cardenas_introduccion_2020, Chapter 8, p 264]
+//| fig-cap: Financial system structure by markets entities [@cardenas_introduccion_2020, Chapter 8, p. 264]
 //| fig-width: 4.5
-//| fig-height: 4
+//| fig-height: 2.7
 
 digraph boxes_and_circles {
 
@@ -196,9 +197,61 @@ digraph boxes_and_circles {
 
         -   Share price times the number of shares outstanding (including their several classes) for listed domestic companies
 
--   According to the literature the *"evidence suggests that both financial intermediaries and markets matter for growth and that reverse causality alone is not driving this relationship"* [@levine_chapter_2005, p 866]
-
 [^1]: These indicators doesn't measure the quality of financial depth
+
+## 
+
+-   According to the literature the *"evidence suggests that both financial intermediaries and markets matter for growth and that reverse causality alone is not driving this relationship"* [@levine_chapter_2005, p. 866]
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Producing information and allocating capital** [@levine_chapter_2005, pp. 870-872]
+    
+        - Financial systems enhance the collection and processing of information about potential investments. 
+        
+        - This allows for better assessment of projects and more efficient allocation of resources that foster economic growth. 
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Monitoring firms and exerting corporate governance** [@levine_chapter_2005, pp. 872-875]
+    
+        - Financial institutions, particularly banks and investors, play a role in monitoring the activities of firms they finance. 
+        
+        - This helps to ensure that managers act in the best interests of shareholders and that capital is used efficiently. 
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Risk amelioration** [@levine_chapter_2005, pp. 875-879]
+    
+        - Financial systems reduce the negative impact of risk by enabling diversification, risk transfer, and liquidity. 
+        
+        - This encourages investment and innovation, fostering economic growth by making risky but productive ventures more viable.
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Pooling of savings** [@levine_chapter_2005, pp. 879-880]
+    
+        - The financial system gathers dispersed funds into large capital pools, enabling substantial investments that individuals alone couldn't make. 
+        
+        - This process reduces transaction costs, facilitates large-scale projects, and efficiently allocates capital, driving economic growth by channeling savings into productive ventures.
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Easing exchange** [@levine_chapter_2005, pp. 880-881]
+    
+        - The financial system reduce transaction costs and facilite trade allowing for smoother economic interactions.
+        
+        - This increases efficiency, promotes specialization, and expands markets, contributing to economic growth.
 
 ## 
 
@@ -359,248 +412,9 @@ market_cap_wide |>
 
 ## 
 
--   **Moral hazard** is *"any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly"* [@krugman_return_2009, p 63]
+-   **Moral hazard** is *"any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly"* [@krugman_return_2009, p. 63]
 
     -   In the context of financial markets **moral hazard** occurs when debtors take riskier actions that increase the probability of default
-
-# Principal instruments *"Mercado no intermediado"*
-
-## 
-
--   **Fixed income (Renta fija)**: provides returns in the form of regular interest payments and repayments of the principal
-
-    -   Títulos de tesorería (TES)
-
-        -   Debt securities issued by the national government and administered by the Banco de la República.
-
-        -   The national government use this instrument to finance its activities
-
-    -   Certificados de Depósito a Término (CDT)
-
-## 
-
-```{r}
-#| label: fig-cero-cupon-tes-10-anos-col
-#| fig-cap: Interest rates TES zero coupon (COP, 10 years)
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas >
-# CATÁLOGO DE SERIES > 
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años 
-# > Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv") |> 
-  set_names(nm = c("date", "t_10"))
-
-tes_daily_t_10 |>
-  ggplot(aes(x = date,
-             y = t_10)) +
-  geom_line(color = unname(palette_light()[1]),
-            show.legend = FALSE) +
-  scale_y_continuous(labels = scales::label_number(suffix = "%", 
-                                                   accuracy = 1)) +
-  labs(x        = NULL,
-       y        = "Percent",
-       color = NULL,
-       subtitle = str_glue("Periodicity: Daily"),
-       caption  = str_glue("Source: Banco de la Republica
-                             Last update date: {last(tes_daily_t_10$date)}")) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-```
-
-## 
-
--   **Equity (Renta variable)**:
-
-    -   Shares/Stocks
-
-        -   These instruments are issued by companies to raise funds from the general public
-
-        -   They represent a fractional ownership in the company that issue them
-
-## 
-
-```{r}
-#| label: fig-msci-colcap-index-col
-#| fig-cap: MSCI COLCAP Index
-
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >
-# Tasas de interés y sector financiero > 
-# Mercado accionario > 
-# Índice COLCAP > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv') |>
-  set_names(nm = c("date", "colcap"))
-
-msci_colcap |>
-  ggplot(aes(x = date,
-             y = colcap)) +
-  geom_line(color = unname(palette_light()[1]),
-            show.legend = FALSE) +
-  labs(x        = NULL,
-       y        = NULL,
-       color = NULL,
-       subtitle = str_glue("Periodicity: Daily"),
-       caption  = str_glue("Source: Bolsa de Valores de Colombia (BVC)
-                             Last update date: {last(msci_colcap$date)}")) +
-  theme(panel.border      = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-```
-
-# Banking market or *"Mercado Intermediado"*
-
-## 
-
--   **What is a bank?**
-
-    -   *"A bank is an institution **whose current operations** consist in granting loans and receiving deposits from the public"* [@freixas_microeconomics_2008, p 1]
-
-        -   Therefore the core activities of banks are related to deposits and loans
-
--   **What functions banks perform?** [@freixas_microeconomics_2008, p 2]
-
-    -   Offering liquidity and payment services
-    -   Transforming assets
-    -   Managing risks
-    -   Processing information and monitoring borrowers
-
-##
-
--   **Offering liquidity and payment services** [@freixas_microeconomics_2008, p 2-4]
-
-    -   Banks offer short term credits to companies and individuals and have created networks that facilitate the transfer of funds between the bank accounts of economic agents
-
--   **Transforming assets** [@freixas_microeconomics_2008, p 5-6]
-
-    -   **Convenience of denomination**: banks collect small deposits to offer large loans
-    -   **Quality transformation**: bank deposits offer better risk-return characteristics than direct investments
-    -   **Maturity transformation**: banks transform securities with short maturities, offered to depositors, into securities with long maturities, which borrowers desire
-
-##
-
--   **Managing risks**:
-
-    -   **Credit risk**: it is related to the the probability that a loan is no repaid
-    -   **Interest rate risk**: it is related to the difference between deposit rates, which change more, and lending rates, which are more stable
-    -   **Liquidity risk**: it is related to the difficulty a bank has in selling a loan compared to the ease with which a depositor withdraws his savings
-
--   In the case of the Colombian context the framework to manage risks is known as **Sistema Integral de Administración de Riesgos (SIAR)** [@superintendencia_financiera_de_colombia_circular_2021, chapter 31]
-
-##
-
-```{r}
-#| label: tbl-supervised-banking-establishments-1-col
-#| tbl-cap: Supervised banking establishments
-
-# https://www.superfinanciera.gov.co > 
-# Entidades vigiladas y controladas > 
-# Entidades vigilidas por la Superfinanciera >
-# Entidades vigiladas por la Superintendencia Financiera de Colombia >
-# Lista general de entidades vigiladas por la Superintendencia Financiera de Colombia > 
-# Descargue el archivo en formato Excel
-bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
-                         sheet = 1, 
-                         range = "B15:P445") |> 
-  slice(-1) |> 
-  select(1:2,5:6) |> 
-  set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) |> 
-  filter(Type == 1)
-
-cut <- round(nrow(bank_table) / 2)
-
-bank_table |>
-  slice(1:cut) |> 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") |>
-  kable_styling(font_size = 7) |>
-  row_spec(row = 0, bold = TRUE) |> 
-  # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
-                             'Last update: 2024-07-17'),
-           general_title = "",
-           threeparttable = TRUE)
-```
-
-##
-
-```{r}
-#| label: tbl-supervised-banking-establishments-2-col
-#| tbl-cap: Supervised banking establishments
-
-bank_table |>
-  slice((cut+1):nrow(bank_table)) |> 
-  kable(format = "latex", booktabs = TRUE, escape = FALSE, 
-        digits = 2, linesep = "") |>
-  kable_styling(font_size = 7) |>  
-  row_spec(row = 0, bold = TRUE) |> 
-  # Manually update the last update
-  footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
-                             'Last update: 2024-07-17'),
-           general_title = "",
-           threeparttable = TRUE)
-```
-
-##
-
-```{r}
-#| label: fig-deposit-lending-interest-rate-col
-#| fig-cap: Deposit and lending interest rate in Colombia
-
-i_rate_deposit_lending <- wbstats::wb_data(country = "COL",
-                                   # Deposit interest rate (%)
-                                   ## FR.INR.DPST
-                                   # Lending interest rate (%)
-                                   ## FR.INR.LEND
-                                   indicator    = c("FR.INR.DPST", "FR.INR.LEND"),
-                                   return_wide  = FALSE) |>
-  filter(!is.na(value))
-
-i_rate_deposit_lending |> 
-  ggplot(aes(x = date,
-             y = value)) +
-  geom_line(aes(color = indicator)) +
-  scale_y_continuous(labels = scales::label_number(suffix = "%")) +
-  scale_color_tq() +
-  labs(x = NULL,
-       y = NULL,
-       color = NULL,
-       subtitle = str_glue("Period: {min(i_rate_deposit_lending$date)}-{max(i_rate_deposit_lending$date)}"),
-       caption = str_glue("Source: World Development Indicators (WDI) - World Bank
-                          Last update: {unique(i_rate_deposit_lending$last_updated)}")) +
-  theme(panel.border    = element_rect(fill = NA, color = "black"),
-        plot.background   = element_rect(fill = "#f3fcfc"),
-        panel.background  = element_rect(fill = "#f3f7fc"),
-        legend.background = element_rect(fill = "#f3fcfc"),
-        legend.position   = "bottom",
-        plot.title        = element_text(face = "bold"),
-        axis.title        = element_text(face = "bold"),
-        legend.title      = element_text(face = "bold"),
-        axis.text         = element_text(face = "bold"))
-```
 
 # Acknowledgments
 
