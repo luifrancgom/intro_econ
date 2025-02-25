@@ -64,17 +64,20 @@ Analyze the money market and introduce the concepts of inflation, nominal exchan
 ##
 
 ```{r}
+#| include: false
 
-# Political interest rate 2024-07-02 (Colombia)
-i_t <- 0.1125
-date <- lubridate::ymd("2024-07-02")
+# Political interest rate 2025-02-24 (Colombia)
+i_t <- 0.0950
+date <- lubridate::ymd("2025-02-24")
 ```
 
--   In the link [**https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria**](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria) on **`r date`** it was pointed out that:
+-   In the link [**https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria**](https://www.banrep.gov.co/es/estadisticas/tasas-interes-politica-monetaria) > Información sobre la(s) serie(s) on **`r date`** it was pointed out that:
 
-    -   *"La tasa de intervención de política monetaria o tasa de referencia es la tasa de interés mínima que el Banco de la República (BanRep) cobra a las entidades financieras por la liquidez que les suministra mediante las operaciones de mercado abierto (OMA). Esta tasa es el principal instrumento de intervención de política monetaria utilizado por el BanRep para afectar la cantidad de dinero que circula en la economía."*
+    -   *"La tasa de intervención de política monetaria es la tasa de interés mínima que el Banco de la República cobra a las entidades financieras por los préstamos que les hace mediante las operaciones de mercado abierto (OMA) que se otorgan en las subastas de expansión monetaria a un día hábil (plazo overnight)."*
+    
+    - *"Esta tasa es el principal mecanismo de intervención de política monetaria usado por el Banco de la República para afectar la cantidad de dinero que circula en la economía."*
 
-    -   Also the *"tasa de intervención de política monetaria"* on **`r date`** was **`r scales::number(i_t, scale = 1e2, accuracy = 0.01, suffix = "%")`**
+- Also the *"tasa de intervención de política monetaria"* on **`r date`** was **`r scales::number(i_t, scale = 1e2, accuracy = 0.01, suffix = "%")`**
 
 ##
 
@@ -84,14 +87,12 @@ date <- lubridate::ymd("2024-07-02")
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés >
-# Tasa de política monetaria > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Tasas de interés y sector financiero >
+# Tasas de interés de política monetaria
+
 pir_daily <- read_csv(file = '000_data/007_tip_serie_historica_diaria.csv') |> 
   set_names(nm = c('date', 'pir'))
 
@@ -129,29 +130,42 @@ static_plot1
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa interbancaria (TIB) > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Tasas de interés y sector financiero >
+# Tasas de interés >
+# Tasa Interbancaria (TIB)
+
 tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') |> 
   set_names(nm = c('date', 'tib'))
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Indicador Bancario de Referencia (IBR) overnight, efectiva > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_efectiva_diaria.csv") |> 
-  set_names(nm = c('date', 'ibr'))
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Tablas preconstruidas >
+# Tasas de interés y sector financiero >
+# Tablas preconstruidas >
+# Tasas de interés >
+# Indicador Bancario de Referencia (IBR) >
+# Según plazo
+## Select
+### Fecha Start at 2008-01-02
+### Descripción del plazo: Plazo overnight
+
+ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_diaria.csv") |>
+  # Check column names if they change
+  select(`Fecha (dd/mm/aaaa)`, `Tipo tasa`, TASA) |> 
+  # Check column names if they change
+  ## Filter for tasa efectiva
+  filter(`Tipo tasa` == "Tasa efectiva (%)") |> 
+  # Check column names if they change
+  select(`Fecha (dd/mm/aaaa)`, TASA) |> 
+  set_names(nm = c('date', 'ibr')) |> 
+  # Be careful with that part
+  ## Initially it says dd/mm/yyyy
+  mutate(date = mdy(date))
 
 pir_tib_tbr_daily <- pir_daily |> 
   left_join(tib_daily, by = "date") |> 
@@ -203,47 +217,37 @@ static_plot2
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Tablas preconstruidas >
+# Tasas de interés y sector financiero >
+# Tablas preconstruidas >
 # Tasas de interés >
-# Tasa de Certificado de Depósito a Término (CDT) a 90 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_90 <- read_csv(file  = '000_data/007_cdt_90_diaria.csv') |> 
-  set_names(nm = c('date', 'cdt_90'))
+# Tasas de captación
+# Diarias >
+# Serie empalmada >
+## Select
+### Fecha: Date Range 2008-04-01
+###                   2025-02-24
+### Clasificación de la identidad: Total establecimientos
+### Clase de Cuenta: CDT
+### Cuenta: A 90 días, A 180 días, A 360 días
 
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de Certificado de Depósito a Término (CDT) a 180 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_180 <- read_csv(file = "000_data/007_cdt_180_diaria.csv") |> 
-  set_names(nm = c('date', 'cdt_180'))
+cdt_90_180_360 <- read_csv(file  = '000_data/007_cdt_90_180_360_diaria.csv') |>
+  # Check column names if they change
+  select(`Fecha (dd/mm/aaaa)`, Cuenta, `Tasa (%)`) |> 
+  # Check column names if they change
+  pivot_wider(id_cols = `Fecha (dd/mm/aaaa)`, 
+              names_from = Cuenta, 
+              values_from = `Tasa (%)`) |> 
+  set_names(nm = c("date", "cdt_90", "cdt_180", "cdt_360")) |> 
+  # Be careful with that part
+  ## Initially it says dd/mm/yyyy
+  mutate(date = mdy(date))
 
-# https://www.banrep.gov.co/es > 
-# Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >  
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de Certificado de Depósito a Término (CDT) a 360 días > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-cdt_360 <- read_csv(file = "000_data/007_cdt_360_diaria.csv") |> 
-  set_names(nm = c('date', 'cdt_360'))
-
+# Merge data
 pir_cdt_90_180_360_daily <- pir_daily |>  
-  left_join(cdt_90, by = "date") |> 
-  left_join(cdt_180, by = "date") |>
-  left_join(cdt_360, by = "date") |>
+  left_join(cdt_90_180_360, by = "date") |> 
   drop_na() |> 
   pivot_longer(cols = pir:cdt_360, names_to = "variable", values_to = "value") |> 
   mutate(variable = case_when(
@@ -300,6 +304,64 @@ static_plot3
 ##
 
 ![**Expectations** [@banrep_econo-cimientos_2022, fig. Canal de las expectativas: ejemplo gráfico]](_000_images/007_econo_canales_transmision_3_expectativas.jpg){#fig-canal-expectativas fig-alt="Expectativas" width="400px" height="250px"}
+
+# Why a low and stable inflation? 
+
+##
+
+- When inflation is high or volatile, it becomes difficult for businesses and individuals to plan for the future.
+
+    - Low and stable inflation allows for more accurate long-term planning.
+
+- High or volatile inflation is an obstacle for businesses to make sound investment decisions.
+
+    - When inflation is high or volatile some resources are allocated to mitigate the effects of inflation generating an inneficient use of productive resources.
+
+-  High or volatile inflation can lead to arbitrary redistributions of resources, often harming those with fixed incomes or limited financial resources
+
+    - Low and stable inflation helps to limit those unexpected redistributions
+
+# Why not a desire level of inflation equal to zero? 
+
+##
+
+- Zero inflation increases the risk of deflation, which is a sustained decrease in the general price level.
+
+    - When prices are expected to fall, consumers and businesses tend to delay purchases and investments, hoping to buy things cheaper in the future. This leads to a decrease in demand, which further drives down prices.
+    
+- Inflation statistics can overstate actual inflation due to difficulties in accurately measuring quality improvements in products.
+
+    - If this is the case and the desire level of inflation is zero you may be targeting a negative inflation rate.
+
+# Why central bank independence is important? 
+
+##
+
+- What is central bank independence?
+
+    - *"An independent central bank is one that can carry out monetary policy without political interference."* [@cea_importance_2024]
+
+    - *"An independent central bank is one that can carry out monetary policy insulated from pressures arising from other parts of government or elsewhere."* [@d_kugler_speech_2024]
+
+##
+
+- Why independence is important for a central bank?
+
+    -  Independence is a critical component for a central bank to control inflation.
+    
+        - Central bank’s commitment to lower inflation needs credibility to anchor the expectations of the economic agents. Independence prevent that credibility can be undermine by political influence [@cea_importance_2024].
+        
+        - Central bank targets, like mantaining a low and stable level of inflation, operate over a considerably longer time frame compare to politically-motivated policies. A non-independent central bank can face political pressure to change its behavior where in that situation can not achieve its targets [@cea_importance_2024].
+        
+##
+
+- According to [@d_kugler_speech_2024] and explored in the economic literature a central bank is a possible solution to this problems where the governments delegate the monetary policy to an independent entity.
+
+- The best analogy that represents this situation and pointed out by [@d_kugler_speech_2024] is Ulysses and the Sirens vs short-term desires and longer-term goals.
+
+##
+
+![Ulysses and the Sirens (1909) by Herbert James Draper](_000_images/007_ulysses_and_the_sirens_by_h_j_draper.jpg){#fig-ulysses-and-the-sirens fig-alt="Expectativas" width="400px" height="250px"}
 
 # Acknowledgments
 
