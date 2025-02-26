@@ -173,6 +173,13 @@ $$\begin{split}
         -   These instruments are issued by companies to raise funds from the general public
 
         -   They represent a fractional ownership in the company that issue them
+        
+        -   If the company does well, its value may increase, and the value of your shares may also rise. You can then sell your shares for a profit. If the company performs poorly, the value of your shares may decrease, and you could lose money.
+        
+        -   Some companies share their profits with shareholders by paying dividends. 
+        
+        -   The decision to pay dividends or reinvest the profist rests with the company's board of directors. Whether a company pays dividends or reinvests its profits depends on its specific circumstances and strategic goals.
+
 
 ## 
 
