@@ -80,35 +80,50 @@ Analyze the functioning of the financial market, identifying the types of interm
 ## 
 
 ```{r}
-#| label: fig-cero-cupon-tes-10-anos-col
-#| fig-cap: Interest rates TES zero coupon (COP, 10 years)
+#| label: fig-cero-cupon-tes-1-5-10-anos-col
+#| fig-cap: Interest rates TES zero coupon (COP, 1, 5 and 10 years)
+
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas >
-# CATÁLOGO DE SERIES > 
-# Tasas de interés y sector financiero > 
-# Tasas de interés
-# Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años 
-# > Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
-tes_daily_t_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_pesos.csv") |> 
-  set_names(nm = c("date", "t_10"))
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Tasas de interés y sector financiero >
+# Tasas de interés >
+# Tasas Cero Cupón TES
+## Use Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos 
 
-tes_daily_t_10 |>
+tes_daily_t_1_5_10 <- read_csv(file = "000_data/008_tasa_cero_cupon_titulos_de_tesoreria.csv") |> 
+  # check column names
+  select(`Periodo(MMM DD, AAAA)`,
+         `Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 1 año`,
+         `Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 5 años`,
+         `Tasa de interés Cero Cupón, Títulos de Tesorería (TES), pesos - 10 años`) |> 
+  set_names(nm = c("date", "tes_pesos_1", "tes_pesos_5", "tes_pesos_10"))
+
+tes_daily_t_1_5_10 |>
+  pivot_longer(cols = starts_with(match = "tes"), 
+               names_to = "tes_type", 
+               values_to = "interest_rate") |> 
+  mutate(tes_type = case_when(
+    tes_type == "tes_pesos_1"  ~ "TES, pesos 1 year",
+    tes_type == "tes_pesos_5"  ~ "TES, pesos 5 years",
+    tes_type == "tes_pesos_10" ~ "TES, pesos 10 years")) |> 
   ggplot(aes(x = date,
-             y = t_10)) +
-  geom_line(color = unname(palette_light()[1]),
-            show.legend = FALSE) +
+             y = interest_rate, 
+             group = tes_type)) +
+  geom_line(aes(color = tes_type)) +
   scale_y_continuous(labels = scales::label_number(suffix = "%", 
                                                    accuracy = 1)) +
+  scale_color_tq() +
   labs(x        = NULL,
        y        = "Percent",
        color = NULL,
-       subtitle = str_glue("Periodicity: Daily"),
+       subtitle = str_glue("Periodicity: Daily
+                           Period: {first(tes_daily_t_1_5_10$date)} - {last(tes_daily_t_1_5_10$date)}"),
        caption  = str_glue("Source: Banco de la Republica
-                             Last update date: {last(tes_daily_t_10$date)}")) +
+                             Last update date: {last(tes_daily_t_1_5_10$date)}")) +
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
         panel.background  = element_rect(fill = "#f3f7fc"),
@@ -119,6 +134,35 @@ tes_daily_t_10 |>
         legend.title      = element_text(face = "bold"),
         axis.text         = element_text(face = "bold"))
 ```
+
+## 
+
+- TES zero coupon
+
+    - Actual bond price: $P$
+    - Nominal value: $NV$ where $P < NV$
+    - Term: $n$
+    - Interest rate: $i$
+    
+$$\begin{split}
+   P & = \frac{NV}{(1 + i)^n} \\
+   (1 + i)^n & = \frac{NV}{P} \\
+   i & = \left( \frac{NV}{P} \right)^{\frac{1}{n}} - 1 \\
+  \end{split}$$
+
+## 
+
+- An example: TES zero coupon
+
+    - Actual bond price: $P = 600000$
+    - Nominal value: $NV = 1000000$
+    - Term: $n = 10$
+    
+$$\begin{split}
+   i & = \left( \frac{NV}{P} \right)^{\frac{1}{n}} - 1 \\
+   & = \left( \frac{1000000}{600000} \right)^{\frac{1}{10}} - 1 \\
+   & \approx 0.0524 \text{ (5.24 %)}  
+  \end{split}$$
 
 ## 
 
