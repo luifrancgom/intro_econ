@@ -41,6 +41,7 @@ library(lubridate)
 library(knitr)
 library(kableExtra)
 library(readxl)
+library(janitor)
 ```
 
 # Please Read Me
@@ -274,7 +275,7 @@ msci_colcap |>
 
 bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
                          sheet = 1, 
-                         range = "B15:P445") |> 
+                         range = "B15:P454") |> 
   slice(-1) |> 
   select(1:2,5:6) |> 
   set_names(nm = c("Type", "Code", "Abbreviate Name", "NIT")) |> 
@@ -290,7 +291,7 @@ bank_table |>
   row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
   footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
-                             'Last update: 2024-07-17'),
+                             'Last update: 2025-02-27'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -309,7 +310,7 @@ bank_table |>
   row_spec(row = 0, bold = TRUE) |> 
   # Manually update the last update
   footnote(general       = c('Source: Superintendencia Financiera de Colombia', 
-                             'Last update: 2024-07-17'),
+                             'Last update: 2025-02-27'),
            general_title = "",
            threeparttable = TRUE)
 ```
@@ -360,7 +361,8 @@ i_rate_deposit_lending |>
 
 -   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
--   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), [**lubridate**](https://CRAN.R-project.org/package=lubridate), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**readxl**](https://CRAN.R-project.org/package=readxl), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://rstudio.com/products/rstudio/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**tidyquant**](https://CRAN.R-project.org/package=tidyquant), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel), [**lubridate**](https://CRAN.R-project.org/package=lubridate), [**knitr**](https://CRAN.R-project.org/package=knitr), [**kableExtra**](https://CRAN.R-project.org/package=kableExtra), [**readxl**](https://CRAN.R-project.org/package=readxl),
+[**janitor**](https://CRAN.R-project.org/package=janitor) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 -   To the [**Linux kernel community**](https://www.kernel.org/category/about.html) for allowing me the possibility to use some [**Linux distributions**](https://static.lwn.net/Distributions/) as my main [**OS**](https://en.wikipedia.org/wiki/Operating_system) without paying for a license
 
