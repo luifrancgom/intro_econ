@@ -189,14 +189,12 @@ $$\begin{split}
 
 # https://www.banrep.gov.co/es > 
 # Estadísticas económicas >
-# Gráficas interactivas > 
-# CATÁLOGO DE SERIES >
-# Tasas de interés y sector financiero > 
-# Mercado accionario > 
-# Índice COLCAP > 
-# Diaria > 
-# DESCARGAR >
-# Descargar datos en CSV
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Tasas de interés y sector financiero >
+# Índice del mercado accionario COLCAP
+
 msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv') |>
   set_names(nm = c("date", "colcap"))
 
@@ -228,11 +226,11 @@ msci_colcap |>
 
 -   **What is a bank?**
 
-    -   *"A bank is an institution **whose current operations** consist in granting loans and receiving deposits from the public"* [@freixas_microeconomics_2008, p 1]
+    -   *"A bank is an institution **whose current operations** consist in granting loans and receiving deposits from the public"* [@freixas_microeconomics_2008, p. 1]
 
         -   Therefore the core activities of banks are related to deposits and loans
 
--   **What functions banks perform?** [@freixas_microeconomics_2008, p 2]
+-   **What functions banks perform?** [@freixas_microeconomics_2008, p. 2]
 
     -   Offering liquidity and payment services
     -   Transforming assets
@@ -241,11 +239,11 @@ msci_colcap |>
 
 ##
 
--   **Offering liquidity and payment services** [@freixas_microeconomics_2008, p 2-4]
+-   **Offering liquidity and payment services** [@freixas_microeconomics_2008, p. 2-4]
 
     -   Banks offer short term credits to companies and individuals and have created networks that facilitate the transfer of funds between the bank accounts of economic agents
 
--   **Transforming assets** [@freixas_microeconomics_2008, p 5-6]
+-   **Transforming assets** [@freixas_microeconomics_2008, p. 5-6]
 
     -   **Convenience of denomination**: banks collect small deposits to offer large loans
     -   **Quality transformation**: bank deposits offer better risk-return characteristics than direct investments
@@ -268,11 +266,12 @@ msci_colcap |>
 #| tbl-cap: Supervised banking establishments
 
 # https://www.superfinanciera.gov.co > 
-# Entidades vigiladas y controladas > 
-# Entidades vigilidas por la Superfinanciera >
-# Entidades vigiladas por la Superintendencia Financiera de Colombia >
-# Lista general de entidades vigiladas por la Superintendencia Financiera de Colombia > 
-# Descargue el archivo en formato Excel
+# Industrias supervisadas >
+# Entidades vigiladas por la Superfinanciera >
+# Lista general de entidades vigiladas por la Superintendencia Financiera de Colombia >
+## Descargue el archivo en formato Excel
+## Datos abiertos
+
 bank_table <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
                          sheet = 1, 
                          range = "B15:P445") |> 
