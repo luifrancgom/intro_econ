@@ -1,5 +1,5 @@
 ---
-title: "Labor Market"
+title: "Labor Market I"
 author: 
   - Luis Francisco Gómez López
 institute: 
@@ -15,7 +15,6 @@ format:
     toc: true
     slide-level: 2
     section-titles: false
-    keep-tex: true
     include-in-header:
       file: 000_tex_files/preamble.tex
 fig-cap-location: bottom
@@ -47,6 +46,8 @@ library(readxl)
 -   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
 -   The purpose of the virtual meetings is to answer questions and not to make a summary of the study material.
+
+-   If you want to participate, please fill out the following survey: Primer corte 30% \> Learning Activities \> Tu opinión sobre la economía colombiana
 
 -   This presentation is based on [@cardenas_introduccion_2020, Chapter 9]
 
@@ -84,15 +85,15 @@ Examine the evolution and characteristics of the supply and demand of labor in C
 ## Documento >
 ## Anexos
 
-labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_may_24.xlsx",
+labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx",
                                            sheet = "Total nacional", 
                                            range = "A23:A30", 
                                            col_names = "concept")
 
 # This is the part that needs to be updated
-labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_may_24.xlsx",
+labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx",
                                              sheet = "Total nacional", 
-                                             range = "JV23:JV30",
+                                             range = "KD23:KD30",
                                              col_names = "value") |> 
   mutate(value = value*1e3)
 
@@ -180,12 +181,12 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(# This part needs to be update manually
-       subtitle = str_glue('Period: May 2024'),
-       # This part needs to be update manually in relation
-       # to the item "Last update"
-       caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: 2024-06-28'),
-       fill     = "Level"
+    subtitle = str_glue('Period: May 2024'),
+    # This part needs to be update manually in relation
+    # to the item "Last update"
+    caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
+                              Last update: 2025-02-28'),
+    fill     = "Level"
   ) + 
   theme(panel.border      = element_rect(fill = NA, color = "black"),
         plot.background   = element_rect(fill = "#f3fcfc"),
@@ -552,70 +553,6 @@ group_ingreso_nivel_educativo_categories |>
     -   **Calculadora Laboral - Mintrabajo**
     
         -   [https://www.mintrabajo.gov.co/web/guest/inicio](https://www.mintrabajo.gov.co/web/guest/inicio) \> Atención al Ciudadano \> Trámites y Servicios \> Mi Calculadora
-
-# Economic environment and the Company
-
-##
-
-```{r}
-#| label: fig-econ-env-macro
-#| fig-cap: Set of economic factors and forces that influence the development of an organization
-
-#Plot
-ggplot(data = tibble(x = 0, y = 0)) + 
-    ## Company
-    annotate(geom = "text", 
-             x        = 0, 
-             y        = 0,
-             label    = "Company",
-             size     = 3,
-             fontface = "bold") +
-    geom_rect(aes(xmin = -0.4,
-                  xmax =  0.4,
-                  ymin = -0.4,
-                  ymax =  0.4),
-              alpha = 0.3,
-              fill  = "#E31A1C",
-              color = "#E31A1C") +
-    ## Micro environment
-    geom_rect(aes(xmin = -2,
-                  xmax =  2,
-                  ymin = -2,
-                  ymax =  2),
-              alpha = 0.25,
-              color = "#2C3E50") +
-    annotate(geom = "text", 
-             x        = 0, 
-             y        = 1,
-             label    = str_glue("Micro environment"),
-             size     = 6,
-             fontface = "bold") +
-    annotate(geom = "text", 
-             x     = 0, 
-             y     = -1.2,
-             label = str_glue("Clients - Suppliers - Intermediaries - Competitors - General Public"),
-             size  = 3.5) +
-    ## Macro environment
-    geom_rect(aes(xmin = -3,
-                  xmax =  3,
-                  ymin = -3,
-                  ymax =  3),
-              alpha = 0.1,
-              color = "#6A3D9A") +
-    annotate(geom     = "text", 
-             x        = 0, 
-             y        = 2.5,
-             label    = str_glue("Macro environment"),
-             size     = 8,
-             fontface = "bold") +
-    annotate(geom = "text", 
-             x     =  0, 
-             y     = -2.5,
-             label = str_glue("Economic - Political - Social - Technological - Ecological - Legal"),
-             size  = 5) +
-    theme_void() +
-    labs(caption = "Based on https://foda-dafo.com/ ")
-```
 
 # Acknowledgments
 
