@@ -360,8 +360,9 @@ group_ingreso_nivel_educativo_categories <- read_rds(file = "000_data/009_income
 levels_geih <- read_rds(file = "000_data/009_levels.rds")
 
 # Generating variables
+## Remember to change this
 year <- 2024
-month <- "05"
+month <- "12"
 
 level_1 <- levels_geih$educativo[1:4]
 level_2 <- levels_geih$educativo[5:6]
@@ -551,6 +552,10 @@ group_ingreso_nivel_educativo_categories |>
 -   Resources
 
     -   **Calculadora Laboral - Mintrabajo**
+
+        <!-- comment Check always the link to see if it works -->
+        
+        <!-- comment See  https://github.com/quarto-dev/quarto-cli/issues/5100 about possible change in the quarto documentatio -->
     
         -   [https://www.mintrabajo.gov.co/web/guest/inicio](https://www.mintrabajo.gov.co/web/guest/inicio) \> Atención al Ciudadano \> Trámites y Servicios \> Mi Calculadora
 
