@@ -7,6 +7,8 @@
 ## Economía > 
 ## Mercado Laboral. >
 ## Gran Encuesta Integrada de Hogares - GEIH - 2024.
+### This can change depending if the data is update
+### in relation to the year
 
 # Libraries ----
 library(fs)
@@ -154,6 +156,7 @@ ingreso_nivel_educativo <- ocupados_ingreso_laboral |>
 ### Mayor nivel educativo alcanzado
 ingreso_nivel_educativo |> filter(is.na(P3042))
 ### Ingreso laboral
+#### In some case this information is not reported
 ingreso_nivel_educativo |> filter(is.na(INGLABO))
 
 ## Wrangling data ----
@@ -173,20 +176,20 @@ nivel_ingreso_levels <- c("Without information",
                           "[4, 4.5)",
                           "[4.5, more than 4.5)")
 
-nivel_educativo_levels <- c("None",
-                            "Preschool", 
-                            "Primary school",
-                            "Secondary school",
-                            "Classical baccalaureate",
-                            "Technical Baccalaureate",
-                            "Normal school",
-                            "Professional technique",
-                            "Technological", 
-                            "University",
-                            "Specialization", 
-                            "Master's Degree", 
-                            "PhD", 
-                            "Without information")
+nivel_educativo_levels <- c("None (Ninguno)",
+                            "Preschool (Preescolar)", 
+                            "Primary school (Básica primaria 1-5)",
+                            "Secondary school (Básica secundaria 6-9)",
+                            "Classical baccalaureate (Bachillerato clásico)",
+                            "Technical Baccalaureate (Bachillerato técnico)",
+                            "Normal school (Normalista)",
+                            "Professional technique (Técnica profesional)",
+                            "Technological (Tecnológica)", 
+                            "University (Universitaria)",
+                            "Specialization (Especialización)", 
+                            "Master's Degree (Maestría)", 
+                            "PhD (Doctorado)", 
+                            "Without information (No sabe, no informa)")
 
 ingreso_nivel_educativo_categories <- ingreso_nivel_educativo |> 
   mutate(nivel_educativo = case_when(
@@ -224,6 +227,7 @@ ingreso_nivel_educativo_categories <- ingreso_nivel_educativo |>
   mutate(nivel_ingreso = factor(x = nivel_ingreso,
                                 levels = nivel_ingreso_levels, 
                                 ordered = TRUE))
+
 # Group data ----
 group_ingreso_nivel_educativo_categories <- ingreso_nivel_educativo_categories |> 
   select(nivel_educativo, 
