@@ -35,6 +35,7 @@ bibliography: intro_econ.bib
 library(tidyverse)
 library(tidyquant)
 library(readxl)
+library(kableExtra)
 ```
 
 # Please Read Me
@@ -56,6 +57,316 @@ library(readxl)
 ##
 
 Examine the evolution and characteristics of the supply and demand of labor in Colombia
+
+# Unemployment
+
+##
+
+```{r}
+#| include: false
+
+# https://www.dane.gov.co >
+# Estadísticas por tema >
+# Mercado laboral >
+# Empleo y desempleo >
+# Documento >
+# Anexos >
+## Descargar
+
+# Import data ----
+## Auxiliary variable
+dates <- seq.Date(from = ymd("2001-01-01"),
+                  # Change the final date
+                  to = ymd("2025-01-01"), 
+                  by = "month") |> 
+  as.character()
+col_names <- c("concept", dates)
+
+indicators <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx", 
+                         sheet = "Total nacional",
+                         # Change the range of the data 
+                         range = "A14:KD21",
+                         col_names = col_names)
+
+indicators_longer <- indicators |> 
+  pivot_longer(cols = -c(concept), 
+               names_to = "date", 
+               values_to = "value") |> 
+  mutate(date = ymd(date))
+
+# Filter the last 10 years
+years <- year(indicators_longer$date) |> 
+  unique() |> 
+  tail(n = 10)
+
+indicators_longer_td <- indicators_longer |> 
+  filter(concept == "Tasa de Desocupación (TD)") |> 
+  mutate(year = year(date)) |> 
+  mutate(year = as_factor(year)) |> 
+  mutate(month = month(date, label = TRUE)) |> 
+  filter(year %in% years)
+```
+
+```{r}
+#| label: fig-unemployment-rate-first-years
+#| fig-cap: Behavior of unemployment rate in Colombia for selected years
+
+# Visualize
+year_pandemic <- 2020
+## Update this part using the imported file
+last_update_date <- ymd("2025-02-28")
+
+## First years
+first_years <- indicators_longer_td |> 
+  filter(year %in% head(years, n = 5)) |> 
+  # Delete the year about the pandemic
+  ## It is an atypical year
+  filter(year != year_pandemic)
+
+g1 <- first_years |> 
+  ggplot(aes(x = month, y = value)) + 
+  geom_line(aes(group = year, color = year)) +
+  scale_color_tq() +
+  labs(x = NULL,
+       y = "Percent (%)",
+       color = NULL,
+       subtitle = str_glue("Period: {head(unique(first_years$year), n = 1)} - {tail(unique(first_years$year), n = 1)}
+                           Observation: {year_pandemic} is not included because is an atypical year taking into account the COVID-19 pandemic"),
+       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}")) + 
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+g1
+```
+
+##
+
+```{r}
+#| label: fig-unemployment-rate-last-years
+#| fig-cap: Behavior of unemployment rate in Colombia for selected years
+
+## Last years
+last_years <- indicators_longer_td |> 
+  filter(year %in% tail(years, n = 5)) |> 
+  # Delete the year about the pandemic
+  ## It is an atypical year
+  filter(year != year_pandemic)
+
+g2 <- last_years |> 
+  ggplot(aes(x = month, y = value)) + 
+  geom_line(aes(group = year, color = year)) +
+  scale_color_tq() +
+  labs(x = NULL,
+       y = "Percent (%)",
+       color = NULL,
+       subtitle = str_glue("Period: {head(unique(last_years$year), n = 1)} - {tail(unique(last_years$year), n = 1)}"),
+       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}")) + 
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+g2
+```
+
+##
+
+```{r}
+#| include: false
+
+# https://www.dane.gov.co >
+# Estadísticas por tema >
+# Mercado laboral >
+# Empleo y desempleo >
+# Documento >
+# Anexos >
+## Descargar
+
+# Import data ----
+## Auxiliary variable
+                  # Different from "Total nacional"
+dates <- seq.Date(from = ymd("2010-01-01"),
+                  # Change the final date
+                  to = ymd("2025-01-01"), 
+                  by = "month") |> 
+  as.character()
+col_names <- c("concept", dates)
+
+indicators_male <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx", 
+                              sheet = "Total_nacional_IML_Sexo",
+                              # Change the range of the data 
+                              range = "A14:FZ18",
+                              col_names = col_names) |> 
+  mutate(sex = "Male")
+
+indicators_female <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx", 
+                                sheet = "Total_nacional_IML_Sexo",
+                                # Change the range of the data 
+                                range = "A33:FZ37",
+                                col_names = col_names) |> 
+  mutate(sex = "Female")
+
+indicators_male_longer <- indicators_male |> 
+  pivot_longer(cols = -c(concept, sex), 
+               names_to = "date", 
+               values_to = "value") |> 
+  mutate(date = ymd(date))
+
+indicators_female_longer <- indicators_female |> 
+  pivot_longer(cols = -c(concept, sex), 
+               names_to = "date", 
+               values_to = "value") |> 
+  mutate(date = ymd(date))
+
+indicators_sex_longer <- indicators_male_longer |> 
+  bind_rows(indicators_female_longer)
+
+# Filter the last 10 years
+years <- year(indicators_longer$date) |> 
+  unique() |> 
+  tail(n = 10)
+
+indicators_sex_longer_td <- indicators_sex_longer |> 
+  filter(concept == "Tasa de Desocupación (TD)") |> 
+  mutate(year = year(date)) |> 
+  mutate(year = as_factor(year)) |> 
+  mutate(month = month(date, label = TRUE)) |> 
+  filter(year %in% years)
+```
+
+```{r}
+#| label: fig-unemployment-rate-male-female
+#| fig-cap: Unemployment rate in Colombia for men and women
+
+# Visualize
+g3 <- indicators_sex_longer_td |> 
+  ggplot(aes(x = date, y = value)) + 
+  geom_line(aes(group = sex, color = sex)) +
+  scale_color_tq() +
+  labs(x = NULL,
+       y = "Percent (%)",
+       color = NULL,
+       subtitle = str_glue("Period: {head(unique(indicators_sex_longer_td$date), n = 1)} - {tail(unique(indicators_sex_longer_td$date), n = 1)}"),
+       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}")) + 
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+g3
+```
+
+# Employed
+
+##
+
+```{r}
+#| label: tbl-employed-sector-last-period
+#| tbl-cap: Employed by sector in Colombia
+
+# Import data ----
+## Auxiliary variable
+date <- ymd("2025-01-01")
+date_label <- date |> format("%Y - %B")
+                  # Different from "Total nacional"
+dates <- seq.Date(from = ymd("2015-01-01"),
+                  # Change the final date
+                  to = date, 
+                  by = "month") |> 
+  as.character()
+col_names <- c("concept", dates)
+
+indicators_sector <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx", 
+                                sheet = "Ocupados TN_T13_rama",
+                                # Change the range of the data 
+                                range = "A16:DR30",
+                                col_names = col_names)
+
+indicators_sector_clean <- indicators_sector |> 
+  select(1, ncol(indicators_sector)) |> 
+  set_names(nm = c("concept", "last_period")) |> 
+  mutate(last_period = (last_period*1e3) |> round())
+
+indicators_sector_table <- indicators_sector_clean  |> 
+  kable(booktabs = TRUE,
+        format = "latex", 
+        col.names = c("Concept", date_label)) |>
+  kable_styling(font_size = 7) |> 
+  row_spec(row = 0, bold = TRUE) |> 
+  footnote(general = c('Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)',
+                       # Change this
+                       'Last update: 2025-02-28'))
+
+indicators_sector_table
+```
+
+##
+
+```{r}
+#| label: tbl-employed-occupational-position-last-period
+#| tbl-cap: Employed by occupational position in Colombia
+
+# Import data ----
+## Auxiliary variable
+date <- ymd("2025-01-01")
+date_label <- date |> format("%Y - %B")
+                  # Different from "Total nacional"
+dates <- seq.Date(from = ymd("2010-01-01"),
+                  # Change the final date
+                  to = date, 
+                  by = "month") |> 
+  as.character()
+col_names <- c("concept", dates)
+
+indicators_occupational_position <- read_excel(path = "000_data/009_anexo_empleo_feb_28.xlsx", 
+                                               sheet = "Ocupados TN_posición",
+                                               # Change the range of the data 
+                                               range = "A16:FZ24",
+                                               col_names = col_names)
+
+indicators_occupational_position_clean <- indicators_occupational_position |> 
+  select(1, ncol(indicators_occupational_position)) |> 
+  set_names(nm = c("concept", "last_period")) |> 
+  mutate(last_period = (last_period*1e3) |> round())
+
+indicators_occupational_position_table <- indicators_occupational_position_clean |> 
+  kable(booktabs = TRUE, escape = FALSE,
+        format = "latex", 
+        col.names = c("Concept", format(date, "%Y - %B"))) |>
+  kable_styling(font_size = 7) |> 
+  row_spec(row = 0, bold = TRUE) |> 
+  footnote(general = c('Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)',
+                       # Change this
+                       last_update_date))
+
+indicators_occupational_position_table
+```
+
+# Informality
+
+##
+
+
 
 # Economic environment and the Company
 
