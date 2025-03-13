@@ -36,6 +36,9 @@ library(tidyverse)
 library(tidyquant)
 library(readxl)
 library(kableExtra)
+library(janitor)
+library(Rilostat)
+library(ggrepel)
 ```
 
 # Please Read Me
@@ -366,7 +369,217 @@ indicators_occupational_position_table
 
 ##
 
+- What is informality?
 
+    - The classification used in Colombia is based initially on the occupational position. For more information about definitions of the occupational position check out [@dane_manual_2024, pp. 88-92]
+    
+        -  **Obrero, empleado del gobierno** is not considered informal in any case
+        -  **Obrero o empleado de empresa particular**, **Empleado doméstico** and **Trabajador familiar sin remuneración** who do not have health or pension contributions made due to their employment relationship with the employer who hired them are considered informal
+        - **Jornalero o Peón** and **Trabajador familiar sin remuneración** are considered informal
+        - **Patrón o empleador** and **Trabajador por cuenta propia** classified as informal[^1]
+        - Those employed in the sectors with ISIC codes 84 and 99 with the exception of **Jornalero o Peón** and **Trabajador familiar sin remuneración** are not considered informal  
+        
+[^1]: The rules are not simple in this case. Check [https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-informal-y-seguridad-social](https://www.dane.gov.co/index.php/estadisticas-por-tema/mercado-laboral/empleo-informal-y-seguridad-social) > Anexos in relation to the sheets **Código_SAS** or **Código_STATA**          
+
+##
+
+- Informality proportion (PI)
+
+    - Employed (E)
+    - Informal Employed (I) 
+
+$$PI = \frac{I}{E} \times 100$$
+
+- Formality proportion (PF)
+
+$$PF = 1- PI = 1 - \frac{I}{E} \times 100$$
+
+##
+
+```{r}
+#| label: fig-informality-formality-proportion
+#| fig-cap: Formality and informality proportion in Colombia
+
+# Import data ----
+## Auxiliary variable
+dates <- seq.Date(from = ymd("2021-01-01"),
+                  # Change the final date
+                  to = ymd("2025-01-01"), 
+                  by = "month") |> 
+  as.character()
+col_names <- c("concept", dates)
+
+informality_col <- read_excel(path = "000_data/009_anexo_empleo_informal_seguridad_social_feb_28.xlsx",
+                              # Check white spaces
+                              sheet = "Grandes dominios ",
+                              # Change the range of the data 
+                              range = "A14:AX16",
+                              col_names = col_names)
+
+informality_col_wider <- informality_col |> 
+  pivot_longer(cols = -c(concept), 
+               names_to = "date", 
+               values_to = "value") |> 
+  pivot_wider(id_cols = date, 
+              names_from = concept, 
+              values_from = value) |> 
+  clean_names() |> 
+  mutate(prop_informalidad = (informal / poblacion_ocupada)*100) |> 
+  mutate(prop_formalidad = 100 - prop_informalidad) |> 
+  mutate(date = ymd(date))
+
+informality_col_longer <- informality_col_wider |> 
+  select(date, prop_informalidad, prop_formalidad) |> 
+  pivot_longer(cols = -c(date), 
+               names_to = "variable", 
+               values_to = "value")
+
+g4 <- informality_col_longer |>
+  ggplot(aes(x = date, y = value)) + 
+  geom_line(aes(group = variable, color = variable)) +
+  scale_color_tq(labels = c("Formality proportion (PF)", "Informality proportion (PI)")) +
+  labs(x = NULL,
+       y = "Percent (%)",
+       color = NULL,
+       subtitle = str_glue("Period: {head(unique(informality_col_longer$date), n = 1)} - {tail(unique(informality_col_longer$date), n = 1)}"),
+       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}")) + 
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+g4
+```
+
+# Informality proportion vs unemployment rate
+
+##
+
+```{r}
+#| include: false
+
+# Data
+## https://ilostat.ilo.org/data/
+
+toc <- get_ilostat_toc()
+last_update <- toc |> filter(str_detect(string = id, 
+                                        pattern = "SDG_0852_SEX_AGE_RT_A")) |> 
+  pull(last.update) |> 
+  str_sub(start = 1, end = 10) |> 
+  dmy()
+
+lac_iso <- c(
+  "ARG", # Argentina
+  "BOL", # Bolivia
+  "BRA", # Brazil
+  "CHL", # Chile
+  "COL", # Colombia
+  "CRI", # Costa Rica
+  "CUB", # Cuba
+  "DOM", # Dominican Republic
+  "ECU", # Ecuador
+  "SLV", # El Salvador
+  "GTM", # Guatemala
+  "HND", # Honduras
+  "MEX", # Mexico
+  "NIC", # Nicaragua
+  "PAN", # Panama
+  "PRY", # Paraguay
+  "PER", # Peru
+  "URY", # Uruguay
+  "VEN"  # Venezuela
+)
+
+# id: SDG_0852_SEX_AGE_RT_A
+# indicator: SDG_0852_SEX_AGE_RT
+# indicator.label: SDG indicator 8.5.2 - Unemployment rate (%)
+## Change this part
+year <- 2023
+unemployment_rate_lac <- get_ilostat(id = "SDG_0852_SEX_AGE_RT_A", 
+                                     segment = "indicator", 
+                                     filters = list(time = year,
+                                                    classif1 = "AGE_YTHADULT_YGE15",
+                                                    sex      = "SEX_T",
+                                                    ref_area = lac_iso))
+
+unemployment_rate_lac_clean <- unemployment_rate_lac |> 
+  select(ref_area, time, obs_value) |> 
+  rename(unemployment_rate = obs_value) |> 
+  mutate(time = as.double(time))
+
+# id: SDG_0831_SEX_ECO_RT_A
+# indicator: SDG_0831_SEX_ECO_RT
+# indicator.SDG indicator 8.3.1 - Proportion of informal employment in total employment by sex and sector (%)
+informality_rate_lac <- get_ilostat(id = "SDG_0831_SEX_ECO_RT_A", 
+                                    segment = "indicator", 
+                                    time_format = "date",
+                                    filters = list(time = year,
+                                                   classif1 = "ECO_AGGREGATE_TOTAL",
+                                                   sex      = "SEX_T",
+                                                   ref_area = lac_iso))
+
+informality_rate_lac_clean <- informality_rate_lac |> 
+  select(ref_area, time, obs_value) |> 
+  rename(informality_rate = obs_value) |> 
+  mutate(time = year(time)) |> 
+  mutate(time = as.double(time))
+
+## Merge
+unemployment_informality_rate <- unemployment_rate_lac_clean |> 
+  inner_join(y = informality_rate_lac_clean,
+             by = join_by(ref_area, time)) |> 
+  label_ilostat()
+```
+
+```{r}
+#| label: fig-informality-vs-unemployment
+#| fig-cap: Informality proportion vs unemployment rate for some countries in Latin America
+
+# Visualization
+g5 <- unemployment_informality_rate |>
+  ggplot(aes(x = informality_rate, y = unemployment_rate)) + 
+  geom_vline(xintercept = mean(unemployment_informality_rate$informality_rate), 
+             colour = "#E31A1C") +
+  geom_hline(yintercept = mean(unemployment_informality_rate$unemployment_rate), 
+             colour = "#18BC9C") +
+  geom_point() + 
+  geom_label_repel(aes(label = ref_area.label),
+                   seed = 1234,
+                   size = 3,
+                   min.segment.length = 0,
+                   box.padding = 1,
+                   force = 2,
+                   max.overlaps = Inf) +
+  labs(x        = "Informality proportion",
+       y        = "Unemployment rate",
+       subtitle = str_glue("Period: {year}
+                           Observation: Horizontal and vertical lines correspond to the mean of the variables in each axis"),
+       caption  = str_glue("Source: International Labour Organization - ILOSTAT Data Explorer
+                             Last update date: {last_update}")) +
+  theme(panel.border      = element_rect(fill = NA, color = "black"),
+        plot.background   = element_rect(fill = "#f3fcfc"),
+        panel.background  = element_rect(fill = "#f3f7fc"),
+        legend.background = element_rect(fill = "#f3fcfc"),
+        legend.position   = "bottom",
+        plot.title        = element_text(face = "bold"),
+        axis.title        = element_text(face = "bold"),
+        legend.title      = element_text(face = "bold"),
+        axis.text         = element_text(face = "bold"))
+
+g5
+```
+
+# The economy as a system
+
+##
+
+![A model of the economy: flows of resources [@the_core_econ_team_economy_2023, fig. 1.21]](_000_images/001_model_economy.png){#fig-model-of-the-economy fig-alt="A model of the economy: flows of resources" width="400px" height="250px"}
 
 # Economic environment and the Company
 
