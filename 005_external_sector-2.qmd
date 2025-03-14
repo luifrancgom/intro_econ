@@ -186,7 +186,7 @@ data |>
 
 ##
 
--   The EBOPS classification provides a breakdown of the Balance of Payments Trade in Services by types of services.
+-   The Extended Balance of Payments Services Classification (EBOPS) provides a breakdown of the Balance of Payments Trade in Services by types of services.
 
 -   The classification thereby meets a number of user requirements, including the provision of more detailed information on Trade in services
 
