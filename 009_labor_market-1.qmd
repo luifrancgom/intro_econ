@@ -181,7 +181,7 @@ tibble(x = c( 0,
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
   labs(# This part needs to be update manually
-    subtitle = str_glue('Period: May 2024'),
+    subtitle = str_glue('Period: January 2025'),
     # This part needs to be update manually in relation
     # to the item "Last update"
     caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
