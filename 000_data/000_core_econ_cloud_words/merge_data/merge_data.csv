@@ -1,0 +1,45 @@
+id,course,year,semester,raw_word,clean_word,en_word
+1,a,2025,1,Corrupción,corrupcion,corruption
+2,a,2025,1,insuficiencia,insuficiencia,insufficiency
+3,a,2025,1,Desigualdad,desigualdad,inequality
+4,a,2025,1,Desigualdad.,desigualdad,inequality
+5,a,2025,1,Desempleo,desempleo,unemployment
+6,a,2025,1,La Inflación,inflacion,inflation
+7,a,2025,1,desempleo en jovenes,desempleo jovenes,young unemployment
+8,a,2025,1,Desigualdad,desigualdad,inequality
+9,a,2025,1,Canasta Familiar,canasta familiar,family basket
+10,a,2025,1,corrupción,corrupcion,corruption
+11,a,2025,1,desempleo.,desempleo,unemployment
+12,a,2025,1,Educación,educacion,education
+13,a,2025,1,El desempleo,desempleo,unemployment
+14,a,2025,1,pobreza,pobreza,poverty
+15,a,2025,1,Desigualdad,desigualdad,inequality
+16,a,2025,1,Redistribución,redistribucion,redistribution
+17,a,2025,1,RESILIENTE,resiliencia,resilience
+18,a,2025,1,Mineria,mineria,mining
+19,a,2025,1,informalidad laboral,informalidad laboral,labor informality
+20,a,2025,1,Conflicto,conflicto,conflict
+21,a,2025,1,Informalidad,informalidad,informality
+22,b,2025,1,Corrupción,corrupcion,corruption
+23,b,2025,1,inflación,inflacion,inflation
+24,b,2025,1,POLARIZACION,polarizacion,polarization
+25,b,2025,1,corrupción,corrupcion,corruption
+26,b,2025,1,CORRUPCION,corrupcion,corruption
+27,b,2025,1,Educación,educacion,education
+28,b,2025,1,La corrupcion,corrupcion,corruption
+29,b,2025,1,legalidad,legalidad,legality
+30,b,2025,1,Aumento,aumento,increase
+31,b,2025,1,Desigualdad,desigualdad,inequality
+32,b,2025,1,Educacion,educacion,education
+33,b,2025,1,a tasa de intereses,tasa interes,interest rate
+34,b,2025,1,Pobreza,pobreza,poverty
+35,b,2025,1,Desempleo,desempleo,unemployment
+36,b,2025,1,INFLACION,inflacion,inflation
+37,b,2025,1,desigualdad,desigualdad,inequality
+38,b,2025,1,CORUPCION,corrupcion,corruption
+39,b,2025,1,Analfbetismo,analfabetismo,illiteracy
+40,b,2025,1,Desempleo,desempleo,unemployment
+41,b,2025,1,inflación,inflacion,inflation
+42,b,2025,1,Desigualdad.,desigualdad,inequality
+43,b,2025,1,Desigualdad,desigualdad,inequality
+44,b,2025,1,educación,educacion,education
