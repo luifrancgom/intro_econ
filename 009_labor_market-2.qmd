@@ -374,7 +374,7 @@ indicators_occupational_position_table
     - The classification used in Colombia is based initially on the occupational position. For more information about definitions of the occupational position check out [@dane_manual_2024, pp. 88-92]
     
         -  **Obrero, empleado del gobierno** is not considered informal in any case
-        -  **Obrero o empleado de empresa particular**, **Empleado doméstico** and **Trabajador familiar sin remuneración** who do not have health or pension contributions made due to their employment relationship with the employer who hired them are considered informal
+        -  **Obrero o empleado de empresa particular**, **Empleado doméstico** and **Trabajador sin remuneración en empresas o negocios de otros hogares** who do not have health or pension contributions made due to their employment relationship with the employer who hired them are considered informal
         - **Jornalero o Peón** and **Trabajador familiar sin remuneración** are considered informal
         - **Patrón o empleador** and **Trabajador por cuenta propia** classified as informal[^1]
         - Those employed in the sectors with ISIC codes 84 and 99 with the exception of **Jornalero o Peón** and **Trabajador familiar sin remuneración** are not considered informal  
