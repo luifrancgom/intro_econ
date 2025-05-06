@@ -2,7 +2,7 @@
 
 Principles of Management - OpenStax
 
-Open Textbook Library (Ed.). (2019). Principles of management. OpenStax. openstax.org/details/books/ principles-management
+Open Textbook Library (Ed.). (2019). Principles of management. OpenStax. https://openstax.org/details/books/principles-management
 
 Chapter 8 Strategic Analysis: Understanding a Firm's Competitive Environment >
 Exhibit 8.4 Components of a Firm's Environment 
