@@ -1,6 +1,6 @@
 1. Environment
 
-Principles of Management - OpenStax
+a. Principles of Management - OpenStax
 
 Open Textbook Library (Ed.). (2019). Principles of management. OpenStax. https://openstax.org/details/books/principles-management
 
@@ -8,3 +8,9 @@ Chapter 8 Strategic Analysis: Understanding a Firm's Competitive Environment >
 Exhibit 8.4 Components of a Firm's Environment 
 
 Principles of Management is designed to meet the scope and sequence requirements of the introductory course on management. This is a traditional approach to management using the leading, planning, organizing, and controlling approach. Management is a broad business discipline, and the Principles of Management course covers many management areas such as human resource management and strategic management, as well as behavioral areas such as motivation.
+
+b. Saukkonen, Natalia, and Johanna Kirjavainen. “Business Environment: Emerging External and Internal Pressures for Sustainable Production.” Good Health and Well-Being, edited by Walter Leal Filho et al., Springer International Publishing, 2019, pp. 1–11. DOI.org (Crossref), https://doi.org/10.1007/978-3-319-71062-4_1-1.
+
+Part of the Encyclopedia of the UN Sustainable Development Goals
+
+c. Capon, C. (2009). Understanding the business environment: Inside and outside the organisations (3. ed). Financial Times Prentice Hall.
