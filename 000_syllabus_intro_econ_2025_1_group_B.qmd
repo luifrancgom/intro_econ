@@ -40,7 +40,7 @@ params:
       end_exam_hour: 20:30
 engine: knitr
 bibliography: intro_econ.bib
-editor: visual
+editor: source
 ---
 
 ```{r}
@@ -462,9 +462,7 @@ For more detailed guidance on good practices and recommended uses, check out [@e
 
 -   [@cardenas_introduccion_2020, Chapters 1-9]
 
-    -   <a href="https://www.umng.edu.co/inicio" target="_blank" rel="noopener noreferrer">https://www.umng.edu.co/</a> \> Biblioteca \> Ingrese acá a Bases virtuales y libros electrónicos \> AlfaOmega \> Ingresar usuario y contraseña [^1] \> Buscar "Introducción a la economía colombiana 4ed" \> Leer
-
-[^1]: Remember that the user and password to access and read the e-book are the same that you use to check your grades
+    -   <a href="https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed" target="_blank" rel="noopener noreferrer">https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed</a>
 
 # About plagiarism
 
