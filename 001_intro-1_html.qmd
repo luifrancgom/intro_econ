@@ -1,0 +1,243 @@
+---
+title: Introduction
+subtitle: Session 1
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    scrollable: true
+    mermaid-format: png
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig-align: center
+    out-width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(readxl)
+library(tidyverse)
+library(janitor)
+library(plotly)
+library(scales)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in the News Bulletin Board.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 1]
+
+## 
+
+- Purpose
+
+    - Identify the main characteristics of the Colombian economy, especially those that differentiate it from other economies
+
+
+# The big picture and connecting ideas
+
+##
+
+![Macro, micro and organizational level business [@leal_filho_business_2020]](_000_images/001_business_environment.png){.nostretch #fig-business-environment width=85%}
+
+## 
+
+![A model of the economy: flows of resources [@the_core_econ_team_economy_2023, chap. 1, sec. 1.13]](_000_images/001_model_of_the_economy.png){.nostretch #fig-model-of-the-economy width=75%}
+
+##
+
+```{mermaid}
+%%| label: fig-management-functions
+%%| fig-cap: POLC framework [@kinicki_management_2022, pp. 8-10]
+
+flowchart TB
+    A("`Management
+    functions`")  --> A1("`**P**lanning`") --> A11("`Setting goals 
+    and deciding 
+    how to achieve 
+    them`")
+    A --> A2("`**O**rganizing`") --> A21("`Arranging tasks, 
+    people and 
+    other resources 
+    to accomplish 
+    the work`")
+    A --> A3("`**L**eading`") --> A31("`Motivating, 
+    directing and 
+    influencing 
+    people to 
+    achieve the 
+    organization’s
+    goals`")
+    A --> A4("`**C**ontrolling`") --> A41("`Monitoring 
+    performance, 
+    comparing it 
+    with goals and 
+    taking corrective 
+    action as needed`")
+
+    classDef UmngNode fill:#fdc600,stroke:#043074,stroke-width:2px;
+    class A,A1,A11,A2,A21,A3,A31,A4,A41 UmngNode;
+```
+
+##
+
+```{mermaid}
+%%| label: fig-manager-roles
+%%| fig-cap: The roles managers play [@openstax_featured_principles_2019, chap. 2, sec. 1.2]
+
+flowchart TB
+    A("`Manager
+    roles`") --> A1(Informational)
+    A1 --> A11("`Monitor
+    Disseminator
+    Spokesperson`")
+    A --> A2(Interpersonal)
+    A2 --> A21("`Figurehead
+    Leader
+    Liason`")
+    A --> A3(Decisional)
+    A3 --> A31("`Entrepreneur
+    Disturbance handler
+    Resource allocator
+    Negotiator`")
+
+    classDef UmngNode fill:#fdc600,stroke:#043074,stroke-width:2px;
+    class A,A1,A11,A2,A21,A3,A31 UmngNode;
+```
+
+# People
+
+##
+
+::: {.r-stack}
+
+```{r}
+#| label: fig-population-col
+#| fig-cap: Population pyramids in Colombia
+#| fig-height: 6
+
+# Data
+# https://www.dane.gov.co/ > Estadísticas por tema >
+# Demografía y población > Proyecciones de población >
+# Proyecciones y retroproyecciones de población nacional para el periodo 1950-2019 y 2020-2070 con base en el CNPV 2018 >
+# Serie nacional de población por área, sexo y edad para el periodo 2020-2070
+
+# Import 
+pop_pyramid_tbl <- readxl::read_excel(path = "000_data/001_serie_nacional_de_poblacion_por_area_sexo_y_edad_para_el_periodo_2020_2070.xlsx", 
+                                      sheet = 1, 
+                                      range = "C12:KX95") 
+
+# Tidy
+pop_pyramid_tbl_tidy <- pop_pyramid_tbl |>  
+  clean_names() |>  
+  filter(area_geografica == "Total") |> 
+  select(-c(area_geografica, 
+            total_hombres, 
+            total_mujeres)) |> 
+  select(ano:mujeres_100_y_mas, total) |> 
+  rename(mujeres_100 = mujeres_100_y_mas, 
+         hombres_100 = hombres_100_y_mas) |> 
+  pivot_longer(cols = hombres_0:mujeres_100, 
+               names_to = "genero_edad", 
+               values_to = "pop") |> 
+  separate(col = genero_edad, 
+           into = c("genero", "edad"), 
+           sep = "_", 
+           convert = TRUE) |>  
+  mutate(pct_pop = pop / total) |> 
+  group_by(ano, genero) |>  
+  mutate(rango_edad = cut(edad, 
+                          breaks = c(seq.int(0, 85, 5), "Inf"),
+                          labels = c(str_c(seq(0,80,5), 
+                                           seq(4,85,5), 
+                                           sep = "-"),
+                                     "85+"), 
+                          right = FALSE)) |> 
+  ungroup() |> 
+  group_by(ano, genero, rango_edad) |> 
+  summarize(pop = sum(pop), 
+            pct_pop = sum(pct_pop)) |>  
+  ungroup() |> 
+  mutate(pct_pop_label = scales::number(x = pct_pop, 
+                                        scale = 100, 
+                                        accuracy = 0.01, 
+                                        suffix = "%")) |> 
+  # https://github.com/plotly/plotly.R/issues/1930
+  mutate(genero_en = ifelse(test = genero == "hombres", 
+                            yes = "Men", 
+                            no = "Women"), 
+         .after = genero) |> 
+  mutate(pct_pop_gen = ifelse(test = genero_en == "Men", 
+                              yes = pct_pop, 
+                              no = -pct_pop), 
+         .after = pct_pop) |> 
+  mutate(label = str_glue("Population: {pop}
+                          Percentage: {pct_pop_label}"))
+
+# Visualization
+ticks <- seq(-0.04, 0.04, 0.02)
+padding <- 0.005
+  
+pop_pyramid_tbl_tidy |>
+  plot_ly(x = ~pct_pop_gen, 
+          y = ~rango_edad,
+          color = ~genero_en,
+          frame = ~ano) |> 
+  add_bars(orientation = "h",
+           text = ~label,
+           textposition = "none", 
+           hoverinfo = "text",
+           colors = c("Men" = "#043074", 
+                      "Women" = "#fdc600"),
+           marker = list(
+             line = list(color = "black", 
+                         width = 1))) |> 
+  layout(barmode = "overlay",
+         bargap = 0.1,
+         xaxis = list(
+           title = "",
+           tickvals = ticks,
+           ticktext = number(x = abs(ticks),
+                             suffix = "%",
+                             scale = 100,
+                             accuracy = 1),
+           range = c(ticks[1] - padding, 
+                     ticks[length(ticks)] + padding)),
+         yaxis = list(
+           title = ""),
+         width = 850,
+         height = 550) |> 
+  animation_slider(
+    currentvalue = list(prefix = "Year: "))
+```
+
+:::
+
+# References {.allowframebreaks}
