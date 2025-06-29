@@ -18,6 +18,7 @@ format:
     embed-resources: true
     scrollable: true
     mermaid-format: png
+    reference-location: document
 date: last-modified
 date-format: "D MMMM, YYYY"
 knitr: 
@@ -136,13 +137,7 @@ flowchart TB
 
 ##
 
-::: {.r-stack}
-
 ```{r}
-#| label: fig-population-col
-#| fig-cap: Population pyramids in Colombia
-#| fig-height: 6
-
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Demografía y población > Proyecciones de población >
@@ -185,10 +180,10 @@ pop_pyramid_tbl_tidy <- pop_pyramid_tbl |>
   summarize(pop = sum(pop), 
             pct_pop = sum(pct_pop)) |>  
   ungroup() |> 
-  mutate(pct_pop_label = scales::number(x = pct_pop, 
-                                        scale = 100, 
-                                        accuracy = 0.01, 
-                                        suffix = "%")) |> 
+  mutate(pct_pop_label = number(x = pct_pop, 
+                                scale = 100, 
+                                accuracy = 0.01, 
+                                suffix = "%")) |> 
   # https://github.com/plotly/plotly.R/issues/1930
   mutate(genero_en = ifelse(test = genero == "hombres", 
                             yes = "Men", 
@@ -200,6 +195,14 @@ pop_pyramid_tbl_tidy <- pop_pyramid_tbl |>
          .after = pct_pop) |> 
   mutate(label = str_glue("Population: {pop}
                           Percentage: {pct_pop_label}"))
+```
+
+::: {.r-stack}
+
+```{r}
+#| label: fig-population-col
+#| fig-cap: Population pyramids in Colombia
+#| fig-height: 6
 
 # Visualization
 ticks <- seq(-0.04, 0.04, 0.02)
@@ -239,5 +242,526 @@ pop_pyramid_tbl_tidy |>
 ```
 
 :::
+
+##
+
+- Why the behavior of population is important?
+
+    - *"Demographic change must be taken into account to redesign human development and comprehensive well-being policies within the framework of longer lifespans."* [@dnp_visioncolombia_2022, p. 36]
+
+##
+
+```{r}
+# Import
+height_adults_col <- read_csv(file = "000_data/001_average_height_by_year_of_birth/average_height_by_year_of_birth.csv") 
+
+# Tidy
+height_adults_col_tidy <- height_adults_col |> 
+  filter(Code == "COL") |> 
+  set_names(nm = c("entity", "code", "year", 
+                   "male", "female")) |> 
+  pivot_longer(cols = c(male, female), 
+               names_to = "sex",
+               values_to = "mean_height")
+```
+
+
+```{r}
+#| label: fig-avg-adult-height-by-year-of-birth
+#| fig-cap: Average adult height by year of birth in Colombia [@roser_human_2024]
+
+# Visualize
+height_adults_col_tidy |> 
+  ggplot(aes(x = year, y = mean_height)) + 
+  geom_line(aes(group = sex, color = sex)) + 
+  scale_y_continuous(breaks = seq(round(min(height_adults_col_tidy$mean_height)), 
+                                  round(max(height_adults_col_tidy$mean_height)), 
+                                  by = 2)) + 
+  scale_color_manual(labels = c("Men", "Women"),
+                     values = c("#043074", "#fdc600")) + 
+  labs(x = NULL,
+       y = "Centimeters",
+       color = NULL,
+       subtitle = str_glue("Period: {min(height_adults_col_tidy$year)} - {max(height_adults_col_tidy$year)}"), 
+       caption = str_glue("Source: NCD RisC and Our Word In Data - Human Height
+                          Last update: 2019-05-14")) + 
+  theme(panel.border      = element_rect(fill = NA, 
+                                         color = "black"),
+        plot.background   = element_rect(fill = "white"),
+        panel.background  = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        axis.text         = element_text(size = 10))
+```
+
+##
+
+- Why height is important?
+
+    - *"Height provides a measure of biological quality of life, one of the dimensions of overall quality of life."* [@meisel_estatura_2007, p. 37]
+
+    - *"Poor nutrition and illness in childhood limit human growth. As a consequence, the average height of a population is strongly correlated with living standards in a population."* [@roser_human_2024]
+    
+##
+
+```{r}
+# Data
+# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
+# Sociedad > Gobierno >
+# Encuesta de Cultura Política - ECP - 2023  > 
+## Tabla de viviendas 
+## Elecciones y partidos
+
+# Import
+viviendas <- read_csv(file = "000_data/001_tabla_de_viviendas_2023.csv")
+### Personas de 18 años y más
+elecciones_partidos <- read_csv(file = "000_data/001_elecciones_y_partidos_2023.csv")
+
+# Tidy
+## Viviendas
+viviendas_clean <- viviendas |> 
+  clean_names() |> 
+  select(
+    # Llave vivienda
+    directorio, 
+    # Región a la que corresponde 
+    # la vivienda
+    region, 
+    # Total de hogares en la 
+    # vivienda?
+    p70,
+    # Factor de Expansión
+    fex_p)
+
+## Elecciones partidos
+### Personas de 18 años y más
+posicion_ideologica <- elecciones_partidos |> 
+  clean_names() |> 
+  select(
+    # Llave vivienda 
+    directorio,
+    # Tabla en que se cargo la informacion
+    ## 252. Tabla de Personas
+    nro_encuesta,
+    # Llave hogar
+    hogar_numero,
+    # Llave persona
+    persona_numero,
+    # 14. Las personas cuando piensan en política 
+    # utilizan los términos izquierda y derecha. En 
+    # una escala de 1 a 10 donde 1 significa izquierda 
+    # y 10 significa derecha ¿dónde se ubicaria usted?
+    ## 1- Izquierda
+    ## 2- Izquierda
+    ## 3- Izquierda
+    ## 4- Centro izquierda
+    ## 5- Centro
+    ## 6- Centro
+    ## 7- Centro derecha
+    ## 8- Derecha
+    ## 9- Derecha
+    ## 10-Derecha
+    ## 98- No sabe
+    ## 99- No informa
+    p5328)
+
+## Posición idelógica
+### Personas de 18 años y más
+posicion_ideologica_clean <- posicion_ideologica |> 
+  left_join(y = viviendas_clean, 
+            by = join_by(directorio)) |> 
+  mutate(p5328_label = case_when(
+    p5328 %in% 1:3  ~ "Izquierda",
+    p5328 %in% 4    ~ "Centro izquierda",
+    p5328 %in% 5:6  ~ "Centro",
+    p5328 %in% 7    ~ "Centro derecha",
+    p5328 %in% 8:10 ~ "Derecha",
+    p5328 %in% 98   ~ "No sabe",
+    p5328 %in% 99   ~ "No informa")) |> 
+  group_by(p5328_label) |> 
+  summarize(n = sum(fex_p)) |> 
+  ungroup() |> 
+  mutate(total = sum(n)) |> 
+  mutate(pct_n = n/total) |> 
+  mutate(p5328_label = fct_relevel(.f = p5328_label,
+                                   "Izquierda",
+                                   "Centro izquierda",
+                                   "Centro",
+                                   "Centro derecha",
+                                   "Derecha",
+                                   "No sabe",
+                                   "No informa")) |> 
+  mutate(pct_n_label = number(x = pct_n, 
+                              accuracy = 0.01,  
+                              scale = 100, 
+                              suffix = "%"))
+```
+
+```{r}
+#| label: fig-ideological-position
+#| fig-cap: Ideological position in Colombia
+
+# Visualization
+posicion_ideologica_clean |>  
+  ggplot(aes(pct_n, 
+             p5328_label)) +
+  geom_segment(aes(xend = 0, yend = p5328_label), 
+               color = "#043074") + 
+  geom_point(shape = 21, 
+             fill = "#fdc600",
+             size = 3) +
+  geom_text(aes(label = pct_n_label),
+            hjust = -0.5, size = 5) + 
+  scale_x_continuous(limits = c(0, 
+                                max(posicion_ideologica_clean$pct_n) + 0.05)) +
+  labs(x = NULL,
+       y = NULL,
+       subtitle = str_glue("Year: 2023
+                           Data only apply for people 18 years of age and older 
+                           Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}"),
+       caption = str_glue('Source: DANE - Encuesta de Cultura Política - ECP - 2023
+                          Last update date: 2024-04-15')) + 
+  theme(panel.border      = element_rect(fill = NA, 
+                                         color = "black"),
+        plot.background   = element_rect(fill = "white"),
+        panel.background  = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        axis.text         = element_text(size = 10),
+        axis.text.x       = element_blank(),
+        axis.ticks.x      = element_blank())
+```
+
+## 
+
+- Why political preferences matter in an economic context?
+
+    - In a democracy political preferences matter because the representatives that we choose determine some economic outcomes. For example:
+    
+        - Level of taxation and spending
+        - Level of regulation like in the case of the environment or the labor market
+        - Trade policy in relation to more or less free trade or proteccionism
+        
+## 
+
+- If you want to learn more about people in Colombia check out:
+
+    - Primer corte 30% \> Learning Resources \> Links of interest \> Así se ve Colombia en 100 personas - La Silla Vacía
+
+# Households
+
+## {.smaller} 
+
+-   **ingtotug**: *"Ingreso total de la unidad de gasto **antes** de imputación de arriendo a propietarios y usufructuarios"* [@dnp_pobreza_2012, pp. 16-17]
+
+    -   *Ingreso monetario primera actividad (IMPA)*
+    -   *Ingreso en especie (IE)*
+    -   *Ingreso segunda actividad (ISA)*
+    -   *Ingreso monetario de desocupados e inactivos (IMDI)*
+    -   *Ingresos por otras fuentes (IOF)*
+    
+-   **ingtotugarr**: "Ingreso total de la unidad de gasto con imputación de arriendo a propietarios y usufructuarios" [@dnp_pobreza_2012, pp. 24-26]
+
+    -   Modulo B Datos de la Vivienda: 11. Si tuviera que pagar arriendo por esta vivienda, ¿cuánto estima que tendría que pagar mensualmente? [@dane_cuestionario_2019, p. 2]
+
+##
+
+```{r}
+# Data
+# https://www.dane.gov.co/ > ANDA | ARCHIVO NACIONAL DE DATOS >
+# Sociedad > Pobreza y condiciones de vida >
+# Medición de Pobreza Monetaria y Desigualdad 2023 > Hogares
+
+# Import
+household_tbl <- read_delim(file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2023.csv", 
+                            delim = ",", 
+                            locale = locale(decimal_mark = ".")) 
+
+# Tidy
+household_tbl_tidy <- household_tbl |> 
+  clean_names() |>  
+  select(
+    # Llave vivienda 
+    directorio,
+    # Llave hogar
+    secuencia_p,
+    # La vivienda ocupada por este hogar es:
+    # a. Propia, totalmente pagada      (1) 
+    # b. Propia, la están pagando       (2) 
+    # c. En arriendo o subarriendo      (3)
+    # d. En usufructo                   (4)
+    # e. Posesión sin titulo (ocupante) (5)
+    # f. Propiedad colectiva            (6)
+    # g. Otra                           (7)
+    p5090,
+    # Personas en el hogar
+    nper, 
+    # Ingreso total de la unidad de
+    # gasto antes de imputación de
+    # arriendo a propietarios y usufructuarios
+    ingtotug,
+    # Factor de expansión anualizado 
+    fex_c)
+
+## Total househods zero income
+ingtotug_zero <- filter(household_tbl_tidy, 
+                        ingtotug == 0) |>  
+  _$fex_c |>  
+  sum() |>  
+  floor()
+
+## Total households
+total_fex_c <- summarize(household_tbl_tidy, 
+                         sum_fex_c = sum(fex_c))$sum_fex_c
+
+## Income distribution of households
+household_income_nper_tbl <- household_tbl_tidy |> 
+  mutate(pct_fex_c = fex_c / total_fex_c) |> 
+  mutate(range_ingtotug = cut(x = ingtotug,
+                              breaks = c(seq.int(from = min(household_tbl_tidy$ingtotug),
+                                                 by = 500000,
+                                                 length.out = 20), 
+                                         max(household_tbl_tidy$ingtotug) + 1),
+                              right = FALSE,
+                              # Check this if there is problem 
+                              # with the last range in relation
+                              # to the upper limit
+                              dig.lab = 9)) |>
+  group_by(range_ingtotug) |>  
+  summarize(pct_fex_c = sum(pct_fex_c),
+            mean_nper = mean(nper),
+            .groups = "drop") |>  
+  mutate(pct_fex_c_text = number(pct_fex_c,
+                                 suffix = "%",
+                                 scale = 100,
+                                 accuracy = 0.01),
+         mean_nper_text = number(mean_nper, 
+                                 accuracy = 0.01))
+```
+
+```{r}
+#| label: fig-household-income-col
+#| fig-cap: Household income distribution in Colombia
+
+# Visualization
+household_income_nper_tbl |>  
+  ggplot(aes(pct_fex_c, fct_rev(range_ingtotug))) +
+  geom_segment(aes(xend = 0, yend = fct_rev(range_ingtotug)), 
+               color = "#043074") + 
+  geom_point(shape = 21, 
+             fill = "#fdc600",
+             size = 3) +
+  geom_text(aes(label = pct_fex_c_text),
+            hjust = -0.5, 
+            size = 4) + 
+  scale_x_continuous(limits = c(0, 
+                                max(household_income_nper_tbl$pct_fex_c) + 0.025)) +
+  labs(x = NULL,
+       y = "Monthly mean income range (2023 COP)",
+       subtitle = str_glue("Year: 2023
+                           Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}
+                           Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"),
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+                          Last update date: 2024-09-02')) + 
+  theme(panel.border      = element_rect(fill = NA, 
+                                         color = "black"),
+        plot.background   = element_rect(fill = "white"),
+        panel.background  = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        axis.text         = element_text(size = 10),
+        axis.text.x       = element_blank(),
+        axis.ticks.x      = element_blank())
+```
+
+## {.smaller} 
+
+-   If you want to explore more about this topic using data from the year 2019 check out[^1]:
+
+    -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso →
+
+        -   <https://www.ofiscal.org/ingresosxhogares>
+
+-   If you want to explore more about this topic from around the world in a visual way check out[^2]:
+
+    -   [See how the rest of the world lives, organized by income](https://youtu.be/u4L130DkdOw) (Configure spanish subtitles in the setting options)
+
+    -   <https://www.gapminder.org> \> Resources \> Tools \> Dollar Street
+
+        -   <https://www.gapminder.org/dollar-street>
+
+[^1]: Observatorio Fiscal de la Pontifica Universidad Javeriana
+
+[^2]: Dollar Street
+
+## {.smaller} 
+
+-   Housing (vivienda) ownership status[^3]
+
+    -   *Propia, totalmente pagada*
+    -   *Propia, la están pagando*
+    -   *En arriendo o subarriendo*
+    -   *En usufructo*
+    -   *Posesión sin título*
+    -   *Propiedad colectiva*
+    -   *Otra*
+
+-   The concept of housing (vivienda) is different from a household (hogar)
+
+    -   Zero or more households can live in a housing (vivienda)
+    -   For a detail definition of a househould check out [@united_nations_principles_2017, p. 38, 2.33]
+
+[^3]: For a detail definition of these categories checkout [@dane_manual_2022, p. 35]
+
+##
+
+```{r}
+# Tidy
+household_housing_tbl <- household_tbl_tidy |>  
+  mutate(pct_fex_c = fex_c / total_fex_c) |>  
+  group_by(p5090) |>  
+  summarize(pct_fex_c = sum(pct_fex_c), .groups = "drop") |> 
+  mutate(pct_fex_c_text = number(pct_fex_c,
+                                 suffix = "%",
+                                 scale = 100,
+                                 accuracy = 0.01),
+         p5090 = factor(p5090,
+                        labels = c(str_glue("Propia, 
+                                            totalmente pagada"),
+                                   str_glue("Propia, 
+                                            la están pagando"),
+                                   str_glue("En arriendo o 
+                                            subarriendo"),
+                                   "En usufructo",
+                                   str_glue("Posesión 
+                                           sin título"),
+                                   str_glue("Propiedad 
+                                            colectiva"),
+                                   "Otra")))
+```
+
+```{r}
+#| label: fig-housing-ownership-col
+#| fig-cap: Housing ownership status of households in Colombia
+
+# Visualization
+household_housing_tbl |>  
+  ggplot(aes(pct_fex_c, 
+             fct_reorder(.f = p5090, .x = pct_fex_c))) +
+  geom_segment(aes(xend = 0, yend = p5090), 
+               color = "#043074") +
+  geom_point(shape = 21, 
+             fill = "#fdc600",
+             size = 3) +
+  geom_text(aes(label = pct_fex_c_text),
+            hjust = -0.5, size = 5) + 
+  scale_x_continuous(limits = c(0, 
+                                max(household_housing_tbl$pct_fex_c) + 0.05)) +
+  labs(x = NULL,
+       y = NULL,
+       subtitle = str_glue("Year: 2023
+                           Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"),
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+                          Last update date: 2024-09-02')) + 
+  theme(panel.border      = element_rect(fill = NA, 
+                                         color = "black"),
+        plot.background   = element_rect(fill = "white"),
+        panel.background  = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        axis.text         = element_text(size = 10),
+        axis.text.x       = element_blank(),
+        axis.ticks.x      = element_blank())
+```
+
+# School education system
+
+## 
+
+```{r}
+# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
+# Sociedad > Educación > Educación Formal 2022 > Obtener Microdatos >
+# Caratula única sede educativa
+
+# Import
+schools_tbl <- read_csv(file = '000_data/001_caratula_unica_de_la_sede_educativa_2023.csv')
+
+# Tidy
+schools_bilin_tbl <- schools_tbl |> 
+  count(
+    # Sector 01 Oficial 02 No Oficial
+    SECTOR_NOMBRE, 
+    # ¿La sede educativa es bilingüe? 0 NO 1 SÍ
+    ES_BILINGUE, 
+    #  ¿La sede educativa es bilingüe? 
+    # No\Si 1 Programa académico 100% bilingüe 
+    # 2 Bilingüismo como profundización y énfasis en el plan de estudios
+    TIPOBIL_NOMBRE) |> 
+  mutate(pct_n = n / nrow(schools_tbl),
+         pct_n_text = number(pct_n,
+                             suffix = "%",
+                             scale = 100,
+                             accuracy = 0.01),
+         TIPOBIL_NOMBRE = case_when(
+           ES_BILINGUE == "NO" ~ "No bilingüe",
+           is.na(ES_BILINGUE) == TRUE ~ "Sin información",
+           TIPOBIL_NOMBRE == "Bilingüismo como profundización y énfasis en el plan de estudios" ~ "Profundización/énfasis",
+           TIPOBIL_NOMBRE == "Programa académico 100% bilingüe" ~ "100% bilingüe",
+           .default = TIPOBIL_NOMBRE),
+         TIPOBIL_NOMBRE = fct_reorder2(TIPOBIL_NOMBRE, SECTOR_NOMBRE, pct_n))
+```
+
+```{r}
+#| label: fig-bilingualism-school-col
+#| fig-cap: Bilingualism and educational establishments (preschool, elementary, middle and high school) in Colombia
+
+# Visualization
+schools_bilin_tbl |>
+  ggplot(aes(TIPOBIL_NOMBRE, pct_n)) + 
+  geom_col(color = "black",
+           fill = "#043074") +
+  geom_text(aes(label = pct_n_text), 
+            vjust = -0.8,
+            size = 5) + 
+  scale_y_continuous(limits = c(0, 
+                                max(schools_bilin_tbl$pct_n) + 0.1)) +
+  facet_wrap(vars(SECTOR_NOMBRE)) + 
+  labs(x = NULL,
+       y = NULL,
+       subtitle = str_glue("Year: 2023
+                           Total educational establishments: {scales::number(sum(schools_bilin_tbl$n), big.mark = ',')} 
+                           Total non official educational establishments: {scales::number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
+                           Total official educational establishments: {scales::number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"),
+       caption = str_glue('Fuente: DANE - Educación Formal - 2023 - Carátula única sede educativa
+                          Última fecha de actualización: 2024-06-28')) + 
+  theme(panel.border      = element_rect(fill = NA, 
+                                         color = "black"),
+        plot.background   = element_rect(fill = "white"),
+        panel.background  = element_rect(fill = "white"),
+        legend.background = element_rect(fill = "white"),
+        axis.text         = element_text(size = 10),
+        axis.text.x = element_text(angle = 90, 
+                                   hjust = 1, 
+                                   vjust = 0.5),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        strip.background.x = element_rect(color = "black", 
+                                          fill = "#fdc600"),
+        strip.text.x = element_text(margin = margin(t = 5,
+                                                    r = 5,
+                                                    b = 5,
+                                                    l = 5, 
+                                                    unit = "pt"), 
+                                    face = "bold", 
+                                    size = 12))
+```
+
+## {.smaller}
+
+- Why learn a foreign language?
+
+    - The benefits of foreign language learning can be divided into 3 categories: intercultural understanding, economic benefits and cognitive [@oecd_pisa_2021, p. 10]
+
+        - Intercultural understanding: by learning a foreign language you can understand other cultures and visions of the world [@oecd_pisa_2021, p. 11].
+        
+        - Economic: people who know more than one language are more likely to be employed and have better career opportunities [@oecd_pisa_2021, pp. 10-11].
+        
+        - Cognitive: students how learn a foreign language or more creative and better and solving complex problems [@oecd_pisa_2021, p. 11].
 
 # References {.allowframebreaks}

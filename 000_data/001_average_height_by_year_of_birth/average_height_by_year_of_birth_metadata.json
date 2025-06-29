@@ -1,0 +1,37 @@
+{
+  "chart": {
+    "title": "Average adult height by year of birth",
+    "subtitle": "Average height of men and women at age 18, by year of birth.",
+    "citation": "NCD RisC, Human Height (2017)",
+    "originalChartUrl": "https://ourworldindata.org/grapher/average-height-by-year-of-birth?v=1&csvType=full&useColumnShortNames=false",
+    "selection": [
+      "World"
+    ]
+  },
+  "columns": {
+    "Mean male height (cm)": {
+      "titleShort": "Men",
+      "titleLong": "Men",
+      "unit": "",
+      "timespan": "",
+      "type": "Numeric",
+      "owidVariableId": 104381,
+      "citationShort": " – processed by Our World in Data",
+      "citationLong": " – processed by Our World in Data. “Men” [dataset]. NCD RisC, Human Height (2017) [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/104381.metadata.json"
+    },
+    "Mean female height (cm)": {
+      "titleShort": "Women",
+      "titleLong": "Women",
+      "unit": "",
+      "timespan": "",
+      "type": "Numeric",
+      "owidVariableId": 104382,
+      "citationShort": " – processed by Our World in Data",
+      "citationLong": " – processed by Our World in Data. “Women” [dataset]. NCD RisC, Human Height (2017) [original data].",
+      "fullMetadata": "https://api.ourworldindata.org/v1/indicators/104382.metadata.json"
+    }
+  },
+  "dateDownloaded": "2025-06-28",
+  "activeFilters": {}
+}
