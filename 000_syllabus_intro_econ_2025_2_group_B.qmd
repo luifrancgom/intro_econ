@@ -1,5 +1,5 @@
 ---
-title: "Syllabus Economía I (Introducción a la Economía) Module A AE"
+title: "Syllabus Economía I (Introducción a la Economía) Module B AE"
 author:
   - name: Luis Francisco Gómez López
     email: luis.gomezl@unimilitar.edu.co
@@ -49,6 +49,7 @@ editor: source
 library(tidyverse)
 library(glue)
 library(knitr)
+library(gt)
 ```
 
 ```{=html}
@@ -164,8 +165,9 @@ tibble(Week = c(1:9),
        Chapter        = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
        `Initial page` = c(  1,  19,  53,  81, 115, 167, 225, 263, 303),
        `Final page`   = c( 18,  52,  80, 114, 166, 224, 262, 302, 348)) |> 
-    mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |> 
-    kable()
+    mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |>
+  gt() |> 
+  fmt_markdown()
 ```
 
 ## Detailed schedule
