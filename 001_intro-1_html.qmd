@@ -16,7 +16,6 @@ format:
   presentation-umng-revealjs:
     logo-vertical-strip: 000_logos/logo-white-vertical.png 
     embed-resources: true
-    scrollable: true
     mermaid-format: png
     reference-location: document
 date: last-modified
