@@ -167,7 +167,20 @@ tibble(Week = c(1:9),
        `Final page`   = c( 18,  52,  80, 114, 166, 224, 262, 302, 348)) |> 
     mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |> 
   gt() |> 
-  fmt_markdown()
+  fmt_markdown() |> 
+  tab_style(
+    style = cell_text(weight = "bold"), 
+    locations = cells_column_labels() 
+      ) |> 
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black"
+    )
 ```
 
 ## Detailed schedule
