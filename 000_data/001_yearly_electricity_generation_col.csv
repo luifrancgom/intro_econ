@@ -1,0 +1,251 @@
+entity,entity_code,is_aggregate_entity,date,series,is_aggregate_series,generation_twh,generation_share_pct,generation_kwh_per_capita,generation_yoy_change_twh,generation_yoy_change_pct,generation_share_yoy_change_pct_points,generation_yoy_change_kwh_per_capita
+"Colombia","COL",false,"2000","Bioenergy",false,0.5,1.17,12.79,,,,
+"Colombia","COL",false,"2000","Coal",false,2.08,4.86,53.21,,,,
+"Colombia","COL",false,"2000","Gas",false,8.25,19.27,211.05,,,,
+"Colombia","COL",false,"2000","Hydro",false,31.75,74.16,812.23,,,,
+"Colombia","COL",false,"2000","Nuclear",false,0,0,0,,,,
+"Colombia","COL",false,"2000","Other fossil",false,0.22,0.51,5.63,,,,
+"Colombia","COL",false,"2000","Other renewables",false,0,0,0,,,,
+"Colombia","COL",false,"2000","Solar",false,0.01,0.02,0.26,,,,
+"Colombia","COL",false,"2000","Total generation",true,42.81,100,1095.17,,,,
+"Colombia","COL",false,"2000","Wind",false,0,0,0,,,,
+"Colombia","COL",false,"2001","Bioenergy",false,0.5,1.16,12.59,0,0,-0.01,0
+"Colombia","COL",false,"2001","Coal",false,2.23,5.17,56.16,0.15,7.21,0.31,3.78
+"Colombia","COL",false,"2001","Gas",false,8.69,20.14,218.84,0.44,5.33,0.87,11.08
+"Colombia","COL",false,"2001","Hydro",false,31.48,72.97,792.76,-0.27,-0.85,-1.19,-6.8
+"Colombia","COL",false,"2001","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2001","Other fossil",false,0.23,0.53,5.79,0.01,4.55,0.02,0.25
+"Colombia","COL",false,"2001","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2001","Solar",false,0.01,0.02,0.25,0,0,0,0
+"Colombia","COL",false,"2001","Total generation",true,43.14,100,1086.4,0.33,0.77,0,8.31
+"Colombia","COL",false,"2001","Wind",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2002","Bioenergy",false,0.49,1.1,12.15,-0.01,-2,-0.06,-0.25
+"Colombia","COL",false,"2002","Coal",false,2.17,4.85,53.81,-0.06,-2.69,-0.32,-1.49
+"Colombia","COL",false,"2002","Gas",false,8.18,18.3,202.85,-0.51,-5.87,-1.84,-12.65
+"Colombia","COL",false,"2002","Hydro",false,33.63,75.22,833.98,2.15,6.83,2.25,53.32
+"Colombia","COL",false,"2002","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2002","Other fossil",false,0.23,0.51,5.7,0,0,-0.02,0
+"Colombia","COL",false,"2002","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2002","Solar",false,0.01,0.02,0.25,0,0,0,0
+"Colombia","COL",false,"2002","Total generation",true,44.71,100,1108.75,1.57,3.64,0,38.93
+"Colombia","COL",false,"2002","Wind",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2003","Bioenergy",false,0.5,1.08,12.21,0.01,2.04,-0.02,0.24
+"Colombia","COL",false,"2003","Coal",false,2.81,6.08,68.64,0.64,29.49,1.23,15.63
+"Colombia","COL",false,"2003","Gas",false,6.83,14.78,166.84,-1.35,-16.5,-3.52,-32.98
+"Colombia","COL",false,"2003","Hydro",false,35.81,77.51,874.75,2.18,6.48,2.29,53.25
+"Colombia","COL",false,"2003","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2003","Other fossil",false,0.24,0.52,5.86,0.01,4.35,0.01,0.24
+"Colombia","COL",false,"2003","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2003","Solar",false,0.01,0.02,0.24,0,0,0,0
+"Colombia","COL",false,"2003","Total generation",true,46.2,100,1128.55,1.49,3.33,0,36.4
+"Colombia","COL",false,"2003","Wind",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2004","Bioenergy",false,0.47,0.95,11.31,-0.03,-6,-0.13,-0.72
+"Colombia","COL",false,"2004","Coal",false,1.86,3.77,44.77,-0.95,-33.81,-2.31,-22.87
+"Colombia","COL",false,"2004","Gas",false,7.01,14.21,168.74,0.18,2.64,-0.57,4.33
+"Colombia","COL",false,"2004","Hydro",false,39.68,80.44,955.15,3.87,10.81,2.93,93.16
+"Colombia","COL",false,"2004","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2004","Other fossil",false,0.25,0.51,6.02,0.01,4.17,-0.01,0.24
+"Colombia","COL",false,"2004","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2004","Solar",false,0.01,0.02,0.24,0,0,0,0
+"Colombia","COL",false,"2004","Total generation",true,49.33,100,1187.44,3.13,6.77,0,75.34
+"Colombia","COL",false,"2004","Wind",false,0.05,0.1,1.2,0.05,,0.1,1.2
+"Colombia","COL",false,"2005","Bioenergy",false,0.5,1,11.87,0.03,6.38,0.05,0.71
+"Colombia","COL",false,"2005","Coal",false,2.33,4.67,55.31,0.47,25.27,0.9,11.16
+"Colombia","COL",false,"2005","Gas",false,7.4,14.82,175.65,0.39,5.56,0.61,9.26
+"Colombia","COL",false,"2005","Hydro",false,39.4,78.89,935.22,-0.28,-0.71,-1.55,-6.65
+"Colombia","COL",false,"2005","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2005","Other fossil",false,0.25,0.5,5.93,0,0,-0.01,0
+"Colombia","COL",false,"2005","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2005","Solar",false,0.01,0.02,0.24,0,0,0,0
+"Colombia","COL",false,"2005","Total generation",true,49.94,100,1185.41,0.61,1.24,0,14.48
+"Colombia","COL",false,"2005","Wind",false,0.05,0.1,1.19,0,0,0,0
+"Colombia","COL",false,"2006","Bioenergy",false,0.53,0.99,12.41,0.03,6,-0.01,0.7
+"Colombia","COL",false,"2006","Coal",false,2.84,5.32,66.52,0.51,21.89,0.65,11.95
+"Colombia","COL",false,"2006","Gas",false,7.38,13.84,172.87,-0.02,-0.27,-0.98,-0.47
+"Colombia","COL",false,"2006","Hydro",false,42.31,79.32,991.07,2.91,7.39,0.43,68.16
+"Colombia","COL",false,"2006","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2006","Other fossil",false,0.21,0.39,4.92,-0.04,-16,-0.11,-0.94
+"Colombia","COL",false,"2006","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2006","Solar",false,0.01,0.02,0.23,0,0,0,0
+"Colombia","COL",false,"2006","Total generation",true,53.34,100,1249.44,3.4,6.81,0,79.64
+"Colombia","COL",false,"2006","Wind",false,0.06,0.11,1.41,0.01,20,0.01,0.23
+"Colombia","COL",false,"2007","Bioenergy",false,0.53,0.97,12.26,0,0,-0.02,0
+"Colombia","COL",false,"2007","Coal",false,3.39,6.19,78.41,0.55,19.37,0.87,12.72
+"Colombia","COL",false,"2007","Gas",false,6.57,11.99,151.96,-0.81,-10.98,-1.85,-18.73
+"Colombia","COL",false,"2007","Hydro",false,44,80.31,1017.69,1.69,3.99,0.99,39.09
+"Colombia","COL",false,"2007","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2007","Other fossil",false,0.24,0.44,5.55,0.03,14.29,0.05,0.69
+"Colombia","COL",false,"2007","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2007","Solar",false,0.01,0.02,0.23,0,0,0,0
+"Colombia","COL",false,"2007","Total generation",true,54.79,100,1267.25,1.45,2.72,0,33.54
+"Colombia","COL",false,"2007","Wind",false,0.05,0.09,1.16,-0.01,-16.67,-0.02,-0.23
+"Colombia","COL",false,"2008","Bioenergy",false,0.54,0.97,12.34,0.01,1.89,0,0.23
+"Colombia","COL",false,"2008","Coal",false,2.92,5.26,66.73,-0.47,-13.86,-0.93,-10.74
+"Colombia","COL",false,"2008","Gas",false,5.76,10.38,131.63,-0.81,-12.33,-1.61,-18.51
+"Colombia","COL",false,"2008","Hydro",false,45.94,82.8,1049.85,1.94,4.41,2.49,44.33
+"Colombia","COL",false,"2008","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2008","Other fossil",false,0.26,0.47,5.94,0.02,8.33,0.03,0.46
+"Colombia","COL",false,"2008","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2008","Solar",false,0.01,0.02,0.23,0,0,0,0
+"Colombia","COL",false,"2008","Total generation",true,55.48,100,1267.86,0.69,1.26,0,15.77
+"Colombia","COL",false,"2008","Wind",false,0.05,0.09,1.14,0,0,0,0
+"Colombia","COL",false,"2009","Bioenergy",false,0.54,0.95,12.2,0,0,-0.02,0
+"Colombia","COL",false,"2009","Coal",false,4.17,7.35,94.19,1.25,42.81,2.09,28.23
+"Colombia","COL",false,"2009","Gas",false,10.94,19.28,247.11,5.18,89.93,8.9,117.01
+"Colombia","COL",false,"2009","Hydro",false,40.64,71.61,917.97,-5.3,-11.54,-11.19,-119.72
+"Colombia","COL",false,"2009","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2009","Other fossil",false,0.39,0.69,8.81,0.13,50,0.22,2.94
+"Colombia","COL",false,"2009","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2009","Solar",false,0.01,0.02,0.23,0,0,0,0
+"Colombia","COL",false,"2009","Total generation",true,56.75,100,1281.86,1.27,2.29,0,28.69
+"Colombia","COL",false,"2009","Wind",false,0.06,0.11,1.36,0.01,20,0.02,0.23
+"Colombia","COL",false,"2010","Bioenergy",false,2.42,4.02,54.05,1.88,348.15,3.07,41.99
+"Colombia","COL",false,"2010","Coal",false,4.04,6.71,90.22,-0.13,-3.12,-0.64,-2.9
+"Colombia","COL",false,"2010","Gas",false,11.97,19.87,267.32,1.03,9.41,0.59,23
+"Colombia","COL",false,"2010","Hydro",false,40,66.41,893.31,-0.64,-1.57,-5.2,-14.29
+"Colombia","COL",false,"2010","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2010","Other fossil",false,1.75,2.91,39.08,1.36,348.72,2.22,30.37
+"Colombia","COL",false,"2010","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2010","Solar",false,0.01,0.02,0.22,0,0,0,0
+"Colombia","COL",false,"2010","Total generation",true,60.23,100,1345.1,3.48,6.13,0,77.72
+"Colombia","COL",false,"2010","Wind",false,0.04,0.07,0.89,-0.02,-33.33,-0.04,-0.45
+"Colombia","COL",false,"2011","Bioenergy",false,2,3.24,44.19,-0.42,-17.36,-0.78,-9.28
+"Colombia","COL",false,"2011","Coal",false,2.25,3.65,49.71,-1.79,-44.31,-3.06,-39.55
+"Colombia","COL",false,"2011","Gas",false,7.64,12.38,168.8,-4.33,-36.17,-7.49,-95.67
+"Colombia","COL",false,"2011","Hydro",false,48.39,78.43,1069.17,8.39,20.98,12.02,185.37
+"Colombia","COL",false,"2011","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2011","Other fossil",false,1.37,2.22,30.27,-0.38,-21.71,-0.69,-8.4
+"Colombia","COL",false,"2011","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2011","Solar",false,0.01,0.02,0.22,0,0,0,0
+"Colombia","COL",false,"2011","Total generation",true,61.7,100,1363.25,1.47,2.44,0,32.48
+"Colombia","COL",false,"2011","Wind",false,0.04,0.06,0.88,0,0,-0.01,0
+"Colombia","COL",false,"2012","Bioenergy",false,1.95,3.09,42.65,-0.05,-2.5,-0.15,-1.09
+"Colombia","COL",false,"2012","Coal",false,3.36,5.33,73.5,1.11,49.33,1.68,24.28
+"Colombia","COL",false,"2012","Gas",false,8.99,14.26,196.65,1.35,17.67,1.88,29.53
+"Colombia","COL",false,"2012","Hydro",false,47.11,74.71,1030.5,-1.28,-2.65,-3.72,-28
+"Colombia","COL",false,"2012","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2012","Other fossil",false,1.59,2.52,34.78,0.22,16.06,0.3,4.81
+"Colombia","COL",false,"2012","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2012","Solar",false,0.01,0.02,0.22,0,0,0,0
+"Colombia","COL",false,"2012","Total generation",true,63.06,100,1379.39,1.36,2.2,0,29.75
+"Colombia","COL",false,"2012","Wind",false,0.05,0.08,1.09,0.01,25,0.02,0.22
+"Colombia","COL",false,"2013","Bioenergy",false,1.05,1.43,22.75,-0.9,-46.15,-1.66,-19.5
+"Colombia","COL",false,"2013","Coal",false,6.04,8.22,130.87,2.68,79.76,2.89,58.07
+"Colombia","COL",false,"2013","Gas",false,15.36,20.9,332.82,6.37,70.86,6.64,138.02
+"Colombia","COL",false,"2013","Hydro",false,49.76,67.69,1078.19,2.65,5.63,-7.02,57.42
+"Colombia","COL",false,"2013","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2013","Other fossil",false,1.23,1.67,26.65,-0.36,-22.64,-0.85,-7.8
+"Colombia","COL",false,"2013","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2013","Solar",false,0.01,0.01,0.22,0,0,-0.01,0
+"Colombia","COL",false,"2013","Total generation",true,73.51,100,1592.79,10.45,16.57,0,226.43
+"Colombia","COL",false,"2013","Wind",false,0.06,0.08,1.3,0.01,20,0,0.22
+"Colombia","COL",false,"2014","Bioenergy",false,1.35,1.92,28.99,0.3,28.57,0.49,6.44
+"Colombia","COL",false,"2014","Coal",false,5.46,7.75,117.25,-0.58,-9.6,-0.47,-12.46
+"Colombia","COL",false,"2014","Gas",false,14.24,20.21,305.81,-1.12,-7.29,-0.69,-24.05
+"Colombia","COL",false,"2014","Hydro",false,47.25,67.06,1014.7,-2.51,-5.04,-0.63,-53.9
+"Colombia","COL",false,"2014","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2014","Other fossil",false,2.08,2.95,44.67,0.85,69.11,1.28,18.25
+"Colombia","COL",false,"2014","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2014","Solar",false,0.01,0.01,0.21,0,0,0,0
+"Colombia","COL",false,"2014","Total generation",true,70.46,100,1513.14,-3.05,-4.15,0,-65.5
+"Colombia","COL",false,"2014","Wind",false,0.07,0.1,1.5,0.01,16.67,0.02,0.21
+"Colombia","COL",false,"2015","Bioenergy",false,1.37,1.76,29.17,0.02,1.48,-0.16,0.43
+"Colombia","COL",false,"2015","Coal",false,7.06,9.05,150.31,1.6,29.3,1.3,34.06
+"Colombia","COL",false,"2015","Gas",false,17.95,23.02,382.16,3.71,26.05,2.81,78.99
+"Colombia","COL",false,"2015","Hydro",false,47.94,61.49,1020.65,0.69,1.46,-5.57,14.69
+"Colombia","COL",false,"2015","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2015","Other fossil",false,3.57,4.58,76.01,1.49,71.63,1.63,31.72
+"Colombia","COL",false,"2015","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2015","Solar",false,0.01,0.01,0.21,0,0,0,0
+"Colombia","COL",false,"2015","Total generation",true,77.97,100,1660,7.51,10.66,0,159.89
+"Colombia","COL",false,"2015","Wind",false,0.07,0.09,1.49,0,0,-0.01,0
+"Colombia","COL",false,"2016","Bioenergy",false,1.46,1.92,30.78,0.09,6.57,0.16,1.9
+"Colombia","COL",false,"2016","Coal",false,6.18,8.11,130.28,-0.88,-12.46,-0.94,-18.55
+"Colombia","COL",false,"2016","Gas",false,15.9,20.87,335.18,-2.05,-11.42,-2.15,-43.21
+"Colombia","COL",false,"2016","Hydro",false,48.46,63.62,1021.55,0.52,1.08,2.13,10.96
+"Colombia","COL",false,"2016","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2016","Other fossil",false,4.11,5.4,86.64,0.54,15.13,0.82,11.38
+"Colombia","COL",false,"2016","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2016","Solar",false,0.01,0.01,0.21,0,0,0,0
+"Colombia","COL",false,"2016","Total generation",true,76.17,100,1605.69,-1.8,-2.31,0,-37.94
+"Colombia","COL",false,"2016","Wind",false,0.05,0.07,1.05,-0.02,-28.57,-0.02,-0.42
+"Colombia","COL",false,"2017","Bioenergy",false,1.42,1.81,29.5,-0.04,-2.74,-0.11,-0.83
+"Colombia","COL",false,"2017","Coal",false,3.15,4.01,65.45,-3.03,-49.03,-4.1,-62.95
+"Colombia","COL",false,"2017","Gas",false,11.01,14.03,228.75,-4.89,-30.75,-6.84,-101.6
+"Colombia","COL",false,"2017","Hydro",false,60.64,77.28,1259.89,12.18,25.13,13.66,253.06
+"Colombia","COL",false,"2017","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2017","Other fossil",false,2.24,2.85,46.54,-1.87,-45.5,-2.55,-38.85
+"Colombia","COL",false,"2017","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2017","Solar",false,0.01,0.01,0.21,0,0,0,0
+"Colombia","COL",false,"2017","Total generation",true,78.47,100,1630.34,2.3,3.02,0,47.79
+"Colombia","COL",false,"2017","Wind",false,0,0,0,-0.05,-100,-0.07,-1.04
+"Colombia","COL",false,"2018","Bioenergy",false,1.45,1.85,29.58,0.03,2.11,0.04,0.61
+"Colombia","COL",false,"2018","Coal",false,4.52,5.78,92.2,1.37,43.49,1.77,27.95
+"Colombia","COL",false,"2018","Gas",false,11.62,14.86,237.02,0.61,5.54,0.83,12.44
+"Colombia","COL",false,"2018","Hydro",false,58.19,74.4,1186.96,-2.45,-4.04,-2.88,-49.98
+"Colombia","COL",false,"2018","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2018","Other fossil",false,2.37,3.03,48.34,0.13,5.8,0.18,2.65
+"Colombia","COL",false,"2018","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2018","Solar",false,0.02,0.03,0.41,0.01,100,0.02,0.2
+"Colombia","COL",false,"2018","Total generation",true,78.21,100,1595.33,-0.26,-0.33,0,-5.3
+"Colombia","COL",false,"2018","Wind",false,0.04,0.05,0.82,0.04,,0.05,0.82
+"Colombia","COL",false,"2019","Bioenergy",false,1.57,1.99,31.46,0.12,8.28,0.14,2.4
+"Colombia","COL",false,"2019","Coal",false,8.13,10.32,162.9,3.61,79.87,4.54,72.33
+"Colombia","COL",false,"2019","Gas",false,13.16,16.7,263.69,1.54,13.25,1.84,30.86
+"Colombia","COL",false,"2019","Hydro",false,52.98,67.25,1061.55,-5.21,-8.95,-7.15,-104.39
+"Colombia","COL",false,"2019","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2019","Other fossil",false,2.75,3.49,55.1,0.38,16.03,0.46,7.61
+"Colombia","COL",false,"2019","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2019","Solar",false,0.13,0.17,2.6,0.11,550,0.14,2.2
+"Colombia","COL",false,"2019","Total generation",true,78.78,100,1578.5,0.57,0.73,0,11.42
+"Colombia","COL",false,"2019","Wind",false,0.06,0.08,1.2,0.02,50,0.03,0.4
+"Colombia","COL",false,"2020","Bioenergy",false,2.15,2.77,42.46,0.58,36.94,0.78,11.46
+"Colombia","COL",false,"2020","Coal",false,9.12,11.73,180.13,0.99,12.18,1.41,19.55
+"Colombia","COL",false,"2020","Gas",false,15.19,19.54,300.02,2.03,15.43,2.84,40.09
+"Colombia","COL",false,"2020","Hydro",false,48.44,62.3,956.75,-4.54,-8.57,-4.95,-89.67
+"Colombia","COL",false,"2020","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2020","Other fossil",false,2.65,3.41,52.34,-0.1,-3.64,-0.08,-1.98
+"Colombia","COL",false,"2020","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2020","Solar",false,0.19,0.24,3.75,0.06,46.15,0.07,1.19
+"Colombia","COL",false,"2020","Total generation",true,77.75,100,1535.65,-1.03,-1.31,0,-20.34
+"Colombia","COL",false,"2020","Wind",false,0.01,0.01,0.2,-0.05,-83.33,-0.07,-0.99
+"Colombia","COL",false,"2021","Bioenergy",false,2.24,2.66,43.76,0.09,4.19,-0.11,1.76
+"Colombia","COL",false,"2021","Coal",false,4.44,5.26,86.74,-4.68,-51.32,-6.47,-91.43
+"Colombia","COL",false,"2021","Gas",false,13.76,16.31,268.81,-1.43,-9.41,-3.23,-27.94
+"Colombia","COL",false,"2021","Hydro",false,60.7,71.95,1185.82,12.26,25.31,9.65,239.51
+"Colombia","COL",false,"2021","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2021","Other fossil",false,2.83,3.35,55.29,0.18,6.79,-0.06,3.52
+"Colombia","COL",false,"2021","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2021","Solar",false,0.33,0.39,6.45,0.14,73.68,0.15,2.74
+"Colombia","COL",false,"2021","Total generation",true,84.36,100,1648.04,6.61,8.5,0,129.13
+"Colombia","COL",false,"2021","Wind",false,0.06,0.07,1.17,0.05,500,0.06,0.98
+"Colombia","COL",false,"2022","Bioenergy",false,2.18,2.63,42.14,-0.06,-2.68,-0.03,-1.16
+"Colombia","COL",false,"2022","Coal",false,5.01,6.05,96.83,0.57,12.84,0.79,11.02
+"Colombia","COL",false,"2022","Gas",false,13.49,16.28,260.74,-0.27,-1.96,-0.03,-5.22
+"Colombia","COL",false,"2022","Hydro",false,58.73,70.88,1135.14,-1.97,-3.25,-1.07,-38.08
+"Colombia","COL",false,"2022","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2022","Other fossil",false,2.75,3.32,53.15,-0.08,-2.83,-0.03,-1.55
+"Colombia","COL",false,"2022","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2022","Solar",false,0.63,0.76,12.18,0.3,90.91,0.37,5.8
+"Colombia","COL",false,"2022","Total generation",true,82.86,100,1601.53,-1.5,-1.78,0,-28.99
+"Colombia","COL",false,"2022","Wind",false,0.07,0.08,1.35,0.01,16.67,0.01,0.19
+"Colombia","COL",false,"2023","Bioenergy",false,2.27,2.51,43.39,0.09,4.13,-0.12,1.72
+"Colombia","COL",false,"2023","Coal",false,11.33,12.53,216.55,6.32,126.15,6.48,120.79
+"Colombia","COL",false,"2023","Gas",false,16.2,17.92,309.63,2.71,20.09,1.64,51.8
+"Colombia","COL",false,"2023","Hydro",false,56.19,62.14,1073.94,-2.54,-4.32,-8.74,-48.55
+"Colombia","COL",false,"2023","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2023","Other fossil",false,3.24,3.58,61.93,0.49,17.82,0.26,9.37
+"Colombia","COL",false,"2023","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2023","Solar",false,1.13,1.25,21.6,0.5,79.37,0.49,9.56
+"Colombia","COL",false,"2023","Total generation",true,90.42,100,1728.17,7.56,9.12,0,144.49
+"Colombia","COL",false,"2023","Wind",false,0.06,0.07,1.15,-0.01,-14.29,-0.01,-0.19
+"Colombia","COL",false,"2024","Bioenergy",false,2.27,2.59,42.92,0,0,0.08,0
+"Colombia","COL",false,"2024","Coal",false,13.26,15.15,250.73,1.93,17.03,2.62,36.49
+"Colombia","COL",false,"2024","Gas",false,14.73,16.83,278.52,-1.47,-9.07,-1.09,-27.8
+"Colombia","COL",false,"2024","Hydro",false,50.84,58.1,961.31,-5.35,-9.52,-4.04,-101.16
+"Colombia","COL",false,"2024","Nuclear",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2024","Other fossil",false,3.2,3.66,60.51,-0.04,-1.23,0.08,-0.76
+"Colombia","COL",false,"2024","Other renewables",false,0,0,0,0,,0,0
+"Colombia","COL",false,"2024","Solar",false,3.21,3.67,60.7,2.08,184.07,2.42,39.33
+"Colombia","COL",false,"2024","Total generation",true,87.51,100,1654.68,-2.91,-3.22,0,-55.02
+"Colombia","COL",false,"2024","Wind",false,0,0,0,-0.06,-100,-0.07,-1.13
