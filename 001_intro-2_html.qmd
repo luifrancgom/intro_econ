@@ -23,8 +23,8 @@ knitr:
   opts_chunk: 
     echo: false
     warning: false
-    fig-align: center
-    out-width: 85%
+    fig.align: center
+    out.width: 85%
 lang: en
 bibliography: intro_econ.bib
 csl: apa-7.csl
@@ -38,9 +38,25 @@ library(tidyverse)
 library(gt)
 library(janitor)
 library(scales)
-
 library(readxl)
 library(ggrepel)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c("#043074",
+                  "#fdc600",
+                  "#0d5e30",
+                  "#ee2a24",
+                  "#fc6700",
+                  "#00b3f0",
+                  "#6e3c1a",
+                  "#f8941c",
+                  "#8e44ad",
+                  "#2c3e50",
+                  "#16a085",
+                  "#c0392b")
 ```
 
 # Please Read Me
@@ -66,7 +82,7 @@ library(ggrepel)
 ##
 
 ```{r}
-# Complete table
+# Create table
 tbl_isic_col <- tibble(Section = LETTERS[1:21],
        Division = c("01-03", "05-09", "10-33",
                     "35", "36-39", "41-43",
@@ -112,6 +128,7 @@ second <- (middle + 1):n_row
 #| label: tbl-isic-col-1
 #| tbl-cap: ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
 
+# Table
 tbl_isic_col_1 <- tbl_isic_col[first, ]  |> 
   gt() |> 
   tab_style(
@@ -138,6 +155,7 @@ tbl_isic_col_1
 #| label: tbl-isic-col-2
 #| tbl-cap: ISIC adapted for Colombia [@dane_clasificacion_2022, pp. 134-677]
 
+# Table
 tbl_isic_col_2 <- tbl_isic_col[second, ]  |> 
   gt() |> 
   tab_style(
@@ -412,19 +430,6 @@ generation_yearly_clean <- generation_yearly |>
 #| fig-cap: Percentage share of Colombia electricity generation by source
 
 # Visualization
-umng_palette <- c("#043074",
-                  "#fdc600",
-                  "#0d5e30",
-                  "#ee2a24",
-                  "#fc6700",
-                  "#00b3f0",
-                  "#6e3c1a",
-                  "#f8941c",
-                  "#8e44ad",
-                  "#2c3e50",
-                  "#16a085",
-                  "#c0392b")
-
 generation_yearly_clean |> 
   ggplot(aes(x = date, pct_generation_twh, group = series)) +
   geom_area(aes(fill = series)) +

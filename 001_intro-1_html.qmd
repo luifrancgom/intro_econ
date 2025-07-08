@@ -24,8 +24,8 @@ knitr:
   opts_chunk: 
     echo: false
     warning: false
-    fig-align: center
-    out-width: 85%
+    fig.align: center
+    out.width: 85%
 lang: en
 bibliography: intro_econ.bib
 csl: apa-7.csl
