@@ -42,6 +42,26 @@ library(plotly)
 library(scales)
 ```
 
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
 # Please Read Me
 
 ##
@@ -244,8 +264,8 @@ pop_pyramid_tbl_tidy |>
     textposition = "none",
     hoverinfo = "text",
     colors = c(
-      "Men" = "#043074",
-      "Women" = "#fdc600"
+      "Men" = umng_palette[1],
+      "Women" = umng_palette[2]
     ),
     marker = list(
       line = list(
@@ -325,7 +345,7 @@ height_adults_col_tidy |>
   )) +
   scale_color_manual(
     labels = c("Men", "Women"),
-    values = c("#043074", "#fdc600")
+    values = umng_palette[1:2]
   ) +
   labs(
     x = NULL,
@@ -470,11 +490,11 @@ posicion_ideologica_clean |>
     p5328_label
   )) +
   geom_segment(aes(xend = 0, yend = p5328_label),
-    color = "#043074"
+    color = umng_palette[1]
   ) +
   geom_point(
     shape = 21,
-    fill = "#fdc600",
+    fill = umng_palette[2],
     size = 3
   ) +
   geom_text(aes(label = pct_n_label),
@@ -517,7 +537,7 @@ posicion_ideologica_clean |>
         - Level of regulation like in the case of the environment or the labor market
         - Trade policy in relation to more or less free trade or proteccionism
         
-## 
+##
 
 - If you want to learn more about people in Colombia check out:
 
@@ -640,11 +660,11 @@ household_income_nper_tbl <- household_tbl_tidy |>
 household_income_nper_tbl |>
   ggplot(aes(pct_fex_c, fct_rev(range_ingtotug))) +
   geom_segment(aes(xend = 0, yend = fct_rev(range_ingtotug)),
-    color = "#043074"
+    color = umng_palette[1]
   ) +
   geom_point(
     shape = 21,
-    fill = "#fdc600",
+    fill = umng_palette[2],
     size = 3
   ) +
   geom_text(aes(label = pct_fex_c_text),
@@ -761,11 +781,11 @@ household_housing_tbl |>
     fct_reorder(.f = p5090, .x = pct_fex_c)
   )) +
   geom_segment(aes(xend = 0, yend = p5090),
-    color = "#043074"
+    color = umng_palette[1]
   ) +
   geom_point(
     shape = 21,
-    fill = "#fdc600",
+    fill = umng_palette[2],
     size = 3
   ) +
   geom_text(aes(label = pct_fex_c_text),
@@ -848,7 +868,7 @@ schools_bilin_tbl |>
   ggplot(aes(TIPOBIL_NOMBRE, pct_n)) +
   geom_col(
     color = "black",
-    fill = "#043074"
+    fill = umng_palette[1]
   ) +
   geom_text(aes(label = pct_n_text),
     vjust = -0.8,
@@ -887,7 +907,7 @@ schools_bilin_tbl |>
     axis.ticks.y = element_blank(),
     strip.background.x = element_rect(
       color = "black",
-      fill = "#fdc600"
+      fill = umng_palette[2]
     ),
     strip.text.x = element_text(
       margin = margin(

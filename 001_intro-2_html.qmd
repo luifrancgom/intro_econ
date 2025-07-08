@@ -285,7 +285,7 @@ manufac_tbl_clean |>
   ggplot(aes(0, valagri)) +
   geom_point(
     shape = 21,
-    fill = "#fdc600",
+    fill = umng_palette[2],
     size = 3,
     position = position_jitter(
       width = 0.2,
@@ -342,7 +342,7 @@ total_personnel_employed |>
     boundary = 0,
     bins = 100,
     color = "black",
-    fill = "#fdc600"
+    fill = umng_palette[2]
   ) +
   labs(
     x = "Average total personnel employed",
@@ -380,7 +380,7 @@ manufac_tbl_clean |>
     boundary = 0,
     bins = 50,
     color = "black",
-    fill = "#fdc600"
+    fill = umng_palette[2]
   ) +
   scale_x_continuous(labels = label_number(big.mark = ",")) +
   labs(
@@ -605,7 +605,7 @@ egg_jan_may_tbl |>
     ),
     strip.background.x = element_rect(
       color = "black",
-      fill = "#fdc600"
+      fill = umng_palette[2]
     ),
     strip.text.x = element_text(
       margin = margin(

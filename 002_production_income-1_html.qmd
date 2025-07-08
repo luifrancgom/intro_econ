@@ -56,7 +56,8 @@ umng_palette <- c(
   "#8e44ad",
   "#2c3e50",
   "#16a085",
-  "#c0392b"
+  "#c0392b",
+  "#e91e63"
 )
 ```
 
@@ -247,15 +248,15 @@ gdp_agg_value_table_clean_2 <- gdp_agg_value_table |>
     locations = cells_column_labels()
   ) |>
   tab_style(
-    style = cell_fill(color = "#fdc600"),
+    style = cell_fill(color = umng_palette[2]),
     locations = cells_body(rows = 6)
   ) |>
   tab_style(
-    style = cell_fill(color = "#ee2a24"),
+    style = cell_fill(color = umng_palette[4]),
     locations = cells_body(rows = 7)
   ) |>
   tab_style(
-    style = cell_fill(color = "#00b3f0"),
+    style = cell_fill(color = umng_palette[6]),
     locations = cells_body(rows = 8)
   ) |>
   tab_options(
@@ -273,7 +274,7 @@ gdp_agg_value_table_clean_2 <- gdp_agg_value_table |>
 gdp_agg_value_table_clean_2
 ```
 
-##
+## {.center}
 
 ```{r}
 # Data
@@ -333,11 +334,11 @@ gdp_income_table_clean <- gdp_income_table |>
     locations = cells_column_labels()
   ) |>
   tab_style(
-    style = cell_fill(color = "#ee2a24"),
+    style = cell_fill(color = umng_palette[4]),
     locations = cells_body(rows = 2)
   ) |>
   tab_style(
-    style = cell_fill(color = "#00b3f0"),
+    style = cell_fill(color = umng_palette[6]),
     locations = cells_body(rows = 5)
   ) |>
   tab_options(
@@ -355,7 +356,7 @@ gdp_income_table_clean <- gdp_income_table |>
 gdp_income_table_clean
 ```
 
-##
+## {.center}
 
 ```{r}
 # Data
@@ -425,11 +426,11 @@ gdp_expenditure_table_clean <- gdp_expenditure_table |>
     locations = cells_column_labels()
   ) |>
   tab_style(
-    style = cell_fill(color = "#fc6700"),
+    style = cell_fill(color = umng_palette[5]),
     locations = cells_body(rows = 5)
   ) |>
   tab_style(
-    style = cell_fill(color = "#ee2a24"),
+    style = cell_fill(color = umng_palette[6]),
     locations = cells_body(rows = 6)
   ) |>
   tab_options(
@@ -720,7 +721,7 @@ growth_real_gpd_per_capita_col |>
 -   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
 [**readxl**](https://CRAN.R-project.org/package=readxl),
 [**gt**](https://CRAN.R-project.org/package=gt),
-[**wbstats**](https://CRAN.R-project.org/package=wbstats), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+[**wbstats**](https://CRAN.R-project.org/package=wbstats), [**scales**](https://CRAN.R-project.org/package=scales) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 ##
 
