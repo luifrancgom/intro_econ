@@ -65,11 +65,11 @@ library(scales)
 
 ##
 
-![Macro, micro and organizational level business [@leal_filho_business_2020]](_000_images/001_business_environment.png){.nostretch #fig-business-environment width=85%}
+![Macro, micro and organizational level business [@leal_filho_business_2020]](_000_images/001_business_environment.png){.nostretch #fig-business-environment width=85% fig-align="center"}
 
 ## 
 
-![A model of the economy: flows of resources [@the_core_econ_team_economy_2023, chap. 1, sec. 1.13]](_000_images/001_model_of_the_economy.png){.nostretch #fig-model-of-the-economy width=75%}
+![A model of the economy: flows of resources [@the_core_econ_team_economy_2023, chap. 1, sec. 1.13]](_000_images/001_model_of_the_economy.png){.nostretch #fig-model-of-the-economy width=75% fig-align="center"}
 
 ##
 
