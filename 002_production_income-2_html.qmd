@@ -458,6 +458,8 @@ tbl_isic_col_2
 
 ##
 
+<!-- Check out 000_gifs/002_gdp_sector_plot_anim.R -->
+
 ![Sectors and share in GDP for Colombia](000_gifs/002_gdp_sector_plot_anim.gif){.nostretch #fig-sectors-share-gdp-col width=80% fig-align="center"}
 
 # Macroeconomic identity
