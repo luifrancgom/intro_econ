@@ -39,6 +39,9 @@ library(readxl)
 library(gt)
 library(wbstats)
 library(scales)
+# See 000_gifs/002_gdp_sector_plot_anim.R
+## library(treemapify)
+## library(gganimate)
 ```
 
 ```{r}
@@ -455,7 +458,7 @@ tbl_isic_col_2
 
 ##
 
-
+![Sectors and share in GDP for Colombia](000_gifs/002_gdp_sector_plot_anim.gif){.nostretch #fig-sectors-share-gdp-col width=80% fig-align="center"}
 
 # Macroeconomic identity
 
@@ -589,6 +592,6 @@ If you want a summary about the topic of Gross Domestic Product check out[^1]:
 [**readxl**](https://CRAN.R-project.org/package=readxl),
 [**gt**](https://CRAN.R-project.org/package=gt),
 [**wbstats**](https://CRAN.R-project.org/package=wbstats), 
-[**scales**](https://CRAN.R-project.org/package=scales) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+[**scales**](https://CRAN.R-project.org/package=scales), [**treemapify**](https://CRAN.R-project.org/package=treemapify), [**gganimate**](https://CRAN.R-project.org/package=gganimate) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}

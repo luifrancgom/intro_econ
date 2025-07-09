@@ -103,7 +103,7 @@ umng_palette <- c(
 
     -   **Gross**: means that depreciation is not deducted (in economy it is called consumption of fixed capital). In other words, the decrease in the value of the assets used in the production process due to physical deterioration, foreseeable wear or accidental damage is not deducted
 
-![Not deducting depreciation](_000_images/001_image3.png){.nostretch #fig-gross width="45%" fig-align="center"}
+![Not deducting depreciation](_000_images/001_image3.png){.nostretch #fig-gross width=45% fig-align="center"}
 
 ## {.smaller} 
 
@@ -551,7 +551,7 @@ gdp_nominal_real_col |>
 
     -   The amount of products that 1 local currency unit of an economy can buy in another economy
 
-![Applying a purchasing power parity adjustment](_000_images/002_image3.png){.nostretch #fig-purchasing-power-parity-adjustment width="50%" fig-align="center"}
+![Applying a purchasing power parity adjustment](_000_images/002_image3.png){.nostretch #fig-purchasing-power-parity-adjustment width=50% fig-align="center"}
 
 ##
 
