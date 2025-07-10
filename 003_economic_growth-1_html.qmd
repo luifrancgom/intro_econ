@@ -34,7 +34,9 @@ editor: source
 ```{r}
 #| label: libraries
 
-
+library(tidyverse)
+library(readxl)
+library(scales)
 ```
 
 ```{r}
@@ -67,7 +69,7 @@ umng_palette <- c(
 
 -   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
 
--   This presentation is based on [@cardenas_introduccion_2020, Chapter 2]
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 3]
 
 ## 
 
@@ -77,8 +79,317 @@ umng_palette <- c(
 
 # What is economic growth?
 
+## {.smaller}
+
+-   Economic growth can be define as an increase in the quantity and quality of products that a society produces and consumes [@roser_economic_2013]
+
+-   The definition of economic growth is straightforward but this concept is extremely difficult to measure [@roser_economic_2013]
+
+-   Economists often measure economic growth as an increase in Gross Domestic Product per capita by applying inflation adjustments. Furthermore, if international comparisons are necessary also purchase power parity (PPP) adjustments are applied [@roser_economic_2013]
+
+-   From the long-term perspective of social history economic growth is a recent phenomena [@roser_economic_2013]
+
+-   For data related to economic growth from a long-term perspective check out [@bolt_maddisonstyle_2024] and [@bolt_maddison_2024]
+
+# Economic growth from a long-term perspective
+
+## 
+
+```{r}
+# Data
+# https://www.rug.nl/ggdc/ > 
+# Historical Development > 
+# Historical Development >
+# Maddison Historical Statistics > 
+# Releases > 
+# 2023 > 
+# Excel
+
+# Or using the direct link
+# https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023 >
+# Excel
+
+# Or using a doi or persistent link
+# 10.34894/INZBF2
+# https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/INZBF2
+
+# Import
+data_madison_region_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2023.xlsx",
+                                                         sheet = 6,
+                                                         range = "A2:J30",
+                                                         col_names = TRUE,
+                                                         trim_ws = TRUE)
+# Tidy
+data_madison_region_gdp_per_capita_clean <- data_madison_region_gdp_per_capita |> 
+  rename(year = `...1`, World = `...10`) |> 
+  mutate(year = as.integer(year)) |> 
+  pivot_longer(cols = -c(year), 
+               names_to = "region", 
+               values_to = "gpd_per_capita") |>
+  mutate(region = fct_reorder(.f = region,
+                              .x = gpd_per_capita,
+                              .fun = last,
+                              .na_rm = FALSE,
+                              .desc = TRUE))
+
+# Helpers
+## Check https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/INZBF2
+last_update_data_madison <- ymd("2024-04-26") 
+```
+
+```{r}
+#| label: fig-gdp-pc-ppp-latin-america-world
+#| fig-cap: GDP per−capita purchasing power parity, Latin America and the World
+
+# Visualization
+data_madison_region_gdp_per_capita_clean |> 
+  ggplot(aes(x = year,
+             y = gpd_per_capita, 
+             group = region)) +
+  geom_line(
+    aes(color = region)
+    ) +
+  scale_x_continuous(breaks = c(seq(from = min(data_madison_region_gdp_per_capita_clean$year),
+                                    to   = 2020,
+                                    by   = 10))) +
+  scale_y_continuous(labels = label_number(scale    = 1e-3,
+                                           suffix   = "K",
+                                           accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:9]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_region_gdp_per_capita_clean$year)}-{max(data_madison_region_gdp_per_capita_clean$year)}"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
+# Economic growth paths
+
+## 
+
+```{r}
+# Import
+data_madison_country_gdp_per_capita <- read_excel("000_data/003_mpd2023.xlsx", 
+                                                  sheet = 5, 
+                                                  # It generates an error with
+                                                  # "A1:F131145"
+                                                  ## So cell_limits is used
+                                                  range = cell_limits(c(1, 1), 
+                                                                      c(131145, 6)),
+                                                  trim_ws = TRUE)
+
+# Tidy
+data_madison_country_gdp_per_capita <- data_madison_country_gdp_per_capita |> 
+  mutate(country = fct_reorder(.f = country,
+                              .x = gdppc,
+                              .fun = last,
+                              .na_rm = FALSE,
+                              .desc = TRUE))
+
+data_madison_country_usa_col_kor_sgp <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("USA", "COL", "KOR", "SGP"),
+         year %in% 1911:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-usa-col-kor
+#| fig-cap: GDP per-capita purchasing power parity, Colombia, USA, South Korea and Singapore
+
+# Visualization
+data_madison_country_usa_col_kor_sgp |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_usa_col_kor_sgp$year), 
+                                      to = max(data_madison_country_usa_col_kor_sgp$year), 
+                                      by = 5)) + 
+  scale_y_continuous(labels = label_number(scale    = 1e-3,
+                                           suffix   = "K",
+                                           accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:4]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_usa_col_kor_sgp$year)}-{max(data_madison_country_usa_col_kor_sgp$year)}
+                           No information for South Korea in 1944-1945
+                           No information for Singapore in 1940-1949"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
 ##
 
+```{r}
+# Tidy
+data_madison_country_hti_dom <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("HTI", "DOM"),
+         year %in% 1950:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-hti-dom
+#| fig-cap: GDP per-capita purchasing power parity, Haiti and Dominican Republic
+
+# Visualization
+data_madison_country_hti_dom |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_hti_dom$year), 
+                                      to = max(data_madison_country_hti_dom$year), 
+                                      by = 10)) +
+  scale_y_continuous(labels = label_number(scale    = 1e-3,
+                                           suffix   = "K",
+                                           accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_hti_dom$year)}-{max(data_madison_country_hti_dom$year)}"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
+##
+
+```{r}
+# Tidy
+data_madison_country_col_ven <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("COL", "VEN"),
+         year %in% 1900:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-col-ven
+#| fig-cap: GDP per-capita purchasing power parity, Colombia and Venezuela
+
+# Visualization
+data_madison_country_col_ven |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_col_ven$year), 
+                                      to = max(data_madison_country_col_ven$year), 
+                                      by = 10)) + 
+  scale_y_continuous(labels = scales::label_number(scale    = 1e-3,
+                                                   suffix   = "K",
+                                                   accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_col_ven$year)}-{max(data_madison_country_col_ven$year)}"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
+##
+
+```{r}
+# Tidy
+data_madison_country_zwe_bwa <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("ZWE", "BWA"),
+         year %in% 1950:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-zwe-bwa
+#| fig-cap: GDP per-capita purchasing power parity, Zimbabwe and Botswana
+
+# Visualization
+data_madison_country_zwe_bwa |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_zwe_bwa$year), 
+                                      to = max(data_madison_country_zwe_bwa$year), 
+                                      by = 10)) + 
+  scale_y_continuous(labels = scales::label_number(scale    = 1e-3,
+                                                   suffix   = "K",
+                                                   accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_zwe_bwa$year)}-{max(data_madison_country_zwe_bwa$year)}"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
 
 
 # Acknowledgments

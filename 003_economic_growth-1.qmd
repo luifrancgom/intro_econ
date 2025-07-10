@@ -93,9 +93,9 @@ Analyze the determinants of economic growth
 # https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023 >
 # Excel
 
-# Or using a doi
-# https://doi.org/10.34894/INZBF2 >
-# mpd2023_web.xlsx
+# Or using a doi or persistent link
+# 10.34894/INZBF2
+# https://dataverse.nl/dataset.xhtml?persistentId=doi:10.34894/INZBF2
 data_madison_region_gdp_per_capita <- readxl::read_excel("000_data/003_mpd2023.xlsx",
                                                          sheet = 6,
                                                          range = "A2:J30",
