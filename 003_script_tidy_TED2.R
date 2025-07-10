@@ -13,17 +13,18 @@ header <- read_excel(path = "000_data/003_untidy_TED2.xlsx",
 variables <- header |> 
   select(-c(row)) |> 
   t() |> 
-  as_tibble(rownames = NULL) |> 
-  select(-V4) |> 
-  rename(database_label = V1,
-         value_unit_description = V3,
-         periodicity = V5) |> 
-  separate_wider_delim(cols = V2, 
+  as_tibble(rownames = NULL, 
+            .name_repair = "universal") |>
+  select(-...4) |> 
+  rename(database_label = ...1,
+         value_unit_description = ...3,
+         periodicity = ...5) |> 
+  separate_wider_delim(cols = ...2, 
                        delim = ":",
                        names = c("unit_label", "variable_label")) |> 
   mutate(variable_label = str_trim(variable_label)) |> 
-  separate_wider_regex(cols = V6,
-                       c(database_code = "TED2_",
+  separate_wider_regex(cols = ...6,
+                       c(database_code = "TED[0-9]_",
                          unit_code = "[^_]+_",
                          variable_code = ".+"))
 
