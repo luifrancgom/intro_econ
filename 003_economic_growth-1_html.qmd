@@ -208,7 +208,7 @@ data_madison_country_usa_col_kor_sgp <- data_madison_country_gdp_per_capita |>
 
 ```{r}
 #| label: fig-growth-paths-usa-col-kor
-#| fig-cap: GDP per-capita purchasing power parity, Colombia, USA, South Korea and Singapore
+#| fig-cap: GDP per-capita purchasing power parity, Colombia, USA, Republic of Korea and Singapore
 
 # Visualization
 data_madison_country_usa_col_kor_sgp |> 
@@ -229,7 +229,7 @@ data_madison_country_usa_col_kor_sgp |>
        color = NULL,
        subtitle = str_glue("Variable units: constant 2011 international USD
                            Period: {min(data_madison_country_usa_col_kor_sgp$year)}-{max(data_madison_country_usa_col_kor_sgp$year)}
-                           No information for South Korea in 1944-1945
+                           No information for Republic of Korea in 1944-1945
                            No information for Singapore in 1940-1949"),
        caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
                            Last update date: {last_update_data_madison}")) +
@@ -391,11 +391,147 @@ data_madison_country_zwe_bwa |>
   )
 ```
 
+##
+
+```{r}
+# Tidy
+data_madison_country_ukr_pol <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("UKR", "POL"),
+         year %in% 1980:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-ukr-pol
+#| fig-cap: GDP per-capita purchasing power parity, Ukraine and Poland
+
+# Visualization
+data_madison_country_ukr_pol |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_ukr_pol$year), 
+                                      to = max(data_madison_country_ukr_pol$year), 
+                                      by = 10)) + 
+  scale_y_continuous(labels = scales::label_number(scale    = 1e-3,
+                                                   suffix   = "K",
+                                                   accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_ukr_pol$year)}-{max(data_madison_country_ukr_pol$year)}"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
+##
+
+```{r}
+# Tidy
+data_madison_country_kor_pkr <- data_madison_country_gdp_per_capita |>
+  filter(countrycode %in% c("KOR", "PRK"),
+         year %in% 1911:2022)
+```
+
+```{r}
+#| label: fig-growth-paths-kor-pkr
+#| fig-cap: GDP per-capita purchasing power parity, D.P.R. of Korea and Republic of Korea
+
+# Visualization
+data_madison_country_kor_pkr |> 
+  ggplot(aes(x = year,
+             y = gdppc)) +
+  geom_line(aes(color = country,
+                group = country)) +
+  scale_x_continuous(breaks = seq.int(from = min(data_madison_country_kor_pkr$year), 
+                                      to = max(data_madison_country_kor_pkr$year), 
+                                      by = 10)) + 
+  scale_y_continuous(labels = scales::label_number(scale    = 1e-3,
+                                                   suffix   = "K",
+                                                   accuracy = 1)) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  expand_limits(y = 0) +
+  labs(x        = "Year",
+       y        = "Thousands",
+       color = NULL,
+       subtitle = str_glue("Variable units: constant 2011 international USD
+                           Period: {min(data_madison_country_kor_pkr$year)}-{max(data_madison_country_kor_pkr$year)}
+                           No information for Republic of Korea in 1944-1945
+                           No information for D.P.R. of Korea in 1944-1989"),
+       caption  = str_glue("Source: Maddison Project Database, version 2023 (Bolt and Van Zanden 2024a)
+                           Last update date: {last_update_data_madison}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90,
+                               vjust = 0.5)
+  )
+```
+
+# Economic growth in images
+
+## {.center}
+
+::: {#fig-shangai_financial_district_pudong layout-ncol="2"}
+![1987](_000_images/003_pudong_1987.png){#fig-pudong-1987 width=110%}
+
+![2013](_000_images/003_pudong_2013.png){#fig-pudong-2013 width=110%}
+
+Shanghai’s financial district of Pudong [@taylor_26_2013]
+:::
+
+## 
+
+![Korean peninsula, nocturnal luminosity: September 24, 2012 [@nasa_earth_observatory_korea_2012]](_000_images/003_north_south_koreas.png){.nostretch #fig-korean-peninsula-nocturnal-luminosity fig-align="center" width=70%}
+
+## 
+
+-   Google Earth Timelapse Dubai, UAE check out[^1]:
+
+    -   [https://youtu.be/pjM26oRIay0](https://youtu.be/pjM26oRIay0)
+
+-   Explore about Timelapse at: [https://earthengine.google.com/timelapse](https://earthengine.google.com/timelapse)
+
+    -   Urban growth
+
+        -   Dalian, Liaoning, China
+        -   Las Vegas, Nevada, USA
+
+[^1]: Timelapse is a global, zoomable video that lets you see how the Earth has changed over the past 32 years
 
 # Acknowledgments
 
 ##
 
+-   To my family that supports me
 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
+[**readxl**](https://CRAN.R-project.org/package=readxl),
+[**scales**](https://CRAN.R-project.org/package=scales) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}
