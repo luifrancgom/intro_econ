@@ -40,6 +40,7 @@ params:
       end_exam_hour: 20:30
 engine: knitr
 bibliography: intro_econ.bib
+csl: apa-7.csl
 editor: source
 ---
 
@@ -288,7 +289,7 @@ exam <-  tbl_schedule |>
         -   **Closing time**: `r paste(params$schedule$end_exam_hour)` hours
         -   **Prerequisites**:
             -   Read and review [@cardenas_introduccion_2020, Chapter 3]
-            -   Have a headset with a built-in microphone to isolate noise from the environment
+            -   Have a headset with a built-in microphone to isolate noise from the environment, a computer and a webcam in order to present
 
 ### Segundo corte 30%
 
@@ -361,7 +362,7 @@ exam <-  tbl_schedule |>
         -   **Closing time**: `r paste(params$schedule$end_exam_hour)` hours
         -   **Prerequisites**:
             -   Read and review [@cardenas_introduccion_2020, Chapter 6]
-            -   Have a headset with a built-in microphone to isolate noise from the environment
+            -   Have a headset with a built-in microphone to isolate noise from the environment, a computer and a webcam in order to present
 
 ### Tercer corte 40%
 
@@ -434,7 +435,7 @@ exam <-  tbl_schedule |>
         -   **Closing time**: `r paste(params$schedule$end_exam_hour)` hours
         -   **Prerequisites**:
             -   Read and review [@cardenas_introduccion_2020, Chapter 9]
-            -   Have a headset with a built-in microphone to isolate noise from the environment
+            -   Have a headset with a built-in microphone to isolate noise from the environment, a computer and a webcam in order to present
 
 # Qualifiable activities, weights and process in case of no presentation
 
