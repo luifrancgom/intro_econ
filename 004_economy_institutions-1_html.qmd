@@ -1,0 +1,458 @@
+---
+title: Economy and institutions
+subtitle: Session 1
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    mermaid-format: png
+    reference-location: document
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(wbstats)
+library(ggrepel)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 4]
+
+##
+
+- **Purpose**
+
+    - Analyze the role of institutions in the economy
+
+# Definition of institutions
+
+## 
+
+-   **"Institutions are the rules of the game in a society or, more formally, are the humanly devised constraints that shape human interaction"** [@north_institutions_1990, p. 3]
+
+-   Institutions can be informal or formal [@north_institutions_1991]
+
+    -   **Informal**: sanctions, taboos, customs, traditions, and codes of conduct
+
+    -   **Formal**: constitutions, laws, property right
+
+# Measuring formal institutions
+
+## {.smaller} 
+
+-   Governance
+
+    -   Set of traditions and institutions by which authority in a country is exercised where it includes [@kaufmann_worldwide_2011, p. 222]:
+
+        -   The process by which governments are selected, monitored and replaced
+        -   The capacity of the government to effectively formulate and implement sound policies
+        -   The respect of citizens and the state for the institutions that govern economic and social interactions among them
+
+## 
+
+```{mermaid}
+%%| label: fig-governance-indicators
+%%| fig-cap: Governance dimensions [@kaufmann_worldwide_2011, p. 223]
+
+flowchart TB
+    A(Governance) --> A1("`Process by which 
+    governments are 
+    selected, monitored, 
+    and replaced`")
+    A --> A2("`Capacity of the 
+    government to 
+    effectively formulate 
+    and implement 
+    sound policies`")
+    A --> A3("`Respect of citizens 
+    and the state for 
+    the institutions that 
+    govern economic and 
+    social interactions 
+    among them`")
+    
+    A1 --> A11("`Voice and 
+    accountability`")
+    A1 --> A12("`Political Stability 
+    and Absence of 
+    Violence/Terrorism`")
+    
+    A2 --> A21("`Government 
+    effectiveness`")
+    A2 --> A22("`Regulatory 
+    Quality`")
+
+    A3 --> A31("`Rule of 
+    law`")
+    A3 --> A32("`Control of
+    Corruption`")
+
+    classDef UmngNode fill:#fdc600,stroke:#043074,stroke-width:2px;
+    class A,A1,A11,A12,A2,A21,A22,A3,A31,A32 UmngNode;
+```
+
+## 
+
+-   Where can I find data?
+
+    -   Worldwide Governance Indicators (WGI) - WorldBank
+
+        -   [https://databank.worldbank.org/source/worldwide-governance-indicators](https://databank.worldbank.org/source/worldwide-governance-indicators)
+
+-   What is the methodology?
+
+    -   [https://www.worldbank.org/en/publication/worldwide-governance-indicators](https://www.worldbank.org/en/publication/worldwide-governance-indicators) \> Documentation
+    
+##
+
+```{r}
+# Helpers
+initial_year <- 1996
+last_year <- 2023
+middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
+
+# Import
+## Percent Rank indicators
+wgi_col <- wb_data(
+  indicator = c(
+    # Voice and accountability
+    "VA.PER.RNK",
+    # Political Stability and Absence of Violence/Terrorism
+    "PV.PER.RNK",
+    # Government effectiveness
+    "GE.PER.RNK",
+    # Regulatory quality
+    "RQ.PER.RNK",
+    # Rule of law
+    "RL.PER.RNK",
+    # Control of Corruption
+    "CC.PER.RNK"
+  ),
+  country = "COL",
+  start_date = initial_year,
+  end_date = last_year,
+  return_wide = FALSE
+)
+
+# Tidy
+wgi_col_clean <- wgi_col |>
+  filter(date %in% c(initial_year, middle_year, last_year)) |>
+  mutate(
+    indicator = str_replace(
+      string = indicator,
+      pattern = ": Percentile Rank",
+      replacement = ""
+    ),
+    indicator = ifelse(test = indicator == "Political Stability and Absence of Violence/Terrorism",
+      yes = "Political Stability and Absence\nof Violence/Terrorism",
+      no = indicator
+    ),
+    indicator = fct_relevel(
+      indicator,
+      "Voice and Accountability",
+      "Political Stability and Absence\nof Violence/Terrorism",
+      "Government Effectiveness",
+      "Regulatory Quality",
+      "Rule of Law",
+      "Control of Corruption"
+    ) |>
+      fct_rev(),
+    date = as.factor(date) |> fct_rev()
+  )
+```
+
+```{r}
+#| label: fig-governance-dimensions-col
+#| fig-cap: Governance dimensions for Colombia
+
+# Visualization
+wgi_col_clean |>
+  ggplot(aes(y = indicator, x = value, fill = date)) +
+  geom_col(
+    position = "dodge",
+    color = "black"
+  ) +
+  geom_text(aes(label = round(value, digits = 2)),
+    position = position_dodge(width = 1),
+    hjust = -0.2
+  ) +
+  scale_fill_manual(values = umng_palette[1:3]) +
+  guides(fill = guide_legend(reverse = TRUE)) +
+  expand_limits(x = c(0, 70)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    fill = NULL,
+    subtitle = str_glue("All indicators are expressed as percentile ranks
+                           Percentile rank indicates the country's rank among all countries covered by the aggregate indicator,
+                           with 0 corresponding to lowest rank, and 100 to highest rank"),
+    caption = str_glue("Source: Worldwide Governance Indicators (WGI) - World Bank
+                          Last update: {unique(wgi_col_clean$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  )
+```
+
+# Crime
+
+##
+
+```{r}
+# Helpers
+initial_year <- 1990
+last_year <- 2021
+
+# Import
+homicide <- wb_data( # Intentional homicides (per 100,000 people)
+  indicator = "VC.IHR.PSRC.P5",
+  start_date = initial_year,
+  end_date = last_year
+)
+
+# Tidy
+homicide_pivot_wider <- homicide |>
+  filter(!is.na(VC.IHR.PSRC.P5), date %in% c(initial_year, last_year)) |>
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.P5) |>
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.P5) |>
+  drop_na()
+
+names <- names(homicide_pivot_wider)
+```
+
+```{r}
+#| label: fig-intentional-homicides-col
+#| fig-cap: Intentional homicides (per 100,000 people)
+
+# Visualization
+homicide_pivot_wider |>
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about:
+  #### You have the column name as a character vector
+  ggplot(aes(x = .data[[names[4]]], y = .data[[names[5]]])) +
+  geom_abline(slope = 1, 
+              color = umng_palette[1]) +
+  geom_point(
+    shape = 21,
+    size = 4,
+    fill = umng_palette[2]
+  ) +
+  geom_label_repel(
+    data = homicide_pivot_wider |>
+      filter(country == "Colombia"),
+    aes(label = country),
+    seed = 1234,
+    box.padding = 1
+  ) +
+  labs(
+    fill = NULL,
+    title = str_glue("Period: {initial_year} vs {last_year}"),
+    subtitle = str_glue("Number of countries: {nrow(homicide_pivot_wider)}"),
+    caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+##
+
+```{r}
+# Helpers 
+initial_year <- 1990
+last_year <- 2021
+
+# Import
+homicide_female <- wb_data(
+  # Intentional homicides, female (per 100,000 female)
+  indicator = "VC.IHR.PSRC.FE.P5", 
+  start_date = initial_year, 
+  end_date = last_year)
+
+# Tidy
+homicide_female_pivot_wider <- homicide_female |> 
+  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(initial_year, last_year)) |> 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) |> 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) |> 
+  drop_na()
+
+names_female <- names(homicide_female_pivot_wider)
+```
+
+```{r}
+#| label: fig-intentional-homicides-female-col 
+#| fig-cap: Intentional homicides, female (per 100,000 female)
+
+# Visualization
+homicide_female_pivot_wider |> 
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about: 
+  #### You have the column name as a character vector 
+  ggplot(aes(x = .data[[names_female[4]]], y = .data[[names_female[5]]])) + 
+  geom_abline(slope = 1, color = umng_palette[1]) +
+  geom_point(shape = 21, 
+             size = 4,
+             fill = umng_palette[2]) + 
+  geom_label_repel(data = homicide_female_pivot_wider |> 
+                     filter(country == "Colombia"),
+                   aes(label = country), 
+                   seed = 1234,                    
+                   box.padding = 1) + 
+  labs(fill = NULL, 
+       title = str_glue("Period: {initial_year} vs {last_year}"),
+       subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
+       caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide_female$last_updated)}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+##
+
+```{r}
+# Helpers 
+initial_year <- 1990
+last_year <- 2021
+
+# Import 
+homicide_male <- wb_data(
+  # Intentional homicides, male (per 100,000 male)
+  indicator = "VC.IHR.PSRC.MA.P5",
+  start_date = initial_year, 
+  end_date = last_year)
+
+# Tidy
+homicide_male_pivot_wider <- homicide_male |> 
+  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(initial_year, last_year)) |> 
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) |> 
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) |> 
+  drop_na()
+
+names_male <- names(homicide_male_pivot_wider) 
+```
+
+```{r}
+#| label: fig-intentional-homicides-male-col 
+#| fig-cap: Intentional homicides, male (per 100,000 male)
+
+# Visualization
+homicide_male_pivot_wider |> 
+  # Check this notation in
+  ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
+  ### In particular the case about: 
+  #### You have the column name as a character vector 
+  ggplot(aes(x = .data[[names_male[4]]], y = .data[[names_male[5]]])) + 
+  geom_abline(slope = 1, 
+              color = umng_palette[1]) +
+  geom_point(shape = 21, 
+             size = 4,
+             fill = umng_palette[2]) + 
+  geom_label_repel(data = homicide_male_pivot_wider |> 
+                     filter(country == "Colombia"),
+                   aes(label = country), 
+                   seed = 1234,                    
+                   box.padding = 1) +
+  labs(fill = NULL, 
+       title = str_glue("Period: {initial_year} vs {last_year}"),
+       subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
+       caption = str_glue("Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide_male$last_updated)}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+# Acknowledgments
+
+##
+
+
+    
+# References {.allowframebreaks}
