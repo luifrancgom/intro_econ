@@ -81,13 +81,13 @@ if(length(params$meeting_info$days) > 1) {
 
 -   **Communication through the virtual classroom**
 
-    -   For doubts and concerns of the topics of the course, please use the *Forum: Questions or concerns* that can be accessed at the top of the platform
+    -   For doubts and concerns of the topics of the course, please use the *Q&A forum* that can be accessed at the top of the platform
 
-        -   In this way, doubts and concerns can be shared with all students and all course participants can contribute to the learning process
+        -   In this way doubts can be shared with all students and all course participants can contribute to the learning process
 
     -   Complaints regarding grades, please send an email to [**`{r} rmarkdown::metadata$author[[1]]$email`**](mailto:%60r%20rmarkdown::metadata$author%5B%5B1%5D%5D$email%60)
 
-        -   Please wait for grades to be published on the News Bulletin Board before submitting any complaints. Complaints should be based on the feedback provided and must take into account the evaluation parameters.
+        -   Please wait for grades to be published on the Announcements forum before submitting any complaints. Complaints should be based on the feedback provided and must take into account the evaluation parameters.
 
     -   For urgent issues, you can call me to `{r} params$meeting_info$phone` between `{r} params$meeting_info$start_hour` hours and `{r} params$meeting_info$end_hour` hours on `{r} days_str`. But, please do not send me whatsapp messages or call me on weekends.
 
