@@ -32,7 +32,7 @@ pop_col <- read_excel(path = "000_data/004_serie_departamental_de_poblacion_por_
 ###                    Hurto a entidades financieras
 ###                    Secuestro
 ### Año: 2024
-### Fecha: 2025-01-07
+### Fecha: 2025-07-15
 homicidio_intencional <- read_excel(path = "000_data/004_homicidio_intencional_2023.xlsx", 
                                     sheet = 1, 
                                     range = "A10:H11022")

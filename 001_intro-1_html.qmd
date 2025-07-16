@@ -66,7 +66,7 @@ umng_palette <- c(
 
 ##
 
--   Check the message **Welcome greeting** published in Announcements.
+-   Check the message **Welcome greeting** published in Announcements forum.
 
 -   Dear student please edit your profile uploading a photo where your face is clearly visible.
 
