@@ -38,6 +38,11 @@ editor: source
 library(tidyverse)
 library(wbstats)
 library(ggrepel)
+
+# See 004_script_crime_col.R
+# library(janitor)
+# library(sf)
+# library(readxl)
 ```
 
 ```{r}
@@ -449,10 +454,216 @@ homicide_male_pivot_wider |>
   )
 ```
 
+##
+
+- In Colombia, the **Observatorio de Derechos Humanos y Defensa Nacional** is responsible for producing, consolidating, and analyzing statistical data related to defense and security.  
+
+    - For detailed information on definitions and indicators regarding this topic, please refer to [@ministerio_de_defensa_nacional_metodologipara_2024].
+    
+<!-- See https://www.mindefensa.gov.co/ > 
+         Defensa y Seguridad > 
+         Datos y cifras >
+         Documentos Metodológicos -->
+         
+## {.nostretch}
+
+```{r}
+# Import 
+crime_col <- read_rds(file = "000_data/004_crime_col_2024.rds")
+
+# Helpers
+last_update_pol_nal <- ymd("2025-05-05")
+```
+
+```{r}
+#| label: fig-map-homicides-col 
+#| fig-cap: Intentional homicides (per 100,000 people) by department
+#| fig-height: 6
+
+# Visualization
+crime_col |> 
+  ggplot(aes(fill = homicidio_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = umng_palette[2], 
+                      high = umng_palette[1]) +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col$year)}"),
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: {last_update_pol_nal}
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank()
+  )
+```
+
+## {.nostretch}
+
+```{r}
+#| label: fig-map-theft-from-person-col 
+#| fig-cap: Theft from person[^1] (per 100,000 people) by department
+#| fig-height: 6
+
+# Visualization
+crime_col |> 
+  ggplot(aes(fill = hurto_personas_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = umng_palette[2], 
+                      high = umng_palette[1]) +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col$year)}"),
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: {last_update_pol_nal}
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank()
+  )
+```
+
+[^1]: *Hurto a personas* in spanish
+
+## {.nostretch}
+
+```{r}
+#| label: fig-map-theft-from-commercial-establishments-col 
+#| fig-cap: Theft from commercial establishments[^2] (per 100,000 people) by department
+#| fig-height: 6
+
+# Visualization
+crime_col |> 
+  ggplot(aes(fill = hurto_comerciales_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = umng_palette[2], 
+                      high = umng_palette[1]) +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col$year)}"),
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: {last_update_pol_nal}
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank()
+  )
+```
+
+[^2]: *Hurto a comercio* in spanish
+
+## {.nostretch}
+
+```{r}
+#| label: fig-map-robbery-financial-institutions-col 
+#| fig-cap: Robbery of Financial Institutions[^3] (per 100,000 people) by department
+#| fig-height: 6
+
+# Visualization
+crime_col |> 
+  ggplot(aes(fill = hurto_financieras_per)) + 
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = umng_palette[2], 
+                      high = umng_palette[1]) +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col$year)}"),
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: {last_update_pol_nal}
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank()
+  )
+```
+
+[^3]: *Hurto a entidades financieras* in spanish
+
+## {.nostretch}
+
+```{r}
+#| label: fig-map-kidnapping-col 
+#| fig-cap: Kidnapping (per 100,000 people) by department
+#| fig-height: 6
+
+# Visualization
+crime_col |> 
+  ggplot(aes(fill = secuestro_per)) +  
+  geom_sf(aes(geometry = geometry),
+          color = "black") + 
+  scale_fill_gradient(low = umng_palette[2], 
+                      high = umng_palette[1]) +
+  labs(fill = NULL,
+       subtitle = str_glue("Year: {unique(crime_col$year)}"),
+       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+                          Last update 1: {last_update_pol_nal}
+                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          con base en el CNPV 2018
+                          Last update 2: 2023-03-04")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text         = element_blank(),
+    axis.ticks        = element_blank()
+  )
+```
+
+
 # Acknowledgments
 
 ##
 
+-   To my family that supports me
 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats),
+[**ggrepel**](https://CRAN.R-project.org/package=ggrepel),
+[**janitor**](https://CRAN.R-project.org/package=janitor), 
+[**sf**](https://CRAN.R-project.org/package=sf),
+[**readxl**](https://CRAN.R-project.org/package=readxl) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
     
 # References {.allowframebreaks}

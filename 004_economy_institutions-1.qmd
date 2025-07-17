@@ -384,6 +384,11 @@ homicide_male_pivot_wider |>
 
     - For detailed information on definitions and indicators regarding this topic, please refer to [@ministerio_de_defensa_nacional_metodologipara_2024].
 
+<!-- See https://www.mindefensa.gov.co/ > 
+         Defensa y Seguridad > 
+         Datos y cifras >
+         Documentos Metodológicos -->
+
 ##
 
 ```{r}

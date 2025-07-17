@@ -32,22 +32,34 @@ pop_col <- read_excel(path = "000_data/004_serie_departamental_de_poblacion_por_
 ###                    Hurto a entidades financieras
 ###                    Secuestro
 ### Año: 2024
-### Fecha: 2025-07-15
-homicidio_intencional <- read_excel(path = "000_data/004_homicidio_intencional_2023.xlsx", 
+### Fecha: 2025-05-05
+homicidio_intencional <- read_excel(path = "000_data/004_homicidio_intencional_2024.xlsx", 
                                     sheet = 1, 
-                                    range = "A10:H11022")
+                                    # Becareful with the range
+                                    ## Always check it
+                                    ### Some files have different ranges
+                                    range = "A10:H11147")
 hurto_personas <- read_excel(path = "000_data/004_hurto_a_personas_2024.xlsx", 
                              sheet = 1, 
-                             range = "A10:H91840")
+                                    # Becareful with the range
+                                    ## Always check it
+                                    ### Some files have different ranges
+                             range = "A11:H94098")
 hurto_comerciales <- read_excel(path = "000_data/004_hurto_a_comercio_2024.xlsx", 
                              sheet = 1, 
-                             range = "A10:F18959")
+                                    # Becareful with the range
+                                    ## Always check it
+                                    ### Some files have different ranges
+                             range = "A11:F20799")
 hurto_financieras <- read_excel(path = "000_data/004_hurto_entidades_financieras_2024.xlsx", 
                                 sheet = 1, 
-                                range = "A10:F62")
+                                    # Becareful with the range
+                                    ## Always check it
+                                    ### Some files have different ranges
+                                range = "A10:F74")
 secuestro <- read_excel(path = "000_data/004_secuestro_2024.xlsx", 
                         sheet = 1, 
-                        range = "A10:H248")
+                        range = "A10:H275")
 
 # Clean data ----
 year <- 2024
