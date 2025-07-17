@@ -491,13 +491,23 @@ $$\text{distributions of resources}_t \Longrightarrow
 $$\text{political power}_t \Longrightarrow
    \text{political institutions}_{t+1}$$
 
-##
+## 
 
+- Putting all these pieces together in @fig-business-environment it is shown a simplistic schematic representation of this framework.
 
+![Acemoglu, Johnson and Robinson framework [@acemoglu_chapter_2005, p. 392]](_000_images/005_acemoglu_schematic_representation_framework.png){.nostretch #fig-business-environment width=100% fig-align="center"} 
 
 # Acknowledgments
 
 ##
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**janitor**](https://CRAN.R-project.org/package=janitor) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 
 
