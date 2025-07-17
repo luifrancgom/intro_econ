@@ -1,0 +1,504 @@
+---
+title: Economy and institutions
+subtitle: Session 2
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    mermaid-format: png
+    reference-location: document
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(janitor)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements forum.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 4]
+
+##
+
+- **Purpose**
+
+    - Analyze the role of institutions in the economy
+
+# Some informal institutions
+
+## 
+
+```{r}
+# Data
+# https://www.dane.gov.co/ >
+# ANDA | ARCHIVO NACIONAL DE DATOS >
+# Microdatos >
+# Sociedad >
+# Gobierno >
+# Encuesta de Cultura Política - ECP - 2023  >
+## Tabla de viviendas
+## Elecciones y partidos
+
+# Import
+viviendas <- read_csv(file = "000_data/004_tabla_de_viviendas_2023.csv")
+## Personas de 18 años y más
+elecciones_partidos <- read_csv(file = "000_data/004_elecciones_y_partidos_2023.csv")
+
+# Tidy
+viviendas_clean <- viviendas |>
+  clean_names() |>
+  select(
+    # Llave vivienda
+    directorio,
+    # Región a la que corresponde
+    # la vivienda
+    region,
+    # Total de hogares en la
+    # vivienda?
+    p70,
+    # Factor de Expansión
+    fex_p
+  )
+
+voto_por <- elecciones_partidos |>
+  clean_names() |>
+  select(
+    # Llave vivienda
+    directorio,
+    # Tabla en que se cargo la informacion
+    ## 252. Tabla de Personas
+    nro_encuesta,
+    # Llave hogar
+    hogar_numero,
+    # Llave persona
+    persona_numero,
+    # 15. Votaría alguna vez por:
+    ## 1. Si
+    ## 2. No
+    ## 3. No sabe/No responde
+    ### a. Una mujer
+    p2009s1,
+    ### b. Un(a) indígena
+    p2009s2,
+    ### c. Una persona en condición de discapacidad
+    p2009s3,
+    ### d. Un negro(a), mulato(a), afrocolombiano(a) o afrodescendiente
+    p2009s4,
+    ### e. Un(a) campesino(a)
+    p2009s8,
+    ### f. Una persona LGTBI o con otras opciones sexuales diversas
+    p2009s9,
+    ### g. Una persona joven
+    p2009s10
+  )
+
+# Merge
+voto_por_merge <- voto_por |>
+  left_join(
+    y = viviendas_clean,
+    by = join_by(directorio)
+  )
+
+# Helpers
+total <- sum(voto_por_merge$fex_p)
+last_update_encuesta_cultura_politica <- ymd("2024-04-15")
+
+# Transform
+voto_por_clean <- voto_por_merge |>
+  mutate(
+    across(
+      .cols = starts_with(match = "p2"),
+      .fns = ~ case_when(
+        .x == 1 ~ "Si",
+        .x == 2 ~ "No",
+        .x == 99 ~ "No sabe/No informa"
+      ),
+      .names = "{.col}"
+    ),
+    .keep = "unused"
+  ) |>
+  pivot_longer(
+    cols = starts_with(match = "p2"),
+    names_to = "group",
+    values_to = "response"
+  ) |>
+  filter(response == "No") |>
+  group_by(group) |>
+  summarize(n = sum(fex_p)) |>
+  ungroup() |>
+  mutate(pct_n = n / {{ total }}) |>
+  mutate(group_label = case_when(
+    group == "p2009s1" ~ "Una mujer",
+    group == "p2009s2" ~ "Un(a) indígena",
+    group == "p2009s3" ~ str_glue("Una persona en condición de
+                                       discapacidad"),
+    group == "p2009s4" ~ str_glue("Un negro(a), mulato(a),
+                                       afrocolombiano(a) o afrodescendiente"),
+    group == "p2009s8" ~ "Un(a) campesino(a)",
+    group == "p2009s9" ~ str_glue("Una persona LGTBI o con
+                                       otras opciones sexuales diversas"),
+    group == "p2009s10" ~ "Una persona joven"
+  )) |>
+  mutate(pct_n_label = scales::number(
+    x = pct_n,
+    accuracy = 0.01,
+    scale = 100,
+    suffix = "%"
+  )) |>
+  mutate(group_label = fct_reorder(
+    .f = group_label,
+    .x = pct_n
+  ))
+```
+
+```{r}
+#| label: fig-not-vote-for
+#| fig-cap: Percentage of people who would never vote for
+
+# Visualization
+voto_por_clean |>
+  ggplot(aes(
+    pct_n,
+    group_label
+  )) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_segment(aes(xend = 0, yend = group_label),
+    color = umng_palette[1]
+  ) +
+  geom_text(aes(label = pct_n_label),
+    hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(0, max(voto_por_clean$pct_n) + 0.1)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: 2023
+                           Data only apply for people 18 years of age and older
+                           Total target population: {scales::number(total, accuracy = 1, big.mark = ',')}"),
+    caption = str_glue("Source: DANE - Encuesta de Cultura Política - ECP - 2023
+                          Last update date: {last_update_encuesta_cultura_politica}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+##
+
+```{r}
+# Import
+## Personas de 18 años y más
+capital_social <- read_csv(file = "000_data/004_componente_capital_social.csv")
+
+# Tidy
+tener_vecino <- capital_social |>
+  clean_names() |>
+  select(
+    # Llave vivienda
+    directorio,
+    # Tabla en que se cargo la informacion
+    ## 252. Tabla de Personas
+    nro_encuesta,
+    # Llave hogar
+    hogar_numero,
+    # Llave persona
+    persona_numero,
+    # 43. De las siguientes personas, a quién
+    # no quisiera tener de vecino(a):
+    ### a. Personas con discapacidad
+    p2041s1,
+    ### b. Personas LGTBI
+    p2041s2,
+    ### c. Personas de una raza o etnia diferente a la suya
+    p2041s3,
+    ### d. Personas en situación de pobreza
+    p2041s4,
+    ### e.Víctimas de conflicto armado
+    p2041s5,
+    ### f. Exguerrilleros(as)
+    p2041s6,
+    ### g. Exparamilitares
+    p2041s7,
+    ### h. Consumidores(as) de sustancias psicoactivas
+    p2041s8,
+    ### i. Personas en situación de prostitución
+    p2041s9,
+    ### j. Personas con VIH/SIDA
+    p2041s10,
+    ### k. Inmigrantes o trabajadores extranjeros
+    p2041s11,
+    ### l. Personas que profesan una religión diferente
+    p2041s12,
+    ### m. Ninguna de las anteriores
+    #### En este caso la persona no escoge
+    #### ninguna de la a. a la l.
+    p2041s13
+  )
+
+# Merge
+tener_vecino_merge <- tener_vecino |>
+  left_join(
+    y = viviendas_clean,
+    by = join_by(directorio)
+  )
+
+# Transform
+tener_vecino_clean <- tener_vecino_merge |>
+  mutate(
+    across(
+      .cols = starts_with(match = "p2"),
+      .fns = ~ case_when(
+        .x == 1 ~ "No",
+      ),
+      .names = "{.col}"
+    ),
+    .keep = "unused"
+  ) |>
+  pivot_longer(
+    cols = starts_with(match = "p2"),
+    names_to = "group",
+    values_to = "response"
+  ) |>
+  filter(response == "No") |>
+  group_by(group) |>
+  summarize(n = sum(fex_p)) |>
+  ungroup() |>
+  mutate(pct_n = n / {{ total }}) |>
+  mutate(group_label = case_when(
+    group == "p2041s1" ~ "Personas con discapacidad",
+    group == "p2041s2" ~ "Personas LGTBI",
+    group == "p2041s3" ~ str_glue("Personas de una
+                                       raza o etnia diferente a la suya"),
+    group == "p2041s4" ~ str_glue("Personas en situación de
+                                       pobreza"),
+    group == "p2041s5" ~ "Víctimas de conflicto armado",
+    group == "p2041s6" ~ "Exguerrilleros(as)",
+    group == "p2041s7" ~ "Exparamilitares",
+    group == "p2041s8" ~ str_glue("Consumidores(as) de sustancias
+                                       psicoactivas"),
+    group == "p2041s9" ~ str_glue("Personas en situación de
+                                       prostitución"),
+    group == "p2041s10" ~ "Personas con VIH/SIDA",
+    group == "p2041s11" ~ str_glue("Inmigrantes o trabajadores
+                                       extranjeros"),
+    group == "p2041s12" ~ str_glue("Personas que profesan una
+                                       religión diferente")
+  )) |>
+  mutate(pct_n_label = scales::number(
+    x = pct_n,
+    accuracy = 0.01,
+    scale = 100,
+    suffix = "%"
+  )) |>
+  mutate(group_label = fct_reorder(
+    .f = group_label,
+    .x = pct_n
+  ))
+```
+
+```{r}
+#| label: fig-not-neighbor
+#| fig-cap: Percentage of people who would never like to have a certain neighbor
+
+# Visualization
+tener_vecino_clean |>
+  ggplot(aes(
+    pct_n,
+    group_label
+  )) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_segment(aes(xend = 0, yend = group_label),
+    color = umng_palette[1]
+  ) +
+  geom_text(aes(label = pct_n_label),
+    hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(0, max(tener_vecino_clean$pct_n) + 0.1)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: 2023
+                           Data only apply for people 18 years of age and older
+                           Total target population: {scales::number(total, accuracy = 1, big.mark = ',')}"),
+    caption = str_glue("Source: DANE - Encuesta de Cultura Política - ECP - 2023
+                          Last update date: {last_update_encuesta_cultura_politica}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+# Institutions and economic growth
+
+## {.smaller}
+
+- The big question: **Why are some countries much poorer than others?**
+
+    - According to [@acemoglu_chapter_2005, pp. 389-393] the key variables are the **political institutions** and the **distribution of resources**
+    
+- The **political institutions** are the rules that govern incentives in politics. They determine [@acemoglu_why_2013, pp. 79-80]: 
+
+    - How the government is chosen
+    - Which part of the government has the right to do what
+    - Who has power in society
+    - To what ends that power can be used
+
+##
+
+- The **political institutions** determine the **economic institutions**
+
+    - The **economic institutions** are [@acemoglu_why_2013, pp. 73-74]:
+    
+        - The rules influencing how the economy works
+        - The incentives that motivate people
+        
+## 
+
+- The argument by [@acemoglu_chapter_2005, pp. 389-393] in relation to how **political institutions** and the **distribution of resources** determine economic performance is as follows:
+
+    - Economic institutions shape the incentives of key economic actors in society where they influence investments in physical and human capital and technology, and the organization of production [@acemoglu_chapter_2005, pp. 389-390].
+    
+$$\text{economic institutions}_t \Longrightarrow
+  \begin{cases}
+   \text{economic performance}_t \\
+   \text{distribution of resources}_{t+1}
+  \end{cases}$$
+
+## {.smaller}
+
+- The argument by [@acemoglu_chapter_2005, pp. 389-393] in relation to how **political institutions** and the **distribution of resources** determine economic performance is as follows:
+
+    - Economic institutions are determined as collective choices of the society. However, there is no guarantee that all individuals will prefer the same set of economic institutions because they lead to different distributions of resources. So, there will typically be a conflict of interest among various individuals over the choice of economic institutions [@acemoglu_chapter_2005, p. 390].
+    
+    - So how are economic institutions determined? Whichever individuals have more political power are likely to secure the set of economic institutions that they prefer.
+    
+$$\text{political power}_t \Longrightarrow
+   \text{economic institutions}_t$$
+
+##
+
+- There are 2 components of political power [@acemoglu_chapter_2005, pp. 390-391]:
+
+    - **De jure (institutional)**: refers to power that originates from the political institutions in society
+    
+    - **De facto**: the power that derives from actual influence, irrespective of the formal institutional framework.  It can be based on factors such as wealth, control of resources, or the ability to mobilize people, among others.
+    
+##
+
+- In the case of the **de jure (institutional)** power according to [@acemoglu_chapter_2005, p. 391] this aspect implies that:
+
+$$\text{political institutions}_t \Longrightarrow
+   \text{de jure political power}_t$$
+
+## {.smaller}
+   
+- In the case of the **de facto** power according to [@acemoglu_chapter_2005, p. 391] this aspect depends on 2 sources:
+
+    - The ability of the group of individuals to act together and avoid the incentives of some individuals to  benefit without contributing.
+    
+        - In the economic literature this is known as **solving the collective action problem** and the **free-rider problem**
+        
+    - The economic resources of the group which determine the ability to use existing political institutions and force against other individuals
+    
+- Because [@acemoglu_chapter_2005, p. 391] don't have a satisfactory theory about how individuals solve the **collective action problem** they focus on:
+
+$$\text{distributions of resources}_t \Longrightarrow
+   \text{de facto political power}_t$$
+
+##
+
+- Also [@acemoglu_chapter_2005, pp. 391-392] point out that political institutions and the distribution of resources tend to change relatively slowly but determine economic institutions and economic performance both directly and indirectly.
+
+$$\text{political power}_t \Longrightarrow
+   \text{political institutions}_{t+1}$$
+
+##
+
+
+
+# Acknowledgments
+
+##
+
+
+
+# References {.allowframebreaks}
