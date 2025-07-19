@@ -702,9 +702,7 @@ household_income_nper_tbl |>
 
 -   If you want to explore more about this topic using data from the year 2019 check out[^1]:
 
-    -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso →
-
-        -   <https://www.ofiscal.org/ingresosxhogares>
+    -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso
 
 -   If you want to explore more about this topic from around the world in a visual way check out[^2]:
 
