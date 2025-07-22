@@ -130,7 +130,7 @@ trade_usa_col_world |>
 
 ##
 
--   **Current account**: "shows flows of goods, services, primary income, and secondary income between residents and nonresidents" [@international_monetary_fund_balance_2009, paragraph 2.14]
+-   **Current account**: *"shows flows of goods, services, primary income, and secondary income between residents and nonresidents"* [@international_monetary_fund_balance_2009, paragraph 2.14]
 
     -   **Goods and services account**: "shows transactions in items that are outcomes of production activities" [@international_monetary_fund_balance_2009, paragraph 10.1]
 
