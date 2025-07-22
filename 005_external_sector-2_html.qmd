@@ -1,0 +1,89 @@
+---
+title: External sector
+subtitle: Session 2
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    reference-location: document
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements forum.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 5]
+
+##
+
+- **Purpose**
+
+    - Explain the composition and determinants of Colombian foreign trade
+
+# The concept of comparative advantage
+
+##
+
+
+
+# Acknowledgments
+
+##
+
+
+
+# References {.allowframebreaks}
