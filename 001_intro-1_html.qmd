@@ -327,7 +327,10 @@ height_adults_col_tidy <- height_adults_col |>
     cols = c(male, female),
     names_to = "sex",
     values_to = "mean_height"
-  )
+  ) |> 
+  mutate(sex = fct_reorder(.f = sex, 
+                           .x = mean_height) |> 
+               fct_rev())
 ```
 
 
@@ -650,6 +653,9 @@ household_income_nper_tbl <- household_tbl_tidy |>
       accuracy = 0.01
     )
   )
+
+# Helpers
+last_update_household <- ymd("2024-09-02")
 ```
 
 ```{r}
@@ -682,7 +688,7 @@ household_income_nper_tbl |>
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}
                            Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"),
     caption = str_glue("Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
-                          Last update date: 2024-09-02")
+                          Last update date: {last_update_household}")
   ) +
   theme(
     panel.border = element_rect(
@@ -715,6 +721,44 @@ household_income_nper_tbl |>
 [^1]: Observatorio Fiscal de la Pontifica Universidad Javeriana
 
 [^2]: Dollar Street
+
+##
+
+```{r}
+#| label: fig-household-size-col
+#| fig-cap: Mean individuals per household by income range in Colombia
+
+# Visualization
+household_income_nper_tbl |> 
+  ggplot(aes(mean_nper, fct_rev(range_ingtotug))) +
+  geom_point(shape = 21, 
+             fill = umng_palette[2],
+             size = 3) +
+  geom_segment(aes(xend = 0, yend = fct_rev(range_ingtotug)), 
+               color = umng_palette[1]) + 
+  geom_text(aes(label = mean_nper_text),
+            hjust = -0.5, 
+            size = 4) + 
+  scale_x_continuous(limits = c(0, 5)) +
+  labs(x = NULL,
+       y = "Monthly mean income range (2023 COP)",
+       subtitle = str_glue("Year: 2023
+                           Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
+       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+                          Last update date: {last_update_household}')) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
 
 ## {.smaller} 
 
@@ -799,7 +843,7 @@ household_housing_tbl |>
     subtitle = str_glue("Year: 2023
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"),
     caption = str_glue("Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
-                          Last update date: 2024-09-02")
+                          Last update date:  {last_update_household}")
   ) +
   theme(
     panel.border = element_rect(
