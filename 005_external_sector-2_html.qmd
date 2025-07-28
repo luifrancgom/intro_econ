@@ -34,6 +34,9 @@ editor: source
 ```{r}
 #| label: libraries
 
+library(tidyverse)
+library(wbstats)
+library(scales)
 ```
 
 ```{r}
@@ -76,14 +79,468 @@ umng_palette <- c(
 
 # The concept of comparative advantage
 
+## {.smaller}
+
+-   **Absolute advantage**: the ability of a party (individual, company, country) to produce a product more efficiently than any other party
+
+    -   A party should concentrate in producing a good in which it has an absolute advantage
+
+    -   ¿What happend when you don't have an absolute advantage?
+
+-   **Comparative advantage**: the ability of a party (individual, company, country) to produce a product at a lower relative opportunity cost
+
+    -   Under certain conditions, even if a party doesn't have an **absolute advantage**, trade with other agent can be benefical for both of them
+
+## {.smaller}
+
+-   Example of gains of trade using the concept of **comparative advantage** [@ridley_when_2010]
+
+    -   **Agent 1** produce 1 spear in 4 hours and 1 axe in 3 hours.
+
+        -   To produce both products **agent 1** will need to allocate 7 hours
+
+    -   **Agent 2** produce 1 spear in 1 hour and 1 axe in 2 hours.
+
+        -   **Agent 2** has the absolute advantage in the prodution of spears and axes.
+        -   To produce both products **agent 2** will need to allocate 3 hours
+
+    -   ¿It will be benefical for agent 1 and 2 to trade? Yes!!! **Agent 1** can produce 2 axes in 6 hours and **agent 2** 2 spears in 2 hours. Then they can trade 1 spear for 1 axe.
+
+        -   **Agent 1** has now 1 spear and 1 axe only working 6 hours.
+        -   Furthermore **agent 2** has now 1 spear and 1 axe only working 2 hours.
+        -   Each of them saves 1 hour of work in contrast with a situation in which they don't trade and produce themselves both products.
+
+# International trade: goods
+
 ##
 
+```{r}
+# Import
+trade_col <- wb_data(
+  country = "COL",
+  indicator = c("NE.IMP.GNFS.KN", "NE.EXP.GNFS.KN"),
+  return_wide = FALSE
+)
 
+# Tidy
+trade_col_clean <- trade_col |>
+  filter(!is.na(value)) |>
+  select(country, date, value, indicator_id) |>
+  mutate(indicator_id = case_when(
+    indicator_id == "NE.IMP.GNFS.KN" ~ "Imports",
+    indicator_id == "NE.EXP.GNFS.KN" ~ "Exports",
+    TRUE ~ indicator_id
+  ))
+```
+
+```{r}
+#| label: fig-imports-exports-col
+#| fig-cap: Colombia imports and exports
+
+# Visualization
+trade_col_clean |>
+  ggplot() +
+  geom_point(aes(x = date, y = value, fill = indicator_id),
+    shape = 21,
+    color = "black",
+    show.legend = FALSE
+  ) +
+  geom_line(aes(
+    x = date,
+    y = value,
+    group = indicator_id,
+    color = indicator_id
+  )) +
+  scale_y_continuous(labels = number_format(
+    scale = 1e-9,
+    suffix = "B",
+    accuracy = 1
+  )) +
+  scale_color_manual(values = umng_palette[1:2]) +
+  scale_fill_manual(values = umng_palette[1:2]) +
+  labs(
+    x = "Year",
+    y = "Billions (Short scale)",
+    color = "",
+    title = str_glue("Period: {min(trade_col_clean$date)}-{max(trade_col_clean$date)}"),
+    subtitle = str_glue("Variables Units: constant Local Currency Units Base Year 2015
+                              Imports WDI code : NE.IMP.GNFS.KN
+                              Exports WDI: NE.EXP.GNFS.KN"),
+    caption = str_glue("Source: World Development Indicators - World Bank,
+                              Last update: {unique(trade_col$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  )
+```
+
+## {.smaller}
+
+-   The **Harmonized System (HS)** is a standardized numerical method of classifying traded goods that is internationally accepted and maintained by the **World Customs Organization (WCO)**
+
+-   The HS code consists of 6-digits that are the same independent of the country:
+
+    -   First 2 digits designate the **HS** chapter
+    -   Second 2 digits designate the **HS** heading
+    -   Third 2 digits designate the **HS** subheading
+
+-   Example of **HS** code: 090111 (Coffee, not roasted, not decaffeinated)
+
+    -   Chapter **09**: Cofee, tea, mate and spices
+    -   Heading **01**: Coffee, whether or not roasted or decaffeinated; coffee husks and skins; coffee substitutes containing coffee in any proportion
+    -   Subheading **11**: Coffee, not roasted, not decaffeinated
+
+##
+
+![Colombian good exports **HS 4 digits (HS92) edition** year 1995 [@simoes_economic_2011]](000_data/005_col_exports_1995_hs4_92.png){.nostretch #fig-colombian-goods-imports-1995 width=100% fig-align="center"}
+
+##
+
+![Colombian good exports **HS 4 digits (HS92) edition** year 2023 [@simoes_economic_2011]](000_data/005_col_exports_2023_hs4_92.png){.nostretch #fig-colombian-goods-exports-2023 width=100% fig-align="center"}
+
+##
+
+![Colombian goods imports **HS 4 digits (HS92) edition** year 1995 [@simoes_economic_2011]](000_data/005_col_imports_1995_hs4_92.png){.nostretch #fig-colombian-goods-imports-1995 width=100% fig-align="center"}
+
+##
+
+![Colombian goods imports **HS 4 digits (HS92) edition** year 2023 [@simoes_economic_2011]](000_data/005_col_imports_2023_hs4_92.png){.nostretch #fig-colombian-goods-imports-2023 width=100% fig-align="center"}
+
+# International trade: services
+
+## {.smaller}
+
+-   The Extended Balance of Payments Services Classification (EBOPS) provides a breakdown of the Balance of Payments Trade in Services by types of services.
+
+-   The classification thereby meets a number of user requirements, including the provision of more detailed information on Trade in services
+
+    -   **EBOPS 2002**
+    -   **EBOPS 2010**
+
+-   For more information check out
+
+    -   [@vereinte_nationen_manual_2002]
+    -   [@united_nations_manual_2012]
+    
+##
+
+```{r}
+# Data
+## https://comtradeplus.un.org/ >
+## Data >
+## Trade >
+### Type of Product: Services
+### Frequency: Annual
+### Classifications: 2002
+### EBOPS2002 service codes: 200, 205,
+###                          236, 245,
+###                          249, 253,
+###                          260, 262,
+###                          266, 268,
+###                          287, 291
+### Reporters: Colombia
+### Trade Flows: Exports, Imports
+### Periods:
+### Partners: World
+
+# Import
+## There is a problem in the data where
+## a comma is included and the end for
+## rows greater or equal than 2
+trade_services <- read_csv(file = "000_data/005_trade_data_services_un_comtrade.csv")
+
+# Helpers
+last_update_trade_services <- ymd("2025-07-28")
+
+# Tidy
+trade_services_clean <- trade_services |> 
+  select(refYear,
+         reporterDesc,
+         flowDesc,
+         cmdCode,
+         cmdDesc,
+         cifvalue)
+
+# Wrangle
+trade_services_clean_top_8 <- trade_services_clean |>
+  filter(cmdCode != 200) |> 
+  mutate(cmdDesc = str_replace_all(string = cmdDesc, 
+                                   pattern = "[0-9.]", 
+                                   replacement = "")) |>
+  mutate(cmdDesc = str_trim(string = cmdDesc)) |> 
+  group_by(refYear,
+           flowDesc) |> 
+  slice_max(order_by = cifvalue, 
+            n = 8) |> 
+  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
+                               .x = cifvalue)) |> 
+  ungroup() |> 
+  mutate(cifvalue_label = number(x = cifvalue, 
+                                 scale = 1e-9, 
+                                 suffix = "B", 
+                                 accuracy = 0.01))
+
+## Exports first year
+trade_services_clean_top_8_export_first <- trade_services_clean_top_8 |> 
+  filter(refYear == min(refYear), flowDesc == "Export")
+
+## Exports last year
+trade_services_clean_top_8_export_last <- trade_services_clean_top_8 |> 
+  filter(refYear == max(refYear), flowDesc == "Export")
+
+## Imports first year
+trade_services_clean_top_8_import_first <- trade_services_clean_top_8 |>
+  filter(refYear == min(refYear), flowDesc == "Import")
+
+## Imports last year
+trade_services_clean_top_8_import_last <- trade_services_clean_top_8 |> 
+  filter(refYear == max(refYear), flowDesc == "Import")
+```
+
+```{r}
+#| label: fig-exports-col-services-first-year
+#| fig-cap: Colombia service exports
+
+# Visualization
+trade_services_clean_top_8_export_first |>
+  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
+                               .x = cifvalue)) |>
+  ggplot(aes(
+    cifvalue,
+    cmdDesc
+  )) +
+  geom_segment(aes(xend = 0, yend = cmdDesc),
+               color = umng_palette[1]
+  ) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_text(aes(label = cifvalue_label),
+            hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(
+    0,
+    max(trade_services_clean_top_8_export_first$cifvalue) + 0.6e9
+  )) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: {min(trade_services_clean$refYear)}
+                        Values in Billions (Short Scale: 10^9)"),
+    caption = str_glue("Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+##
+
+```{r}
+#| label: fig-exports-col-services-last-year
+#| fig-cap: Colombia service exports
+
+# Visualization
+trade_services_clean_top_8_export_last |>
+  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
+                               .x = cifvalue)) |>
+  ggplot(aes(
+    cifvalue,
+    cmdDesc
+  )) +
+  geom_segment(aes(xend = 0, yend = cmdDesc),
+               color = umng_palette[1]
+  ) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_text(aes(label = cifvalue_label),
+            hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(
+    0,
+    max(trade_services_clean_top_8_export_last$cifvalue) + 0.6e9
+  )) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: {max(trade_services_clean$refYear)}
+                        Values in Billions (Short Scale: 10^9)"),
+    caption = str_glue("Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+##
+
+```{r}
+#| label: fig-imports-col-services-first-year
+#| fig-cap: Colombia service imports
+
+# Visualization
+trade_services_clean_top_8_import_first |>
+  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
+                               .x = cifvalue)) |>
+  ggplot(aes(
+    cifvalue,
+    cmdDesc
+  )) +
+  geom_segment(aes(xend = 0, yend = cmdDesc),
+               color = umng_palette[1]
+  ) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_text(aes(label = cifvalue_label),
+            hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(
+    0,
+    max(trade_services_clean_top_8_import_first$cifvalue) + 0.6e9
+  )) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: {min(trade_services_clean$refYear)}
+                        Values in Billions (Short Scale: 10^9)"),
+    caption = str_glue("Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+##
+
+```{r}
+#| label: fig-imports-col-services-last-year
+#| fig-cap: Colombia service imports
+
+# Visualization
+trade_services_clean_top_8_import_last |>
+  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
+                               .x = cifvalue)) |>
+  ggplot(aes(
+    cifvalue,
+    cmdDesc
+  )) +
+  geom_segment(aes(xend = 0, yend = cmdDesc),
+               color = umng_palette[1]
+  ) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    size = 3
+  ) +
+  geom_text(aes(label = cifvalue_label),
+            hjust = -0.5, size = 5
+  ) +
+  scale_x_continuous(limits = c(
+    0,
+    max(trade_services_clean_top_8_import_last$cifvalue) + 0.6e9
+  )) +
+  labs(
+    x = NULL,
+    y = NULL,
+    subtitle = str_glue("Year: {max(trade_services_clean$refYear)}
+                        Values in Billions (Short Scale: 10^9)"),
+    caption = str_glue("Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+# Observatory of Economic Complexity (OEC)
+
+##
+
+-   *"The Observatory of Economic Complexity (OEC) is an online data visualization and distribution platform focused on the geography and dynamics of economic activities"*
+
+-   *"The OEC is currently designed and developed by Datawheel, but it began as a research project at MIT's Collective Learning group (former Macro Connections Group)"*
+
+##
+
+-   Tree map
+
+    -   [https://oec.world/](https://oec.world/) \> TOOLS \> Tree map
+
+        -   Country
+        -   Product
+        -   Bilateral
+
+-   Profiles
+
+    -   [https://oec.world/](https://oec.world/) \> PROFILES \> Countries \> Colombia
 
 # Acknowledgments
 
 ##
 
+-   To my family that supports me
 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
+[**wbstats**](https://CRAN.R-project.org/package=wbstats),
+[**scales**](https://CRAN.R-project.org/package=scales), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}
