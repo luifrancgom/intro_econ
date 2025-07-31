@@ -547,6 +547,78 @@ gdp_nominal_real_col |>
 
 ## {.smaller}
 
+-   Some countries have more population than others so they can produce more. Therefore it is necessary to express the GDP per inhabitant
+
+![Applying a population adjustment](_000_images/002_image2.png){.nostretch #fig-population-adjustment width=50% fig-align="center"}
+
+##
+
+```{r}
+# Import
+real_gdp_per_capita_col <- wb_data(country   = c("COL"),
+                                   indicator = c("NY.GDP.PCAP.KN"))
+
+# Helper
+real_gdp_per_capita_col_vector <- real_gdp_per_capita_col$NY.GDP.PCAP.KN
+names(real_gdp_per_capita_col_vector) <- real_gdp_per_capita_col$date
+value_base_year <- number(x = real_gdp_per_capita_col_vector["2015"][[1]], 
+                          big.mark = ",", 
+                          prefix = "$")
+```
+
+```{r}
+#| label: fig-real-gdp-pc-col
+#| fig-cap: Real GDP per-capita Colombia
+
+# Visualization
+real_gdp_per_capita_col |> 
+  select(country, date, NY.GDP.PCAP.KN) |>
+  ggplot(aes(x = date,
+             y = NY.GDP.PCAP.KN)) +
+  geom_point(color = "black", 
+             shape = 21, 
+             fill = umng_palette[2]) +
+  geom_line() +
+  geom_vline(xintercept = 2015,
+             color      = umng_palette[1]) +
+  scale_x_continuous(breaks = c(seq.int(from = 1960, to = 2000, by = 20), 
+                                2015, 
+                                max(real_gdp_per_capita_col$date))) +
+  scale_y_continuous(labels = label_number(scale    = 1e-6,
+                                           suffix   = "M",
+                                           accuracy = 1)) +
+  expand_limits(y = 0) +
+  annotate(geom  = "label",
+           x     = 1980,
+           y     = 14e6,
+           label = str_glue("In the year 2015 Annual Real GDP per-capita
+                              was {value_base_year}
+                              In the year 2015 the Annual Legal Minimum Wage
+                              was $7,732,200 (not including other additional
+                              benefits and working 12 months)"),
+           color = "white",
+           fill  = umng_palette[1],
+           size  = 4) +
+  labs(x        = "Year",
+       y        = "Millions",
+       subtitle = str_glue("Variable code WDI: NY.GDP.PCAP.KN
+                             Variable units: constant LCU Base Year 2015"),
+       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(real_gdp_per_capita_col$last_updated)}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+## {.smaller}
+
 -   Purchasing power parity
 
     -   The amount of products that 1 local currency unit of an economy can buy in another economy
@@ -611,19 +683,6 @@ gdp_per_capita_ppp_col_usa |>
     suffix = "K",
     accuracy = 1
   )) +
-  theme(
-    panel.border = element_rect(fill = NA, color = "black"),
-    plot.background = element_rect(fill = "#f3fcfc"),
-    panel.background = element_rect(fill = "#f3f7fc"),
-    legend.background = element_rect(fill = "#f3fcfc"),
-    legend.position = "bottom",
-    plot.title = element_text(face = "bold"),
-    axis.title = element_text(face = "bold"),
-    legend.title = element_text(face = "bold"),
-    axis.text = element_text(face = "bold"),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12)
-  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
