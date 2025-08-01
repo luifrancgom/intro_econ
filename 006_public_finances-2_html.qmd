@@ -1,0 +1,494 @@
+---
+title: Public Finances
+subtitle: Session 2
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    reference-location: document
+    mermaid-format: png
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(janitor)
+library(gt)
+library(scales)
+library(treemapify)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements forum.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 6]
+
+##
+
+- **Purpose**
+
+    - Explain the role of the State in the economy
+    
+# Expenditures
+
+## 
+
+-   Useful resources
+
+    -   **Portal de transparencia económica**
+
+    -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
+
+        -   [**https://www.ofiscal.org/guias**](https://www.ofiscal.org/guias) \> Tributación y gasto del Estado colombiano \> Ver guía
+
+    -   **Presupuesto en Perspectiva Económica (PePE)**
+
+        -   [**https://www.ofiscal.org/interactua**](https://www.ofiscal.org/interactua) \> PePE Presupuesto en Perspectiva Económica
+        
+## 
+
+-   **Presupuesto General de la Nación (PGN)**
+
+    -   It is the most important financial management instrument of fiscal policy
+
+    -   This instrument presents the government's proposed revenues and spending for a specific period
+
+    -   Every year the "Presupuesto General de la Nación (PGN)" is define for the next year
+
+    -   The "Presupuesto General de la Nación (PGN)" must be approved by the congress and sanctioned as a law by the president
+    
+##
+
+```{r}
+# Option 1
+## https://www.pte.gov.co  > 
+## PGN Presupuesto General de la Nación >
+## Cuadro de Ejecución PGN >
+## PGN >
+## DESCARGAR DATOS
+
+# Option 2
+## https://www.datos.gov.co/ >
+## Buscar: Información de Gastos del Presupuesto General de la Nación >
+## Exportar >
+## Exportar formato CSV
+### Hacienda y Crédito Público
+### Este conjunto de datos presenta la información del Presupuesto
+### General de la Nación relacionadas con las entidades del Nivel 
+### Nacional
+
+# Helpers
+last_update_tax_revenue <- ymd("2025-05-27")
+
+# Import
+pgn <- read_csv(file = "000_data/006_informacion_de_gastos_del_presupuesto_general_de_la_nacion_2025-07-25.zip")
+
+# Tidy
+png_ano_mes_sector <- pgn |> 
+  clean_names() |> 
+  group_by(ano, mes, sector) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup() |> 
+  mutate(sector = str_to_title(sector))
+
+## Specify the years to show
+range_year <- unique(png_ano_mes_sector$ano)
+initial_year <- min(range_year)
+last_year <- max(range_year)
+middle_year <- ceiling((last_year - initial_year) / 2) + initial_year
+
+# Helpers
+sector <- png_ano_mes_sector |> 
+  distinct(sector)
+
+rows_sector <- nrow(sector)
+first_rows  <- ceiling(x = (rows_sector / 2))
+last_rows   <- rows_sector - first_rows
+```
+
+```{r}
+#| label: tbl-classification-by-sector-png-1
+#| tbl-cap: Classification by sector - PNG
+
+# Table
+sector |>
+  slice_head(n = first_rows) |> 
+  gt() |>
+  cols_label(
+    sector = "Sector"
+  ) |>
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(14)
+  )
+```
+
+##
+
+```{r}
+#| label: tbl-classification-by-sector-png-2
+#| tbl-cap: Classification by sector - PNG
+
+# Table
+sector |>
+  slice_tail(n = last_rows) |> 
+  gt() |>
+  cols_label(
+    sector = "Sector"
+  ) |>
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(14)
+  )
+```
+
+##
+
+```{r}
+# Tidy
+## Initial year
+png_initial_year <- png_ano_mes_sector |> 
+  filter(ano == {{initial_year}}) |> 
+  filter(mes == "Diciembre") |> 
+  arrange(desc(apropiacion_vigente))
+
+png_spent_initial_year <- png_initial_year |> 
+  mutate(sector = case_when(
+    sector %in% png_initial_year$sector[1:11] ~ sector,
+    .default = 'Otros Sectores')) |> 
+  group_by(sector) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup() |> 
+  mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente),
+         label = str_glue("{number(apropiacion_vigente_pct, scale = 1e2, accuracy = 0.01, suffix = '%')}
+                          {number(apropiacion_vigente, scale = 1e-12, accuracy = 0.01, suffix = 'B')}"),
+         nombre_sector = fct_reorder(.f = sector, .x = apropiacion_vigente) |> 
+           fct_rev())
+```
+
+```{r}
+#| label: fig-pgn-col-initial-year
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", initial_year, "?")'
+
+# Visualization
+png_spent_initial_year |> 
+  ggplot(aes(area = apropiacion_vigente,
+             fill = sector,
+             label = label)) +
+  geom_treemap(color = "black") +
+  geom_treemap_text(place = "centre") +
+  scale_fill_manual(values = umng_palette[1:12]) + 
+  labs(fill = NULL,
+       title = str_glue("Year: {initial_year}"),
+       subtitle = str_glue("Total national budget: {number(sum(png_spent_initial_year$apropiacion_vigente), big.mark = ',')} COP
+                           Observation: B means billions in long scale (10^12)"),
+       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
+                          Last update date: {last_update_tax_revenue}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  )
+```
+
+##
+
+```{r}
+# Tidy
+## Middle year  
+png_middle_year <- png_ano_mes_sector |> 
+  filter(ano == {{middle_year}}) |> 
+  filter(mes == "Diciembre") |> 
+  arrange(desc(apropiacion_vigente))
+
+png_spent_middle_year <- png_middle_year |> 
+  mutate(sector = case_when(
+    sector %in% png_middle_year$sector[1:11] ~ sector,
+    .default = 'Otros Sectores')) |> 
+  group_by(sector) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup() |> 
+  mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente),
+         label = str_glue("{number(apropiacion_vigente_pct, scale = 1e2, accuracy = 0.01, suffix = '%')}
+                          {number(apropiacion_vigente, scale = 1e-12, accuracy = 0.01, suffix = 'B')}"),
+         nombre_sector = fct_reorder(.f = sector, .x = apropiacion_vigente) |> 
+           fct_rev())
+```
+
+```{r}
+#| label: fig-pgn-col-middle-year
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", middle_year, "?")'
+
+# Visualization
+png_spent_middle_year |> 
+  ggplot(aes(area = apropiacion_vigente,
+             fill = sector,
+             label = label)) +
+  geom_treemap(color = "black") +
+  geom_treemap_text(place = "centre") +
+  scale_fill_manual(values = umng_palette[1:12]) +
+  labs(fill = NULL,
+       title = str_glue("Year: {middle_year}"),
+       subtitle = str_glue("Total national budget: {number(sum(png_spent_middle_year$apropiacion_vigente), big.mark = ',')} COP
+                           Observation: B means billions in long scale (10^12)"),
+       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
+                          Last update date: {last_update_tax_revenue}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  )
+```
+
+##
+
+```{r}
+# Tidy
+# Last year
+## You need to change this
+## depending on the information 
+## of the last month
+month_last_year <- "Junio"
+
+png_last_year <- png_ano_mes_sector |> 
+  filter(ano == {{last_year}}) |> 
+  filter(mes == {{month_last_year}}) |> 
+  arrange(desc(apropiacion_vigente))
+
+png_spent_last_year <- png_last_year |> 
+  mutate(sector = case_when(
+    sector %in% png_middle_year$sector[1:11] ~ sector,
+    .default = 'Otros Sectores')) |> 
+  group_by(sector) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup() |> 
+  mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente),
+         label = str_glue("{number(apropiacion_vigente_pct, scale = 1e2, accuracy = 0.01, suffix = '%')}
+                          {number(apropiacion_vigente, scale = 1e-12, accuracy = 0.01, suffix = 'B')}"),
+         nombre_sector = fct_reorder(.f = sector, .x = apropiacion_vigente) |> 
+           fct_rev())
+```
+
+```{r}
+#| label: fig-pgn-col-last-year
+#| fig-cap: !expr 'paste0("Who spent the nation''s general budget in ", last_year, "?")'
+
+# Visualization
+png_spent_last_year |> 
+  ggplot(aes(area = apropiacion_vigente,
+             fill = sector,
+             label = label)) +
+  geom_treemap(color = "black") +
+  geom_treemap_text(place = "centre") +
+  scale_fill_manual(values = umng_palette[1:12]) +
+  labs(fill = NULL,
+       title = str_glue("Year: {last_year}"),
+       subtitle = str_glue("Total national budget: {number(sum(png_spent_last_year$apropiacion_vigente), big.mark = ',')} COP
+                           Observation: B means billions in long scale (10^12)"),
+       caption = str_glue("Portal de transparencia económica - https://www.pte.gov.co/
+                          Last update date: {last_update_tax_revenue}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  )
+```
+
+# Case study: Education sector
+
+##
+
+```{r}
+# Tidy
+## Education entities
+pgn_education <- pgn |>
+  clean_names() |> 
+  mutate(sector = str_to_title(sector)) |> 
+  mutate(nombre_entidad = str_to_title(nombre_entidad)) |> 
+  filter(ano == {{last_year}} - 1) |> 
+  filter(mes == "Diciembre") |>
+  filter(sector == "Educacion") |> 
+  select(nombre_entidad,
+         apropiacion_vigente) |> 
+  group_by(nombre_entidad) |> 
+  summarise(apropiacion_vigente = sum(apropiacion_vigente)) |> 
+  ungroup()
+
+## Wrangle
+pgn_education_clean <- pgn_education |> 
+  mutate(apropiacion_vigente_pct = apropiacion_vigente / sum(apropiacion_vigente)) |> 
+  mutate(apropiacion_vigente_pct_label = number(x = apropiacion_vigente_pct, 
+                                                scale = 100, 
+                                                accuracy = 0.01, 
+                                                suffix = " %")) |> 
+  arrange(desc(apropiacion_vigente_pct_label)) |> 
+  select(nombre_entidad, apropiacion_vigente_pct_label)
+```
+
+- Resources assigned to the Education sector in the year `r last_year - 1` according to the **Presupuesto General de la Nación**
+
+    - `r sum(pgn_education$apropiacion_vigente) |> scales::number(big.mark = ",")` COP
+
+- Number of entities in the Education sector in the year `r last_year - 1` according to the **Presupuesto General de la Nación**
+
+    - `r nrow(pgn_education_clean)`
+
+##
+
+```{r}
+# Helpers
+n_entities <- nrow(pgn_education_clean)
+first_n_entities <- ceiling(x = n_entities / 2)  
+last_n_entities  <- n_entities - first_n_entities
+```
+
+```{r}
+#| label: tbl-participation-entities-education-sector-1
+#| tbl-cap: !expr 'paste0("Participation in the resources assigned for each entity in the education sector (Year ", last_year - 1, ")")'
+
+# Table
+pgn_education_clean |>
+  slice_head(n = first_n_entities) |> 
+  gt() |>
+  cols_label(
+    nombre_entidad = "Entity",
+    apropiacion_vigente_pct_label = "Percentage participation in the resources assigned"
+  ) |>
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(14),
+    data_row.padding = px(3)
+  )
+```
+
+##
+
+```{r}
+#| label: tbl-participation-entities-education-sector-2
+#| tbl-cap: !expr 'paste0("Participation in the resources assigned for each entity in the education sector (Year ", last_year - 1, ")")'
+
+# Table
+pgn_education_clean |>
+  slice_tail(n = last_n_entities) |> 
+  gt() |>
+  cols_label(
+    nombre_entidad = "Entity",
+    apropiacion_vigente_pct_label = "Percentage participation in the resources assigned"
+  ) |>
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(14),
+    data_row.padding = px(3)
+  )
+```
+
+# Acknowledgments
+
+##
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
+[**janitor**](https://CRAN.R-project.org/package=janitor),
+[**gt**](https://CRAN.R-project.org/package=gt),
+[**scales**](https://CRAN.R-project.org/package=scales),
+[**treemapify**](https://CRAN.R-project.org/package=treemapify) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license 
+
+# References {.allowframebreaks}
