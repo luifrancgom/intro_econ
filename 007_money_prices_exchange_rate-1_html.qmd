@@ -1,0 +1,248 @@
+---
+title: Money, prices and the exchange rate
+subtitle: Session 1
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    reference-location: document
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(gt)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements forum.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 7]
+
+##
+
+- **Purpose**
+
+    - Analyze the money market and introduce the concepts of inflation, nominal exchange rate and interest rate
+    
+# Money and Central Banks
+
+##
+
+-   Money is an **asset**[^1] that fulfills in general 3 functions
+
+    -   Medium of exchange
+    -   Unit of account
+    -   Store of value
+
+-   *"A central bank[^2] is the institution that issues and administrates legal currency and exercises the function of banker of banks"* [@banco_de_la_republica_central_2021]
+
+[^1]: This part is important because for example a credit card can fulfills the 3 functions but it is not an asset as defined by [@ifrs_conceptual_2018, chap. 4]
+    
+[^2]: For a list of central banks around the world see [**https://www.bis.org/cbanks.htm**](https://www.bis.org/cbanks.htm)
+
+## {.smaller}
+
+-   In the case of Colombia, some of the functions of the central bank are [@banrep_funciones_2025]:
+
+    - Maintain a low and stable inflation rate in order to preserve the purchasing power of money (**Monetary Policy - Política monetaria**)
+
+    - Intervene in the foreign exchange market in such a way that the interventions are consistent with the inflation targeting strategy (**Foreign exchange intervention policy - Política de intervención cambiaria**).
+    
+    - Regulate the activity of credit institutions, control the liquidity of the financial system and ensure the proper functioning of payments in the economy (**Credit policity - Política crediticia**).
+
+## {.smaller}
+
+-   In the case of Colombia, some of the functions of the central bank are [@banrep_funciones_2025]:
+
+    - Manage the international reserves[^3] (**Reservar internacionales**)
+    
+    - Lender of last resort for credit institutions (**Prestamista de última instancia de los establecimientos de crédito**)
+    
+    - Support the government in certain economic operations for the management of its liquidity, its payments, and its financial portfolio (**Government fiscal agent - Agente fiscal del gobierno**)
+    
+[^3]: For more information about the international reserves you can check out [@banrep_reservas_2025]
+
+##
+
+```{r}
+#| label: tbl-ingresos-tributarios-no-tributarios-col
+#| tbl-cap: Establishment date of central banking institutions [@herger_understanding_2019, p. 15]
+
+# Table
+tibble(Bank = c("Sveriges Riksbank",
+                "Bank of England",
+                "Banque de France", 
+                "Bank of Finland",
+                "Nederlandsche Bank",
+                "Austrian National Bank",
+                "Norges Bank",
+                "Danmarks Nationalbank", 
+                "Banco de Portugal",
+                "Belgian National Bank", 
+                "Banco de España", 
+                "German Reichsbank", 
+                "Bank of Japan",
+                "Banca d’Italia",
+                "Banco de la Republica (Colombia)"),
+       Established = c(1668, 1694, 1800, 1800, 1814, 1816,
+                       1816, 1818, 1846, 1850, 1874, 1876,
+                       1882, 1893, 1923)) |> 
+  gt() |>
+  tab_style(
+    style = cell_fill(color = umng_palette[6]), 
+    locations = cells_body(
+      rows = 15
+    )  
+  ) |> 
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(14)
+  )
+```
+
+# Inflation and Consumer Price Index
+
+##
+
+-   **Inflation** is a persistent increase in the price level:
+
+    -   Inflation refers to a general increase in the price level
+
+    -   This increase must be persistent
+
+    -   A measure that represents the behavior of the price level is required where it is necessary to specify a basket of products
+
+-   Review the videos found in:
+
+    -   **Tercer corte 40% \> Learning Resources \> Links of interest**
+
+##
+
+-   The **price level** is an **index number** [@ralph_practical_2015]
+
+    -   An **index number** is a quantity that by varying shows the changes of a magnitude over time or space
+
+-   The variation in the **price level** from one period to another is used to measure inflation
+
+-   The value that the index number takes to measure the **price level** will depend on the products that are taken into account in the basket that is used
+
+##
+
+-   Usually the **price level** used to measure inflation in Colombia is called **Indice de Precios al Consumidor (IPC)** or **Consumer Price Index (CPI)**
+
+    -   In Colombia, this index measures the average variation of the prices of a basket of products representative of household consumption [@dane_metodologigeneral_2019]
+
+    -   You can check out the historical basket of products included in the **(IPC)** or **(CPI)** in: [@dane_metodologigeneral_2019] \> Información adicional \> Estructura histórica de ponderaciones y canasta de seguimiento del IPC
+
+##
+
+-   The **CPI** is build using information from **Encuesta Nacional de Presupuesto de los Hogares –ENPH- (2016-2017)** where it is conducted every 10 years [@dane_metodologigeneral_2019, section 2.1.5].
+
+-   Additionally, usually monthly, but in some cases bimonthly, quadrimestral and biannual, price information is collected for approximately 443[^4] items in 38 cities where divisions included in the **CPI** are based on **Classification of Individual Consumption According to Purpose (COICOP)** [@united_nations_classifications_2000] [^5] and adapted for Colombia.
+
+[^4]: This can change sometimes every year
+[^5]: An update version [@united_nations_classification_2023] is not used according to [@dane_metodologigeneral_2019, section 2.1.5, g.] 
+
+##
+
+```{r}
+#| label: tbl-coicop-cpi
+#| tbl-cap: COICOP divisions (International version) 1999
+
+## COICOP Revision
+### https://unstats.un.org/unsd/classifications/econ/
+tibble(Division = c("01", "02", "03",
+                    "04", "05", "06",
+                    "07", "08", "09",
+                    "10", "11", "12"),
+       Name     = c("Food and non-alcoholic beverages",
+                    "Alcoholic beverages, tobacco and narcotics",
+                    "Clothing and footwear",
+                    "Housing, water, electricity, gas and other fuels",
+                    "Furnishings, household equipment and routine household maintenance",
+                    "Health",
+                    "Transport",
+                    "Communication",
+                    "Recreation, sport and culture",
+                    "Education",
+                    "Restaurants and hotels",
+                    "Miscellaneous goods and services")
+       ) |> 
+  gt() |> 
+  tab_options(
+    row.striping.include_table_body = TRUE,
+    table.border.top.width = px(3),
+    table.border.top.color = "black",
+    column_labels.border.bottom.width = px(2),
+    column_labels.border.bottom.color = "black",
+    table.border.bottom.width = px(3),
+    table.border.bottom.color = "black",
+    table.font.size = px(18)
+  )
+```
+
+# Acknowledgments
+
+##
+
+
+
+# References {.allowframebreaks}
