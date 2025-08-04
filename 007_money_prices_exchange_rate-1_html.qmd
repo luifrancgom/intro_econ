@@ -36,6 +36,8 @@ editor: source
 
 library(tidyverse)
 library(gt)
+library(wbstats)
+library(scales)
 ```
 
 ```{r}
@@ -121,31 +123,37 @@ umng_palette <- c(
 #| tbl-cap: Establishment date of central banking institutions [@herger_understanding_2019, p. 15]
 
 # Table
-tibble(Bank = c("Sveriges Riksbank",
-                "Bank of England",
-                "Banque de France", 
-                "Bank of Finland",
-                "Nederlandsche Bank",
-                "Austrian National Bank",
-                "Norges Bank",
-                "Danmarks Nationalbank", 
-                "Banco de Portugal",
-                "Belgian National Bank", 
-                "Banco de España", 
-                "German Reichsbank", 
-                "Bank of Japan",
-                "Banca d’Italia",
-                "Banco de la Republica (Colombia)"),
-       Established = c(1668, 1694, 1800, 1800, 1814, 1816,
-                       1816, 1818, 1846, 1850, 1874, 1876,
-                       1882, 1893, 1923)) |> 
+tibble(
+  Bank = c(
+    "Sveriges Riksbank",
+    "Bank of England",
+    "Banque de France",
+    "Bank of Finland",
+    "Nederlandsche Bank",
+    "Austrian National Bank",
+    "Norges Bank",
+    "Danmarks Nationalbank",
+    "Banco de Portugal",
+    "Belgian National Bank",
+    "Banco de España",
+    "German Reichsbank",
+    "Bank of Japan",
+    "Banca d’Italia",
+    "Banco de la Republica (Colombia)"
+  ),
+  Established = c(
+    1668, 1694, 1800, 1800, 1814, 1816,
+    1816, 1818, 1846, 1850, 1874, 1876,
+    1882, 1893, 1923
+  )
+) |>
   gt() |>
   tab_style(
-    style = cell_fill(color = umng_palette[6]), 
+    style = cell_fill(color = umng_palette[6]),
     locations = cells_body(
       rows = 15
-    )  
-  ) |> 
+    )
+  ) |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -209,24 +217,29 @@ tibble(Bank = c("Sveriges Riksbank",
 
 ## COICOP Revision
 ### https://unstats.un.org/unsd/classifications/econ/
-tibble(Division = c("01", "02", "03",
-                    "04", "05", "06",
-                    "07", "08", "09",
-                    "10", "11", "12"),
-       Name     = c("Food and non-alcoholic beverages",
-                    "Alcoholic beverages, tobacco and narcotics",
-                    "Clothing and footwear",
-                    "Housing, water, electricity, gas and other fuels",
-                    "Furnishings, household equipment and routine household maintenance",
-                    "Health",
-                    "Transport",
-                    "Communication",
-                    "Recreation, sport and culture",
-                    "Education",
-                    "Restaurants and hotels",
-                    "Miscellaneous goods and services")
-       ) |> 
-  gt() |> 
+tibble(
+  Division = c(
+    "01", "02", "03",
+    "04", "05", "06",
+    "07", "08", "09",
+    "10", "11", "12"
+  ),
+  Name = c(
+    "Food and non-alcoholic beverages",
+    "Alcoholic beverages, tobacco and narcotics",
+    "Clothing and footwear",
+    "Housing, water, electricity, gas and other fuels",
+    "Furnishings, household equipment and routine household maintenance",
+    "Health",
+    "Transport",
+    "Communication",
+    "Recreation, sport and culture",
+    "Education",
+    "Restaurants and hotels",
+    "Miscellaneous goods and services"
+  )
+) |>
+  gt() |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -239,10 +252,288 @@ tibble(Division = c("01", "02", "03",
   )
 ```
 
+##
+
+```{r}
+# Import
+cpi <- wb_data(
+  country = c("COL"),
+  indicator = c("FP.CPI.TOTL")
+)
+
+# Tidy
+cpi_clean <- cpi |>
+  select(country, date, FP.CPI.TOTL)
+```
+
+```{r}
+#| label: fig-cpi-col
+#| fig-cap: Colombia Consumer price index (CPI)
+
+# Visualization
+cpi_clean |>
+  ggplot(aes(
+    x = date,
+    y = FP.CPI.TOTL
+  )) +
+  geom_vline(
+    xintercept = 2010,
+    color = umng_palette[1]
+  ) +
+  geom_hline(
+    yintercept = 100,
+    color = umng_palette[3]
+  ) +
+  geom_point(
+    fill = umng_palette[2],
+    color = "black",
+    shape = 21
+  ) +
+  geom_line() +
+  scale_x_continuous(breaks = seq(
+    from = 1960,
+    to = 2020,
+    by = 10
+  )) +
+  annotate(
+    geom = "label",
+    x = 1980,
+    y = 75,
+    label = str_glue("In 2010, the CPI takes the value
+                              of 100 because this is the year
+                              that is being taken as the base period"),
+    color = "white",
+    fill = umng_palette[1]
+  ) +
+  labs(
+    x = "Year",
+    y = "CPI (2010 = 100)",
+    subtitle = str_glue("CPI code WDI: FP.CPI.TOTL
+                             CPI units: none but Base Year 2010"),
+    caption = str_glue("Source: World Bank - World Development Indicators (WDI)
+                             Last update date: {unique(cpi$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+##
+
+```{r}
+# Import
+inflation <- wb_data(
+  country = c("COL"),
+  indicator = c("FP.CPI.TOTL.ZG")
+)
+
+# Tidy
+inflation_clean <- inflation |>
+  select(country, date, FP.CPI.TOTL.ZG)
+```
+
+```{r}
+#| label: fig-cpi-inflation-col
+#| fig-cap: Inflation using Consumer price index (CPI) for Colombia
+
+# Visualization
+inflation_clean |>
+  ggplot(aes(
+    x = date,
+    y = FP.CPI.TOTL.ZG
+  )) +
+  geom_point(
+    shape = 21,
+    fill = umng_palette[2],
+    color = "black"
+  ) +
+  geom_smooth(
+    data = inflation_clean |> filter(date >= 1991),
+    method = "loess",
+    span = 0.5,
+    alpha = 0.2,
+    linetype = "twodash",
+    color = umng_palette[3]
+  ) +
+  geom_line() +
+  geom_vline(
+    xintercept = 1991,
+    color = umng_palette[1]
+  ) +
+  scale_x_continuous(breaks = seq(
+    from = 1960,
+    to = 2020,
+    by = 10
+  )) +
+  scale_y_continuous(labels = number_format(suffix = "%")) +
+  annotate(
+    geom = "label",
+    x = 2010,
+    y = 28,
+    label = str_glue("With the mandate of the
+                              1991 Constitution, the
+                              Bank of the Republic of
+                              Colombia has progressively
+                              complied with maintaining
+                              a low and stable inflation
+                              rate"),
+    color = "white",
+    fill = umng_palette[1]
+  ) +
+  labs(
+    x = "Year",
+    y = "Percent",
+    subtitle = str_glue("Variable code WDI: FP.CPI.TOTL.ZG
+                             Variable units: annual percent Base Year 2010"),
+    caption = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(inflation$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+##
+
+-   Calculating inflation using the **Consumer Price Index (CPI)**
+
+    -   CPI annual periodicity
+
+        $$Inflation_t = \frac{CPI_t - CPI_{t-1}}{CPI_{t-1}} \times 100$$
+
+    -   CPI monthly periodicity
+
+        $$Inflation_t = \frac{CPI_t - CPI_{t-12}}{CPI_{t-12}} \times 100$$
+
+## {.smaller}
+
+```{r}
+# Helpers
+## 2025-08-04
+trm <- 4129
+```
+
+-   An exchange rate is the amount of **units of national currency** that must be given in exchange for a **unit of foreign currency**
+
+-   If the exchange rate between COP[^6] and USD[^7] is `r trm` COP/USD, it means that `r trm` COP must be given to obtain 1 USD
+
+-   To have a reference of the exchange rate between COP and USD, the **"Superintendencia Financiera de Colombia (SFC)"** currently calculates and certifies an *average* exchange rate called **"Tasa Representativa del Mercado (TRM)"** on a daily basis
+
+-   Also it is important to take into account the following terminology:
+
+    -   **Devaluation**: TRM - COP/USD $(\Uparrow)$
+    -   **Revaluation**: TRM - COP/USD $(\Downarrow)$
+
+[^6]: Colombian peso according to ISO 4217 code
+
+[^7]: United States dollar according to ISO 4217 code
+
+##
+
+```{r}
+# Data
+# https://www.banrep.gov.co/es >
+# Estadísticas económicas >
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Sector externo, tasas de cambio y derivados >
+# Tasa de cambio del peso colombiano por dólar - USD >
+# Tasa de cambio Representativa del Mercado (TRM)
+
+# Import
+cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") |> 
+  set_names(nm = c("date", "trm"))
+
+# https://www.banrep.gov.co/es > 
+# Estadísticas económicas > 
+# Sector externo, tasas de cambio y derivados >
+# 2. Tasas de cambio > Banda Cambiaria > 
+# Serie histórica (24/01/1994 - 24/09/1999) >
+# Exportar > Datos > 
+# CSV
+tcm_banda_cambiaria <- read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
+                                locale = locale(decimal_mark = ",")) |> 
+  set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling"))
+
+# Merge
+cop_usd_trm_merge <- cop_usd_trm |>  
+  left_join(y = tcm_banda_cambiaria, 
+            by = "date") |> 
+  select(-trm_medio) |> 
+  pivot_longer(cols = trm:trm_ceiling)
+```
+
+```{r}
+#| label: fig-daily-trm-cop-usd
+#| fig-cap: Daily Tasa Representativa del Mercado - TRM (COP/USD)
+
+# Visualization
+cop_usd_trm_merge |>
+  ggplot(aes(x = date, y = value, group = name)) +
+  geom_line(aes(color = name), 
+            show.legend = FALSE) +
+  geom_vline(xintercept = ymd("1994-01-24"),
+             color      = umng_palette[7]) +
+  geom_vline(xintercept = ymd("1999-09-25"),
+             color      = umng_palette[7]) +
+  annotate(x     = ymd("1997-01-01"), 
+           y     = 3500, 
+           geom  = "label",
+           color = "white",
+           fill  = umng_palette[1],
+           label = str_glue("On 1999-09-25
+                              the currency band 
+                              system was 
+                              abandoned by the 
+                              Bank of the
+                              Republic")) +
+  scale_color_manual(values = umng_palette[1:3]) +
+  labs(x        = "",
+       y        = "COP/USD",
+       subtitle = str_glue("Period: {cop_usd_trm_merge$date[1]} - {cop_usd_trm_merge$date[length(cop_usd_trm_merge$date)]},
+                             Observations: {length(filter(cop_usd_trm_merge, name=='trm')$name)}"),
+       caption  = str_glue("Data source: Banco de la República (Colombia) & Superintendencia Financiera de Colombia (SFC) 
+                             Last update: {cop_usd_trm_merge$date[length(cop_usd_trm_merge$date)]}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
 # Acknowledgments
 
 ##
 
+-   To my family that supports me
 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
+[**gt**](https://CRAN.R-project.org/package=gt),
+[**wbstats**](https://CRAN.R-project.org/package=wbstats),
+[**scales**](https://CRAN.R-project.org/package=scales) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}
