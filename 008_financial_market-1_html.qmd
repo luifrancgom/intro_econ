@@ -1,0 +1,460 @@
+---
+title: Financial Market
+subtitle: Session 1
+author:
+  - name: 
+      given: Luis F.
+      family: Gómez L.
+    orcid: 0000-0002-2877-9015
+    email: luis.gomezl@unimilitar.edu.co
+    affiliations:
+      - name: Distance Learning Faculty
+toc: true
+toc-depth: 1
+slide-level: 2
+format:
+  presentation-umng-revealjs:
+    logo-vertical-strip: 000_logos/logo-white-vertical.png 
+    embed-resources: true
+    mermaid-format: png
+    reference-location: document
+date: last-modified
+date-format: "D MMMM, YYYY"
+knitr: 
+  opts_chunk: 
+    echo: false
+    warning: false
+    fig.align: center
+    out.width: 85%
+lang: en
+bibliography: intro_econ.bib
+csl: apa-7.csl
+editor: source
+---
+
+```{r}
+#| label: libraries
+
+library(tidyverse)
+library(wbstats)
+library(scales)
+library(ggrepel)
+```
+
+```{r}
+#| label: palette
+
+umng_palette <- c(
+  "#043074",
+  "#fdc600",
+  "#0d5e30",
+  "#ee2a24",
+  "#fc6700",
+  "#00b3f0",
+  "#6e3c1a",
+  "#f8941c",
+  "#8e44ad",
+  "#2c3e50",
+  "#16a085",
+  "#c0392b",
+  "#e91e63"
+)
+```
+
+# Please Read Me
+
+##
+
+-   Check the message **Welcome greeting** published in Announcements forum.
+
+-   Dear student please edit your profile uploading a photo where your face is clearly visible.
+
+-   If you want to participate, please fill out the following survey: **Primer corte 30% > Learning Activities > Tu opinión sobre la economía colombiana**
+
+-   This presentation is based on [@cardenas_introduccion_2020, Chapter 8]
+
+##
+
+- **Purpose**
+
+    - Analyze the functioning of the financial market, identifying the types of intermediaries and instruments that are part of it
+
+# Structure of the Colombian financial system
+
+##
+
+-   The financial system is the set of entities whose main function is to channel the money of savers to those who wish to make investments
+
+    -   We are only going to focus on supervised financial entities. Therefore entities outside the law or unregulated are not going to be analyzed
+
+    -   Also ponzi schemes, pyramids or unregulated investment scheme are not analyzed.
+
+        -   However if you are interested in this topic check out [@carvajal_ponzi_2009] and [@hofstetter_ponzi_2018]
+
+## {.center} 
+
+```{mermaid}
+%%| label: fig-financial-system-structure-supervised-col
+%%| fig-cap: Financial system structure by supervised entities [@congreso_de_colombia_decreto_1993]
+%%| fig-height: 3.5
+
+flowchart TB
+    A("`Sector
+    financiero`")  --> A1("`Establecimientos
+    de crédito`")
+    A1 --> A11("`Establecimientos
+    bancarios`")
+    A1 --> A12("`Corporaciones
+    financieras`")
+    A1 --> A13("`Compañias
+    de
+    financiamiento`")
+    A1 --> A14("`Cooperativas
+    financieras`")
+    A --> A2("`Sociedades de
+    servicios
+    financieros`")
+    A2 --> A21("`Sociedades
+    fiduciarias`")
+    A2 --> A22("`Almacenes
+    generales
+    de depósito`")
+    A2 --> A23("`Sociedades
+    administrativas
+    de fondos
+    de pensiones y 
+    de cesantías`")
+    A --> A3("`Sociedades de
+    capitalización`")
+    A --> A4("`Entidades
+    aseguradoras e
+    intermediarios`")
+    A4 --> A41("`Entidades
+    aseguradoras`")
+    A4 --> A42("`Intermediarios
+    de seguros`")
+    A4 --> A43("`Intermediarios
+    de reaseguros`")
+
+    classDef UmngNode fill:#fdc600,stroke:#043074,stroke-width:2px;
+    class A,A1,A11,A12,A13,A14,A2,A21,A22,A23,A3,A4,A41,A42,A43 UmngNode;
+```
+
+##
+
+```{mermaid}
+%%| label: fig-financial-system-structure-markets-col
+%%| fig-cap: Financial system structure by markets entities [@cardenas_introduccion_2020, Chapter 8, p. 264]
+
+flowchart TB
+    A("`Sector
+    financiero`")  --> A1("`Mercado
+    monetario`")
+    A --> A2("`Mercado
+    de capitales`")
+    A2 --> A21(Bancario)
+    A21 --> A211(Bancos)
+    A21 --> A212("`Otros
+    intermediarios`")
+    A2 --> A22(No bancario)
+    A22 --> A221(Acciones)
+    A22 --> A222("`Renta
+    fija`")
+    A22 --> A223(Derivados)
+    A22 --> A224("`Otros
+    mercados`")
+    A --> A3("`Mercado
+    de divisas`")
+    A --> A4("`Otros mercados
+    financieros`")
+
+    classDef UmngNode fill:#fdc600,stroke:#043074,stroke-width:2px;
+    class A,A1,A2,A21,A22,A211,A212,A221,A222,A223,A224,A3,A4 UmngNode;
+```
+
+# Financial depth
+
+## {.smaller} 
+
+-   *"Financial depth captures the financial sector relative to the economy. It is the size of banks, other financial institutions, and financial markets in a country, taken together and compared to a measure of economic output"* [@world_bank_financial_2016]
+
+-   How it is measure using quantity indicators?[^1]
+
+    -   **Domestic credit to private sector (% of GDP)**
+
+    -   **Market capitalization of listed domestic companies (% of GDP)**
+
+        -   Share price times the number of shares outstanding (including their several classes) for listed domestic companies
+
+-   According to the literature the *"evidence suggests that both financial intermediaries and markets matter for growth and that reverse causality alone is not driving this relationship"* [@levine_chapter_2005, p. 866]
+
+[^1]: These indicators doesn't measure the quality of financial depth
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Producing information and allocating capital** [@levine_chapter_2005, pp. 870-872]
+    
+        - Financial systems enhance the collection and processing of information about potential investments. 
+        
+        - This allows for better assessment of projects and more efficient allocation of resources that foster economic growth. 
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Monitoring firms and exerting corporate governance** [@levine_chapter_2005, pp. 872-875]
+    
+        - Financial institutions, particularly banks and investors, play a role in monitoring the activities of firms they finance. 
+        
+        - This helps to ensure that managers act in the best interests of shareholders and that capital is used efficiently. 
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Risk amelioration** [@levine_chapter_2005, pp. 875-879]
+    
+        - Financial systems reduce the negative impact of risk by enabling diversification, risk transfer, and liquidity. 
+        
+        - This encourages investment and innovation, fostering economic growth by making risky but productive ventures more viable.
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Pooling of savings** [@levine_chapter_2005, pp. 879-880]
+    
+        - The financial system gathers dispersed funds into large capital pools, enabling substantial investments that individuals alone couldn't make. 
+        
+        - This process reduces transaction costs, facilitates large-scale projects, and efficiently allocates capital, driving economic growth by channeling savings into productive ventures.
+
+##
+
+- The financial system provides 5 broad categories of financial functions that can affect resource allocation and economic growth [@levine_chapter_2005, p. 870]
+
+    - **Easing exchange** [@levine_chapter_2005, pp. 880-881]
+    
+        - The financial system reduce transaction costs and facilite trade allowing for smoother economic interactions.
+        
+        - This increases efficiency, promotes specialization, and expands markets, contributing to economic growth.
+
+##
+
+```{r}
+# Helpers
+start_date <- 2024
+end_date <- 2024
+
+# Import
+credit_private_long <- wb_data(
+  country = "countries_only",
+  # Domestic credit to private sector (% of GDP)
+  ## FS.AST.PRVT.GD.ZS
+  #  GDP per capita, PPP (constant 2021 international $)
+  ## NY.GDP.PCAP.PP.KD
+  indicator = c(
+    "FS.AST.PRVT.GD.ZS",
+    "NY.GDP.PCAP.PP.KD"
+  ),
+  start_date = start_date,
+  end_date = end_date,
+  return_wide = FALSE
+)
+
+# Tidy
+credit_private_wide <- credit_private_long |>
+  select(
+    iso2c, iso3c, country,
+    date,
+    indicator_id,
+    value
+  ) |>
+  pivot_wider(
+    id_cols = iso2c:date,
+    names_from = indicator_id,
+    values_from = value
+  ) |>
+  filter(!is.na(FS.AST.PRVT.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) |>
+  select(
+    iso3c, country, date,
+    FS.AST.PRVT.GD.ZS, NY.GDP.PCAP.PP.KD
+  )
+
+## Min, max and Colombia
+credit_private_wide_min_max_col <- credit_private_wide |>
+  filter(FS.AST.PRVT.GD.ZS == min(FS.AST.PRVT.GD.ZS) |
+    FS.AST.PRVT.GD.ZS == max(FS.AST.PRVT.GD.ZS) |
+    iso3c == "COL")
+```
+
+```{r}
+#| label: fig-domestic-credit-private-sector-gdp-pc-col
+#| fig-cap: Financial depth vs Gross Domestic Product per-capita
+
+# Visualization
+credit_private_wide |>
+  ggplot(aes(
+    x = FS.AST.PRVT.GD.ZS,
+    y = NY.GDP.PCAP.PP.KD
+  )) +
+  geom_point(
+    color = "black",
+    fill = umng_palette[2],
+    shape = 21,
+    show.legend = FALSE
+  ) +
+  geom_label_repel(
+    data = filter(
+      credit_private_wide,
+      iso3c %in% credit_private_wide_min_max_col$iso3c
+    ),
+    aes(label = country),
+    seed = 1234,
+    size = 3,
+    min.segment.length = 0,
+    box.padding = 1,
+    force = 2,
+    max.overlaps = Inf
+  ) +
+  scale_x_log10(labels = label_number()) +
+  scale_y_log10(labels = label_number()) +
+  labs(
+    x = "Domestic credit to private sector (% of GDP)",
+    y = str_glue("GDP per capita, PPP
+                           (constant 2021 international $)"),
+    color = NULL,
+    subtitle = str_glue("Period: {start_date}
+                           Axis scales: Logarithmic Base 10
+                           Number of territories: {nrow(credit_private_wide)}"),
+    caption = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(credit_private_long$last_updated)}")
+  ) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+##
+
+```{r}
+# Helpers
+start_date <- 2024
+end_date <- 2024
+
+# Import
+market_cap_long <- wb_data(country = "countries_only",
+                           # Market capitalization of listed domestic companies (% of GDP)
+                           ## CM.MKT.LCAP.GD.ZS
+                           #  GDP per capita, PPP (constant 2021 international $)
+                           ## NY.GDP.PCAP.PP.KD
+                           indicator    = c("CM.MKT.LCAP.GD.ZS", 
+                                            "NY.GDP.PCAP.PP.KD"),
+                           start_date = start_date,
+                           end_date = end_date,
+                           return_wide  = FALSE) 
+
+# Tidy
+market_cap_wide <- market_cap_long |>
+  select(iso2c, iso3c, country, date, indicator_id, value) |>
+  pivot_wider(id_cols = iso2c:date, 
+              names_from = indicator_id,
+              values_from = value) |> 
+  filter(!is.na(CM.MKT.LCAP.GD.ZS), !is.na(NY.GDP.PCAP.PP.KD)) |>
+  select(iso3c, country, date,
+         CM.MKT.LCAP.GD.ZS, NY.GDP.PCAP.PP.KD)
+
+## Min, max and Colombia
+market_cap_wide_min_max_col <- market_cap_wide |> 
+  filter(CM.MKT.LCAP.GD.ZS == min(CM.MKT.LCAP.GD.ZS) |
+           CM.MKT.LCAP.GD.ZS == max(CM.MKT.LCAP.GD.ZS) |
+           iso3c == "COL")
+```
+
+```{r}
+#| label: fig-market-capitalization-gdp-pc-col
+#| fig-cap: Financial depth vs Gross Domestic Product per-capita
+
+# Visualization
+market_cap_wide |>
+  ggplot(aes(x = CM.MKT.LCAP.GD.ZS,
+             y = NY.GDP.PCAP.PP.KD)) +
+  geom_point(color = "black",
+             fill = umng_palette[2],
+             shape = 21,
+             show.legend = FALSE) +
+  geom_label_repel(data = filter(market_cap_wide, iso3c %in% market_cap_wide_min_max_col$iso3c),
+                   aes(label = country),
+                   seed = 1234,
+                   size = 3,
+                   min.segment.length = 0,
+                   box.padding = 1,
+                   force = 2,
+                   max.overlaps = Inf) +
+  scale_x_log10(labels = label_number()) +
+  scale_y_log10(labels = label_number()) +
+  labs(x        = "Market capitalization of listed domestic companies (% of GDP)",
+       y        = str_glue("GDP per capita, PPP
+                           (constant 2021 international $)"),
+       color = NULL,
+       subtitle = str_glue("Period: {start_date}
+                           Axis scales: Logarithmic Base 10
+                           Number of territories: {nrow(market_cap_wide)}"),
+       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(market_cap_long$last_updated)}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10)
+  )
+```
+
+# Uncertainty in financial markets
+
+## 
+
+-   Financing is essentially the exchange of a sum of money today for a promise to return more money in the future. Therefore it is not surprising that such exchange can be problematic
+
+    -   **Information asymmetry**: in an exchange one party has more or better information than the other
+
+        -   **Adverse selection**
+        -   **Moral hazard**
+
+## 
+
+-   **Adverse selection** occurs when it is not possible to identify the quality of a product for a party that participates in a transaction. Therefore bad products are sold with good products where the consequence is that bad products take off good products from the market [@durlauf_adverse_1987]
+
+    -   In the context of financial markets **adverse selection** occurs when an increase in interest rates induces good debtors to stop requesting loans, so that only those individuals with a higher probability of not paying the loan end up requesting loans
+
+## 
+
+-   **Moral hazard** is *"any situation in which one person makes the decision about how much risk to take, while someone else bears the cost if things go badly"* [@krugman_return_2009, p. 63]
+
+    -   In the context of financial markets **moral hazard** occurs when debtors take riskier actions that increase the probability of default
+
+# Acknowledgments
+
+##
+
+-   To my family that supports me
+
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**wbstats**](https://CRAN.R-project.org/package=wbstats), [**scales**](https://CRAN.R-project.org/package=scales), [**ggrepel**](https://CRAN.R-project.org/package=ggrepel) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+
+# References {.allowframebreaks}
