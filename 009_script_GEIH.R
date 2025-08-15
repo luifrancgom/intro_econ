@@ -1,12 +1,12 @@
 # Data origin ----
 ## https://www.dane.gov.co/ > 
-## Estadísticas por tema >
-## Mercado Laboral > 
-## Acceso a microdatos Acceder >
+## ANDA | ARCHIVO NACIONAL DE DATOS >
 ## Microdatos > 
 ## Economía > 
 ## Mercado Laboral. >
-## Gran Encuesta Integrada de Hogares - GEIH - 2024.
+## Gran Encuesta Integrada de Hogares - GEIH - 2025 >
+## Obtener Microdatos >
+## Junio_2025
 ### This can change depending if the data is update
 ### in relation to the year
 
@@ -18,7 +18,8 @@ library(tidyverse)
 # Clean file names ----
 
 ## Folder path ----
-folder_path <- "000_data/009_geih/"
+### Change the last part: jul_2025 
+folder_path <- "000_data/009_geih/jul_2025"
 
 ## File list ----
 file_paths <- dir_ls(path = folder_path)
@@ -44,8 +45,10 @@ file_paths |>
 ### I. Ocupados
 #### The delim is ;
 ##### In case of poblems importing the data use
-##### problems(ocupados) 
-ocupados <- read_delim(file = "000_data/009_geih/ocupados.csv",
+##### problems(ocupados)
+folder_path_ocupados <- str_c(folder_path, "ocupados.csv", 
+                              sep = "/")
+ocupados <- read_delim(file = folder_path_ocupados,
                        delim = ";",
                        col_types = cols(
                          P6430S1 = col_character(),
@@ -88,12 +91,14 @@ ocupados_ingreso_laboral <- ocupados |>
 #### The delim is ;
 ##### In case of poblems importing the data use
 ##### problems(caracteristicas_generales_seguridad_social_en_salud_y_educacion) 
-caracteristicas_generales_seguridad_social_en_salud_y_educacion <- read_delim(file = "000_data/009_geih/caracteristicas_generales_seguridad_social_en_salud_y_educacion.csv",
+folder_path_caracteristicas_generales_seguridad_social_en_salud_y_educacion <- str_c(folder_path, "caracteristicas_generales_seguridad_social_en_salud_y_educacion.csv", 
+                                                                                     sep = "/")
+caracteristicas_generales_seguridad_social_en_salud_y_educacion <- read_delim(file = folder_path_caracteristicas_generales_seguridad_social_en_salud_y_educacion,
                                                                               delim = ";",
-                                                                              col_types = cols(
-                                                                                P3147S10A1 = col_character()
-                                                                                ),
                                                                               locale = locale(decimal_mark = "."))
+
+caracteristicas_generales_seguridad_social_en_salud_y_educacion |>
+  glimpse()
 
 nivel_educativo_caract_indiv <- caracteristicas_generales_seguridad_social_en_salud_y_educacion |>
          # Mes
@@ -161,8 +166,8 @@ ingreso_nivel_educativo |> filter(is.na(INGLABO))
 
 ## Wrangling data ----
 ### Salario mínimo mensual legal vigente
-#### Periodo: 2024
-smmlv <- 1300000
+#### Periodo: 2025
+smmlv <- 1423500
 
 nivel_ingreso_levels <- c("Without information",
                           "[0, 0.5)",
@@ -206,7 +211,7 @@ ingreso_nivel_educativo_categories <- ingreso_nivel_educativo |>
     P3042 == 11	~ nivel_educativo_levels[11], 
     P3042 == 12	~ nivel_educativo_levels[12], 
     P3042 == 13	~ nivel_educativo_levels[13], 
-    P3042 == 99	~ nivel_educativo_levels[14], 
+    P3042 == 99	~ nivel_educativo_levels[14],
     .default = NA_character_)) |> 
   mutate(nivel_educativo = factor(x = nivel_educativo,
                                   levels = nivel_educativo_levels, 

@@ -37,6 +37,7 @@ editor: source
 library(tidyverse)
 library(scales)
 library(readxl)
+library(wbstats)
 ```
 
 ```{r}
@@ -137,59 +138,58 @@ last_update_labor <- ymd("2025-07-31")
 # visualization
 ## Data
 labor <- tibble(x = c( 0, 
-              -1, 
-              1,
-              0,
-              2,
-              -2,
-              2,
-              -3,
-              -1),
-       y = c( 0, 
-              -1, 
-              -1,
-              -2,
-              -2,
-              -3,
-              -3,
-              -4,
-              -4),
-       indicator = c('Total Population (TP)',
-                     'Population below\n15 years',
-                     'Working Age\nPopulation\n(WAP)',
-                     'Labor\nForce\n(LF)',
-                     'Not in\nLabor\nForce\n(NLF)',
-                     'Employed (E)',
-                     'Unemployed (U)',
-                     'Full Employed\n(FE)',
-                     'Underemployed\n(UE)'
-       ),
-       level     = c('0', 
-                     '1', '1', 
-                     '2', '2', 
-                     '3', '3',
-                     '4', '4'),
-       # Población total
-       value     = c(poblacion_total, 
-                     # Población menor a 15 años
-                     poblacion_menor_a_15_anos,    
-                     # Población en edad de trabajar
-                     poblacion_en_edad_de_trabajar, 
-                     # Fuerza de trabajo
-                     fuerza_de_trabajo, 
-                     # Población fuera de la fuerza de trabajo
-                     poblacion_fuera_de_la_fuerza_de_trabajo, 
-                     # Población Ocupada
-                     poblacion_ocupada, 
-                     # Población Desocupada
-                     poblacion_desocupada, 
-                     # Completamente empleados
-                     completamente_empleados, 
-                     # Subocupados
-                     subocupados))  |> 
+                       -1, 
+                       1,
+                       0,
+                       2,
+                       -2,
+                       2,
+                       -3,
+                       -1),
+                y = c( 0, 
+                       -1, 
+                       -1,
+                       -2,
+                       -2,
+                       -3,
+                       -3,
+                       -4,
+                       -4),
+                indicator = c('Total Population (TP)',
+                              'Population below\n15 years',
+                              'Working Age\nPopulation\n(WAP)',
+                              'Labor\nForce\n(LF)',
+                              'Not in\nLabor Force\n(NLF)',
+                              'Employed (E)',
+                              'Unemployed (U)',
+                              'Full Employed\n(FE)',
+                              'Underemployed\n(UE)'
+                ),
+                level     = c('0', 
+                              '1', '1', 
+                              '2', '2', 
+                              '3', '3',
+                              '4', '4'),
+                # Población total
+                value     = c(poblacion_total, 
+                              # Población menor a 15 años
+                              poblacion_menor_a_15_anos,    
+                              # Población en edad de trabajar
+                              poblacion_en_edad_de_trabajar, 
+                              # Fuerza de trabajo
+                              fuerza_de_trabajo, 
+                              # Población fuera de la fuerza de trabajo
+                              poblacion_fuera_de_la_fuerza_de_trabajo, 
+                              # Población Ocupada
+                              poblacion_ocupada, 
+                              # Población Desocupada
+                              poblacion_desocupada, 
+                              # Completamente empleados
+                              completamente_empleados, 
+                              # Subocupados
+                              subocupados))  |> 
   mutate(label_text = str_glue('{indicator}
-                                 {value |> 
-                                    number(big.mark = ",")}'))
+                               {value |> number(big.mark = ",")}'))
 
 # Plot
 labor |> 
@@ -205,7 +205,9 @@ labor |>
   geom_label(aes(fill = level), 
              color       = "white", 
              fontface    = "bold",
-             size        = 3.5) +
+             size        = 3.5,
+             label.size = 0.5,
+             label.r     = unit(0.30, "lines")) +
   scale_fill_manual(values = umng_palette[1:5]) +
   coord_cartesian(xlim = c(-5, 5), 
                   ylim = c(-4.2, 0.2)) +
@@ -215,7 +217,7 @@ labor |>
        subtitle = str_glue('Period: June 2025'),
        caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
                               Last update: {last_update_labor}'),
-    fill     = "Level"
+       fill     = "Level"
   ) +
   theme(
     panel.border = element_rect(
@@ -230,10 +232,412 @@ labor |>
   )
 ```
 
+# Labor market indicators
+
+##
+
+-   **Percentage of the working age population** ("Porcentaje de población en edad de trabajar")
+
+    -   $\%WAP = \frac{WAP}{PT} \times 100$
+
+-   **Labor participation rate (LPR)** ("Tasa global de participación")
+
+    -   $LPR = \frac{LF}{WAP} \times 100$
+
+##
+
+-   **Employment rate (ER)** ("Tasa de ocupación")
+
+    -   $ER = \frac{E}{WAP} \times 100$
+
+-   **Unemployment rate (UR)** ("Tasa de desempleo")
+
+    -   $UR = \frac{U}{LF} \times 100$
+
+-   **Underemployment (UER)** ("Tasa de subempleo")
+
+    -   $UER = \frac{UE}{LF} \times 100$
+
+##
+
+```{r}
+# Import ----
+employment_unemployment <- wb_data(country = c('COL'),
+                                   indicator   = c('SL.UEM.TOTL.ZS', 
+                                                   'SL.EMP.TOTL.SP.ZS'), 
+                                   return_wide = FALSE)
+
+# Tidy
+employment_unemployment_clean <- employment_unemployment |> 
+  drop_na(value) |> 
+  select(country, date, value, indicator) |>
+  mutate(indicator = case_when(
+    indicator == 'Unemployment, total (% of total labor force) (modeled ILO estimate)' ~ 'Unemployment rate (UR) (ILO estimate))',
+    indicator == 'Employment to population ratio, 15+, total (%) (modeled ILO estimate)' ~ 'Employment rate (ER) (ILO estimate))',
+    .default = indicator))
+```
+
+```{r}
+#| label: fig-ur-er-col
+#| fig-cap: Annual Unemployment rate (UR) and Employment rate (ER) in Colombia
+
+# Visualization
+employment_unemployment_clean |> 
+  ggplot(aes(x = date, 
+             y = value)) + 
+  geom_point(shape = 21, 
+             fill = umng_palette[2], 
+             color = "black") +
+  geom_line(color = umng_palette[1]) +
+  geom_vline(xintercept = c(1999, 2020),
+             color      = umng_palette[3]) +
+  expand_limits(y = 0) +
+  facet_wrap(facet    = vars(indicator), 
+             ncol     = 1,
+             nrow     = 2, 
+             scales   = "free_y") +
+  scale_x_continuous(breaks = c(1991, 1999, 2010, 
+                                max(employment_unemployment_clean$date))) +
+  scale_y_continuous(labels = label_number(accuracy = 1,
+                                           suffix = "%")) +
+  coord_cartesian(xlim = c(min(employment_unemployment_clean$date), 
+                           max(employment_unemployment_clean$date))) +
+  labs(x        = 'Year',
+       y        = 'Percent',
+       subtitle = str_glue('UR code WDI: SL.UEM.TOTL.ZS
+                             UR units: percent
+                             ER code WDI: SL.EMP.TOTL.SP.ZS
+                             ER units: percent
+                             Observation: ILO estimations where ages 15 and older are considered the WAP'),
+       caption  = str_glue('Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(employment_unemployment$last_updated)}')) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    strip.background.x = element_rect(color = "black", 
+                                      fill = umng_palette[2]),
+    strip.text.x = element_text(margin = margin(t = 5,
+                                                r = 5,
+                                                b = 5,
+                                                l = 5,
+                                                unit = "pt"),
+                                face = "bold"))
+```
+
+# Labor demand
+
+##
+
+-   The labor demand is the process by which the economy generates job vacancies
+
+-   How companies decide how many workers to contract?
+
+    -   Demand of the products that offer by the company
+    -   Wages (the price of labor)
+    -   Labor regulation
+    -   The costs of other inputs different form labor and used in production
+    -   The technology used by companies
+
+##
+
+```{r}
+# Import ----
+## GDP per capita growth (annual %)
+econ_growth_unemployment_long <- wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
+                                                       # Unemployment, total (% of total labor force)
+                                                       # It is calculated not but the ILO but by the Statistical Office of each country
+                                                       "SL.UEM.TOTL.NE.ZS"),
+                                         country = "COL",
+                                         return_wide = FALSE)
+
+# Tidy
+econ_growth_unemployment_wide <- econ_growth_unemployment_long |> 
+  select(iso2c, iso3c, country, date, indicator_id, value) |> 
+  pivot_wider(id_cols =  iso2c:date, 
+              names_from = indicator_id,
+              values_from = value) |> 
+  drop_na(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)
+```
+
+```{r}
+#| label: fig-economic-growth-ur-col
+#| fig-cap: Economic growth vs unemployment rate
+
+# Visualization
+econ_growth_unemployment_wide |> 
+  ggplot(aes(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)) +
+  geom_smooth(method = "lm",
+              color = umng_palette[1],
+              se = FALSE) +
+  geom_point(shape = 21,
+             color = "black",
+             fill = umng_palette[2]) + 
+  scale_x_continuous(labels = label_number(suffix = "%")) +
+  scale_y_continuous(labels = label_number(suffix = "%")) +
+  labs(x        = "GDP per capita growth (annual %)",
+       y        = str_glue("Annual total unemployment (% of total labor force)"),
+       color = NULL,
+       title    = "In times of low economic growth, companies reduce production and therefore hire fewer workers",
+       subtitle = str_glue("Period: {min(econ_growth_unemployment_long$date)} - {max(econ_growth_unemployment_long$date)}"),
+       # Update last update date manually
+       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(econ_growth_unemployment_long$last_updated)}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    legend.position = "bottom"
+  )
+```
+
+# Wages
+
+##
+
+```{r}
+# Import ----
+group_ingreso_nivel_educativo_categories <- read_rds(file = "000_data/009_income_educational_level_geih.rds")
+levels_geih <- read_rds(file = "000_data/009_levels.rds")
+
+# Helpers
+## Generating variables
+### Remember to change this
+year <- 2025
+month <- "07"
+
+level_1 <- levels_geih$educativo[1:4]
+level_2 <- levels_geih$educativo[5:6]
+level_3 <- levels_geih$educativo[7:10]
+level_4 <- levels_geih$educativo[11:13]
+
+nivel_ingreso_levels <- levels_geih$ingreso
+
+ncol <- 2
+```
+
+```{r}
+#| label: fig-income-education-level-1
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+# Visualization
+group_ingreso_nivel_educativo_categories |> 
+  # Filter data  
+  filter(nivel_educativo %in% level_1) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = label_number(scale = 1e-3,
+                                           big.mark = ",",
+                                           suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    strip.background.x = element_rect(color = "black", 
+                                      fill = umng_palette[2]),
+    strip.text.x = element_text(margin = margin(t = 5,
+                                                r = 5,
+                                                b = 5,
+                                                l = 5,
+                                                unit = "pt"),
+                                face = "bold"))
+```
+
+##
+
+```{r}
+#| label: fig-income-education-level-2
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+# Visualization
+group_ingreso_nivel_educativo_categories |> 
+  # Filter data  
+  filter(nivel_educativo %in% level_2) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = label_number(scale = 1e-3,
+                                           big.mark = ",",
+                                           suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    strip.background.x = element_rect(color = "black", 
+                                      fill = umng_palette[2]),
+    strip.text.x = element_text(margin = margin(t = 5,
+                                                r = 5,
+                                                b = 5,
+                                                l = 5,
+                                                unit = "pt"),
+                                face = "bold"))
+```
+
+##
+
+```{r}
+#| label: fig-income-education-level-3
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+# Visualization
+group_ingreso_nivel_educativo_categories |> 
+  # Filter data  
+  filter(nivel_educativo %in% level_3) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = label_number(scale = 1e-3,
+                                           big.mark = ",",
+                                           suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    strip.background.x = element_rect(color = "black", 
+                                      fill = umng_palette[2]),
+    strip.text.x = element_text(margin = margin(t = 5,
+                                                r = 5,
+                                                b = 5,
+                                                l = 5,
+                                                unit = "pt"),
+                                face = "bold"))
+```
+
+##
+
+```{r}
+#| label: fig-income-education-level-4
+#| fig-cap: Employed population according to last educational degree obtained and income bracket
+
+# Visualization
+group_ingreso_nivel_educativo_categories |> 
+  # Filter data  
+  filter(nivel_educativo %in% level_4) |> 
+  ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
+  geom_point() +
+  geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
+  scale_x_continuous(labels = label_number(scale = 1e-3,
+                                           big.mark = ",",
+                                           suffix = "K")) + 
+  scale_y_discrete(breaks = nivel_ingreso_levels) +
+  facet_wrap(facets = vars(nivel_educativo), 
+             ncol = ncol) +
+  labs(x = "Number of employees in thousands (K)",
+       y = str_glue("Current legal monthly minimum wages"),
+       subtitle = str_glue("Period: {year}-{month}"),
+       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  theme(
+    panel.border = element_rect(
+      fill = NA,
+      color = "black"
+    ),
+    plot.background = element_rect(fill = "white"),
+    panel.background = element_rect(fill = "white"),
+    legend.background = element_rect(fill = "white"),
+    axis.text = element_text(size = 10),
+    strip.background.x = element_rect(color = "black", 
+                                      fill = umng_palette[2]),
+    strip.text.x = element_text(margin = margin(t = 5,
+                                                r = 5,
+                                                b = 5,
+                                                l = 5,
+                                                unit = "pt"),
+                                face = "bold"))
+```
+
+## {.smaller}
+
+-   Mincer equation
+
+    -   $log_e(w_{it}) = log_e(w_o) + \beta_1Ed_{it} +  \beta_2Ex_{it} + \beta_2Ex_{it}^2 + \epsilon_{it}$
+
+        -   $log_e$: natural logarithm
+        -   $w_{it}$: wage of individual $i$ in period $t$
+        -   $w_o$: wage without any level of education an experience
+        -   $\epsilon_{it}$: years of education of individual $i$ in period $t$
+        -   $Ex_{it}$: potential experience of individual $i$ in period $t$ which is equal to the age minus the years of education minus six
+        -   $\epsilon_{it}$: are other components of individual $i$ in period $t$ that might affect the wage
+
+# Labor regulation
+
+##
+
+-   The labor regulation refers to:
+
+    -   The laws governing labor contracts
+    -   Laws governing labor relations that empower unions to represent workers collectively
+    -   Social security laws governing the response to social needs such as unemployment, maternity, old age, disability, death and sickness
+
+##
+
+-   Resources
+
+    -   **Calculadora Laboral - Mintrabajo**
+
+        <!-- comment Check always the link to see if it works -->
+        
+        <!-- comment See  https://github.com/quarto-dev/quarto-cli/issues/5100 about possible change in the quarto documentatio -->
+    
+        -   [https://www.mintrabajo.gov.co/web/guest/inicio](https://www.mintrabajo.gov.co/web/guest/inicio) \> Atención al Ciudadano \> Trámites y Servicios \> Mi Calculadora
+
 # Acknowledgments
 
 ##
 
+-   To my family that supports me
 
+-   To the taxpayers of Colombia and the [**UMNG students**](https://www.umng.edu.co/estudiante) who pay my salary
+
+-   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
+
+-   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**scales**](https://CRAN.R-project.org/package=scales), [**readxl**](https://CRAN.R-project.org/package=readxl),
+[**wbstats**](https://CRAN.R-project.org/package=wbstats) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}

@@ -379,7 +379,7 @@ ncol <- 2
 #| fig-cap: Employed population according to last educational degree obtained and income bracket
 
 group_ingreso_nivel_educativo_categories |> 
-         # Filter data  
+  # Filter data  
   filter(nivel_educativo %in% level_1) |> 
   ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
   geom_point() +
