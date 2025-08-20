@@ -627,7 +627,7 @@ bop_col_financial_account_table_2 |>
   ) |>
   tab_style(
     style = cell_fill(color = umng_palette[11]),
-    locations = cells_body(rows = c(2, 4, 6, 7))
+    locations = cells_body(rows = c(3, 4, 6, 7))
   ) |>
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
