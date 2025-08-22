@@ -177,8 +177,7 @@ trade_col_clean |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text = element_blank(),
-    axis.ticks = element_blank()
+    axis.text = element_text(size = 10)
   )
 ```
 
