@@ -149,9 +149,7 @@ trade_usa_col_world_sgp_clean |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text = element_text(size = 10),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
+    axis.text = element_text(size = 10)
   )
 ```
 
