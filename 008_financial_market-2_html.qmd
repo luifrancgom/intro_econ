@@ -409,7 +409,7 @@ icolcap_cl_clean |>
 
 # Banking market or *"Mercado Intermediado"*
 
-## 
+## {.smaller} 
 
 -   **What is a bank?**
 

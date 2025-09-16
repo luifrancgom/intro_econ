@@ -108,7 +108,7 @@ umng_palette <- c(
 
 -   In the case of Colombia, some of the functions of the central bank are [@banrep_funciones_2025]:
 
-    - Manage the international reserves[^3] (**Reservar internacionales**)
+    - Manage the international reserves[^3] (**Reservas internacionales**)
     
     - Lender of last resort for credit institutions (**Prestamista de última instancia de los establecimientos de crédito**)
     

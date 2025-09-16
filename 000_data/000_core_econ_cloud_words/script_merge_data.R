@@ -3,8 +3,9 @@ library(tidyverse)
 library(fs)
 
 # List directore
-list_files <- dir_ls(path = "000_data/000_core_econ_cloud_words/clean_data/", 
-                     regexp = r'(\.csv$)')
+list_files <- dir_ls(path = "000_data/000_core_econ_cloud_words/clean_data/",
+                     # Change this in relation to the period
+                     regexp = r'(2025_2.+\.csv$)')
 
 # Import data ----
 merge_data <- list_files |> 
@@ -14,5 +15,5 @@ merge_data <- list_files |>
 
 # Export data 
 merge_data |> 
-  write_csv(file = "000_data/000_core_econ_cloud_words/merge_data/merge_data.csv")
+  write_csv(file = "000_data/000_core_econ_cloud_words/merge_data/merge_data_2025-2.csv")
   

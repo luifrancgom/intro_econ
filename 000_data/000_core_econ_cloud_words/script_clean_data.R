@@ -7,11 +7,11 @@ library(polyglotr)
 
 # Import data
 spanish_stop_words <- stopwords(language = "es")
-data_2025_01_01_aula_a <- read_csv(file = "000_data/000_core_econ_cloud_words/raw_data/data_aula_a_2025-01-01.csv") 
-data_2025_01_01_aula_b <- read_csv(file = "000_data/000_core_econ_cloud_words/raw_data/data_aula_b_2025-01-01.csv") 
+data_2025_2_aula_a <- read_csv(file = "000_data/000_core_econ_cloud_words/raw_data/data_2025-2_aula_a.csv") 
+data_2025_2_aula_b <- read_csv(file = "000_data/000_core_econ_cloud_words/raw_data/data_2025-2_aula_b.csv") 
 
 ## Course A
-data_2025_01_01_aula_a_clean <- data_2025_01_01_aula_a |>  
+data_2025_2_aula_a_clean <- data_2025_2_aula_a |>  
   set_names(nm = c("id", "raw_word")) |> 
   # Lower case conversion
   mutate(clean_word = str_to_lower(string = raw_word, locale = "es")) |> 
@@ -28,13 +28,14 @@ data_2025_01_01_aula_a_clean <- data_2025_01_01_aula_a |>
   summarise(clean_word = paste(clean_word, collapse = " ")) |> 
   ungroup() |> 
   # Adjust terms
+  # Check also line 65 for possible adjustments
   mutate(clean_word = if_else(condition = raw_word == "RESILIENTE", 
                               "resiliencia",
                               clean_word)) |> 
   # Add variables
   mutate(course = "a", .after = id) |> 
   mutate(year = 2025, .after = course) |> 
-  mutate(semester = 1, .after = year) |> 
+  mutate(semester = 2, .after = year) |> 
   # Delete variables
   select(-c(id)) |> 
   # Translate terms
@@ -44,7 +45,7 @@ data_2025_01_01_aula_a_clean <- data_2025_01_01_aula_a |>
 
 # Clean data
 ## Course B
-data_2025_01_01_aula_b_clean <- data_2025_01_01_aula_b |>  
+data_2025_2_aula_b_clean <- data_2025_2_aula_b |>  
   set_names(nm = c("id", "raw_word")) |> 
   # Lower case conversion
   mutate(clean_word = str_to_lower(string = raw_word, locale = "es")) |> 
@@ -61,19 +62,16 @@ data_2025_01_01_aula_b_clean <- data_2025_01_01_aula_b |>
   summarise(clean_word = paste(clean_word, collapse = " ")) |> 
   ungroup() |>
   # Adjust terms
-  mutate(clean_word = if_else(condition = raw_word == "a tasa de intereses", 
-                              "tasa interes",
+  mutate(clean_word = if_else(condition = clean_word == "inflacion economica", 
+                              "inflacion",
                               clean_word)) |> 
-  mutate(clean_word = if_else(condition = raw_word == "Analfbetismo", 
-                              "analfabetismo",
+  mutate(clean_word = if_else(condition = clean_word == "narcotrafico pais", 
+                              "narcotrafico",
                               clean_word)) |> 
-  mutate(clean_word = if_else(condition = raw_word == "CORUPCION", 
-                              "corrupcion",
-                              clean_word)) |>
   # Add variables
   mutate(course = "b", .after = id) |> 
   mutate(year = 2025, .after = course) |> 
-  mutate(semester = 1, .after = year) |> 
+  mutate(semester = 2, .after = year) |> 
   # Delete variables
   select(-c(id)) |> 
   # Translate terms
@@ -82,10 +80,10 @@ data_2025_01_01_aula_b_clean <- data_2025_01_01_aula_b |>
   mutate(en_word = str_to_lower(string = en_word))
 
 # Export ----
-data_2025_01_01_aula_a_clean |> 
-  write_csv(file = "000_data/000_core_econ_cloud_words/clean_data/data_2025_01_01_aula_a.csv")
+data_2025_2_aula_a_clean |> 
+  write_csv(file = "000_data/000_core_econ_cloud_words/clean_data/data_2025_2_aula_a.csv")
 
 
-data_2025_01_01_aula_b_clean |> 
-  write_csv(file = "000_data/000_core_econ_cloud_words/clean_data/data_2025_01_01_aula_b.csv")
+data_2025_2_aula_b_clean |> 
+  write_csv(file = "000_data/000_core_econ_cloud_words/clean_data/data_2025_2_aula_b.csv")
  

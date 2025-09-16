@@ -1,0 +1,66 @@
+id,course,year,semester,raw_word,clean_word,en_word
+1,a,2025,2,Informalidad Laboral,informalidad laboral,labor informality
+2,a,2025,2,Desempleo.,desempleo,unemployment
+3,a,2025,2,INFORMALIDAD LABORAL,informalidad laboral,labor informality
+4,a,2025,2,Desempleo,desempleo,unemployment
+5,a,2025,2,desempleo,desempleo,unemployment
+6,a,2025,2,Inflación,inflacion,inflation
+7,a,2025,2,los impuestos,impuestos,taxes
+8,a,2025,2,Desempleo,desempleo,unemployment
+9,a,2025,2,Inversión,inversion,investment
+10,a,2025,2,oportunidades laborales,oportunidades laborales,labor opportunities
+11,a,2025,2,Corrupción,corrupcion,corruption
+12,a,2025,2,Los alimentos,alimentos,food
+13,a,2025,2,Desigualdad,desigualdad,inequality
+14,a,2025,2,Desigualdad,desigualdad,inequality
+15,a,2025,2,corrupción,corrupcion,corruption
+16,a,2025,2,desigualdad,desigualdad,inequality
+17,a,2025,2,Empleo,empleo,employment
+18,a,2025,2,La Desigualdad,desigualdad,inequality
+19,a,2025,2,Desigualdad,desigualdad,inequality
+20,a,2025,2,El desempleo,desempleo,unemployment
+21,a,2025,2,empleo,empleo,employment
+22,a,2025,2,la desigualdad social,desigualdad social,social inequality
+23,a,2025,2,Corrupción,corrupcion,corruption
+24,a,2025,2,desigualdad,desigualdad,inequality
+25,a,2025,2,desigualdad,desigualdad,inequality
+26,a,2025,2,La deuda pública,deuda publica,public debt
+27,a,2025,2,Conocimiento,conocimiento,knowledge
+28,a,2025,2,EDUCACION,educacion,education
+29,a,2025,2,desigualdad,desigualdad,inequality
+30,a,2025,2,Desempleo,desempleo,unemployment
+31,a,2025,2,Desempleo,desempleo,unemployment
+32,a,2025,2,deuda externa,deuda externa,external debt
+33,a,2025,2,Desigualdad,desigualdad,inequality
+34,b,2025,2,La educación financiera,educacion financiera,financial education
+35,b,2025,2,La pobreza,pobreza,poverty
+36,b,2025,2,educacion financiera,educacion financiera,financial education
+37,b,2025,2,Autosuficiencia,autosuficiencia,self -sufficiency
+38,b,2025,2,AGROPECUARIA,agropecuaria,agricultural
+39,b,2025,2,Desigualdad,desigualdad,inequality
+40,b,2025,2,LA DESIGUALDAD,desigualdad,inequality
+41,b,2025,2,La inflación económica.,inflacion,inflation
+42,b,2025,2,Recursos,recursos,resources
+43,b,2025,2,Educación,educacion,education
+44,b,2025,2,Etica,etica,ethics
+45,b,2025,2,Alimentación,alimentacion,feeding
+46,b,2025,2,baja productividad,baja productividad,low productivity
+47,b,2025,2,Corrupción,corrupcion,corruption
+48,b,2025,2,desigualdad,desigualdad,inequality
+49,b,2025,2,corrupción,corrupcion,corruption
+50,b,2025,2,Es la desigualdad.,desigualdad,inequality
+51,b,2025,2,La pobreza,pobreza,poverty
+52,b,2025,2,Desigualdad,desigualdad,inequality
+53,b,2025,2,Educación,educacion,education
+54,b,2025,2,Exportación,exportacion,export
+55,b,2025,2,Pobreza,pobreza,poverty
+56,b,2025,2,LA POBREZA,pobreza,poverty
+57,b,2025,2,desigualdad,desigualdad,inequality
+58,b,2025,2,Narcotráfico en el País,narcotrafico,drug trafficking
+59,b,2025,2,Ambiental,ambiental,environmental
+60,b,2025,2,pobreza,pobreza,poverty
+61,b,2025,2,Impuestos,impuestos,taxes
+62,b,2025,2,Corrupción,corrupcion,corruption
+63,b,2025,2,La desigualdad.,desigualdad,inequality
+64,b,2025,2,Pobreza,pobreza,poverty
+65,b,2025,2,desempleo,desempleo,unemployment

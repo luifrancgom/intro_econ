@@ -1,9 +1,10 @@
 # Libraries ----
 library(wordcloud2)
 library(ggwordcloud)
+library(tidyverse)
 
 # Import data ----
-merge_data <- read_csv(file = "000_data/000_core_econ_cloud_words/merge_data/merge_data.csv")
+merge_data <- read_csv(file = "000_data/000_core_econ_cloud_words/merge_data/merge_data_2025-2.csv")
 
 
 # Visualization ----
@@ -32,3 +33,18 @@ word_cloud_en <- merge_data_word_freq_en |>
                        high = "#e31a1c")
 
 word_cloud_en
+
+# Export ----
+word_cloud_es |> 
+  ggsave(filename = "000_data/000_core_econ_cloud_words/visualization/word_cloud_es_2025-2.png",
+         plot = _,
+         width = 6, 
+         height = 4, 
+         dpi = 300)
+
+word_cloud_en |> 
+  ggsave(filename = "000_data/000_core_econ_cloud_words/visualization/word_cloud_en_2025-2.png",
+         plot = _,
+         width = 6, 
+         height = 4, 
+         dpi = 300)
