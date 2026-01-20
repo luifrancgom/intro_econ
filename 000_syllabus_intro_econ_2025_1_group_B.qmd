@@ -5,7 +5,7 @@ author:
     email: luis.gomezl@unimilitar.edu.co
     affiliations:
       - name: Universidad Militar Nueva Granada
-date: 2025-01-13
+date: 2026-01-19
 format:
   html: 
     number-sections: true
@@ -24,16 +24,16 @@ params:
       end_hour: 18:00
   block:
     value:
-      start_date: 2025-01-20
-      end_date: 2025-03-22
+      start_date: 2026-01-26
+      end_date: 2026-03-29
   schedule:
     value:
       meeting_dates: [3, 5]
-      dates_recess: null
+      dates_recess: [2026-03-30, 2026-04-04]
       start_presentation_hour: 19:00
       end_presentation_hour: 19:45  
       start_virtual_meeting_hour: 19:00
-      end_virtual_meeting_hour: 20:30
+      end_virtual_meeting_hour: 20:00
       start_activity_hour: 00:00
       end_activity_hour: 22:00
       start_exam_hour: 18:30
@@ -67,9 +67,8 @@ library(gt)
 #| label: meeting-info
 
 # Days ----
-if(length(params$meeting_info$days) > 1) {
-  days_str <- glue_collapse(params$meeting_info$days, 
-                            sep = ", ", last = " or ") 
+if (length(params$meeting_info$days) > 1) {
+  days_str <- glue_collapse(params$meeting_info$days, sep = ", ", last = " or ")
 } else {
   days_str <- params$meeting_info$days[1]
 }
@@ -99,17 +98,17 @@ if(length(params$meeting_info$days) > 1) {
 #| label: block
 
 # Dates ----
-start_date <- ymd(params$block$start_date) 
-end_date   <- ymd(params$block$end_date)
+start_date <- ymd(params$block$start_date)
+end_date <- ymd(params$block$end_date)
 
-str_start_end_date <- paste(format(start_date, 
-                                   format = "%B %d"),
-                            " - ",
-                            format(end_date, 
-                                   format = "%B %d"), 
-                            sep = "",
-                            ", ",
-                            year(start_date))
+str_start_end_date <- paste(
+  format(start_date, format = "%B %d"),
+  " - ",
+  format(end_date, format = "%B %d"),
+  sep = "",
+  ", ",
+  year(start_date)
+)
 ```
 
 -   Credits: 4
@@ -160,19 +159,20 @@ Familiarize students with the main economic concepts and their relevance in the 
 #| label: tbl-reading-schedule
 #| tbl-cap: Reading schedule
 
-tibble(Week = c(1:9),
-       Material       = c(rep("@cardenas_introduccion_2020", 
-                              times = 9)),
-       Chapter        = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
-       `Initial page` = c(  1,  19,  53,  81, 115, 167, 225, 263, 303),
-       `Final page`   = c( 18,  52,  80, 114, 166, 224, 262, 302, 348)) |> 
-    mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |> 
-  gt() |> 
-  fmt_markdown() |> 
+tibble(
+  Week = c(1:9),
+  Material = c(rep("@cardenas_introduccion_2020", times = 9)),
+  Chapter = c("1", "2", "3", "4", "5", "6", "7", "8", "9"),
+  `Initial page` = c(1, 19, 53, 81, 115, 167, 225, 263, 303),
+  `Final page` = c(18, 52, 80, 114, 166, 224, 262, 302, 348)
+) |>
+  mutate(`Number of pages` = (`Final page` - `Initial page`) + 1) |>
+  gt() |>
+  fmt_markdown() |>
   tab_style(
-    style = cell_text(weight = "bold"), 
-    locations = cells_column_labels() 
-      ) |> 
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
   tab_options(
     row.striping.include_table_body = TRUE,
     table.border.top.width = px(3),
@@ -181,7 +181,7 @@ tibble(Week = c(1:9),
     column_labels.border.bottom.color = "black",
     table.border.bottom.width = px(3),
     table.border.bottom.color = "black"
-    )
+  )
 ```
 
 ## Detailed schedule
@@ -191,21 +191,23 @@ tibble(Week = c(1:9),
 
 source(file = "000_scripts/000_tbl_schedule.R")
 
-tbl_schedule <- tbl_schedule(start_date   = params$block$start_date, 
-                             end_date     = params$block$end_date,
-                             dates_recess = params$schedule$dates_recess,
-                             meeting_days = params$schedule$meeting_dates)
+tbl_schedule <- tbl_schedule(
+  start_date = params$block$start_date,
+  end_date = params$block$end_date,
+  dates_recess = params$schedule$dates_recess,
+  meeting_days = params$schedule$meeting_dates
+)
 
-virtual_meeting <- tbl_schedule |> 
-  filter(virtual_meeting == 1) |> 
+virtual_meeting <- tbl_schedule |>
+  filter(virtual_meeting == 1) |>
   pull(index)
 
-activity <-  tbl_schedule |> 
-  filter(activity == 1) |> 
+activity <- tbl_schedule |>
+  filter(activity == 1) |>
   pull(index)
 
-exam <-  tbl_schedule |> 
-  filter(exam == 1) |> 
+exam <- tbl_schedule |>
+  filter(exam == 1) |>
   pull(index)
 ```
 
