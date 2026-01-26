@@ -231,15 +231,20 @@ tbl_isic_col_2
 
 ```{r}
 # https://www.dane.gov.co/ >
-# ANDA | ARCHIVO NACIONAL DE DATOS >
-# Microdatos >
+# ANDA|ARCHIVO NACIONAL DE DATOS >
 # Economía >
 # Industria >
-# Encuesta Anual Manufacturera – EAM - 2022 >
-# Obtener Microdatos
+# Encuesta Anual Manufacturera – EAM - 2023 >
+# Obtener Microdatos >
+# 
 
 # Import
-manufac_tbl <- read_csv(file = "000_data/001_encuesta_anual_manufacturera_2022.csv") |>
+# Check delimiter
+# read_lines(file = "000_data/001_encuesta_anual_manufacturera_2023.txt",
+#            n_max = 2)
+manufac_tbl <- read_delim(file = "000_data/001_encuesta_anual_manufacturera_2023.txt", 
+                          # Check if the delimit
+                          delim = "\t") |>
   clean_names()
 
 # Tidy
@@ -274,6 +279,9 @@ total_nordest <- nrow(manufac_tbl_clean)
 total_valagri <- manufac_tbl_clean |>
   summarise(sum_valagri = sum(valagri)) |>
   _$sum_valagri
+
+last_update_manufac <- ymd("2025-07-14")
+year_manufac <- 2023
 ```
 
 ```{r}
@@ -300,13 +308,13 @@ manufac_tbl_clean |>
   )) +
   labs(
     x = NULL,
-    y = "COP 2022 (B = Billions (10^12))",
-    subtitle = str_glue("Period: 2022
+    y = str_glue("COP {year_manufac} (B = Billions (10^12))"),
+    subtitle = str_glue("Period: {year_manufac}
                            Total aggregate value: {number(total_valagri, scale = 1e-9, accuracy = 0.01, big.mark = ',', suffix = 'B')} COP
                            Number of establisments: {total_nordest}
                            Observation: Every point represents an establishment"),
-    caption = "Source: DANE - Encuesta Anual Manufacturera – EAM - 2022
-                          Last update date: 2024-11-06"
+    caption = str_glue("Source: DANE - Encuesta Anual Manufacturera - EAM - {year_manufac}
+                          Last update date: {last_update_manufac}")
   ) +
   theme(
     panel.border = element_rect(
@@ -347,13 +355,13 @@ total_personnel_employed |>
   labs(
     x = "Average total personnel employed",
     y = "Frequency",
-    subtitle = str_glue("Period: 2022
+    subtitle = str_glue("Period: {year_manufac}
                            Min value: {min(total_personnel_employed$total_personnel_employed)}
                            Max value: {max(total_personnel_employed$total_personnel_employed)}
                            Number of establisments: {total_nordest}
                            Establishments with 10 or fewer employees: {less_than_10}"),
-    caption = "Source: DANE - Encuesta Anual Manufacturera – EAM - 2022
-                          Last update date: 2024-11-06"
+    caption = str_glue("Source: DANE - Encuesta Anual Manufacturera – EAM - {year_manufac}
+                        Last update date: {last_update_manufac}")
   ) +
   theme(
     panel.border = element_rect(
@@ -386,12 +394,12 @@ manufac_tbl_clean |>
   labs(
     x = "Electrical energy consumed (kilowatt-hours kWh)",
     y = "Frequency",
-    subtitle = str_glue("Period: 2022
+    subtitle = str_glue("Period: {year_manufac}
                            Min value: {number(min(manufac_tbl_clean$c5r1c4), big.mark = ',')} kWh
                            Max value: {number(max(manufac_tbl_clean$c5r1c4), big.mark = ',')} kWh
                            Number of establisments: {total_nordest}"),
-    caption = "Source: DANE - Encuesta Anual Manufacturera – EAM - 2022
-                          Last update date: 2024-11-06"
+    caption = str_glue("Source: DANE - Encuesta Anual Manufacturera – EAM - {year_manufac}
+                        Last update date: {last_update_manufac}")
   ) +
   theme(
     panel.border = element_rect(
@@ -427,7 +435,7 @@ manufac_tbl_clean |>
 # Electricity Data Explorer
 ## Parameters
 ### Select dataset: Electricity generation
-### Metric: Absolute
+### Metric: Absolute value
 ### Overview
 #### Source: All electricity sources
 #### Geography: Countries or economies
@@ -467,6 +475,9 @@ generation_yearly_clean <- generation_yearly |>
   group_by(date) |>
   mutate(pct_generation_twh = (generation_twh / sum(generation_twh)) * 100) |>
   ungroup()
+
+# Helpers
+last_update_generation_yearly <- ymd("2025-07-04")
 ```
 
 ```{r}
@@ -484,8 +495,8 @@ generation_yearly_clean |>
     y = "Percentage",
     fill = NULL,
     subtitle = str_glue("Period: {min(generation_yearly_clean$date)} - {max(generation_yearly_clean$date)}"),
-    caption = "Source: Ember Electricity Data Explorer, ember-energy.org
-                          Last update date: 2025-07-04"
+    caption = str_glue("Source: Ember Electricity Data Explorer, ember-energy.org
+                          Last update date: {last_update_generation_yearly}")
   ) +
   theme(
     panel.border = element_rect(
@@ -505,36 +516,54 @@ generation_yearly_clean |>
 
 ```{r}
 # https://www.dane.gov.co/ >
-# Estadísticas por tema >
+# ANDA|ARCHIVO NACIONAL DE DATOS >
+# Microdatos >
+# Economía >
 # Precios y costos >
+# Sistema de Información de Precios y Abastecimiento del Sector Agropecuario Componente de Precios Mayoristas – SIPSA - P - 2013 -2024 >
+# Obtener Microdatos >
+## BaseDatos-SIPSA_P-Mensual-2021
+## Check the last year 
+## BaseDatos-SIPSA_P-Mensual- XXXX
+
+# https://www.dane.gov.co/ >
+# Estadísticas por tema >
+# Precios y costos > 
 # Precios >
 # Sistema de Información de Precios Agropecuarios (SIPSA) >
-# Resultados por componente >
 # Precios mayoristas >
-# Boletín mensual >
-# Series históricas
+# 
+ 
 
 # Import
-egg_jan_2021_tbl <- read_excel(
-  path = "000_data/001_series_historicas_precios_mayoristas_2021_jan_july.xlsx",
-  sheet = 2,
-  range = "A7:E4608"
+## First period
+egg_jan_2021_tbl <- read_delim(
+  file = "000_data/001_series_historicas_precios_mayoristas_2021_jan_dec.csv", 
+  delim = ";", 
+  # Check encoding
+  locale = locale(encoding = "ISO-8859-1"),
+  col_types = cols(
+    Fecha = col_date(format = "%d/%m/%Y")
+  )  
 ) |>
   clean_names() |>
   select(fecha, producto:precio_promedio_por_kilogramo) |>
+  filter(month(fecha) == 1) |> 
   filter(str_detect(string = producto, pattern = "^[Hh]uevo"))
 
-egg_may_2025_tbl <- read_excel(
-  path = "000_data/001_series_historicas_precios_mayoristas_2025_jan_may.xlsx",
+## Last period
+egg_month_year_last_tbl <- read_excel(
+  path = "000_data/001_series_historicas_precios_mayoristas_2025_jan_dec.xlsx",
   sheet = 1,
-  range = "A6:F22500"
+  range = "A6:F54414"
 ) |>
   clean_names() |>
   select(fecha, producto:precio_promedio_por_kilogramo) |>
   filter(str_detect(string = producto, pattern = "^[Hh]uevo")) |>
   # The format of the file has change
   ## Now information is presented in only on spreadsheet
-  filter(month(fecha) == 5)
+  mutate(fecha = ymd(fecha)) |> 
+  filter(month(fecha) == 12)
 
 # Tidy
 ## Auxiliar variables
@@ -544,17 +573,18 @@ market_list <- c(
   "Valledupar, Mercado Nuevo"
 )
 
-egg_jan_may_tbl <- egg_jan_2021_tbl |>
-  bind_rows(egg_may_2025_tbl) |>
+egg_jan_last_tbl <- egg_jan_2021_tbl |>
+  bind_rows(egg_month_year_last_tbl) |>
   rename(precio = precio_promedio_por_kilogramo) |>
   mutate(
-    fecha = ymd(fecha),
     label_mercado = ifelse(mercado %in% market_list, mercado, "")
   )
 
-n_market <- egg_jan_may_tbl |>
+n_market <- egg_jan_last_tbl |>
   count(mercado) |>
   nrow()
+
+last_update_egg_jan_last <- ymd("2026-01-09")
 ```
 
 ```{r}
@@ -562,7 +592,8 @@ n_market <- egg_jan_may_tbl |>
 #| fig-cap: Egg mean wholesale prices in Colombian market places
 
 # Visualize
-egg_jan_may_tbl |>
+# Visualize
+egg_jan_last_tbl |>
   ggplot(aes(precio, producto)) +
   geom_point(aes(fill = producto),
     shape = 21,
@@ -585,8 +616,8 @@ egg_jan_may_tbl |>
     x = "COP/1 egg",
     y = NULL,
     subtitle = str_glue("Number of market places: {n_market}"),
-    caption = "Source: DANE - Sistema de información de precios SIPSA
-                          Last update date: 2025-06-10"
+    caption = str_glue("Source: DANE - Sistema de información de precios SIPSA
+                          Last update date: {last_update_egg_jan_last}")
   ) +
   theme(
     panel.border = element_rect(
@@ -645,6 +676,7 @@ egg_jan_may_tbl |>
 #| label: tbl-net-worth
 #| tbl-cap: Net worth (stock)
 
+# id president: 208079 
 date_net_worth <- ymd("2023-12-31")
 
 income_tax_net_worth <- tibble(
