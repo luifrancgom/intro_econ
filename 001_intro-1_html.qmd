@@ -359,6 +359,9 @@ height_adults_col_tidy <- height_adults_col |>
     sex = fct_reorder(.f = sex, .x = mean_height) |>
       fct_rev()
   )
+
+## Auxiliary variables
+last_update_height_adults_col <- ymd("2019-05-14")
 ```
 
 
@@ -390,7 +393,7 @@ height_adults_col_tidy |>
     ),
     caption = str_glue(
       "Source: NCD RisC and Our Word In Data - Human Height
-                          Last update: 2019-05-14"
+                          Last update: {last_update_height_adults_col}"
     )
   ) +
   theme(
@@ -525,6 +528,10 @@ posicion_ideologica_clean <- posicion_ideologica |>
       suffix = "%"
     )
   )
+
+## Auxiliary variables
+last_update_posicion_ideologica <- ymd("2024-04-15")
+year_posicion_ideologica <- 2023
 ```
 
 ```{r}
@@ -554,7 +561,7 @@ posicion_ideologica_clean |>
     x = NULL,
     y = NULL,
     subtitle = str_glue(
-      "Year: 2023
+      "Year: {year_posicion_ideologica}
                            Data only apply for people 18 years of age and older
                            Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}
                            Original question: Las personas cuando piensan en política utilizan los términos izquierda y derecha. 
@@ -562,8 +569,8 @@ posicion_ideologica_clean |>
                            ¿dónde se ubicaría usted?"
     ),
     caption = str_glue(
-      "Source: DANE - Encuesta de Cultura Política - ECP - 2023
-                          Last update date: 2024-04-15"
+      "Source: DANE - Encuesta de Cultura Política - ECP - {year_posicion_ideologica}
+                          Last update date: {last_update_posicion_ideologica}"
     )
   ) +
   theme(
@@ -707,6 +714,7 @@ household_income_nper_tbl <- household_tbl_tidy |>
 
 # Helpers
 last_update_household <- ymd("2026-01-26")
+year_household <- 2024
 ```
 
 ```{r}
@@ -734,14 +742,14 @@ household_income_nper_tbl |>
   ) +
   labs(
     x = NULL,
-    y = "Monthly mean income range (2024 COP)",
+    y = str_glue("Monthly mean income range ({year_household} COP)"),
     subtitle = str_glue(
       "Year: 2024
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}
                            Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad {year_household}
                           Last update date: {last_update_household}"
     )
   ) +
@@ -796,13 +804,13 @@ household_income_nper_tbl |>
   scale_x_continuous(limits = c(0, 5)) +
   labs(
     x = NULL,
-    y = "Monthly mean income range (2024 COP)",
+    y = str_glue("Monthly mean income range ({year_household} COP)"),
     subtitle = str_glue(
       "Year: 2024
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      'Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
+      'Source: DANE - Medición de Pobreza Monetaria y Desigualdad {year_household}
                           Last update date: {last_update_household}'
     )
   ) +
@@ -911,11 +919,11 @@ household_housing_tbl |>
     x = NULL,
     y = NULL,
     subtitle = str_glue(
-      "Year: 2024
+      "Year: {year_household}
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad {year_household}
                           Last update date:  {last_update_household}"
     )
   ) +
@@ -948,6 +956,7 @@ household_housing_tbl |>
 
 # Helpers
 last_update_schools <- ymd("2024-06-28")
+year_update_schools <- 2023
 
 # Import
 schools_tbl <- read_csv(
@@ -1004,13 +1013,13 @@ schools_bilin_tbl |>
     x = NULL,
     y = NULL,
     subtitle = str_glue(
-      "Year: 2023
+      "Year: {year_update_schools}
                            Total educational establishments: {number(sum(schools_bilin_tbl$n), big.mark = ',')}
                            Total non official educational establishments: {number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
                            Total official educational establishments: {number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"
     ),
     caption = str_glue(
-      "Source: DANE - Educación Formal - 2023 - Carátula única sede educativa
+      "Source: DANE - Educación Formal - {year_update_schools} - Carátula única sede educativa
                           Última fecha de actualización: {last_update_schools}"
     )
   ) +
