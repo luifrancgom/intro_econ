@@ -326,6 +326,13 @@ pop_pyramid_tbl_tidy |>
 ##
 
 ```{r}
+# Data
+## https://ourworldindata.org/human-height >
+## Average adult height by year of birth, World >
+## Download >
+## Data >
+## Download full data
+
 # Import
 height_adults_col <- read_csv(
   file = "000_data/001_average_height_by_year_of_birth/average_height_by_year_of_birth.csv"
@@ -410,8 +417,10 @@ height_adults_col_tidy |>
 
 ```{r}
 # Data
-# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
-# Sociedad > Gobierno >
+# https://www.dane.gov.co/ > 
+# ANDA|ARCHIVO NACIONAL DE DATOS >
+# Sociedad > 
+# Gobierno >
 # Encuesta de Cultura Política - ECP - 2023  >
 ## Tabla de viviendas
 ## Elecciones y partidos
@@ -547,7 +556,10 @@ posicion_ideologica_clean |>
     subtitle = str_glue(
       "Year: 2023
                            Data only apply for people 18 years of age and older
-                           Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}"
+                           Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}
+                           Original question: Las personas cuando piensan en política utilizan los términos izquierda y derecha. 
+                           En una escala de 1 a 10 donde 1 significa izquierda y 10 significa derecha 
+                           ¿dónde se ubicaría usted?"
     ),
     caption = str_glue(
       "Source: DANE - Encuesta de Cultura Política - ECP - 2023
@@ -604,18 +616,22 @@ posicion_ideologica_clean |>
 
 ```{r}
 # Data
-# https://www.dane.gov.co/ > ANDA | ARCHIVO NACIONAL DE DATOS >
-# Sociedad > Pobreza y condiciones de vida >
-# Medición de Pobreza Monetaria y Desigualdad 2023 > Hogares
+# https://www.dane.gov.co/ > 
+# ANDA|ARCHIVO NACIONAL DE DATOS >
+# Sociedad > 
+# Pobreza y condiciones de vida >
+# Medición de Pobreza Monetaria y Desigualdad 2024 > 
+# BDatos-Pobreza_Monetaria_Desigualdad-2024 >
+# Hogares >
+# Hogares.csv
 
 # Import
 household_tbl <- read_delim(
-  file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2023.csv",
+  file = "000_data/001_hogares_pobreza_monetaria_desigualdad_2024.csv",
   delim = ",",
   locale = locale(decimal_mark = ".")
 )
 
-# Tidy
 household_tbl_tidy <- household_tbl |>
   clean_names() |>
   select(
@@ -643,10 +659,8 @@ household_tbl_tidy <- household_tbl |>
   )
 
 ## Total househods zero income
-ingtotug_zero <- filter(
-  household_tbl_tidy,
-  ingtotug == 0
-) |>
+ingtotug_zero <- household_tbl_tidy |> 
+  filter(ingtotug == 0) |>
   _$fex_c |>
   sum() |>
   floor()
@@ -692,7 +706,7 @@ household_income_nper_tbl <- household_tbl_tidy |>
   )
 
 # Helpers
-last_update_household <- ymd("2024-09-02")
+last_update_household <- ymd("2026-01-26")
 ```
 
 ```{r}
@@ -720,14 +734,14 @@ household_income_nper_tbl |>
   ) +
   labs(
     x = NULL,
-    y = "Monthly mean income range (2023 COP)",
+    y = "Monthly mean income range (2024 COP)",
     subtitle = str_glue(
-      "Year: 2023
+      "Year: 2024
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}
                            Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
                           Last update date: {last_update_household}"
     )
   ) +
@@ -747,7 +761,7 @@ household_income_nper_tbl |>
 
 ## {.smaller} 
 
--   If you want to explore more about this topic using data from the year 2019 check out[^2]:
+-   If you want to explore more about this topic using data from the year 2023 check out[^2]:
 
     -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso
 
@@ -755,7 +769,8 @@ household_income_nper_tbl |>
 
     -   [See how the rest of the world lives, organized by income](https://youtu.be/u4L130DkdOw) (Configure spanish subtitles in the setting options)
 
-    -   <https://www.gapminder.org> \> Resources \> Tools \> Dollar Street
+    -   <https://www.gapminder.org> \> Resources \> See the reality behind the data
+
 
         -   <https://www.gapminder.org/dollar-street>
 
@@ -781,13 +796,13 @@ household_income_nper_tbl |>
   scale_x_continuous(limits = c(0, 5)) +
   labs(
     x = NULL,
-    y = "Monthly mean income range (2023 COP)",
+    y = "Monthly mean income range (2024 COP)",
     subtitle = str_glue(
-      "Year: 2023
+      "Year: 2024
                            Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      'Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+      'Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
                           Last update date: {last_update_household}'
     )
   ) +
@@ -896,11 +911,11 @@ household_housing_tbl |>
     x = NULL,
     y = NULL,
     subtitle = str_glue(
-      "Year: 2023
+      "Year: 2024
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"
     ),
     caption = str_glue(
-      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2024
                           Last update date:  {last_update_household}"
     )
   ) +
@@ -923,9 +938,16 @@ household_housing_tbl |>
 ## 
 
 ```{r}
-# https://www.dane.gov.co/ > Datos Abiertos Microdatos y Metadatos >
-# Sociedad > Educación > Educación Formal 2022 > Obtener Microdatos >
+# https://www.dane.gov.co/ > 
+# ANDA|ARCHIVO NACIONAL DE DATOS >
+# Sociedad > 
+# Educación > 
+# Educación Formal 2023, Educación Formal (sedes educativas oficiales y no oficiales, urbanas y rurales) > 
+# Obtener Microdatos >
 # Caratula única sede educativa
+
+# Helpers
+last_update_schools <- ymd("2024-06-28")
 
 # Import
 schools_tbl <- read_csv(
@@ -988,8 +1010,8 @@ schools_bilin_tbl |>
                            Total official educational establishments: {number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"
     ),
     caption = str_glue(
-      "Fuente: DANE - Educación Formal - 2023 - Carátula única sede educativa
-                          Última fecha de actualización: 2024-06-28"
+      "Source: DANE - Educación Formal - 2023 - Carátula única sede educativa
+                          Última fecha de actualización: {last_update_schools}"
     )
   ) +
   theme(
