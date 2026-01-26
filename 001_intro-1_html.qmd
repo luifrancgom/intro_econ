@@ -160,54 +160,61 @@ flowchart TB
 # Data
 # https://www.dane.gov.co/ > Estadísticas por tema >
 # Demografía y población > Proyecciones de población >
-# Proyecciones y retroproyecciones de población nacional para el periodo 1950-2019 y 2020-2070 con base en el CNPV 2018 >
-# Serie nacional de población por área, sexo y edad para el periodo 2020-2070
+# royecciones y retroproyecciones de población nacional para el periodo 1950-2017 y 2018-2070 con base en el CNPV 2018 >
+# Serie nacional de población por área, sexo y edad para el periodo 2018-2070
 
+# Import
 # Import
 pop_pyramid_tbl <- read_excel(
   path = "000_data/001_serie_nacional_de_poblacion_por_area_sexo_y_edad_para_el_periodo_2020_2070.xlsx",
-  sheet = 1,
-  range = "C12:KX95"
+  sheet = 3,
+  range = "B9:KW128"
 )
 
 # Tidy
 pop_pyramid_tbl_tidy <- pop_pyramid_tbl |>
   clean_names() |>
+  dplyr::rename(ano = x1, area_geografica = x2) |>
   filter(area_geografica == "Total") |>
-  select(-c(
-    area_geografica,
-    total_hombres,
-    total_mujeres
-  )) |>
-  select(ano:mujeres_100_y_mas, total) |>
-  rename(
-    mujeres_100 = mujeres_100_y_mas,
-    hombres_100 = hombres_100_y_mas
+  select(
+    -c(
+      area_geografica,
+      hombres,
+      mujeres
+    )
   ) |>
+  select(ano:mujeres_100_anos_y_mas) |>
+  rename_with(.fn = \(x) {
+    str_replace(
+      string = x,
+      pattern = r"(^([a-z]+_[0-9]+)_.+$)",
+      replacement = r"(\1)"
+    )
+  }) |>
   pivot_longer(
     cols = hombres_0:mujeres_100,
     names_to = "genero_edad",
     values_to = "pop"
   ) |>
-  separate(
-    col = genero_edad,
-    into = c("genero", "edad"),
-    sep = "_",
-    convert = TRUE
+  separate_wider_delim(
+    cols = genero_edad,
+    delim = "_",
+    names = c("genero", "edad")
   ) |>
+  mutate(edad = as.integer(x = edad)) |>
   mutate(pct_pop = pop / total) |>
   group_by(ano, genero) |>
-  mutate(rango_edad = cut(edad,
-    breaks = c(seq.int(0, 85, 5), "Inf"),
-    labels = c(
-      str_c(seq(0, 80, 5),
-        seq(4, 85, 5),
-        sep = "-"
+  mutate(
+    rango_edad = cut(
+      edad,
+      breaks = c(seq.int(0, 85, 5), "Inf"),
+      labels = c(
+        str_c(seq(0, 80, 5), seq(4, 85, 5), sep = "-"),
+        "85+"
       ),
-      "85+"
-    ),
-    right = FALSE
-  )) |>
+      right = FALSE
+    )
+  ) |>
   ungroup() |>
   group_by(ano, genero, rango_edad) |>
   summarize(
@@ -215,36 +222,40 @@ pop_pyramid_tbl_tidy <- pop_pyramid_tbl |>
     pct_pop = sum(pct_pop)
   ) |>
   ungroup() |>
-  mutate(pct_pop_label = number(
-    x = pct_pop,
-    scale = 100,
-    accuracy = 0.01,
-    suffix = "%"
-  )) |>
+  mutate(
+    pct_pop_label = number(
+      x = pct_pop,
+      scale = 100,
+      accuracy = 0.01,
+      suffix = "%"
+    )
+  ) |>
   # https://github.com/plotly/plotly.R/issues/1930
   mutate(
-    genero_en = ifelse(test = genero == "hombres",
-      yes = "Men",
-      no = "Women"
-    ),
+    genero_en = ifelse(test = genero == "hombres", yes = "Men", no = "Women"),
     .after = genero
   ) |>
   mutate(
-    pct_pop_gen = ifelse(test = genero_en == "Men",
+    pct_pop_gen = ifelse(
+      test = genero_en == "Men",
       yes = pct_pop,
       no = -pct_pop
     ),
     .after = pct_pop
   ) |>
-  mutate(label = str_glue("Population: {pop}
-                          Percentage: {pct_pop_label}"))
+  mutate(
+    label = str_glue(
+      "Population: {pop}
+                          Percentage: {pct_pop_label}"
+    )
+  )
 ```
 
 ::: {.r-stack}
 
 ```{r}
 #| label: fig-population-col
-#| fig-cap: Population pyramids in Colombia
+#| fig-cap: Population pyramids in Colombia[^1]
 #| fig-height: 6
 
 # Visualization
@@ -304,6 +315,8 @@ pop_pyramid_tbl_tidy |>
 
 :::
 
+[^1]: Update: 2025-07-18
+
 ##
 
 - Why the behavior of population is important?
@@ -314,23 +327,31 @@ pop_pyramid_tbl_tidy |>
 
 ```{r}
 # Import
-height_adults_col <- read_csv(file = "000_data/001_average_height_by_year_of_birth/average_height_by_year_of_birth.csv")
+height_adults_col <- read_csv(
+  file = "000_data/001_average_height_by_year_of_birth/average_height_by_year_of_birth.csv"
+)
 
 # Tidy
 height_adults_col_tidy <- height_adults_col |>
   filter(Code == "COL") |>
-  set_names(nm = c(
-    "entity", "code", "year",
-    "male", "female"
-  )) |>
+  set_names(
+    nm = c(
+      "entity",
+      "code",
+      "year",
+      "male",
+      "female"
+    )
+  ) |>
   pivot_longer(
     cols = c(male, female),
     names_to = "sex",
     values_to = "mean_height"
-  ) |> 
-  mutate(sex = fct_reorder(.f = sex, 
-                           .x = mean_height) |> 
-               fct_rev())
+  ) |>
+  mutate(
+    sex = fct_reorder(.f = sex, .x = mean_height) |>
+      fct_rev()
+  )
 ```
 
 
@@ -342,10 +363,13 @@ height_adults_col_tidy <- height_adults_col |>
 height_adults_col_tidy |>
   ggplot(aes(x = year, y = mean_height)) +
   geom_line(aes(group = sex, color = sex)) +
-  scale_y_continuous(breaks = seq(round(min(height_adults_col_tidy$mean_height)),
-    round(max(height_adults_col_tidy$mean_height)),
-    by = 2
-  )) +
+  scale_y_continuous(
+    breaks = seq(
+      round(min(height_adults_col_tidy$mean_height)),
+      round(max(height_adults_col_tidy$mean_height)),
+      by = 2
+    )
+  ) +
   scale_color_manual(
     labels = c("Men", "Women"),
     values = umng_palette[1:2]
@@ -354,9 +378,13 @@ height_adults_col_tidy |>
     x = NULL,
     y = "Centimeters",
     color = NULL,
-    subtitle = str_glue("Period: {min(height_adults_col_tidy$year)} - {max(height_adults_col_tidy$year)}"),
-    caption = str_glue("Source: NCD RisC and Our Word In Data - Human Height
-                          Last update: 2019-05-14")
+    subtitle = str_glue(
+      "Period: {min(height_adults_col_tidy$year)} - {max(height_adults_col_tidy$year)}"
+    ),
+    caption = str_glue(
+      "Source: NCD RisC and Our Word In Data - Human Height
+                          Last update: 2019-05-14"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -391,7 +419,9 @@ height_adults_col_tidy |>
 # Import
 viviendas <- read_csv(file = "000_data/001_tabla_de_viviendas_2023.csv")
 ### Personas de 18 años y más
-elecciones_partidos <- read_csv(file = "000_data/001_elecciones_y_partidos_2023.csv")
+elecciones_partidos <- read_csv(
+  file = "000_data/001_elecciones_y_partidos_2023.csv"
+)
 
 # Tidy
 ## Viviendas
@@ -450,36 +480,42 @@ posicion_ideologica_clean <- posicion_ideologica |>
     y = viviendas_clean,
     by = join_by(directorio)
   ) |>
-  mutate(p5328_label = case_when(
-    p5328 %in% 1:3 ~ "Izquierda",
-    p5328 %in% 4 ~ "Centro izquierda",
-    p5328 %in% 5:6 ~ "Centro",
-    p5328 %in% 7 ~ "Centro derecha",
-    p5328 %in% 8:10 ~ "Derecha",
-    p5328 %in% 98 ~ "No sabe",
-    p5328 %in% 99 ~ "No informa"
-  )) |>
+  mutate(
+    p5328_label = case_when(
+      p5328 %in% 1:3 ~ "Izquierda",
+      p5328 %in% 4 ~ "Centro izquierda",
+      p5328 %in% 5:6 ~ "Centro",
+      p5328 %in% 7 ~ "Centro derecha",
+      p5328 %in% 8:10 ~ "Derecha",
+      p5328 %in% 98 ~ "No sabe",
+      p5328 %in% 99 ~ "No informa"
+    )
+  ) |>
   group_by(p5328_label) |>
   summarize(n = sum(fex_p)) |>
   ungroup() |>
   mutate(total = sum(n)) |>
   mutate(pct_n = n / total) |>
-  mutate(p5328_label = fct_relevel(
-    .f = p5328_label,
-    "Izquierda",
-    "Centro izquierda",
-    "Centro",
-    "Centro derecha",
-    "Derecha",
-    "No sabe",
-    "No informa"
-  )) |>
-  mutate(pct_n_label = number(
-    x = pct_n,
-    accuracy = 0.01,
-    scale = 100,
-    suffix = "%"
-  ))
+  mutate(
+    p5328_label = fct_relevel(
+      .f = p5328_label,
+      "Izquierda",
+      "Centro izquierda",
+      "Centro",
+      "Centro derecha",
+      "Derecha",
+      "No sabe",
+      "No informa"
+    )
+  ) |>
+  mutate(
+    pct_n_label = number(
+      x = pct_n,
+      accuracy = 0.01,
+      scale = 100,
+      suffix = "%"
+    )
+  )
 ```
 
 ```{r}
@@ -492,29 +528,31 @@ posicion_ideologica_clean |>
     pct_n,
     p5328_label
   )) +
-  geom_segment(aes(xend = 0, yend = p5328_label),
-    color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = p5328_label), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = pct_n_label),
-    hjust = -0.5, size = 5
+  geom_text(aes(label = pct_n_label), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(posicion_ideologica_clean$pct_n) + 0.05
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(posicion_ideologica_clean$pct_n) + 0.05
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: 2023
+    subtitle = str_glue(
+      "Year: 2023
                            Data only apply for people 18 years of age and older
-                           Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}"),
-    caption = str_glue("Source: DANE - Encuesta de Cultura Política - ECP - 2023
-                          Last update date: 2024-04-15")
+                           Total target population: {number(unique(posicion_ideologica_clean$total), accuracy = 1, big.mark = ',')}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Encuesta de Cultura Política - ECP - 2023
+                          Last update date: 2024-04-15"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -614,29 +652,29 @@ ingtotug_zero <- filter(
   floor()
 
 ## Total households
-total_fex_c <- summarize(household_tbl_tidy,
-  sum_fex_c = sum(fex_c)
-)$sum_fex_c
+total_fex_c <- summarize(household_tbl_tidy, sum_fex_c = sum(fex_c))$sum_fex_c
 
 ## Income distribution of households
 household_income_nper_tbl <- household_tbl_tidy |>
   mutate(pct_fex_c = fex_c / total_fex_c) |>
-  mutate(range_ingtotug = cut(
-    x = ingtotug,
-    breaks = c(
-      seq.int(
-        from = min(household_tbl_tidy$ingtotug),
-        by = 500000,
-        length.out = 20
+  mutate(
+    range_ingtotug = cut(
+      x = ingtotug,
+      breaks = c(
+        seq.int(
+          from = min(household_tbl_tidy$ingtotug),
+          by = 500000,
+          length.out = 20
+        ),
+        max(household_tbl_tidy$ingtotug) + 1
       ),
-      max(household_tbl_tidy$ingtotug) + 1
-    ),
-    right = FALSE,
-    # Check this if there is problem
-    # with the last range in relation
-    # to the upper limit
-    dig.lab = 9
-  )) |>
+      right = FALSE,
+      # Check this if there is problem
+      # with the last range in relation
+      # to the upper limit
+      dig.lab = 9
+    )
+  ) |>
   group_by(range_ingtotug) |>
   summarize(
     pct_fex_c = sum(pct_fex_c),
@@ -644,14 +682,13 @@ household_income_nper_tbl <- household_tbl_tidy |>
     .groups = "drop"
   ) |>
   mutate(
-    pct_fex_c_text = number(pct_fex_c,
+    pct_fex_c_text = number(
+      pct_fex_c,
       suffix = "%",
       scale = 100,
       accuracy = 0.01
     ),
-    mean_nper_text = number(mean_nper,
-      accuracy = 0.01
-    )
+    mean_nper_text = number(mean_nper, accuracy = 0.01)
   )
 
 # Helpers
@@ -665,7 +702,8 @@ last_update_household <- ymd("2024-09-02")
 # Visualization
 household_income_nper_tbl |>
   ggplot(aes(pct_fex_c, fct_rev(range_ingtotug))) +
-  geom_segment(aes(xend = 0, yend = fct_rev(range_ingtotug)),
+  geom_segment(
+    aes(xend = 0, yend = fct_rev(range_ingtotug)),
     color = umng_palette[1]
   ) +
   geom_point(
@@ -673,22 +711,25 @@ household_income_nper_tbl |>
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = pct_fex_c_text),
-    hjust = -0.5,
-    size = 4
+  geom_text(aes(label = pct_fex_c_text), hjust = -0.5, size = 4) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(household_income_nper_tbl$pct_fex_c) + 0.025
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(household_income_nper_tbl$pct_fex_c) + 0.025
-  )) +
   labs(
     x = NULL,
     y = "Monthly mean income range (2023 COP)",
-    subtitle = str_glue("Year: 2023
+    subtitle = str_glue(
+      "Year: 2023
                            Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}
-                           Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"),
-    caption = str_glue("Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
-                          Last update date: {last_update_household}")
+                           Total households with an income of zero: {number(ingtotug_zero, accuracy = 1, big.mark = ',')}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+                          Last update date: {last_update_household}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -706,11 +747,11 @@ household_income_nper_tbl |>
 
 ## {.smaller} 
 
--   If you want to explore more about this topic using data from the year 2019 check out[^1]:
+-   If you want to explore more about this topic using data from the year 2019 check out[^2]:
 
     -   <https://www.ofiscal.org/> \> Interactúa \> Calcule dónde se ubica su hogar según su ingreso
 
--   If you want to explore more about this topic from around the world in a visual way check out[^2]:
+-   If you want to explore more about this topic from around the world in a visual way check out[^3]:
 
     -   [See how the rest of the world lives, organized by income](https://youtu.be/u4L130DkdOw) (Configure spanish subtitles in the setting options)
 
@@ -718,9 +759,9 @@ household_income_nper_tbl |>
 
         -   <https://www.gapminder.org/dollar-street>
 
-[^1]: Observatorio Fiscal de la Pontifica Universidad Javeriana
+[^2]: Observatorio Fiscal de la Pontifica Universidad Javeriana
 
-[^2]: Dollar Street
+[^3]: Dollar Street
 
 ##
 
@@ -729,23 +770,27 @@ household_income_nper_tbl |>
 #| fig-cap: Mean individuals per household by income range in Colombia
 
 # Visualization
-household_income_nper_tbl |> 
+household_income_nper_tbl |>
   ggplot(aes(mean_nper, fct_rev(range_ingtotug))) +
-  geom_point(shape = 21, 
-             fill = umng_palette[2],
-             size = 3) +
-  geom_segment(aes(xend = 0, yend = fct_rev(range_ingtotug)), 
-               color = umng_palette[1]) + 
-  geom_text(aes(label = mean_nper_text),
-            hjust = -0.5, 
-            size = 4) + 
+  geom_point(shape = 21, fill = umng_palette[2], size = 3) +
+  geom_segment(
+    aes(xend = 0, yend = fct_rev(range_ingtotug)),
+    color = umng_palette[1]
+  ) +
+  geom_text(aes(label = mean_nper_text), hjust = -0.5, size = 4) +
   scale_x_continuous(limits = c(0, 5)) +
-  labs(x = NULL,
-       y = "Monthly mean income range (2023 COP)",
-       subtitle = str_glue("Year: 2023
-                           Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-       caption = str_glue('Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
-                          Last update date: {last_update_household}')) +
+  labs(
+    x = NULL,
+    y = "Monthly mean income range (2023 COP)",
+    subtitle = str_glue(
+      "Year: 2023
+                           Total households: {scales::number(total_fex_c, accuracy = 1, big.mark = ',')}"
+    ),
+    caption = str_glue(
+      'Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2022
+                          Last update date: {last_update_household}'
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -762,7 +807,7 @@ household_income_nper_tbl |>
 
 ## {.smaller} 
 
--   Housing (vivienda) ownership status[^3]
+-   Housing (vivienda) ownership status[^4]
 
     -   *Propia, totalmente pagada*
     -   *Propia, la están pagando*
@@ -777,7 +822,7 @@ household_income_nper_tbl |>
     -   Zero or more households can live in a housing (vivienda)
     -   For a detail definition of a househould check out [@united_nations_principles_2017, p. 38, 2.33]
 
-[^3]: For a detail definition of these categories checkout [@dane_manual_2022, p. 35]
+[^4]: For a detail definition of these categories checkout [@dane_manual_2022, p. 35]
 
 ##
 
@@ -788,24 +833,36 @@ household_housing_tbl <- household_tbl_tidy |>
   group_by(p5090) |>
   summarize(pct_fex_c = sum(pct_fex_c), .groups = "drop") |>
   mutate(
-    pct_fex_c_text = number(pct_fex_c,
+    pct_fex_c_text = number(
+      pct_fex_c,
       suffix = "%",
       scale = 100,
       accuracy = 0.01
     ),
-    p5090 = factor(p5090,
+    p5090 = factor(
+      p5090,
       labels = c(
-        str_glue("Propia,
-                 totalmente pagada"),
-        str_glue("Propia,
-                 la están pagando"),
-        str_glue("En arriendo o
-                 subarriendo"),
+        str_glue(
+          "Propia,
+                 totalmente pagada"
+        ),
+        str_glue(
+          "Propia,
+                 la están pagando"
+        ),
+        str_glue(
+          "En arriendo o
+                 subarriendo"
+        ),
         "En usufructo",
-        str_glue("Posesión
-                 sin título"),
-        str_glue("Propiedad
-                 colectiva"),
+        str_glue(
+          "Posesión
+                 sin título"
+        ),
+        str_glue(
+          "Propiedad
+                 colectiva"
+        ),
         "Otra"
       )
     )
@@ -822,28 +879,30 @@ household_housing_tbl |>
     pct_fex_c,
     fct_reorder(.f = p5090, .x = pct_fex_c)
   )) +
-  geom_segment(aes(xend = 0, yend = p5090),
-    color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = p5090), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = pct_fex_c_text),
-    hjust = -0.5, size = 5
+  geom_text(aes(label = pct_fex_c_text), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(household_housing_tbl$pct_fex_c) + 0.05
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(household_housing_tbl$pct_fex_c) + 0.05
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: 2023
-                           Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"),
-    caption = str_glue("Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
-                          Last update date:  {last_update_household}")
+    subtitle = str_glue(
+      "Year: 2023
+                           Total households: {number(total_fex_c, accuracy = 1, big.mark = ',')}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Medición de Pobreza Monetaria y Desigualdad 2023
+                          Last update date:  {last_update_household}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -869,7 +928,9 @@ household_housing_tbl |>
 # Caratula única sede educativa
 
 # Import
-schools_tbl <- read_csv(file = "000_data/001_caratula_unica_de_la_sede_educativa_2023.csv")
+schools_tbl <- read_csv(
+  file = "000_data/001_caratula_unica_de_la_sede_educativa_2023.csv"
+)
 
 # Tidy
 schools_bilin_tbl <- schools_tbl |>
@@ -885,15 +946,12 @@ schools_bilin_tbl <- schools_tbl |>
   ) |>
   mutate(
     pct_n = n / nrow(schools_tbl),
-    pct_n_text = number(pct_n,
-      suffix = "%",
-      scale = 100,
-      accuracy = 0.01
-    ),
+    pct_n_text = number(pct_n, suffix = "%", scale = 100, accuracy = 0.01),
     TIPOBIL_NOMBRE = case_when(
       ES_BILINGUE == "NO" ~ "No bilingüe",
       is.na(ES_BILINGUE) == TRUE ~ "Sin información",
-      TIPOBIL_NOMBRE == "Bilingüismo como profundización y énfasis en el plan de estudios" ~ "Profundización/énfasis",
+      TIPOBIL_NOMBRE ==
+        "Bilingüismo como profundización y énfasis en el plan de estudios" ~ "Profundización/énfasis",
       TIPOBIL_NOMBRE == "Programa académico 100% bilingüe" ~ "100% bilingüe",
       .default = TIPOBIL_NOMBRE
     ),
@@ -912,24 +970,27 @@ schools_bilin_tbl |>
     color = "black",
     fill = umng_palette[1]
   ) +
-  geom_text(aes(label = pct_n_text),
-    vjust = -0.8,
-    size = 5
+  geom_text(aes(label = pct_n_text), vjust = -0.8, size = 5) +
+  scale_y_continuous(
+    limits = c(
+      0,
+      max(schools_bilin_tbl$pct_n) + 0.1
+    )
   ) +
-  scale_y_continuous(limits = c(
-    0,
-    max(schools_bilin_tbl$pct_n) + 0.1
-  )) +
   facet_wrap(vars(SECTOR_NOMBRE)) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: 2023
+    subtitle = str_glue(
+      "Year: 2023
                            Total educational establishments: {number(sum(schools_bilin_tbl$n), big.mark = ',')}
                            Total non official educational establishments: {number(sum(schools_bilin_tbl$n[1:4]), big.mark = ',')}
-                           Total official educational establishments: {number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"),
-    caption = str_glue("Fuente: DANE - Educación Formal - 2023 - Carátula única sede educativa
-                          Última fecha de actualización: 2024-06-28")
+                           Total official educational establishments: {number(sum(schools_bilin_tbl$n[5:8]), big.mark = ',')}"
+    ),
+    caption = str_glue(
+      "Fuente: DANE - Educación Formal - 2023 - Carátula única sede educativa
+                          Última fecha de actualización: 2024-06-28"
+    )
   ) +
   theme(
     panel.border = element_rect(
