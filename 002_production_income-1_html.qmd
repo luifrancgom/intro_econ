@@ -141,9 +141,9 @@ umng_palette <- c(
 # PIB a precios corrientes
 
 # Import
-gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_I_2025.xlsx",
+gdp_agg_value <- read_excel("000_data/002_anexos_produccion_corrientes_III_2025.xlsx",
   sheet = 2,
-  range = "C15:CF29",
+  range = "C15:CH29",
   col_names = FALSE
 )
 
@@ -152,17 +152,17 @@ gdp_agg_value_table <- gdp_agg_value |>
   # it is possible that data for the last quarter is not available
   # for the income approach select(1, ncol(gdp_agg_value - 1)) |>
   select(1, ncol(gdp_agg_value)) |>
-  rename(concept = `...1`, value_last = `...82`)
+  rename(concept = `...1`, value_last = `...84`)
 
 ## Helpers
-last_update_gdp_agg_value <- ymd("2025-05-15")
+last_update_gdp_agg_value <- ymd("2025-11-18")
 last_row_gdp_agg_value <- nrow(gdp_agg_value_table)
 first_row_gdp_agg_value <- floor(last_row_gdp_agg_value / 2)
 ```
 
 ```{r}
 #| label: tbl-output-approach-1
-#| tbl-cap: Output/Production approach I (Colombia, 2025-Q1)
+#| tbl-cap: Output/Production approach I (Colombia, 2025-Q3)
 #| html-table-processing: none
 
 # Table
@@ -214,7 +214,7 @@ gdp_agg_value_table_clean_1
 
 ```{r}
 #| label: tbl-output-approach-2
-#| tbl-cap: Output/Production approach II (Colombia, 2025-Q1)
+#| tbl-cap: Output/Production approach II (Colombia, 2025-Q3)
 #| html-table-processing: none
 
 # Table
