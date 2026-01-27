@@ -288,20 +288,20 @@ gdp_agg_value_table_clean_2
 # PIB a precios corrientes
 
 # Import
-gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_I_2025.xlsx",
+gdp_income <- read_excel("000_data/002_anexos_ingreso_corrientes_III_2025.xlsx",
   sheet = 2,
-  range = "C14:AO42",
+  range = "C14:AQ42",
   col_names = FALSE
 )
 
 # Tidy
 gdp_income_table <- gdp_income |>
   select(1, ncol(gdp_income)) |>
-  rename(concept = `...1`, value_last = `...39`) |>
+  rename(concept = `...1`, value_last = `...41`) |>
   slice(1:3, 16, 29)
 
 ## Helpers
-last_update_gdp_income <- ymd("2025-06-27")
+last_update_gdp_income <- ymd("2025-12-26")
 ```
 
 ```{r}
