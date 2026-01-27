@@ -306,7 +306,7 @@ last_update_gdp_income <- ymd("2025-12-26")
 
 ```{r}
 #| label: tbl-income-approach
-#| tbl-cap: Income approach (Colombia, 2025-Q1)
+#| tbl-cap: Income approach (Colombia, 2025-Q3)
 #| html-table-processing: none
 
 # Table
@@ -369,9 +369,9 @@ gdp_income_table_clean
 # PIB a precios corrientes
 
 # Import
-gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_I_2025.xlsx",
+gdp_expenditure <- read_excel("000_data/002_anexos_gasto_corrientes_III_2025.xlsx",
   sheet = 2,
-  range = "B15:CE21",
+  range = "B15:CG21",
   col_names = FALSE
 )
 
@@ -381,7 +381,7 @@ gdp_expenditure_table <- gdp_expenditure |>
   # select(1, ncol(gdp_expenditure)-1) |>
   select(1, ncol(gdp_expenditure)) |>
   slice(1:3, 5:7) |>
-  rename(concept = `...1`, value_last = `...82`) |>
+  rename(concept = `...1`, value_last = `...84`) |>
   mutate(concept = replace(
     concept,
     concept == "Gasto de consumo final individual de los hogares; gasto de consumo final de las ISFLH2",
@@ -389,12 +389,12 @@ gdp_expenditure_table <- gdp_expenditure |>
   ))
 
 ## Helpers
-last_update_gdp_expenditure <- ymd("2025-05-15")
+last_update_gdp_expenditure <- ymd("2025-11-18")
 ```
 
 ```{r}
 #| label: tbl-expenditure-approach
-#| tbl-cap: Expenditure/Final demand approach (Colombia, 2025-Q1)
+#| tbl-cap: Expenditure/Final demand approach (Colombia, 2025-Q3)
 #| html-table-processing: none
 
 # Table
