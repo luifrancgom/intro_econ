@@ -268,7 +268,7 @@ wgi_col_clean |>
 ```{r}
 # Helpers
 initial_year <- 1990
-last_year <- 2021
+last_year <- 2023
 
 # Import
 homicide <- wb_data( # Intentional homicides (per 100,000 people)
@@ -297,7 +297,7 @@ homicide_pivot_wider |>
   ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
   ### In particular the case about:
   #### You have the column name as a character vector
-  ggplot(aes(x = .data[[names[4]]], y = .data[[names[5]]])) +
+  ggplot(aes(x = .data[[names[5]]], y = .data[[names[4]]])) +
   geom_abline(slope = 1, 
               color = umng_palette[1]) +
   geom_point(
@@ -313,6 +313,8 @@ homicide_pivot_wider |>
     box.padding = 1
   ) +
   labs(
+    x = str_glue("Intentional homicides (per 100,000 people) in {initial_year}"),
+    y = str_glue("Intentional homicides (per 100,000 people) in {last_year}"),
     fill = NULL,
     title = str_glue("Period: {initial_year} vs {last_year}"),
     subtitle = str_glue("Number of countries: {nrow(homicide_pivot_wider)}"),
@@ -336,7 +338,7 @@ homicide_pivot_wider |>
 ```{r}
 # Helpers 
 initial_year <- 1990
-last_year <- 2021
+last_year <- 2023
 
 # Import
 homicide_female <- wb_data(
@@ -365,7 +367,7 @@ homicide_female_pivot_wider |>
   ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
   ### In particular the case about: 
   #### You have the column name as a character vector 
-  ggplot(aes(x = .data[[names_female[4]]], y = .data[[names_female[5]]])) + 
+  ggplot(aes(x = .data[[names_female[5]]], y = .data[[names_female[4]]])) + 
   geom_abline(slope = 1, color = umng_palette[1]) +
   geom_point(shape = 21, 
              size = 4,
@@ -375,7 +377,10 @@ homicide_female_pivot_wider |>
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) + 
-  labs(fill = NULL, 
+  labs(
+       x = str_glue("Intentional homicides female (per 100,000 people) in {initial_year}"),
+       y = str_glue("Intentional homicides female (per 100,000 people) in {last_year}"),
+       fill = NULL, 
        title = str_glue("Period: {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
@@ -397,7 +402,7 @@ homicide_female_pivot_wider |>
 ```{r}
 # Helpers 
 initial_year <- 1990
-last_year <- 2021
+last_year <- 2023
 
 # Import 
 homicide_male <- wb_data(
@@ -426,7 +431,7 @@ homicide_male_pivot_wider |>
   ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
   ### In particular the case about: 
   #### You have the column name as a character vector 
-  ggplot(aes(x = .data[[names_male[4]]], y = .data[[names_male[5]]])) + 
+  ggplot(aes(x = .data[[names_male[5]]], y = .data[[names_male[4]]])) + 
   geom_abline(slope = 1, 
               color = umng_palette[1]) +
   geom_point(shape = 21, 
@@ -437,7 +442,10 @@ homicide_male_pivot_wider |>
                    aes(label = country), 
                    seed = 1234,                    
                    box.padding = 1) +
-  labs(fill = NULL, 
+  labs(
+       x = str_glue("Intentional homicides male (per 100,000 people) in {initial_year}"),
+       y = str_glue("Intentional homicides male (per 100,000 people) in {last_year}"),
+       fill = NULL, 
        title = str_glue("Period: {initial_year} vs {last_year}"),
        subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
        caption = str_glue("Source: World Development Indicators - World Bank
