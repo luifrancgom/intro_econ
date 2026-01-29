@@ -436,11 +436,13 @@ tener_vecino_clean |>
 
     - Economic institutions shape the incentives of key economic actors in society where they influence investments in physical and human capital and technology, and the organization of production [@acemoglu_chapter_2005, pp. 389-390].
     
-$$\text{economic institutions}_t \Longrightarrow
+$$
+\text{economic institutions}_t \Longrightarrow
   \begin{cases}
    \text{economic performance}_t \\
    \text{distribution of resources}_{t+1}
-  \end{cases}$$
+  \end{cases}
+$$
 
 ## {.smaller}
 
@@ -450,8 +452,9 @@ $$\text{economic institutions}_t \Longrightarrow
     
     - So how are economic institutions determined? Whichever individuals have more political power are likely to secure the set of economic institutions that they prefer.
     
-$$\text{political power}_t \Longrightarrow
-   \text{economic institutions}_t$$
+$$
+\text{political power}_t \Longrightarrow \text{economic institutions}_t
+$$
 
 ##
 
@@ -465,8 +468,9 @@ $$\text{political power}_t \Longrightarrow
 
 - In the case of the **de jure (institutional)** power according to [@acemoglu_chapter_2005, p. 391] this aspect implies that:
 
-$$\text{political institutions}_t \Longrightarrow
-   \text{de jure political power}_t$$
+$$
+\text{political institutions}_t \Longrightarrow \text{de jure political power}_t
+$$
 
 ## {.smaller}
    
@@ -480,19 +484,23 @@ $$\text{political institutions}_t \Longrightarrow
     
 - Because [@acemoglu_chapter_2005, p. 391] don't have a satisfactory theory about how individuals solve the **collective action problem** they focus on:
 
-$$\text{distributions of resources}_t \Longrightarrow
-   \text{de facto political power}_t$$
+$$
+\text{distributions of resources}_t \Longrightarrow \text{de facto political power}_t
+$$
 
 ##
 
 - Also [@acemoglu_chapter_2005, pp. 391-392] point out that political institutions and the distribution of resources tend to change relatively slowly but determine economic institutions and economic performance both directly and indirectly.
 
-$$\text{political power}_t \Longrightarrow
-   \text{political institutions}_{t+1}$$
+$$
+\text{political power}_t \Longrightarrow \text{political institutions}_{t+1}
+$$
 
 ## 
 
 - Putting all these pieces together in @fig-business-environment it is shown a simplistic schematic representation of this framework.
+
+<!-- Check source code in 000_tex_files/005_acemoglu_schematic_representation_framework.tex -->
 
 ![Acemoglu, Johnson and Robinson framework [@acemoglu_chapter_2005, p. 392]](_000_images/005_acemoglu_schematic_representation_framework.png){.nostretch #fig-business-environment width=100% fig-align="center"} 
 
@@ -507,7 +515,5 @@ $$\text{political power}_t \Longrightarrow
 -   To the [**Business Science**](https://www.business-science.io/) and [**R4DS Online Learning**](https://www.rfordatasci.com/) communities where I learn [**R**](https://www.r-project.org/about.html) and [**$\pi$-thon**](https://www.python.org/about/)
 
 -   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse), [**janitor**](https://CRAN.R-project.org/package=janitor) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
-
-
 
 # References {.allowframebreaks}
