@@ -152,12 +152,13 @@ Other factors that affect the Gross Domestic Product different from labor and pr
 # Password: U**********4
 
 # Import
+## Check first 000_scripts/003_script_tidy_TED2.R
 data_ted_col <- read_csv(file = '000_data/003_tidy_TED2.csv.gz')
 
 # Tidy
 data_ted_col_clean <- data_ted_col |> 
   filter(unit_code == 'COL') |> 
-  filter(date %in% c(1990, 2010, 2020, 2024)) |> 
+  filter(date %in% c(1990, 2010, 2020, 2025)) |> 
   filter(variable_label %in% c('Growth in real GDP',
                                'Contribution of Labor Quality to real GDP growth',
                                'Contribution of Labor Quantity to real GDP growth',
@@ -169,7 +170,7 @@ data_ted_col_clean <- data_ted_col |>
   rename(Measure = variable_label)
 
 # Helpers
-last_data_ted_col_clean <- ymd("2025-05-06")
+last_data_ted_col_clean <- ymd("2026-01-29")
 ```
 
 ```{r}
