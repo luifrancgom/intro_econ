@@ -47,45 +47,33 @@ pop_col <- read_excel(
 #### SECUESTRO.xlsx
 
 homicidio_intencional <- read_excel(
-  path = "000_data/004_hurto_intencional.xlsx",
+  path = "000_data/004_homicidio_intencional.xlsx",
   sheet = 1,
-  # Becareful with the range
-  ## Always check it
-  ### Some files have different ranges
-  range = "A1:H334538"
+  range = cell_cols("A:H")
 )
 
 hurto_personas <- read_excel(
   path = "000_data/004_hurto_personas.xlsx",
-  sheet = 3,
-  # Becareful with the range
-  ## Always check it
-  ### Some files have different ranges
-  range = "A11:BV1118"
+  sheet = 1,
+  range = cell_cols("A:F")
 )
 
 hurto_comerciales <- read_excel(
   path = "000_data/004_hurto_comerciales.xlsx",
-  sheet = 3,
-  # Becareful with the range
-  ## Always check it
-  ### Some files have different ranges
-  range = "A11:BV1118"
+  sheet = 1,
+  range = cell_cols("A:F")
 )
 
 hurto_financieras <- read_excel(
   path = "000_data/004_hurto_financieras.xlsx",
-  sheet = 3,
-  # Becareful with the range
-  ## Always check it
-  ### Some files have different ranges
-  range = "A11:BV1118"
+  sheet = 1,
+  range = cell_cols("A:F")
 )
 
 secuestro <- read_excel(
   path = "000_data/004_secuestro.xlsx",
-  sheet = 12,
-  range = "A11:BV1118"
+  sheet = 1,
+  range = cell_cols("A:G")
 )
 
 # Clean data ----
@@ -136,79 +124,71 @@ pop_col_tbl <- pop_col |>
 
 homicidio_intencional_tbl <- homicidio_intencional |>
   clean_names() |>
-  slice(-(1:3)) |>
-  select(departamento, starts_with(match = "total_general")) |>
-  rowwise() |>
-  mutate(
-    homicidio_cantidad = sum(
-      across(.cols = starts_with(match = "total_general")),
-      na.rm = TRUE
-    ),
-    .keep = "unused"
+  mutate(fecha_hecho = ymd(fecha_hecho)) |>
+  filter(
+    year(fecha_hecho) ==
+      {
+        year
+      }
   ) |>
-  ungroup() |>
-  mutate(
-    de_codigo = str_sub(string = departamento, start = 1L, end = 2L),
-    .keep = "unused",
-    .before = homicidio_cantidad
-  ) |>
+  select(cod_depto, victimas) |>
+  rename(de_codigo = cod_depto, homicidio_cantidad = victimas) |>
   group_by(de_codigo) |>
   summarize(homicidio_cantidad = sum(homicidio_cantidad))
 
 hurto_personas_tbl <- hurto_personas |>
-  rowwise() |>
-  mutate(
-    hurto_personas_cantidad = sum(
-      across(.cols = starts_with(match = "...")),
-      na.rm = TRUE
-    ),
-    .keep = "unused"
+  clean_names() |>
+  mutate(fecha_hecho = ymd(fecha_hecho)) |>
+  filter(
+    year(fecha_hecho) ==
+      {
+        year
+      }
   ) |>
+  select(cod_depto, cantidad) |>
+  rename(de_codigo = cod_depto, hurto_personas_cantidad = cantidad) |>
   group_by(de_codigo) |>
   summarize(hurto_personas_cantidad = sum(hurto_personas_cantidad))
 
 hurto_comerciales_tbl <- hurto_comerciales |>
-  rowwise() |>
-  mutate(
-    hurto_comerciales_cantidad = sum(
-      across(.cols = starts_with(match = "...")),
-      na.rm = TRUE
-    ),
-    .keep = "unused"
+  clean_names() |>
+  mutate(fecha_hecho = ymd(fecha_hecho)) |>
+  filter(
+    year(fecha_hecho) ==
+      {
+        year
+      }
   ) |>
+  select(cod_depto, cantidad) |>
+  rename(de_codigo = cod_depto, hurto_comerciales_cantidad = cantidad) |>
   group_by(de_codigo) |>
   summarize(hurto_comerciales_cantidad = sum(hurto_comerciales_cantidad))
 
 hurto_financieras_tbl <- hurto_financieras |>
-  rowwise() |>
-  mutate(
-    hurto_financieras_cantidad = sum(
-      across(.cols = starts_with(match = "...")),
-      na.rm = TRUE
-    ),
-    .keep = "unused"
+  clean_names() |>
+  mutate(fecha_hecho = ymd(fecha_hecho)) |>
+  filter(
+    year(fecha_hecho) ==
+      {
+        year
+      }
   ) |>
+  select(cod_depto, cantidad) |>
+  rename(de_codigo = cod_depto, hurto_financieras_cantidad = cantidad) |>
   group_by(de_codigo) |>
   summarize(hurto_financieras_cantidad = sum(hurto_financieras_cantidad))
 
 secuestro_tbl <- secuestro |>
   clean_names() |>
-  slice(-(1:3)) |>
-  select(departamento, starts_with(match = "total_general")) |>
-  rowwise() |>
-  mutate(
-    secuestro_cantidad = sum(
-      across(.cols = starts_with(match = "total_general")),
-      na.rm = TRUE
-    ),
-    .keep = "unused"
+  mutate(fecha_hecho = ymd(fecha_hecho)) |>
+  filter(
+    year(fecha_hecho) ==
+      {
+        year
+      }
   ) |>
-  ungroup() |>
-  mutate(
-    de_codigo = str_sub(string = departamento, start = 1L, end = 2L),
-    .keep = "unused",
-    .before = secuestro_cantidad
-  ) |>
+  select(cod_depto, cantidad) |>
+  rename(de_codigo = cod_depto, secuestro_cantidad = cantidad) |>
   group_by(de_codigo) |>
   summarize(secuestro_cantidad = sum(secuestro_cantidad))
 
