@@ -506,7 +506,7 @@ homicide_male_pivot_wider |>
 ## {.nostretch}
 
 ```{r}
-# Check 000_scripts/004_script_crime_col.R
+# Check 000_scripts/004_script_crime_col2.R
 
 # Import
 crime_col <- read_rds(file = "000_data/004_crime_col_2025.rds")
