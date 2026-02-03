@@ -202,7 +202,9 @@ wgi_col_clean <- wgi_col |>
       pattern = ": Percentile Rank",
       replacement = ""
     ),
-    indicator = ifelse(test = indicator == "Political Stability and Absence of Violence/Terrorism",
+    indicator = ifelse(
+      test = indicator ==
+        "Political Stability and Absence of Violence/Terrorism",
       yes = "Political Stability and Absence\nof Violence/Terrorism",
       no = indicator
     ),
@@ -231,7 +233,8 @@ wgi_col_clean |>
     position = "dodge",
     color = "black"
   ) +
-  geom_text(aes(label = round(value, digits = 2)),
+  geom_text(
+    aes(label = round(value, digits = 2)),
     position = position_dodge(width = 1),
     hjust = -0.2
   ) +
@@ -242,11 +245,15 @@ wgi_col_clean |>
     x = NULL,
     y = NULL,
     fill = NULL,
-    subtitle = str_glue("All indicators are expressed as percentile ranks
+    subtitle = str_glue(
+      "All indicators are expressed as percentile ranks
                            Percentile rank indicates the country's rank among all countries covered by the aggregate indicator,
-                           with 0 corresponding to lowest rank, and 100 to highest rank"),
-    caption = str_glue("Source: Worldwide Governance Indicators (WGI) - World Bank
-                          Last update: {unique(wgi_col_clean$last_updated)}")
+                           with 0 corresponding to lowest rank, and 100 to highest rank"
+    ),
+    caption = str_glue(
+      "Source: Worldwide Governance Indicators (WGI) - World Bank
+                          Last update: {unique(wgi_col_clean$last_updated)}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -271,7 +278,8 @@ initial_year <- 1990
 last_year <- 2023
 
 # Import
-homicide <- wb_data( # Intentional homicides (per 100,000 people)
+homicide <- wb_data(
+  # Intentional homicides (per 100,000 people)
   indicator = "VC.IHR.PSRC.P5",
   start_date = initial_year,
   end_date = last_year
@@ -298,8 +306,7 @@ homicide_pivot_wider |>
   ### In particular the case about:
   #### You have the column name as a character vector
   ggplot(aes(x = .data[[names[5]]], y = .data[[names[4]]])) +
-  geom_abline(slope = 1, 
-              color = umng_palette[1]) +
+  geom_abline(slope = 1, color = umng_palette[1]) +
   geom_point(
     shape = 21,
     size = 4,
@@ -313,13 +320,17 @@ homicide_pivot_wider |>
     box.padding = 1
   ) +
   labs(
-    x = str_glue("Intentional homicides (per 100,000 people) in {initial_year}"),
+    x = str_glue(
+      "Intentional homicides (per 100,000 people) in {initial_year}"
+    ),
     y = str_glue("Intentional homicides (per 100,000 people) in {last_year}"),
     fill = NULL,
     title = str_glue("Period: {initial_year} vs {last_year}"),
     subtitle = str_glue("Number of countries: {nrow(homicide_pivot_wider)}"),
-    caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide$last_updated)}")
+    caption = str_glue(
+      "Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide$last_updated)}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -336,55 +347,65 @@ homicide_pivot_wider |>
 ##
 
 ```{r}
-# Helpers 
+# Helpers
 initial_year <- 1990
 last_year <- 2023
 
 # Import
 homicide_female <- wb_data(
   # Intentional homicides, female (per 100,000 female)
-  indicator = "VC.IHR.PSRC.FE.P5", 
-  start_date = initial_year, 
-  end_date = last_year)
+  indicator = "VC.IHR.PSRC.FE.P5",
+  start_date = initial_year,
+  end_date = last_year
+)
 
 # Tidy
-homicide_female_pivot_wider <- homicide_female |> 
-  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(initial_year, last_year)) |> 
-  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) |> 
-  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) |> 
+homicide_female_pivot_wider <- homicide_female |>
+  filter(!is.na(VC.IHR.PSRC.FE.P5), date %in% c(initial_year, last_year)) |>
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.FE.P5) |>
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.FE.P5) |>
   drop_na()
 
 names_female <- names(homicide_female_pivot_wider)
 ```
 
 ```{r}
-#| label: fig-intentional-homicides-female-col 
+#| label: fig-intentional-homicides-female-col
 #| fig-cap: Intentional homicides, female (per 100,000 female)
 
 # Visualization
-homicide_female_pivot_wider |> 
+homicide_female_pivot_wider |>
   # Check this notation in
   ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
-  ### In particular the case about: 
-  #### You have the column name as a character vector 
-  ggplot(aes(x = .data[[names_female[5]]], y = .data[[names_female[4]]])) + 
+  ### In particular the case about:
+  #### You have the column name as a character vector
+  ggplot(aes(x = .data[[names_female[5]]], y = .data[[names_female[4]]])) +
   geom_abline(slope = 1, color = umng_palette[1]) +
-  geom_point(shape = 21, 
-             size = 4,
-             fill = umng_palette[2]) + 
-  geom_label_repel(data = homicide_female_pivot_wider |> 
-                     filter(country == "Colombia"),
-                   aes(label = country), 
-                   seed = 1234,                    
-                   box.padding = 1) + 
+  geom_point(shape = 21, size = 4, fill = umng_palette[2]) +
+  geom_label_repel(
+    data = homicide_female_pivot_wider |>
+      filter(country == "Colombia"),
+    aes(label = country),
+    seed = 1234,
+    box.padding = 1
+  ) +
   labs(
-       x = str_glue("Intentional homicides female (per 100,000 people) in {initial_year}"),
-       y = str_glue("Intentional homicides female (per 100,000 people) in {last_year}"),
-       fill = NULL, 
-       title = str_glue("Period: {initial_year} vs {last_year}"),
-       subtitle = str_glue("Number of countries: {nrow(homicide_female_pivot_wider)}"),
-       caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide_female$last_updated)}")) +
+    x = str_glue(
+      "Intentional homicides female (per 100,000 people) in {initial_year}"
+    ),
+    y = str_glue(
+      "Intentional homicides female (per 100,000 people) in {last_year}"
+    ),
+    fill = NULL,
+    title = str_glue("Period: {initial_year} vs {last_year}"),
+    subtitle = str_glue(
+      "Number of countries: {nrow(homicide_female_pivot_wider)}"
+    ),
+    caption = str_glue(
+      "Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide_female$last_updated)}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -400,56 +421,65 @@ homicide_female_pivot_wider |>
 ##
 
 ```{r}
-# Helpers 
+# Helpers
 initial_year <- 1990
 last_year <- 2023
 
-# Import 
+# Import
 homicide_male <- wb_data(
   # Intentional homicides, male (per 100,000 male)
   indicator = "VC.IHR.PSRC.MA.P5",
-  start_date = initial_year, 
-  end_date = last_year)
+  start_date = initial_year,
+  end_date = last_year
+)
 
 # Tidy
-homicide_male_pivot_wider <- homicide_male |> 
-  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(initial_year, last_year)) |> 
-  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) |> 
-  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) |> 
+homicide_male_pivot_wider <- homicide_male |>
+  filter(!is.na(VC.IHR.PSRC.MA.P5), date %in% c(initial_year, last_year)) |>
+  select(iso2c, iso3c, country, date, VC.IHR.PSRC.MA.P5) |>
+  pivot_wider(names_from = date, values_from = VC.IHR.PSRC.MA.P5) |>
   drop_na()
 
-names_male <- names(homicide_male_pivot_wider) 
+names_male <- names(homicide_male_pivot_wider)
 ```
 
 ```{r}
-#| label: fig-intentional-homicides-male-col 
+#| label: fig-intentional-homicides-male-col
 #| fig-cap: Intentional homicides, male (per 100,000 male)
 
 # Visualization
-homicide_male_pivot_wider |> 
+homicide_male_pivot_wider |>
   # Check this notation in
   ## https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html
-  ### In particular the case about: 
-  #### You have the column name as a character vector 
-  ggplot(aes(x = .data[[names_male[5]]], y = .data[[names_male[4]]])) + 
-  geom_abline(slope = 1, 
-              color = umng_palette[1]) +
-  geom_point(shape = 21, 
-             size = 4,
-             fill = umng_palette[2]) + 
-  geom_label_repel(data = homicide_male_pivot_wider |> 
-                     filter(country == "Colombia"),
-                   aes(label = country), 
-                   seed = 1234,                    
-                   box.padding = 1) +
+  ### In particular the case about:
+  #### You have the column name as a character vector
+  ggplot(aes(x = .data[[names_male[5]]], y = .data[[names_male[4]]])) +
+  geom_abline(slope = 1, color = umng_palette[1]) +
+  geom_point(shape = 21, size = 4, fill = umng_palette[2]) +
+  geom_label_repel(
+    data = homicide_male_pivot_wider |>
+      filter(country == "Colombia"),
+    aes(label = country),
+    seed = 1234,
+    box.padding = 1
+  ) +
   labs(
-       x = str_glue("Intentional homicides male (per 100,000 people) in {initial_year}"),
-       y = str_glue("Intentional homicides male (per 100,000 people) in {last_year}"),
-       fill = NULL, 
-       title = str_glue("Period: {initial_year} vs {last_year}"),
-       subtitle = str_glue("Number of countries: {nrow(homicide_male_pivot_wider)}"),
-       caption = str_glue("Source: World Development Indicators - World Bank
-                          Last update: {unique(homicide_male$last_updated)}")) +
+    x = str_glue(
+      "Intentional homicides male (per 100,000 people) in {initial_year}"
+    ),
+    y = str_glue(
+      "Intentional homicides male (per 100,000 people) in {last_year}"
+    ),
+    fill = NULL,
+    title = str_glue("Period: {initial_year} vs {last_year}"),
+    subtitle = str_glue(
+      "Number of countries: {nrow(homicide_male_pivot_wider)}"
+    ),
+    caption = str_glue(
+      "Source: World Development Indicators - World Bank
+                          Last update: {unique(homicide_male$last_updated)}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -478,32 +508,36 @@ homicide_male_pivot_wider |>
 ```{r}
 # Check 000_scripts/004_script_crime_col.R
 
-# Import 
-crime_col <- read_rds(file = "000_data/004_crime_col_2024.rds")
+# Import
+crime_col <- read_rds(file = "000_data/004_crime_col_2025.rds")
 
 # Helpers
-last_update_pol_nal <- ymd("2025-05-05")
+last_update_pol_nal <- ymd("2026-01-21")
+last_update_pob <- ymd("2025-08-08")
+crime_year <- 2025
 ```
 
 ```{r}
-#| label: fig-map-homicides-col 
+#| label: fig-map-homicides-col
 #| fig-cap: Intentional homicides (per 100,000 people) by department
 #| fig-height: 6
 
 # Visualization
-crime_col |> 
-  ggplot(aes(fill = homicidio_per)) + 
-  geom_sf(aes(geometry = geometry),
-          color = "black") + 
-  scale_fill_gradient(low = umng_palette[2], 
-                      high = umng_palette[1]) +
-  labs(fill = NULL,
-       subtitle = str_glue("Year: {unique(crime_col$year)}"),
-       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+crime_col |>
+  ggplot(aes(fill = homicidio_per)) +
+  geom_sf(aes(geometry = geometry), color = "black") +
+  scale_fill_gradient(low = umng_palette[2], high = umng_palette[1]) +
+  labs(
+    fill = NULL,
+    subtitle = str_glue("Year: {crime_year}"),
+    caption = str_glue(
+      "Source 1: Ministerio de Defensa y Dirección de Investigación Criminal e INTERPOL - Policía Nacional
                           Last update 1: {last_update_pol_nal}
-                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          Source 2: Serie departamental de población por área, para el periodo 2018-2050 
                           con base en el CNPV 2018
-                          Last update 2: 2023-03-04")) +
+                          Last update 2: {last_update_pob}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -512,32 +546,34 @@ crime_col |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(),
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
 
 ## {.nostretch}
 
 ```{r}
-#| label: fig-map-theft-from-person-col 
+#| label: fig-map-theft-from-person-col
 #| fig-cap: Theft from person[^1] (per 100,000 people) by department
 #| fig-height: 6
 
 # Visualization
-crime_col |> 
-  ggplot(aes(fill = hurto_personas_per)) + 
-  geom_sf(aes(geometry = geometry),
-          color = "black") + 
-  scale_fill_gradient(low = umng_palette[2], 
-                      high = umng_palette[1]) +
-  labs(fill = NULL,
-       subtitle = str_glue("Year: {unique(crime_col$year)}"),
-       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+crime_col |>
+  ggplot(aes(fill = hurto_personas_per)) +
+  geom_sf(aes(geometry = geometry), color = "black") +
+  scale_fill_gradient(low = umng_palette[2], high = umng_palette[1]) +
+  labs(
+    fill = NULL,
+    subtitle = str_glue("Year: {crime_year}"),
+    caption = str_glue(
+      "Source 1: Ministerio de Defensa y Dirección de Investigación Criminal e INTERPOL - Policía Nacional
                           Last update 1: {last_update_pol_nal}
-                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          Source 2: Serie departamental de población por área, para el periodo 2018-2050 
                           con base en el CNPV 2018
-                          Last update 2: 2023-03-04")) +
+                          Last update 2: {last_update_pob}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -546,8 +582,8 @@ crime_col |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(),
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
 
@@ -556,24 +592,26 @@ crime_col |>
 ## {.nostretch}
 
 ```{r}
-#| label: fig-map-theft-from-commercial-establishments-col 
+#| label: fig-map-theft-from-commercial-establishments-col
 #| fig-cap: Theft from commercial establishments[^2] (per 100,000 people) by department
 #| fig-height: 6
 
 # Visualization
-crime_col |> 
-  ggplot(aes(fill = hurto_comerciales_per)) + 
-  geom_sf(aes(geometry = geometry),
-          color = "black") + 
-  scale_fill_gradient(low = umng_palette[2], 
-                      high = umng_palette[1]) +
-  labs(fill = NULL,
-       subtitle = str_glue("Year: {unique(crime_col$year)}"),
-       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+crime_col |>
+  ggplot(aes(fill = hurto_comerciales_per)) +
+  geom_sf(aes(geometry = geometry), color = "black") +
+  scale_fill_gradient(low = umng_palette[2], high = umng_palette[1]) +
+  labs(
+    fill = NULL,
+    subtitle = str_glue("Year: {crime_year}"),
+    caption = str_glue(
+      "Source 1: Ministerio de Defensa y Dirección de Investigación Criminal e INTERPOL - Policía Nacional
                           Last update 1: {last_update_pol_nal}
-                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          Source 2: Serie departamental de población por área, para el periodo 2018-2050 
                           con base en el CNPV 2018
-                          Last update 2: 2023-03-04")) +
+                          Last update 2: {last_update_pob}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -582,8 +620,8 @@ crime_col |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(),
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
 
@@ -592,24 +630,26 @@ crime_col |>
 ## {.nostretch}
 
 ```{r}
-#| label: fig-map-robbery-financial-institutions-col 
+#| label: fig-map-robbery-financial-institutions-col
 #| fig-cap: Robbery of Financial Institutions[^3] (per 100,000 people) by department
 #| fig-height: 6
 
 # Visualization
-crime_col |> 
-  ggplot(aes(fill = hurto_financieras_per)) + 
-  geom_sf(aes(geometry = geometry),
-          color = "black") + 
-  scale_fill_gradient(low = umng_palette[2], 
-                      high = umng_palette[1]) +
-  labs(fill = NULL,
-       subtitle = str_glue("Year: {unique(crime_col$year)}"),
-       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+crime_col |>
+  ggplot(aes(fill = hurto_financieras_per)) +
+  geom_sf(aes(geometry = geometry), color = "black") +
+  scale_fill_gradient(low = umng_palette[2], high = umng_palette[1]) +
+  labs(
+    fill = NULL,
+    subtitle = str_glue("Year: {crime_year}"),
+    caption = str_glue(
+      "Source 1: Ministerio de Defensa y Dirección de Investigación Criminal e INTERPOL - Policía Nacional
                           Last update 1: {last_update_pol_nal}
-                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          Source 2: Serie departamental de población por área, para el periodo 2018-2050 
                           con base en el CNPV 2018
-                          Last update 2: 2023-03-04")) +
+                          Last update 2: {last_update_pob}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -618,8 +658,8 @@ crime_col |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(),
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
 
@@ -628,24 +668,26 @@ crime_col |>
 ## {.nostretch}
 
 ```{r}
-#| label: fig-map-kidnapping-col 
+#| label: fig-map-kidnapping-col
 #| fig-cap: Kidnapping (per 100,000 people) by department
 #| fig-height: 6
 
 # Visualization
-crime_col |> 
-  ggplot(aes(fill = secuestro_per)) +  
-  geom_sf(aes(geometry = geometry),
-          color = "black") + 
-  scale_fill_gradient(low = umng_palette[2], 
-                      high = umng_palette[1]) +
-  labs(fill = NULL,
-       subtitle = str_glue("Year: {unique(crime_col$year)}"),
-       caption = str_glue("Source 1: Dirección de Investigación Criminal e INTERPOL - Policía Nacional
+crime_col |>
+  ggplot(aes(fill = secuestro_per)) +
+  geom_sf(aes(geometry = geometry), color = "black") +
+  scale_fill_gradient(low = umng_palette[2], high = umng_palette[1]) +
+  labs(
+    fill = NULL,
+    subtitle = str_glue("Year: {crime_year}"),
+    caption = str_glue(
+      "Source 1: Ministerio de Defensa y Dirección de Investigación Criminal e INTERPOL - Policía Nacional
                           Last update 1: {last_update_pol_nal}
-                          Source 2: Serie departamental de población por área, para el periodo 2020-2050 
+                          Source 2: Serie departamental de población por área, para el periodo 2018-2050 
                           con base en el CNPV 2018
-                          Last update 2: 2023-03-04")) +
+                          Last update 2: {last_update_pob}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -654,11 +696,10 @@ crime_col |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(),
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
-
 
 # Acknowledgments
 
