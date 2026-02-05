@@ -37,6 +37,9 @@ editor: source
 library(tidyverse)
 library(wbstats)
 library(scales)
+# Take into account key api in .Renviron
+## https://docs.ropensci.org/comtradr/articles/comtradr.html#authentication
+library(comtradr)
 ```
 
 ```{r}
@@ -126,11 +129,13 @@ trade_col <- wb_data(
 trade_col_clean <- trade_col |>
   filter(!is.na(value)) |>
   select(country, date, value, indicator_id) |>
-  mutate(indicator_id = case_when(
-    indicator_id == "NE.IMP.GNFS.KN" ~ "Imports",
-    indicator_id == "NE.EXP.GNFS.KN" ~ "Exports",
-    TRUE ~ indicator_id
-  ))
+  mutate(
+    indicator_id = case_when(
+      indicator_id == "NE.IMP.GNFS.KN" ~ "Imports",
+      indicator_id == "NE.EXP.GNFS.KN" ~ "Exports",
+      TRUE ~ indicator_id
+    )
+  )
 ```
 
 ```{r}
@@ -140,7 +145,8 @@ trade_col_clean <- trade_col |>
 # Visualization
 trade_col_clean |>
   ggplot() +
-  geom_point(aes(x = date, y = value, fill = indicator_id),
+  geom_point(
+    aes(x = date, y = value, fill = indicator_id),
     shape = 21,
     color = "black",
     show.legend = FALSE
@@ -151,23 +157,31 @@ trade_col_clean |>
     group = indicator_id,
     color = indicator_id
   )) +
-  scale_y_continuous(labels = number_format(
-    scale = 1e-9,
-    suffix = "B",
-    accuracy = 1
-  )) +
+  scale_y_continuous(
+    labels = number_format(
+      scale = 1e-9,
+      suffix = "B",
+      accuracy = 1
+    )
+  ) +
   scale_color_manual(values = umng_palette[1:2]) +
   scale_fill_manual(values = umng_palette[1:2]) +
   labs(
     x = "Year",
     y = "Billions (Short scale)",
     color = "",
-    title = str_glue("Period: {min(trade_col_clean$date)}-{max(trade_col_clean$date)}"),
-    subtitle = str_glue("Variables Units: constant Local Currency Units Base Year 2015
+    title = str_glue(
+      "Period: {min(trade_col_clean$date)}-{max(trade_col_clean$date)}"
+    ),
+    subtitle = str_glue(
+      "Variables Units: constant Local Currency Units Base Year 2015
                               Imports WDI code : NE.IMP.GNFS.KN
-                              Exports WDI: NE.EXP.GNFS.KN"),
-    caption = str_glue("Source: World Development Indicators - World Bank,
-                              Last update: {unique(trade_col$last_updated)}")
+                              Exports WDI: NE.EXP.GNFS.KN"
+    ),
+    caption = str_glue(
+      "Source: World Development Indicators - World Bank,
+                              Last update: {unique(trade_col$last_updated)}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -203,7 +217,7 @@ trade_col_clean |>
 
 ##
 
-![Colombian good exports **HS 4 digits (HS92) edition** year 2023 [@simoes_economic_2011]](000_data/005_col_exports_2023_hs4_92.png){.nostretch #fig-colombian-goods-exports-2023 width=100% fig-align="center"}
+![Colombian good exports **HS 4 digits (HS92) edition** year 2024 [@simoes_economic_2011]](000_data/005_col_exports_2024_hs4_92.png){.nostretch #fig-colombian-goods-exports-2024 width=100% fig-align="center"}
 
 ##
 
@@ -211,7 +225,7 @@ trade_col_clean |>
 
 ##
 
-![Colombian goods imports **HS 4 digits (HS92) edition** year 2023 [@simoes_economic_2011]](000_data/005_col_imports_2023_hs4_92.png){.nostretch #fig-colombian-goods-imports-2023 width=100% fig-align="center"}
+![Colombian goods imports **HS 4 digits (HS92) edition** year 2024 [@simoes_economic_2011]](000_data/005_col_imports_2024_hs4_92.png){.nostretch #fig-colombian-goods-imports-2024 width=100% fig-align="center"}
 
 # International trade: services
 
@@ -232,7 +246,7 @@ trade_col_clean |>
 ##
 
 ```{r}
-# Data
+# Documentation
 ## https://comtradeplus.un.org/ >
 ## Data >
 ## Trade >
@@ -250,58 +264,75 @@ trade_col_clean |>
 ### Periods:
 ### Partners: World
 
-# Import
-## There is a problem in the data where
-## a comma is included and the end for
-## rows greater or equal than 2
-trade_services <- read_csv(file = "000_data/005_trade_data_services_un_comtrade.csv")
-
 # Helpers
-last_update_trade_services <- ymd("2025-07-28")
+first_year <- 2000
+last_year <- 2023
+last_update_trade_services <- ymd("2026-02-05")
+```
+
+```{r}
+# Import
+trade_services_export_first <- ct_get_data(
+  type = "services",
+  commodity_classification = "EB02",
+  commodity_code = c(
+    # 1. Transportation
+    "205",
+    # 2. Travel
+    "236",
+    # 3. Communications services
+    "245",
+    # 4. Construction services
+    "249",
+    # 5. Insurance services
+    "253",
+    # 6. Financial services
+    "260",
+    # 7. Computer and information service
+    "262",
+    # 8. Royalties and license fees
+    "266",
+    # 9. Other business services
+    "268",
+    # 10. Personal, cultural, and recreational service
+    "287",
+    # 11. Government services, n.i.e.
+    "291"
+  ),
+  flow_direction = "Export",
+  reporter = "COL",
+  start_date = first_year,
+  end_date = first_year
+)
 
 # Tidy
-trade_services_clean <- trade_services |> 
-  select(refYear,
-         reporterDesc,
-         flowDesc,
-         cmdCode,
-         cmdDesc,
-         cifvalue)
-
-# Wrangle
-trade_services_clean_top_8 <- trade_services_clean |>
-  filter(cmdCode != 200) |> 
-  mutate(cmdDesc = str_replace_all(string = cmdDesc, 
-                                   pattern = "[0-9.]", 
-                                   replacement = "")) |>
-  mutate(cmdDesc = str_trim(string = cmdDesc)) |> 
-  group_by(refYear,
-           flowDesc) |> 
-  slice_max(order_by = cifvalue, 
-            n = 8) |> 
-  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
-                               .x = cifvalue)) |> 
-  ungroup() |> 
-  mutate(cifvalue_label = number(x = cifvalue, 
-                                 scale = 1e-9, 
-                                 suffix = "B", 
-                                 accuracy = 0.01))
-
-## Exports first year
-trade_services_clean_top_8_export_first <- trade_services_clean_top_8 |> 
-  filter(refYear == min(refYear), flowDesc == "Export")
-
-## Exports last year
-trade_services_clean_top_8_export_last <- trade_services_clean_top_8 |> 
-  filter(refYear == max(refYear), flowDesc == "Export")
-
-## Imports first year
-trade_services_clean_top_8_import_first <- trade_services_clean_top_8 |>
-  filter(refYear == min(refYear), flowDesc == "Import")
-
-## Imports last year
-trade_services_clean_top_8_import_last <- trade_services_clean_top_8 |> 
-  filter(refYear == max(refYear), flowDesc == "Import")
+trade_services_export_first_top_8_clean <- trade_services_export_first |>
+  as_tibble() |>
+  select(
+    ref_year,
+    reporter_desc,
+    flow_desc,
+    cmd_code,
+    cmd_desc,
+    cifvalue
+  ) |>
+  mutate(
+    cmd_desc = str_replace_all(
+      string = cmd_desc,
+      pattern = r"([0-9]+\. )",
+      replacement = ""
+    )
+  ) |>
+  slice_max(order_by = cifvalue, n = 8) |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
+  mutate(
+    cifvalue_label = number(
+      x = cifvalue,
+      scale = 1e-9,
+      suffix = "B",
+      accuracy = 0.01
+    )
+  )
 ```
 
 ```{r}
@@ -309,35 +340,36 @@ trade_services_clean_top_8_import_last <- trade_services_clean_top_8 |>
 #| fig-cap: Colombia service exports
 
 # Visualization
-trade_services_clean_top_8_export_first |>
-  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
-                               .x = cifvalue)) |>
+trade_services_export_first_top_8_clean |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
   ggplot(aes(
     cifvalue,
-    cmdDesc
+    cmd_desc
   )) +
-  geom_segment(aes(xend = 0, yend = cmdDesc),
-               color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = cmd_desc), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = cifvalue_label),
-            hjust = -0.5, size = 5
+  geom_text(aes(label = cifvalue_label), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(trade_services_export_first_top_8_clean$cifvalue) + 2e9
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(trade_services_clean_top_8_export_first$cifvalue) + 0.6e9
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: {min(trade_services_clean$refYear)}
-                        Values in Billions (Short Scale: 10^9)"),
-    caption = str_glue("Source: UN Comtrade Database - Trade Services
-                          Last update date: {last_update_trade_services}")
+    subtitle = str_glue(
+      "Year: {first_year}
+                        Values in Billions (Short Scale: 10^9)"
+    ),
+    caption = str_glue(
+      "Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -354,41 +386,107 @@ trade_services_clean_top_8_export_first |>
 ```
 
 ##
+
+```{r}
+# Import
+trade_services_export_last <- ct_get_data(
+  type = "services",
+  commodity_classification = "EB02",
+  commodity_code = c(
+    # 1. Transportation
+    "205",
+    # 2. Travel
+    "236",
+    # 3. Communications services
+    "245",
+    # 4. Construction services
+    "249",
+    # 5. Insurance services
+    "253",
+    # 6. Financial services
+    "260",
+    # 7. Computer and information service
+    "262",
+    # 8. Royalties and license fees
+    "266",
+    # 9. Other business services
+    "268",
+    # 10. Personal, cultural, and recreational service
+    "287",
+    # 11. Government services, n.i.e.
+    "291"
+  ),
+  flow_direction = "Export",
+  reporter = "COL",
+  start_date = last_year,
+  end_date = last_year
+)
+
+# Tidy
+trade_services_export_last_top_8_clean <- trade_services_export_last |>
+  as_tibble() |>
+  select(
+    ref_year,
+    reporter_desc,
+    flow_desc,
+    cmd_code,
+    cmd_desc,
+    cifvalue
+  ) |>
+  mutate(
+    cmd_desc = str_replace_all(
+      string = cmd_desc,
+      pattern = r"([0-9]+\. )",
+      replacement = ""
+    )
+  ) |>
+  slice_max(order_by = cifvalue, n = 8) |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
+  mutate(
+    cifvalue_label = number(
+      x = cifvalue,
+      scale = 1e-9,
+      suffix = "B",
+      accuracy = 0.01
+    )
+  )
+```
 
 ```{r}
 #| label: fig-exports-col-services-last-year
 #| fig-cap: Colombia service exports
 
 # Visualization
-trade_services_clean_top_8_export_last |>
-  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
-                               .x = cifvalue)) |>
+trade_services_export_last_top_8_clean |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
   ggplot(aes(
     cifvalue,
-    cmdDesc
+    cmd_desc
   )) +
-  geom_segment(aes(xend = 0, yend = cmdDesc),
-               color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = cmd_desc), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = cifvalue_label),
-            hjust = -0.5, size = 5
+  geom_text(aes(label = cifvalue_label), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(trade_services_export_last_top_8_clean$cifvalue) + 2e9
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(trade_services_clean_top_8_export_last$cifvalue) + 0.6e9
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: {max(trade_services_clean$refYear)}
-                        Values in Billions (Short Scale: 10^9)"),
-    caption = str_glue("Source: UN Comtrade Database - Trade Services
-                          Last update date: {last_update_trade_services}")
+    subtitle = str_glue(
+      "Year: {last_year}
+                        Values in Billions (Short Scale: 10^9)"
+    ),
+    caption = str_glue(
+      "Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -405,41 +503,107 @@ trade_services_clean_top_8_export_last |>
 ```
 
 ##
+
+```{r}
+# Import
+trade_services_import_first <- ct_get_data(
+  type = "services",
+  commodity_classification = "EB02",
+  commodity_code = c(
+    # 1. Transportation
+    "205",
+    # 2. Travel
+    "236",
+    # 3. Communications services
+    "245",
+    # 4. Construction services
+    "249",
+    # 5. Insurance services
+    "253",
+    # 6. Financial services
+    "260",
+    # 7. Computer and information service
+    "262",
+    # 8. Royalties and license fees
+    "266",
+    # 9. Other business services
+    "268",
+    # 10. Personal, cultural, and recreational service
+    "287",
+    # 11. Government services, n.i.e.
+    "291"
+  ),
+  flow_direction = "Import",
+  reporter = "COL",
+  start_date = first_year,
+  end_date = first_year
+)
+
+# Tidy
+trade_services_import_first_top_8_clean <- trade_services_import_first |>
+  as_tibble() |>
+  select(
+    ref_year,
+    reporter_desc,
+    flow_desc,
+    cmd_code,
+    cmd_desc,
+    cifvalue
+  ) |>
+  mutate(
+    cmd_desc = str_replace_all(
+      string = cmd_desc,
+      pattern = r"([0-9]+\. )",
+      replacement = ""
+    )
+  ) |>
+  slice_max(order_by = cifvalue, n = 8) |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
+  mutate(
+    cifvalue_label = number(
+      x = cifvalue,
+      scale = 1e-9,
+      suffix = "B",
+      accuracy = 0.01
+    )
+  )
+```
 
 ```{r}
 #| label: fig-imports-col-services-first-year
 #| fig-cap: Colombia service imports
 
 # Visualization
-trade_services_clean_top_8_import_first |>
-  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
-                               .x = cifvalue)) |>
+trade_services_import_first_top_8_clean |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
   ggplot(aes(
     cifvalue,
-    cmdDesc
+    cmd_desc
   )) +
-  geom_segment(aes(xend = 0, yend = cmdDesc),
-               color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = cmd_desc), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = cifvalue_label),
-            hjust = -0.5, size = 5
+  geom_text(aes(label = cifvalue_label), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(trade_services_import_first_top_8_clean$cifvalue) + 2e9
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(trade_services_clean_top_8_import_first$cifvalue) + 0.6e9
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: {min(trade_services_clean$refYear)}
-                        Values in Billions (Short Scale: 10^9)"),
-    caption = str_glue("Source: UN Comtrade Database - Trade Services
-                          Last update date: {last_update_trade_services}")
+    subtitle = str_glue(
+      "Year: {first_year}
+                        Values in Billions (Short Scale: 10^9)"
+    ),
+    caption = str_glue(
+      "Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -458,39 +622,105 @@ trade_services_clean_top_8_import_first |>
 ##
 
 ```{r}
+# Import
+trade_services_import_last <- ct_get_data(
+  type = "services",
+  commodity_classification = "EB02",
+  commodity_code = c(
+    # 1. Transportation
+    "205",
+    # 2. Travel
+    "236",
+    # 3. Communications services
+    "245",
+    # 4. Construction services
+    "249",
+    # 5. Insurance services
+    "253",
+    # 6. Financial services
+    "260",
+    # 7. Computer and information service
+    "262",
+    # 8. Royalties and license fees
+    "266",
+    # 9. Other business services
+    "268",
+    # 10. Personal, cultural, and recreational service
+    "287",
+    # 11. Government services, n.i.e.
+    "291"
+  ),
+  flow_direction = "Import",
+  reporter = "COL",
+  start_date = last_year,
+  end_date = last_year
+)
+
+# Tidy
+trade_services_import_last_top_8_clean <- trade_services_import_last |>
+  as_tibble() |>
+  select(
+    ref_year,
+    reporter_desc,
+    flow_desc,
+    cmd_code,
+    cmd_desc,
+    cifvalue
+  ) |>
+  mutate(
+    cmd_desc = str_replace_all(
+      string = cmd_desc,
+      pattern = r"([0-9]+\. )",
+      replacement = ""
+    )
+  ) |>
+  slice_max(order_by = cifvalue, n = 8) |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
+  mutate(
+    cifvalue_label = number(
+      x = cifvalue,
+      scale = 1e-9,
+      suffix = "B",
+      accuracy = 0.01
+    )
+  )
+```
+
+```{r}
 #| label: fig-imports-col-services-last-year
 #| fig-cap: Colombia service imports
 
 # Visualization
-trade_services_clean_top_8_import_last |>
-  mutate(cmdDesc = fct_reorder(.f = cmdDesc, 
-                               .x = cifvalue)) |>
+trade_services_import_last_top_8_clean |>
+  mutate(cmd_desc = fct_reorder(.f = cmd_desc, .x = cifvalue)) |>
   ggplot(aes(
     cifvalue,
-    cmdDesc
+    cmd_desc
   )) +
-  geom_segment(aes(xend = 0, yend = cmdDesc),
-               color = umng_palette[1]
-  ) +
+  geom_segment(aes(xend = 0, yend = cmd_desc), color = umng_palette[1]) +
   geom_point(
     shape = 21,
     fill = umng_palette[2],
     size = 3
   ) +
-  geom_text(aes(label = cifvalue_label),
-            hjust = -0.5, size = 5
+  geom_text(aes(label = cifvalue_label), hjust = -0.5, size = 5) +
+  scale_x_continuous(
+    limits = c(
+      0,
+      max(trade_services_import_last_top_8_clean$cifvalue) + 2e9
+    )
   ) +
-  scale_x_continuous(limits = c(
-    0,
-    max(trade_services_clean_top_8_import_last$cifvalue) + 0.6e9
-  )) +
   labs(
     x = NULL,
     y = NULL,
-    subtitle = str_glue("Year: {max(trade_services_clean$refYear)}
-                        Values in Billions (Short Scale: 10^9)"),
-    caption = str_glue("Source: UN Comtrade Database - Trade Services
-                          Last update date: {last_update_trade_services}")
+    subtitle = str_glue(
+      "Year: {last_year}
+                        Values in Billions (Short Scale: 10^9)"
+    ),
+    caption = str_glue(
+      "Source: UN Comtrade Database - Trade Services
+                          Last update date: {last_update_trade_services}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -540,6 +770,6 @@ trade_services_clean_top_8_import_last |>
 
 -   To the [**R Core Team**](https://www.r-project.org/contributors.html), the creators of [**RStudio IDE**](https://posit.co/download/rstudio-desktop/), [**Positron**](https://positron.posit.co/), [**Quarto**](https://quarto.org/) and the authors and maintainers of the packages [**tidyverse**](https://CRAN.R-project.org/package=tidyverse),
 [**wbstats**](https://CRAN.R-project.org/package=wbstats),
-[**scales**](https://CRAN.R-project.org/package=scales), and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+[**scales**](https://CRAN.R-project.org/package=scales), [**comtradr**](https://CRAN.R-project.org/package=comtradr) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}
