@@ -39,7 +39,7 @@ library(wbstats)
 library(scales)
 library(janitor)
 library(gt)
-library(imfr)
+library(imfapi)
 ```
 
 ```{r}
@@ -199,47 +199,27 @@ trade_usa_col_world_sgp_clean |>
 ## Balanza de pagos >
 ## Series recientes >
 ## Resumen
+### Seleccionar todos los datos utilizando las opciones disponibles:
+#### Periodicidad: Anual, Trimestral
+#### Fecha (Año): Date Range, Start at (en este caso 2000)
 ### Si necesita descargar la información incluida en alguna de las tablas preconstruidas, ubíquese sobre cualquier dato, pulse clic alterno (derecho) en el mouse y seleccione la opción Exportar, en la cual sugerimos descargar la versión en Excel. Recuerde que esta acción solo está disponible en la versión de escritorio del Portal de Estadísticas Económicas.
 #### https://www.banrep.gov.co/es/preguntas-frecuentes/como-encontrar-series-sobre-balanza-pagos-nuevo-portal-estadisticas-economicas
 
-# API
-## https://www.imf.org/en/home >
-## DATA >
-## IMF Data Portal >
-## Data Resources >
-## API
-
-# Documentation
-## https://www.imf.org/en/home >
-## DATA >
-## IMF Data Portal >
-## DATASETS >
-## Search IMF Data: Balance of Payments (BOP) >
-## Dataset - Balance of Payments (BOP) >
-## VIEW DATA >
-## Data Explorer >
-### Display All/ By Table: Full List
-### Country: Colombia
-### Unit of Measure: US Dollar
-### Frequency: Annual
-### Period: Custom
-#### 2016-01-01 | 2024-12-31
-
 # Import
-bop_col <- read_csv(file = "000_data/005_balanza_de_pagos_resumen.csv")
+bop_col <- read_csv(file = "000_data/005_balanza_de_pagos_resumen2.csv")
 
 # Helpers
-last_update_bop_banrep <- ymd("2025-03-31")
+last_update_bop_banrep <- ymd("2025-09-30")
 
 # Tidy
 bop_col_clean <- bop_col |>
   clean_names() |>
-  filter(fecha_dd_mm_yyyy_year %in% 2022:2024) |>
-  filter(periodicidad_de_la_informacion_trimestral_anual == "Anual") |>
-  select(x1, cuentas, valor, fecha_dd_mm_yyyy_year) |>
+  filter(fecha_ano %in% 2023:2025) |>
+  filter(periodicidad == "Anual") |>
+  select(orden, cuentas, valor, fecha_ano) |>
   pivot_wider(
-    id_cols = c(x1, cuentas),
-    names_from = fecha_dd_mm_yyyy_year,
+    id_cols = c(orden, cuentas),
+    names_from = fecha_ano,
     values_from = valor
   ) |>
   rename(Account = cuentas) |>
@@ -248,13 +228,14 @@ bop_col_clean <- bop_col |>
     # Eliminate the leading characters
     ## This are not spaces
     ## where they are special characters
-    pattern = "^\u00A0{8}",
+    ### Check the number of "spaces"
+    pattern = "^\u00A0{4}",
     replacement = ""
   ))
 
 ## Current account
 bop_col_current_account_table <- bop_col_clean |>
-  select(-x1) |>
+  select(-orden) |>
   slice(1:18)
 ```
 
@@ -268,7 +249,7 @@ bop_col_current_account_table |>
   gt() |>
   fmt_number(
     # Remember to change columns
-    columns = c(`2022`:`2024`),
+    columns = c(`2023`:`2025`),
     decimals = 0,
     sep_mark = ","
   ) |>
@@ -288,11 +269,18 @@ bop_col_current_account_table |>
     style = cell_fill(color = umng_palette[11]),
     locations = cells_body(rows = c(7, 10))
   ) |>
+  # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
     locations = cells_column_labels(columns = c(
       `2023`,
       `2024`
+    ))
+  ) |>
+  tab_footnote(
+    footnote = "Preliminar data (Millions of current USD)",
+    locations = cells_column_labels(columns = c(
+      `2025`
     ))
   ) |>
   tab_source_note(
@@ -319,114 +307,77 @@ bop_col_current_account_table |>
 
 ```{r}
 # Documentation
-## https://www.imf.org/en/home >
+## https://www.imf.org/en/Home >
 ## DATA >
 ## IMF Data Portal >
-## DATASETS >
-## Search IMF Data: Balance of Payments (BOP) >
-## Dataset - Balance of Payments (BOP) >
-## VIEW DATA >
-## Data Explorer >
-### Display All/ By Table: Full List
-### Country: Colombia
-### Unit of Measure: US Dollar
-### Frequency: Annual
-### Period: Custom
-#### 2016-01-01 | 2024-12-31
+## Datasets >
+## Balance of Payments and International Investment Position Statistics (BOP/IIP), World and Country Group Aggregates >
+## VIEW DATA
+### Filter by the different parameters
+#### Account if necessary
+#### Username: l**********@g****.**m
+#### Password: U**********4
 
-# Package imfr version 2
-## data_bases <- imf_databases(times = 1) |> as_tibble()
-## data_bases |> filter(database_id == "BOP")
-## parameters <- imf_parameters(database_id = "BOP", times = 1)
-## parameters |> class()
-## parameters |> str(max.level = 1)
-## parameters |> _$indicator |> as_tibble()
-### See https://github.com/christophergandrud/imfr
-
-# Alternative if imfr version 2 fails
-## imf.data
-### https://CRAN.R-project.org/package=imf.data
-### https://pedrobtz.github.io/imf.data/
-#### start_year <- 2000
-#### end_year <- 2023
-
-#### data_bases <- list_datasets() |> as_tibble()
-#### data_bases |> filter(ID  == "BOP")
-#### BOP <- load_datasets(id = "BOP")
-#### BOP |> str(max.level = 1)
-
-##### You need to pivot the table
-###### BOP$get_series(freq = "A",
-######                ref_area = "CO",
-######                indicator = c("BCA_BP6_USD",
-######                              # Balance of Goods
-######                              "BG_BP6_USD",
-######                              # Balance of services
-######                              "BS_BP6_USD",
-######                              # Balance of Primary Income
-######                              "BIP_BP6_USD",
-######                              # Balance of Secondary Income
-######                              "BIS_BP6_USD"),
-######                start_period = start_year,
-######                end_period = end_year)
-####### Also check out https://github.com/pedrobtz/imf.data/issues/9
+# Check 000_scripts/005_script_imf_api.R
+# for an example of how to retrieve data
 
 # Helpers
-start_year <- 2000
+start_year <- 2005
 end_year <- 2024
 
 # Import
-bop_col_current_account <- imf_dataset(
-  database_id = "BOP",
-  freq = "A",
-  ref_area = "CO",
-  # Current Account
-  indicator = c(
-    "BCA_BP6_USD",
-    # Balance of Goods
-    "BG_BP6_USD",
-    # Balance of services
-    "BS_BP6_USD",
-    # Balance of Primary Income
-    "BIP_BP6_USD",
-    # Balance of Secondary Income
-    "BIS_BP6_USD"
-  ),
-  start_year = start_year,
-  end_year = end_year
+bop_col_current_account <- imf_get(
+  dataflow_id = "BOP_AGG",
+  dimensions = list(
+    FREQUENCY = c("A"),
+    COUNTRY = c("COL"),
+    TYPE_OF_TRANSFORMATION = c("USD"),
+    INDICATOR = c(
+      # Current Account
+      "CAB_NETCD",
+      # Balance of Goods
+      "GB_NETCD",
+      # Balance of services
+      "SEB_NETCD",
+      # Balance of Primary Income
+      "IN1B_NETCD",
+      # Balance of Secondary Income
+      "IN2B_NETCD"
+    )
+  ), 
+  start_period = start_year, 
+  end_period = end_year
 )
 
 # Tidy
 bop_col_components_current_account <- bop_col_current_account |>
-  as_tibble() |>
-  select(date, value, indicator) |>
+  clean_names() |>
+  select(time_period, obs_value, indicator) |>
   filter(indicator %in% c(
-    "BG_BP6_USD",
-    "BS_BP6_USD",
-    "BIP_BP6_USD",
-    "BIS_BP6_USD"
+    "GB_NETCD",
+    "SEB_NETCD",
+    "IN1B_NETCD",
+    "IN2B_NETCD"
   )) |>
   mutate(
     indicator = fct_relevel(
       indicator,
       c(
-        "BG_BP6_USD",
-        "BS_BP6_USD",
-        "BIP_BP6_USD",
-        "BIS_BP6_USD"
+    "GB_NETCD",
+    "SEB_NETCD",
+    "IN1B_NETCD",
+    "IN2B_NETCD"
       )
     ),
-    date = as.integer(date),
-    value = as.numeric(value)
+    time_period = as.integer(time_period)
   )
 
 bop_col_single_current_account <- bop_col_current_account |>
-  as_tibble() |>
-  select(date, value, indicator) |>
-  filter(indicator %in% "BCA_BP6_USD") |>
+  clean_names() |> 
+  select(time_period, obs_value, indicator) |>
+  filter(indicator %in% "CAB_NETCD") |>
   mutate(
-    date = as.integer(date),
-    value = as.numeric(value)
+    time_period = as.integer(time_period)
   )
 ```
 
@@ -439,8 +390,8 @@ bop_col_components_current_account |>
   ggplot() +
   geom_col(
     aes(
-      x = date,
-      y = value,
+      x = time_period,
+      y = obs_value,
       fill = indicator
     ),
     color = "black",
@@ -449,7 +400,7 @@ bop_col_components_current_account |>
   geom_line(
     data = bop_col_single_current_account,
     aes(
-      x = date, y = value,
+      x = time_period, y = obs_value,
       color = indicator
     )
   ) +
@@ -465,6 +416,10 @@ bop_col_components_current_account |>
   scale_color_manual(
     values = umng_palette[5],
     labels = "Current account"
+  ) +                            
+  scale_y_continuous(
+    # Express values in millions
+    labels = label_currency(scale = 1e-6)
   ) +
   guides(
     fill = guide_legend(nrow = 2, ncol = 2, order = 2),
@@ -528,7 +483,7 @@ bop_col_components_current_account |>
 ```{r}
 # Tidy
 bop_col_financial_account_table <- bop_col_clean |>
-  select(-x1) |>
+  select(-orden) |>
   slice(19:41)
 
 bop_col_financial_account_table_1 <- bop_col_financial_account_table |>
@@ -548,7 +503,7 @@ bop_col_financial_account_table_1 |>
   gt() |>
   fmt_number(
     # Remember to change columns
-    columns = c(`2022`:`2024`),
+    columns = c(`2023`:`2025`),
     decimals = 0,
     sep_mark = ","
   ) |>
@@ -568,11 +523,18 @@ bop_col_financial_account_table_1 |>
     style = cell_fill(color = umng_palette[11]),
     locations = cells_body(rows = c(3, 6, 10, 13))
   ) |>
+  # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
     locations = cells_column_labels(columns = c(
       `2023`,
       `2024`
+    ))
+  ) |>
+  tab_footnote(
+    footnote = "Preliminar data (Millions of current USD)",
+    locations = cells_column_labels(columns = c(
+      `2025`
     ))
   ) |>
   tab_source_note(
@@ -607,7 +569,7 @@ bop_col_financial_account_table_2 |>
   gt() |>
   fmt_number(
     # Remember to change columns
-    columns = c(`2022`:`2024`),
+    columns = c(`2023`:`2025`),
     decimals = 0,
     sep_mark = ","
   ) |>
@@ -627,11 +589,18 @@ bop_col_financial_account_table_2 |>
     style = cell_fill(color = umng_palette[11]),
     locations = cells_body(rows = c(3, 4, 6, 7))
   ) |>
+  # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
     locations = cells_column_labels(columns = c(
       `2023`,
       `2024`
+    ))
+  ) |>
+  tab_footnote(
+    footnote = "Preliminar data (Millions of current USD)",
+    locations = cells_column_labels(columns = c(
+      `2025`
     ))
   ) |>
   tab_source_note(
@@ -657,62 +626,62 @@ bop_col_financial_account_table_2 |>
 ##
 
 ```{r}
-# Import
-bop_col_financial_account <- imf_dataset(
-  database_id = "BOP",
-  freq = "A",
-  ref_area = "CO",
-  # Financial Account
-  indicator = c(
-    "BFFR_BP6_USD",
+bop_col_financial_account <- imf_get(
+  dataflow_id = "BOP_AGG",
+  dimensions = list(
+    FREQUENCY = c("A"),
+    COUNTRY = c("COL"),
+    TYPE_OF_TRANSFORMATION = c("USD"),
+    INDICATOR = c(
+    # Financial Account
+    "FAB_NNAFANIL_AFR",
     # Direct Investment
-    "BFD_BP6_USD",
+    "D_NNAFANIL",
     # Portfolio investment
-    "BFP_BP6_USD",
+    "P_NNAFANIL",
     # Financial Derivatives (Other Than Reserves) and ESOS
-    "BFF_BP6_USD",
+    "F7_NNAFANIL",
     # Other investment
-    "BFOFR_BP6_USD",
+    "O_NNAFANIL_AFR",
     # Reserve Assets
-    "BFRAFR_BP6_USD"
-  ),
-  start_year = start_year,
-  end_year = end_year
+    "R_A_AFR"
+    )
+  ), 
+  start_period = start_year, 
+  end_period = end_year
 )
 
 # Tidy
 bop_col_components_financial_account <- bop_col_financial_account |>
-  as_tibble() |>
-  select(date, value, indicator) |>
+  clean_names() |>
+  select(time_period, obs_value, indicator) |>
   filter(indicator %in% c(
-    "BFD_BP6_USD",
-    "BFP_BP6_USD",
-    "BFF_BP6_USD",
-    "BFOFR_BP6_USD",
-    "BFRAFR_BP6_USD"
+    "D_NNAFANIL",
+    "P_NNAFANIL",
+    "F7_NNAFANIL",
+    "O_NNAFANIL_AFR",
+    "R_A_AFR"
   )) |>
   mutate(
     indicator = fct_relevel(
       indicator,
       c(
-        "BFD_BP6_USD",
-        "BFP_BP6_USD",
-        "BFF_BP6_USD",
-        "BFOFR_BP6_USD",
-        "BFRAFR_BP6_USD"
+        "D_NNAFANIL",
+        "P_NNAFANIL",
+        "F7_NNAFANIL",
+        "O_NNAFANIL_AFR",
+        "R_A_AFR"
       )
     ),
-    date = as.integer(date),
-    value = as.numeric(value)
+    time_period = as.integer(time_period)
   )
 
 bop_col_single_financial_account <- bop_col_financial_account |>
-  as_tibble() |>
-  select(date, value, indicator) |>
-  filter(indicator %in% "BFFR_BP6_USD") |>
+  clean_names() |> 
+  select(time_period, obs_value, indicator) |>
+  filter(indicator %in% "FAB_NNAFANIL_AFR") |>
   mutate(
-    date = as.integer(date),
-    value = as.numeric(value)
+    time_period = as.integer(time_period)
   )
 ```
 
@@ -725,8 +694,8 @@ bop_col_components_financial_account |>
   ggplot() +
   geom_col(
     aes(
-      x = date,
-      y = value,
+      x = time_period,
+      y = obs_value,
       fill = indicator
     ),
     color = "black",
@@ -735,7 +704,7 @@ bop_col_components_financial_account |>
   geom_line(
     data = bop_col_single_financial_account,
     aes(
-      x = date, y = value,
+      x = time_period, y = obs_value,
       color = indicator
     )
   ) +
@@ -751,7 +720,11 @@ bop_col_components_financial_account |>
   ) +
   scale_color_manual(
     values = umng_palette[5],
-    labels = "Current account"
+    labels = "Financial account"
+  ) +
+  scale_y_continuous(
+    # Express values in millions
+    labels = label_currency(scale = 1e-6)
   ) +
   guides(
     fill = guide_legend(nrow = 3, ncol = 2, order = 2),
@@ -788,19 +761,28 @@ bop_col_components_financial_account |>
 
 ```{r}
 # Import
-bop_col_net_errors_omissions <- imf_dataset(database_id = "BOP",
-                                            freq = 'A',
-                                            ref_area = 'CO',
-                                            # Net errors and omissions
-                                            indicator = c("BOPFR_BP6_USD"),
-                                            start_year = start_year,
-                                            end_year = end_year)
+bop_col_net_errors_omissions <- imf_get(
+  dataflow_id = "BOP_AGG",
+  dimensions = list(
+    FREQUENCY = c("A"),
+    COUNTRY = c("COL"),
+    TYPE_OF_TRANSFORMATION = c("USD"),
+    INDICATOR = c(
+    # Net errors and omissions
+    "EO_NETCD_AFR"
+    )
+  ), 
+  start_period = start_year, 
+  end_period = end_year
+)
+
 # Tidy
 bop_col_components_net_errors_omissions <- bop_col_net_errors_omissions |>
-  as_tibble() |> 
-  select(date, value, indicator) |> 
-  mutate(date = as.integer(date),
-         value = as.numeric(value))
+  clean_names() |>
+  select(time_period, obs_value, indicator) |>
+  mutate(
+    time_period = as.integer(time_period)
+  )
 ```
 
 ```{r}
@@ -808,10 +790,14 @@ bop_col_components_net_errors_omissions <- bop_col_net_errors_omissions |>
 #| fig-cap: Net Errors and Omissions for Colombia
 
 # Visualization
-bop_col_components_net_errors_omissions |> 
+bop_col_components_net_errors_omissions |>
   ggplot() +
-  geom_line(aes(x = date, y = value,
-                color = indicator)) +
+  geom_line(
+    aes(
+      x = time_period, y = obs_value,
+      color = indicator
+    )
+  ) +
   geom_hline(yintercept = 0,
              color = "black") +
   scale_color_manual(values = umng_palette[5],
@@ -958,6 +944,6 @@ table_bop_example |>
 [**scales**](https://CRAN.R-project.org/package=scales),
 [**janitor**](https://CRAN.R-project.org/package=janitor),
 [**gt**](https://CRAN.R-project.org/package=gt),
-[**imfr**](https://github.com/christophergandrud/imfr) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
+[**imfapi**](https://CRAN.R-project.org/package=imfapi) and [**tinytex**](https://CRAN.R-project.org/package=tinytex) for allowing me to access these tools without paying for a license
 
 # References {.allowframebreaks}

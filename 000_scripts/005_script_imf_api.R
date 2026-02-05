@@ -1,5 +1,6 @@
 library(imfapi)
 library(tidyverse)
+library(scales)
 
 # Documentation
 ## https://www.imf.org/en/Home >
@@ -43,6 +44,9 @@ code_list_type_of_transformation <- imf_get_codelists(
 )
 
 ## Request data with filters
+start_year <- 2005
+end_year <- 2024
+
 bop_col_current_account <- imf_get(
   dataflow_id = "BOP_AGG",
   dimensions = list(
@@ -61,5 +65,7 @@ bop_col_current_account <- imf_get(
       # Balance of Secondary Income
       "IN2B_NETCD"
     )
-  )
+  ), 
+  start_period = start_year, 
+  end_period = end_year
 )
