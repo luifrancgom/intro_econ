@@ -249,6 +249,7 @@ flowchart LR
 ```{r}
 # Data
 # https://www.minhacienda.gov.co >
+# Procesos Misionales >
 # Política Fiscal >
 # Política Fiscal >
 # Cifras de Política Fiscal >
@@ -769,7 +770,7 @@ cng_fb_values_table_fiscal_balance_gnc |>
 
     -   **Global Revenue Statistics Database**
 
-        -   [**https://data-explorer.oecd.org/**](https://data-explorer.oecd.org/) \> Taxation \> Global tax revenues \> A comparative table of tax revenues for Revenue Statistics in Latin America and the Caribbean
+        -   [**https://data-explorer.oecd.org/**](https://data-explorer.oecd.org/) \> Taxation \> Global tax revenues \> Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues
 
     -   **Guía ciudadana a la tributación y el gasto del Estado colombiano** [@observatorio_fiscal_de_la_universidad_javeriana_guiciudadana_2018]
 
@@ -837,7 +838,7 @@ Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_univers
 ## https://data-explorer.oecd.org/ >
 ## Taxation >
 ## Global tax revenues >
-## A comparative table of tax revenues for Revenue Statistics in Latin America and the Caribbean
+## Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues
 
 ## Download the complete data set
 
@@ -871,7 +872,8 @@ Regressive, proportional and progressive tax [@observatorio_fiscal_de_la_univers
 #### Percentage of revenues in the same institutional sector
 
 # Import
-global_revenue_statistics_data_base <- read_csv(file = "000_data/006_OECD.CTP.TPS,DSD_REV_COMP_LAC@DF_RSLAC,2.0+A9+OECD_REP+COL..S13.T_1100+T_1200+T_1300+T_2000+T_3000+T_4000+T_5111+T_5112+T_5113+T_5120+T_5130+T_5200+T_5300+T_6000+_T..PT_OTR_SECTOR+PT_B1GQ.A.csv")
+global_revenue_statistics_data_base <- read_csv(file = "000_data/006_OECD.CTP.TPS,DSD_REV_COMP_LAC@DF_RSLAC,2.0+COL+OECD_REP+A9..S13.T_1100+T_1200+T_1300+T_2000+T_3000+T_4000+T_5111+T_5112+T_5113+T_5120+T_5130+T_5200+T_5300+T_6000+_T..PT_OTR_SECTOR+PT_B1GQ.A.csv")
+
 
 ##### Complete data set
 ###### OECD.CTP.TPS,DSD_REV_COMP_LAC@DF_RSLAC,2.0+all.zip
@@ -879,15 +881,15 @@ global_revenue_statistics_data_base <- read_csv(file = "000_data/006_OECD.CTP.TP
 ###### 006_OECD.CTP.TPS,DSD_REV_COMP_LAC@DF_RSLAC,2.0+A9+OECD_REP+COL..S13.T_1100+T_1200+T_1300+T_2000+T_3000+T_4000+T_5111+T_5112+T_5113+T_5120+T_5130+T_5200+T_5300+T_6000+_T..PT_OTR_SECTOR+PT_B1GQ.A.csv
 
 # Helpers
-last_update_tax_revenue <- ymd("2025-05-27")
+last_update_tax_revenue <- ymd("2025-10-30")
 
 # Tidy
 tax_revenue_as_pct_of_gdp <- global_revenue_statistics_data_base |>
   clean_names() |>
+  filter(institutional_sector == "General government") |> 
+  filter(revenue_category == "Total tax revenue") |> 
+  filter(unit_of_measure == "Percentage of GDP") |> 
   filter(
-    institutional_sector == "General government",
-    revenue_category == "Total tax revenue",
-    unit_of_measure == "Percentage of GDP",
     reference_area %in% c(
       "Colombia",
       "OECD average country",
@@ -932,7 +934,7 @@ tax_revenue_as_pct_of_gdp |>
     y = "Percent",
     color = NULL,
     subtitle = str_glue("Period: {min(tax_revenue_as_pct_of_gdp$time_period)} - {max(tax_revenue_as_pct_of_gdp$time_period)}"),
-    caption = str_glue("Source: Comparative tables of Revenue Statistics in Latin America and the Caribbean - OECD
+    caption = str_glue("Source: Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues - OECD
                           Last update date: {last_update_tax_revenue}")
   ) +
   theme(
@@ -956,17 +958,17 @@ time_period <- 2022
 # Tidy
 tax_structure <- global_revenue_statistics_data_base |>
   clean_names() |> 
-  filter(institutional_sector == 'General government',
-         unit_of_measure      == 'Percentage of revenues in the same institutional sector',
-         revenue_code         %in% (c(1100, 1200, 1300, 
-                                      2000, 
-                                      3000, 
-                                      4000,
-                                      5111, 5112, 5113, 
-                                      5120, 5130, 
-                                      5200, 5300, 
-                                      6000) |> as.character()),
-         time_period == {{time_period}}) |> 
+  filter(institutional_sector == 'General government') |>
+  filter(unit_of_measure      == 'Percentage of revenues in the same institutional sector') |> 
+  filter(revenue_code %in% (c(1100, 1200, 1300, 
+                              2000, 
+                              3000, 
+                              4000,
+                              5111, 5112, 5113, 
+                              5120, 5130, 
+                              5200, 5300, 
+                              6000) |> as.character())) |> 
+  filter(time_period == {{time_period}}) |>
   select(ref_area, reference_area, 
          revenue_code, 
          time_period, 
@@ -1021,7 +1023,7 @@ tax_structure_grouped |>
        fill=NULL, 
        title = str_glue('Variable: Tax revenue as % of total general goverment taxation
                         Period: {unique(tax_structure$time_period)}'),
-       caption = str_glue('Source: Comparative tables of Revenue Statistics in Latin America and the Caribbean - OECD
+       caption = str_glue('Source: Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues - OECD
                           Last update date: {last_update_tax_revenue}')) +
   theme(
     panel.border = element_rect(
