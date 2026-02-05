@@ -113,11 +113,13 @@ trade_usa_col_world_sgp <- wb_data(
 )
 # Tidy
 trade_usa_col_world_sgp_clean <- trade_usa_col_world_sgp |>
-  mutate(country = fct_reorder(
-    .f = country,
-    .x = NE.TRD.GNFS.ZS
-  ) |>
-    fct_rev())
+  mutate(
+    country = fct_reorder(
+      .f = country,
+      .x = NE.TRD.GNFS.ZS
+    ) |>
+      fct_rev()
+  )
 ```
 
 ```{r}
@@ -137,9 +139,13 @@ trade_usa_col_world_sgp_clean |>
     x = NULL,
     y = "Logarithmic scale (Base-10)",
     color = NULL,
-    subtitle = str_glue("Period: {min(trade_usa_col_world_sgp_clean$date)}-{max(trade_usa_col_world_sgp_clean$date)}"),
-    caption = str_glue("Source: World Development Indicators (WDI) - World Bank
-                          Last update: {unique(trade_usa_col_world_sgp_clean$last_updated)}")
+    subtitle = str_glue(
+      "Period: {min(trade_usa_col_world_sgp_clean$date)}-{max(trade_usa_col_world_sgp_clean$date)}"
+    ),
+    caption = str_glue(
+      "Source: World Development Indicators (WDI) - World Bank
+                          Last update: {unique(trade_usa_col_world_sgp_clean$last_updated)}"
+    )
   ) +
   theme(
     panel.border = element_rect(
@@ -223,15 +229,17 @@ bop_col_clean <- bop_col |>
     values_from = valor
   ) |>
   rename(Account = cuentas) |>
-  mutate(Account = str_replace(
-    string = Account,
-    # Eliminate the leading characters
-    ## This are not spaces
-    ## where they are special characters
-    ### Check the number of "spaces"
-    pattern = "^\u00A0{4}",
-    replacement = ""
-  ))
+  mutate(
+    Account = str_replace(
+      string = Account,
+      # Eliminate the leading characters
+      ## This are not spaces
+      ## where they are special characters
+      ### Check the number of "spaces"
+      pattern = "^\u00A0{4}",
+      replacement = ""
+    )
+  )
 
 ## Current account
 bop_col_current_account_table <- bop_col_clean |>
@@ -272,16 +280,20 @@ bop_col_current_account_table |>
   # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2023`,
-      `2024`
-    ))
+    locations = cells_column_labels(
+      columns = c(
+        `2023`,
+        `2024`
+      )
+    )
   ) |>
   tab_footnote(
-    footnote = "Preliminar data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2025`
-    ))
+    footnote = "Preliminary data (Millions of current USD)",
+    locations = cells_column_labels(
+      columns = c(
+        `2025`
+      )
+    )
   ) |>
   tab_source_note(
     source_note = "Source: Banco de la República - Colombia"
@@ -344,8 +356,8 @@ bop_col_current_account <- imf_get(
       # Balance of Secondary Income
       "IN2B_NETCD"
     )
-  ), 
-  start_period = start_year, 
+  ),
+  start_period = start_year,
   end_period = end_year
 )
 
@@ -353,27 +365,30 @@ bop_col_current_account <- imf_get(
 bop_col_components_current_account <- bop_col_current_account |>
   clean_names() |>
   select(time_period, obs_value, indicator) |>
-  filter(indicator %in% c(
-    "GB_NETCD",
-    "SEB_NETCD",
-    "IN1B_NETCD",
-    "IN2B_NETCD"
-  )) |>
+  filter(
+    indicator %in%
+      c(
+        "GB_NETCD",
+        "SEB_NETCD",
+        "IN1B_NETCD",
+        "IN2B_NETCD"
+      )
+  ) |>
   mutate(
     indicator = fct_relevel(
       indicator,
       c(
-    "GB_NETCD",
-    "SEB_NETCD",
-    "IN1B_NETCD",
-    "IN2B_NETCD"
+        "GB_NETCD",
+        "SEB_NETCD",
+        "IN1B_NETCD",
+        "IN2B_NETCD"
       )
     ),
     time_period = as.integer(time_period)
   )
 
 bop_col_single_current_account <- bop_col_current_account |>
-  clean_names() |> 
+  clean_names() |>
   select(time_period, obs_value, indicator) |>
   filter(indicator %in% "CAB_NETCD") |>
   mutate(
@@ -400,7 +415,8 @@ bop_col_components_current_account |>
   geom_line(
     data = bop_col_single_current_account,
     aes(
-      x = time_period, y = obs_value,
+      x = time_period,
+      y = obs_value,
       color = indicator
     )
   ) +
@@ -416,7 +432,7 @@ bop_col_components_current_account |>
   scale_color_manual(
     values = umng_palette[5],
     labels = "Current account"
-  ) +                            
+  ) +
   scale_y_continuous(
     # Express values in millions
     labels = label_currency(scale = 1e-6)
@@ -526,16 +542,20 @@ bop_col_financial_account_table_1 |>
   # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2023`,
-      `2024`
-    ))
+    locations = cells_column_labels(
+      columns = c(
+        `2023`,
+        `2024`
+      )
+    )
   ) |>
   tab_footnote(
-    footnote = "Preliminar data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2025`
-    ))
+    footnote = "Preliminary data (Millions of current USD)",
+    locations = cells_column_labels(
+      columns = c(
+        `2025`
+      )
+    )
   ) |>
   tab_source_note(
     source_note = "Source: Banco de la República - Colombia"
@@ -592,16 +612,20 @@ bop_col_financial_account_table_2 |>
   # Check footnotes depending on status
   tab_footnote(
     footnote = "Provisional data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2023`,
-      `2024`
-    ))
+    locations = cells_column_labels(
+      columns = c(
+        `2023`,
+        `2024`
+      )
+    )
   ) |>
   tab_footnote(
-    footnote = "Preliminar data (Millions of current USD)",
-    locations = cells_column_labels(columns = c(
-      `2025`
-    ))
+    footnote = "Preliminary data (Millions of current USD)",
+    locations = cells_column_labels(
+      columns = c(
+        `2025`
+      )
+    )
   ) |>
   tab_source_note(
     source_note = "Source: Banco de la República - Colombia"
@@ -633,21 +657,21 @@ bop_col_financial_account <- imf_get(
     COUNTRY = c("COL"),
     TYPE_OF_TRANSFORMATION = c("USD"),
     INDICATOR = c(
-    # Financial Account
-    "FAB_NNAFANIL_AFR",
-    # Direct Investment
-    "D_NNAFANIL",
-    # Portfolio investment
-    "P_NNAFANIL",
-    # Financial Derivatives (Other Than Reserves) and ESOS
-    "F7_NNAFANIL",
-    # Other investment
-    "O_NNAFANIL_AFR",
-    # Reserve Assets
-    "R_A_AFR"
+      # Financial Account
+      "FAB_NNAFANIL_AFR",
+      # Direct Investment
+      "D_NNAFANIL",
+      # Portfolio investment
+      "P_NNAFANIL",
+      # Financial Derivatives (Other Than Reserves) and ESOS
+      "F7_NNAFANIL",
+      # Other investment
+      "O_NNAFANIL_AFR",
+      # Reserve Assets
+      "R_A_AFR"
     )
-  ), 
-  start_period = start_year, 
+  ),
+  start_period = start_year,
   end_period = end_year
 )
 
@@ -655,13 +679,16 @@ bop_col_financial_account <- imf_get(
 bop_col_components_financial_account <- bop_col_financial_account |>
   clean_names() |>
   select(time_period, obs_value, indicator) |>
-  filter(indicator %in% c(
-    "D_NNAFANIL",
-    "P_NNAFANIL",
-    "F7_NNAFANIL",
-    "O_NNAFANIL_AFR",
-    "R_A_AFR"
-  )) |>
+  filter(
+    indicator %in%
+      c(
+        "D_NNAFANIL",
+        "P_NNAFANIL",
+        "F7_NNAFANIL",
+        "O_NNAFANIL_AFR",
+        "R_A_AFR"
+      )
+  ) |>
   mutate(
     indicator = fct_relevel(
       indicator,
@@ -677,7 +704,7 @@ bop_col_components_financial_account <- bop_col_financial_account |>
   )
 
 bop_col_single_financial_account <- bop_col_financial_account |>
-  clean_names() |> 
+  clean_names() |>
   select(time_period, obs_value, indicator) |>
   filter(indicator %in% "FAB_NNAFANIL_AFR") |>
   mutate(
@@ -704,7 +731,8 @@ bop_col_components_financial_account |>
   geom_line(
     data = bop_col_single_financial_account,
     aes(
-      x = time_period, y = obs_value,
+      x = time_period,
+      y = obs_value,
       color = indicator
     )
   ) +
@@ -768,11 +796,11 @@ bop_col_net_errors_omissions <- imf_get(
     COUNTRY = c("COL"),
     TYPE_OF_TRANSFORMATION = c("USD"),
     INDICATOR = c(
-    # Net errors and omissions
-    "EO_NETCD_AFR"
+      # Net errors and omissions
+      "EO_NETCD_AFR"
     )
-  ), 
-  start_period = start_year, 
+  ),
+  start_period = start_year,
   end_period = end_year
 )
 
@@ -786,7 +814,7 @@ bop_col_components_net_errors_omissions <- bop_col_net_errors_omissions |>
 ```
 
 ```{r}
-#| label: fig-net-errors-omissions-col 
+#| label: fig-net-errors-omissions-col
 #| fig-cap: Net Errors and Omissions for Colombia
 
 # Visualization
@@ -794,20 +822,28 @@ bop_col_components_net_errors_omissions |>
   ggplot() +
   geom_line(
     aes(
-      x = time_period, y = obs_value,
+      x = time_period,
+      y = obs_value,
       color = indicator
     )
   ) +
-  geom_hline(yintercept = 0,
-             color = "black") +
-  scale_color_manual(values = umng_palette[5],
-                     labels = "Net Errors and Omissions") +
-  labs(x = NULL,
-       y = NULL,
-       fill = NULL,
-       color = NULL,
-       subtitle = str_glue("Variable units: Millions of USD"),
-       caption = "Source: International Monetary Fund - Balance of Payments Statistics (BOPS)") +
+  geom_hline(yintercept = 0, color = "black") +
+  scale_color_manual(
+    values = umng_palette[5],
+    labels = "Net Errors and Omissions"
+  ) +
+  scale_y_continuous(
+    # Express values in millions
+    labels = label_currency(scale = 1e-6)
+  ) +
+  labs(
+    x = NULL,
+    y = NULL,
+    fill = NULL,
+    color = NULL,
+    subtitle = str_glue("Variable units: Millions of USD"),
+    caption = "Source: International Monetary Fund - Balance of Payments Statistics (BOPS)"
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -855,18 +891,22 @@ bop_col_components_net_errors_omissions |>
 
 ```{r}
 # Create
-table_bop_example <- tibble("Account" = c("Current account", "Trade balance", "Goods", "Services",
-                                          "Financial account", "Portfolio investment", "Other investment","", 
-                                          "Balance of payments"),
-                            "Credit" = c("100", "100", "100", "",
-                                         "25", "", "5", "20",
-                                         "125"),
-                            "Debit" = c("-5", "-5", "", "-5",
-                                        "-120", "-20", "-100", "",
-                                        "-125"),
-                            "Net" = c("95", "95", "100", "-5",
-                                      "-95", "-20", "-75", "",
-                                      "0"))
+table_bop_example <- tibble(
+  "Account" = c(
+    "Current account",
+    "Trade balance",
+    "Goods",
+    "Services",
+    "Financial account",
+    "Portfolio investment",
+    "Other investment",
+    "",
+    "Balance of payments"
+  ),
+  "Credit" = c("100", "100", "100", "", "25", "", "5", "20", "125"),
+  "Debit" = c("-5", "-5", "", "-5", "-120", "-20", "-100", "", "-125"),
+  "Net" = c("95", "95", "100", "-5", "-95", "-20", "-75", "", "0")
+)
 ```
 
 ```{r}
@@ -874,7 +914,7 @@ table_bop_example <- tibble("Account" = c("Current account", "Trade balance", "G
 #| tbl-cap: Sample of Balance of Payments
 
 # Table
-table_bop_example |> 
+table_bop_example |>
   gt() |>
   tab_style(
     style = cell_text(weight = "bold"),
@@ -882,27 +922,27 @@ table_bop_example |>
   ) |>
   tab_footnote(
     footnote = "Example 1 transactions",
-    locations = list(cells_body(rows = 3, 
-                                columns = "Credit"),
-                     cells_body(rows = 7, 
-                                columns = "Debit")), 
-    placement = "right" 
-  ) |> 
+    locations = list(
+      cells_body(rows = 3, columns = "Credit"),
+      cells_body(rows = 7, columns = "Debit")
+    ),
+    placement = "right"
+  ) |>
   tab_footnote(
     footnote = "Example 2 transactions",
-    locations = list(cells_body(rows = 4, 
-                                columns = "Debit"),
-                     cells_body(rows = 7, 
-                                columns = "Credit")), 
-    placement = "right" 
-  ) |> 
+    locations = list(
+      cells_body(rows = 4, columns = "Debit"),
+      cells_body(rows = 7, columns = "Credit")
+    ),
+    placement = "right"
+  ) |>
   tab_footnote(
     footnote = "Example 3 transactions",
-    locations = list(cells_body(rows = 6, 
-                                columns = "Debit"),
-                     cells_body(rows = 8, 
-                                columns = "Credit")), 
-    placement = "right" 
+    locations = list(
+      cells_body(rows = 6, columns = "Debit"),
+      cells_body(rows = 8, columns = "Credit")
+    ),
+    placement = "right"
   ) |>
   tab_style(
     style = cell_fill(color = umng_palette[6]),
