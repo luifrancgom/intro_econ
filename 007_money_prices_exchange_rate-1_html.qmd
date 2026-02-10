@@ -423,8 +423,8 @@ inflation_clean |>
 
 ```{r}
 # Helpers
-## 2025-08-04
-trm <- 4129
+## 2026-02-10
+trm <- 3652
 ```
 
 -   An exchange rate is the amount of **units of national currency** that must be given in exchange for a **unit of foreign currency**
@@ -453,7 +453,7 @@ trm <- 4129
 # Catálogo >
 # Sector externo, tasas de cambio y derivados >
 # Tasa de cambio del peso colombiano por dólar - USD >
-# Tasa de cambio Representativa del Mercado (TRM)
+# Dólar hoy (Tasa representativa del mercado TRM)
 
 # Import
 cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.csv") |> 
@@ -466,6 +466,9 @@ cop_usd_trm <- read_csv(file   = "000_data/007_trm_cop_usd_consolidado_series.cs
 # Serie histórica (24/01/1994 - 24/09/1999) >
 # Exportar > Datos > 
 # CSV
+## This link is broken
+## The data was save the original source
+## is lost
 tcm_banda_cambiaria <- read_csv(file = "000_data/007_tcm_banda_cambiaria_serie_historica.csv", 
                                 locale = locale(decimal_mark = ",")) |> 
   set_names(nm = c("date", "trm_floor", "trm_medio", "trm_ceiling"))
