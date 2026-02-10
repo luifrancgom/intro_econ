@@ -172,11 +172,13 @@ tes_daily_t_1_5_10_clean |>
     - Term: $n$
     - Interest rate: $i$
 
-$$\begin{split}
+$$
+\begin{split}
    P & = \frac{NV}{(1 + i)^n} \\
    (1 + i)^n & = \frac{NV}{P} \\
    i & = \left( \frac{NV}{P} \right)^{\frac{1}{n}} - 1 \\
-  \end{split}$$
+  \end{split}
+$$
 
 ## {.smaller} 
 
@@ -186,11 +188,13 @@ $$\begin{split}
     - Nominal value: $NV = 1000000$
     - Term: $n = 10$
     
-$$\begin{split}
+$$
+\begin{split}
   i & = \left( \frac{NV}{P} \right)^{\frac{1}{n}} - 1 \\
     & = \left( \frac{1000000}{600000} \right)^{\frac{1}{10}} - 1 \\
     & \approx 0.0524 \text{ (5.24 \%)}  
-  \end{split}$$
+  \end{split}
+$$
 
 ## {.smaller} 
 
@@ -211,6 +215,15 @@ $$\begin{split}
 #
 
 ```{r}
+# Data
+# https://www.banrep.gov.co/es > 
+# Estadísticas económicas >
+# ¡Nuevo portal de estadísticas económicas! >
+# Series de estadísticas económicas >
+# Catálogo >
+# Tasas de interés y sector financiero >
+# Índice del mercado accionario COLCAP
+
 # Import ----
 msci_colcap <- read_csv(file = '000_data/008_imbc_colcap_iqy.csv')
 
@@ -259,18 +272,42 @@ msci_colcap_clean |>
 # Productos >
 # iShares ETFs >
 # Fondo Bursátil iShares MSCI COLCAP >
+# Posiciones >
+# Descargar las posiciones
 
 ## Direct link
 ## https://www.blackrock.com/co/productos/251708/ishares-fondo-burstil-ishares-colcap-fund
+## Posiciones >
+## Descargar las posiciones
+
+
+# https://www.bvc.com.co/ >
+# Mercado local >
+# Índices >
+# Accionarios >
+# Más información >
+# MSCI COLCAP >
+# Canastas >
+# Canasta vigente
+
+## Direct link
+## https://www.bvc.com.co/indices/msci%20colcap
+## Canastas >
+## Canasta vigente
+
 
 # Import
 current_index_basket_msci_colcap <- read_excel(path = "000_data/008_current_index_basket_msci_colcap_index_col.xlsx",
-                                                     sheet = "Canasta_ICAP", 
-                                                     range = "B6:F29")
+                                                     # Check the name of the
+                                                     # sheet
+                                                     sheet = "Canasta_ICAP",
+                                                     # Check this range 
+                                                     range = "B6:F28")
 
 # Tidy
 current_index_basket_msci_colcap_clean <- current_index_basket_msci_colcap |> 
   clean_names() |> 
+  # Check column names
   select(nemotecnico_ticker,  
          razon_social_emisor_issuer,
          percent_de_part) |> 
@@ -283,7 +320,7 @@ n_rows <- nrow(current_index_basket_msci_colcap_clean)
 first_rows <- ceiling(n_rows / 2)
 last_rows <- n_rows - first_rows
 
-last_update_current_index_basket_msci_colcap <- ymd("2025-08-13")
+last_update_current_index_basket_msci_colcap <- ymd("2026-02-10")
 ```
 
 ```{r}
@@ -449,10 +486,17 @@ icolcap_cl_clean |>
 ##
 
 ```{r}
+# Data
+# https://www.superfinanciera.gov.co/ >
+# Industrias Supervisadas >
+# Entidades vigiladas por la Superfinanciera >
+# Lista general de entidades vigiladas por la Superintendencia Financiera de Colombia >
+# Descargue el archivo en formato Excel
+
 # Import ----
 bank <- read_excel("000_data/008_entidades_vigiladas_superintendencia_financiera_colombia.xls",
                          sheet = 1, 
-                         range = "B15:P462") 
+                         range = "B15:P464") 
 
 # Tidy
 bank_clean <- bank |> 
@@ -464,7 +508,7 @@ bank_clean <- bank |>
 # Helpers
 n_row_bank_clean <- nrow(bank_clean)
 cut <- round(n_row_bank_clean / 2)
-last_update_bank <- ymd("2025-08-13")
+last_update_bank <- ymd("2026-02-10")
 ```
 
 ```{r}
