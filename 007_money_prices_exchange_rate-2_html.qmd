@@ -84,8 +84,8 @@ umng_palette <- c(
 #| include: false
 
 # Political interest rate 2025-08-04 (Colombia)
-i_t <- 0.0925
-date <- lubridate::ymd("2025-08-04")
+i_t <- 0.1025
+date <- lubridate::ymd("2026-02-08")
 ```
 
 -   In the link [**https://suameca.banrep.gov.co/estadisticas-economicas/informacionSerie/59/tasas_interes_politica_monetaria**](https://suameca.banrep.gov.co/estadisticas-economicas/informacionSerie/59/tasas_interes_politica_monetaria) > Información sobre la(s) serie(s) > Descripción on **`r date`** it was pointed out that:
@@ -93,6 +93,8 @@ date <- lubridate::ymd("2025-08-04")
     -   *"La tasa de intervención de política monetaria es la tasa de interés mínima que el Banco de la República cobra a las entidades financieras por los préstamos que les hace mediante las operaciones de mercado abierto (OMA) que se otorgan en las subastas de expansión monetaria a un día hábil (plazo overnight)."*
     
     - *"Esta tasa es el principal mecanismo de intervención de política monetaria usado por el Banco de la República para afectar la cantidad de dinero que circula en la economía."*
+
+    - *"La Junta Directiva del Banco de la República define la tasa de intervención de política monetaria y sus decisiones tienen vigencia a partir del día hábil siguiente a la sesión de la Junta."*
 
 - Also the *"tasa de intervención de política monetaria"* on **`r date`** was **`r scales::number(i_t, scale = 1e2, accuracy = 0.01, suffix = "%")`**
 
@@ -151,7 +153,7 @@ pir_daily |>
 # Catálogo >
 # Tasas de interés y sector financiero >
 # Tasas de interés >
-# Tasa Interbancaria (TIB)
+# TIB_Tasa Interbancaria
 
 # Import
 tib_daily <- read_csv(file  = '000_data/007_tib_serie_historica_diaria.csv') |> 
@@ -176,12 +178,7 @@ ibr_daily <- read_csv(file = "000_data/007_ibr_plazo_overnight_diaria.csv")
 # Tidy
 ibr_daily_clean <- ibr_daily |>
   # Check column names if they change
-  select(`Fecha (dd/mm/aaaa)`, `Tipo tasa`, TASA) |> 
-  # Check column names if they change
-  ## Filter for tasa efectiva
-  filter(`Tipo tasa` == "Tasa efectiva (%)") |> 
-  # Check column names if they change
-  select(`Fecha (dd/mm/aaaa)`, TASA) |> 
+  select(`Fecha (dd/mm/aaaa)`, `Tasa efectiva (%)`) |>
   set_names(nm = c('date', 'ibr')) |> 
   # Be careful with that part
   ## Initially it says dd/mm/yyyy
@@ -244,14 +241,13 @@ pir_tib_tbr_daily |>
 # Series de estadísticas económicas >
 # Tablas preconstruidas >
 # Tasas de interés y sector financiero >
-# Tablas preconstruidas >
 # Tasas de interés >
-# Tasas de captación
+# Tasas de captación >
 # Diarias >
 # Serie empalmada >
 ## Select
 ### Fecha: Date Range 2008-04-01
-###                   2025-08-04
+###                   2026-02-10
 ### Clasificación de la identidad: Total establecimientos
 ### Clase de Cuenta: CDT
 ### Cuenta: A 90 días, A 180 días, A 360 días
@@ -262,11 +258,11 @@ cdt_90_180_360 <- read_csv(file  = '000_data/007_cdt_90_180_360_diaria.csv')
 # Tidy
 cdt_90_180_360_clean <- cdt_90_180_360 |>
   # Check column names if they change
-  select(`Fecha (dd/mm/aaaa)`, Cuenta, `Tasa (%)`) |> 
+  select(`Fecha (dd/mm/aaaa)`, Cuenta, `Tasa efectiva anual (%)`) |> 
   # Check column names if they change
   pivot_wider(id_cols = `Fecha (dd/mm/aaaa)`, 
               names_from = Cuenta, 
-              values_from = `Tasa (%)`) |> 
+              values_from = `Tasa efectiva anual (%)`) |> 
   set_names(nm = c("date", "cdt_90", "cdt_180", "cdt_360")) |> 
   # Be careful with that part
   ## Initially it says dd/mm/yyyy
