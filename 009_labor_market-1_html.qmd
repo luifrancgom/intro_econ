@@ -94,41 +94,57 @@ umng_palette <- c(
 
 ```{r}
 # Data
-# https://www.dane.gov.co > 
-# Estadísticas por tema > 
-# Mercado Laboral > 
-# Empleo y desempleo > 
+# https://www.dane.gov.co >
+# Estadísticas por tema >
+# Mercado Laboral >
+# Empleo y desempleo >
 # Documento >
 # Anexos
 
+# Path
+## Update this
+path_labor <- "000_data/009_anexo_empleo_dic_2026.xlsx"
+
 # Import ----
-labor_classification_concept <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx",
-                                           sheet = "Total nacional", 
-                                           range = "A23:A30", 
-                                           col_names = "concept")
+labor_classification_concept <- read_excel(
+  path = path_labor,
+  sheet = "Total nacional",
+  range = "A23:A30",
+  col_names = "concept"
+)
 
 ## This is the part that needs to be updated
-labor_classification_last_data <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx",
-                                             sheet = "Total nacional", 
-                                             range = "KI23:KI30",
-                                             col_names = "value") |> 
-  mutate(value = value*1e3)
+labor_classification_last_data <- read_excel(
+  path = path_labor,
+  sheet = "Total nacional",
+  range = "KO23:KO30",
+  col_names = "value"
+) |>
+  mutate(value = value * 1e3)
 
-labor_classification <- bind_cols(labor_classification_concept,
-                                  labor_classification_last_data)
+labor_classification <- bind_cols(
+  labor_classification_concept,
+  labor_classification_last_data
+)
 
 # Helpers
 poblacion_total <- labor_classification |> pull(2) |> _[1]
 poblacion_en_edad_de_trabajar <- labor_classification |> pull(2) |> _[2]
 poblacion_menor_a_15_anos <- poblacion_total - poblacion_en_edad_de_trabajar
 fuerza_de_trabajo <- labor_classification |> pull(2) |> _[3]
-poblacion_fuera_de_la_fuerza_de_trabajo <- poblacion_en_edad_de_trabajar - fuerza_de_trabajo
+poblacion_fuera_de_la_fuerza_de_trabajo <- poblacion_en_edad_de_trabajar -
+  fuerza_de_trabajo
 poblacion_ocupada <- labor_classification |> pull(2) |> _[4]
 poblacion_desocupada <- fuerza_de_trabajo - poblacion_ocupada
 subocupados <- labor_classification |> pull(2) |> _[7]
 completamente_empleados <- poblacion_ocupada - subocupados
 
-last_update_labor <- ymd("2025-07-31")
+# Helpers
+## Update this
+last_update_labor <- ymd("2026-01-30")
+## Check the period related to
+## the information
+period_labor <- "December 2025"
 ```
 
 ```{r}
@@ -137,62 +153,51 @@ last_update_labor <- ymd("2025-07-31")
 
 # visualization
 ## Data
-labor <- tibble(x = c( 0, 
-                       -1, 
-                       1,
-                       0,
-                       2,
-                       -2,
-                       2,
-                       -3,
-                       -1),
-                y = c( 0, 
-                       -1, 
-                       -1,
-                       -2,
-                       -2,
-                       -3,
-                       -3,
-                       -4,
-                       -4),
-                indicator = c('Total Population (TP)',
-                              'Population below\n15 years',
-                              'Working Age\nPopulation\n(WAP)',
-                              'Labor\nForce\n(LF)',
-                              'Not in\nLabor Force\n(NLF)',
-                              'Employed (E)',
-                              'Unemployed (U)',
-                              'Full Employed\n(FE)',
-                              'Underemployed\n(UE)'
-                ),
-                level     = c('0', 
-                              '1', '1', 
-                              '2', '2', 
-                              '3', '3',
-                              '4', '4'),
-                # Población total
-                value     = c(poblacion_total, 
-                              # Población menor a 15 años
-                              poblacion_menor_a_15_anos,    
-                              # Población en edad de trabajar
-                              poblacion_en_edad_de_trabajar, 
-                              # Fuerza de trabajo
-                              fuerza_de_trabajo, 
-                              # Población fuera de la fuerza de trabajo
-                              poblacion_fuera_de_la_fuerza_de_trabajo, 
-                              # Población Ocupada
-                              poblacion_ocupada, 
-                              # Población Desocupada
-                              poblacion_desocupada, 
-                              # Completamente empleados
-                              completamente_empleados, 
-                              # Subocupados
-                              subocupados))  |> 
-  mutate(label_text = str_glue('{indicator}
-                               {value |> number(big.mark = ",")}'))
+labor <- tibble(
+  x = c(0, -1, 1, 0, 2, -2, 2, -3, -1),
+  y = c(0, -1, -1, -2, -2, -3, -3, -4, -4),
+  indicator = c(
+    'Total Population (TP)',
+    'Population below\n15 years',
+    'Working Age\nPopulation\n(WAP)',
+    'Labor\nForce\n(LF)',
+    'Not in\nLabor Force\n(NLF)',
+    'Employed (E)',
+    'Unemployed (U)',
+    'Full Employed\n(FE)',
+    'Underemployed\n(UE)'
+  ),
+  level = c('0', '1', '1', '2', '2', '3', '3', '4', '4'),
+  # Población total
+  value = c(
+    poblacion_total,
+    # Población menor a 15 años
+    poblacion_menor_a_15_anos,
+    # Población en edad de trabajar
+    poblacion_en_edad_de_trabajar,
+    # Fuerza de trabajo
+    fuerza_de_trabajo,
+    # Población fuera de la fuerza de trabajo
+    poblacion_fuera_de_la_fuerza_de_trabajo,
+    # Población Ocupada
+    poblacion_ocupada,
+    # Población Desocupada
+    poblacion_desocupada,
+    # Completamente empleados
+    completamente_empleados,
+    # Subocupados
+    subocupados
+  )
+) |>
+  mutate(
+    label_text = str_glue(
+      '{indicator}
+                               {value |> number(big.mark = ",")}'
+    )
+  )
 
 # Plot
-labor |> 
+labor |>
   ggplot(aes(x = x, y = y, label = label_text)) +
   geom_segment(x = 0, y = 0, xend = 0, yend = -1) +
   geom_segment(x = -1, y = -1, xend = 1, yend = -1) +
@@ -202,22 +207,26 @@ labor |>
   geom_segment(x = -2, y = -3, xend = 2, yend = -3) +
   geom_segment(x = -2, y = -3, xend = -2, yend = -4) +
   geom_segment(x = -3, y = -4, xend = -1, yend = -4) +
-  geom_label(aes(fill = level), 
-             color       = "white", 
-             fontface    = "bold",
-             size        = 3.5,
-             label.size = 0.5,
-             label.r     = unit(0.30, "lines")) +
+  geom_label(
+    aes(fill = level),
+    color = "white",
+    fontface = "bold",
+    size = 3.5,
+    label.size = 0.5,
+    label.r = unit(0.30, "lines")
+  ) +
   scale_fill_manual(values = umng_palette[1:5]) +
-  coord_cartesian(xlim = c(-5, 5), 
-                  ylim = c(-4.2, 0.2)) +
-  labs(x = NULL,
-       y = NULL,
-       # This part needs to be update manually
-       subtitle = str_glue('Period: June 2025'),
-       caption  = str_glue('Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
-                              Last update: {last_update_labor}'),
-       fill     = "Level"
+  coord_cartesian(xlim = c(-5, 5), ylim = c(-4.2, 0.2)) +
+  labs(
+    x = NULL,
+    y = NULL,
+    # This part needs to be update manually
+    subtitle = str_glue('Period: {period_labor}'),
+    caption = str_glue(
+      'Sources: DANE, Gran Encuesta Integrada de Hogares - GEIH
+                              Last update: {last_update_labor}'
+    ),
+    fill = "Level"
   ) +
   theme(
     panel.border = element_rect(
@@ -227,8 +236,8 @@ labor |>
     plot.background = element_rect(fill = "white"),
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
-    axis.text         = element_blank(), 
-    axis.ticks        = element_blank()
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
   )
 ```
 
@@ -262,19 +271,25 @@ labor |>
 
 ```{r}
 # Import ----
-employment_unemployment <- wb_data(country = c('COL'),
-                                   indicator   = c('SL.UEM.TOTL.ZS', 
-                                                   'SL.EMP.TOTL.SP.ZS'), 
-                                   return_wide = FALSE)
+employment_unemployment <- wb_data(
+  country = c('COL'),
+  indicator = c('SL.UEM.TOTL.ZS', 'SL.EMP.TOTL.SP.ZS'),
+  return_wide = FALSE
+)
 
 # Tidy
-employment_unemployment_clean <- employment_unemployment |> 
-  drop_na(value) |> 
+employment_unemployment_clean <- employment_unemployment |>
+  drop_na(value) |>
   select(country, date, value, indicator) |>
-  mutate(indicator = case_when(
-    indicator == 'Unemployment, total (% of total labor force) (modeled ILO estimate)' ~ 'Unemployment rate (UR) (ILO estimate))',
-    indicator == 'Employment to population ratio, 15+, total (%) (modeled ILO estimate)' ~ 'Employment rate (ER) (ILO estimate))',
-    .default = indicator))
+  mutate(
+    indicator = case_when(
+      indicator ==
+        'Unemployment, total (% of total labor force) (modeled ILO estimate)' ~ 'Unemployment rate (UR) (ILO estimate))',
+      indicator ==
+        'Employment to population ratio, 15+, total (%) (modeled ILO estimate)' ~ 'Employment rate (ER) (ILO estimate))',
+      .default = indicator
+    )
+  )
 ```
 
 ```{r}
@@ -282,35 +297,38 @@ employment_unemployment_clean <- employment_unemployment |>
 #| fig-cap: Annual Unemployment rate (UR) and Employment rate (ER) in Colombia
 
 # Visualization
-employment_unemployment_clean |> 
-  ggplot(aes(x = date, 
-             y = value)) + 
-  geom_point(shape = 21, 
-             fill = umng_palette[2], 
-             color = "black") +
+employment_unemployment_clean |>
+  ggplot(aes(x = date, y = value)) +
+  geom_point(shape = 21, fill = umng_palette[2], color = "black") +
   geom_line(color = umng_palette[1]) +
-  geom_vline(xintercept = c(1999, 2020),
-             color      = umng_palette[3]) +
+  geom_vline(xintercept = c(1999, 2020), color = umng_palette[3]) +
   expand_limits(y = 0) +
-  facet_wrap(facet    = vars(indicator), 
-             ncol     = 1,
-             nrow     = 2, 
-             scales   = "free_y") +
-  scale_x_continuous(breaks = c(1991, 1999, 2010, 
-                                max(employment_unemployment_clean$date))) +
-  scale_y_continuous(labels = label_number(accuracy = 1,
-                                           suffix = "%")) +
-  coord_cartesian(xlim = c(min(employment_unemployment_clean$date), 
-                           max(employment_unemployment_clean$date))) +
-  labs(x        = 'Year',
-       y        = 'Percent',
-       subtitle = str_glue('UR code WDI: SL.UEM.TOTL.ZS
+  facet_wrap(facet = vars(indicator), ncol = 1, nrow = 2, scales = "free_y") +
+  scale_x_continuous(
+    breaks = c(1991, 1999, 2010, max(employment_unemployment_clean$date))
+  ) +
+  scale_y_continuous(labels = label_number(accuracy = 1, suffix = "%")) +
+  coord_cartesian(
+    xlim = c(
+      min(employment_unemployment_clean$date),
+      max(employment_unemployment_clean$date)
+    )
+  ) +
+  labs(
+    x = 'Year',
+    y = 'Percent',
+    subtitle = str_glue(
+      'UR code WDI: SL.UEM.TOTL.ZS
                              UR units: percent
                              ER code WDI: SL.EMP.TOTL.SP.ZS
                              ER units: percent
-                             Observation: ILO estimations where ages 15 and older are considered the WAP'),
-       caption  = str_glue('Source: World Development Indicators (WDI) - World Bank
-                             Last update date: {unique(employment_unemployment$last_updated)}')) +
+                             Observation: ILO estimations where ages 15 and older are considered the WAP'
+    ),
+    caption = str_glue(
+      'Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(employment_unemployment$last_updated)}'
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -320,14 +338,12 @@ employment_unemployment_clean |>
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
     axis.text = element_text(size = 10),
-    strip.background.x = element_rect(color = "black", 
-                                      fill = umng_palette[2]),
-    strip.text.x = element_text(margin = margin(t = 5,
-                                                r = 5,
-                                                b = 5,
-                                                l = 5,
-                                                unit = "pt"),
-                                face = "bold"))
+    strip.background.x = element_rect(color = "black", fill = umng_palette[2]),
+    strip.text.x = element_text(
+      margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"),
+      face = "bold"
+    )
+  )
 ```
 
 # Labor demand
@@ -349,19 +365,25 @@ employment_unemployment_clean |>
 ```{r}
 # Import ----
 ## GDP per capita growth (annual %)
-econ_growth_unemployment_long <- wb_data(indicator = c("NY.GDP.PCAP.KD.ZG",
-                                                       # Unemployment, total (% of total labor force)
-                                                       # It is calculated not but the ILO but by the Statistical Office of each country
-                                                       "SL.UEM.TOTL.NE.ZS"),
-                                         country = "COL",
-                                         return_wide = FALSE)
+econ_growth_unemployment_long <- wb_data(
+  indicator = c(
+    "NY.GDP.PCAP.KD.ZG",
+    # Unemployment, total (% of total labor force)
+    # It is calculated not but the ILO but by the Statistical Office of each country
+    "SL.UEM.TOTL.NE.ZS"
+  ),
+  country = "COL",
+  return_wide = FALSE
+)
 
 # Tidy
-econ_growth_unemployment_wide <- econ_growth_unemployment_long |> 
-  select(iso2c, iso3c, country, date, indicator_id, value) |> 
-  pivot_wider(id_cols =  iso2c:date, 
-              names_from = indicator_id,
-              values_from = value) |> 
+econ_growth_unemployment_wide <- econ_growth_unemployment_long |>
+  select(iso2c, iso3c, country, date, indicator_id, value) |>
+  pivot_wider(
+    id_cols = iso2c:date,
+    names_from = indicator_id,
+    values_from = value
+  ) |>
   drop_na(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)
 ```
 
@@ -370,24 +392,26 @@ econ_growth_unemployment_wide <- econ_growth_unemployment_long |>
 #| fig-cap: Economic growth vs unemployment rate
 
 # Visualization
-econ_growth_unemployment_wide |> 
+econ_growth_unemployment_wide |>
   ggplot(aes(NY.GDP.PCAP.KD.ZG, SL.UEM.TOTL.NE.ZS)) +
-  geom_smooth(method = "lm",
-              color = umng_palette[1],
-              se = FALSE) +
-  geom_point(shape = 21,
-             color = "black",
-             fill = umng_palette[2]) + 
+  geom_smooth(method = "lm", color = umng_palette[1], se = FALSE) +
+  geom_point(shape = 21, color = "black", fill = umng_palette[2]) +
   scale_x_continuous(labels = label_number(suffix = "%")) +
   scale_y_continuous(labels = label_number(suffix = "%")) +
-  labs(x        = "GDP per capita growth (annual %)",
-       y        = str_glue("Annual total unemployment (% of total labor force)"),
-       color = NULL,
-       title    = "In times of low economic growth, companies reduce production and therefore hire fewer workers",
-       subtitle = str_glue("Period: {min(econ_growth_unemployment_long$date)} - {max(econ_growth_unemployment_long$date)}"),
-       # Update last update date manually
-       caption  = str_glue("Source: World Development Indicators (WDI) - World Bank
-                             Last update date: {unique(econ_growth_unemployment_long$last_updated)}")) +
+  labs(
+    x = "GDP per capita growth (annual %)",
+    y = str_glue("Annual total unemployment (% of total labor force)"),
+    color = NULL,
+    title = "In times of low economic growth, companies reduce production and therefore hire fewer workers",
+    subtitle = str_glue(
+      "Period: {min(econ_growth_unemployment_long$date)} - {max(econ_growth_unemployment_long$date)}"
+    ),
+    # Update last update date manually
+    caption = str_glue(
+      "Source: World Development Indicators (WDI) - World Bank
+                             Last update date: {unique(econ_growth_unemployment_long$last_updated)}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -406,15 +430,20 @@ econ_growth_unemployment_wide |>
 ##
 
 ```{r}
+# Check
+# 000_scripts/009_script_GEIH.R
+
 # Import ----
-group_ingreso_nivel_educativo_categories <- read_rds(file = "000_data/009_income_educational_level_geih.rds")
+group_ingreso_nivel_educativo_categories <- read_rds(
+  file = "000_data/009_income_educational_level_geih.rds"
+)
 levels_geih <- read_rds(file = "000_data/009_levels.rds")
 
 # Helpers
 ## Generating variables
 ### Remember to change this
 year <- 2025
-month <- "07"
+month <- "11"
 
 level_1 <- levels_geih$educativo[1:4]
 level_2 <- levels_geih$educativo[5:6]
@@ -431,22 +460,25 @@ ncol <- 2
 #| fig-cap: Employed population according to last educational degree obtained and income bracket
 
 # Visualization
-group_ingreso_nivel_educativo_categories |> 
-  # Filter data  
-  filter(nivel_educativo %in% level_1) |> 
+group_ingreso_nivel_educativo_categories |>
+  # Filter data
+  filter(nivel_educativo %in% level_1) |>
   ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
   geom_point() +
   geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
-  scale_x_continuous(labels = label_number(scale = 1e-3,
-                                           big.mark = ",",
-                                           suffix = "K")) + 
+  scale_x_continuous(
+    labels = label_number(scale = 1e-3, big.mark = ",", suffix = "K")
+  ) +
   scale_y_discrete(breaks = nivel_ingreso_levels) +
-  facet_wrap(facets = vars(nivel_educativo), 
-             ncol = ncol) +
-  labs(x = "Number of employees in thousands (K)",
-       y = str_glue("Current legal monthly minimum wages"),
-       subtitle = str_glue("Period: {year}-{month}"),
-       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  facet_wrap(facets = vars(nivel_educativo), ncol = ncol) +
+  labs(
+    x = "Number of employees in thousands (K)",
+    y = str_glue("Current legal monthly minimum wages"),
+    subtitle = str_glue("Period: {year}-{month}"),
+    caption = str_glue(
+      "Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -456,14 +488,12 @@ group_ingreso_nivel_educativo_categories |>
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
     axis.text = element_text(size = 10),
-    strip.background.x = element_rect(color = "black", 
-                                      fill = umng_palette[2]),
-    strip.text.x = element_text(margin = margin(t = 5,
-                                                r = 5,
-                                                b = 5,
-                                                l = 5,
-                                                unit = "pt"),
-                                face = "bold"))
+    strip.background.x = element_rect(color = "black", fill = umng_palette[2]),
+    strip.text.x = element_text(
+      margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"),
+      face = "bold"
+    )
+  )
 ```
 
 ##
@@ -473,22 +503,25 @@ group_ingreso_nivel_educativo_categories |>
 #| fig-cap: Employed population according to last educational degree obtained and income bracket
 
 # Visualization
-group_ingreso_nivel_educativo_categories |> 
-  # Filter data  
-  filter(nivel_educativo %in% level_2) |> 
+group_ingreso_nivel_educativo_categories |>
+  # Filter data
+  filter(nivel_educativo %in% level_2) |>
   ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
   geom_point() +
   geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
-  scale_x_continuous(labels = label_number(scale = 1e-3,
-                                           big.mark = ",",
-                                           suffix = "K")) + 
+  scale_x_continuous(
+    labels = label_number(scale = 1e-3, big.mark = ",", suffix = "K")
+  ) +
   scale_y_discrete(breaks = nivel_ingreso_levels) +
-  facet_wrap(facets = vars(nivel_educativo), 
-             ncol = ncol) +
-  labs(x = "Number of employees in thousands (K)",
-       y = str_glue("Current legal monthly minimum wages"),
-       subtitle = str_glue("Period: {year}-{month}"),
-       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  facet_wrap(facets = vars(nivel_educativo), ncol = ncol) +
+  labs(
+    x = "Number of employees in thousands (K)",
+    y = str_glue("Current legal monthly minimum wages"),
+    subtitle = str_glue("Period: {year}-{month}"),
+    caption = str_glue(
+      "Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -498,14 +531,12 @@ group_ingreso_nivel_educativo_categories |>
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
     axis.text = element_text(size = 10),
-    strip.background.x = element_rect(color = "black", 
-                                      fill = umng_palette[2]),
-    strip.text.x = element_text(margin = margin(t = 5,
-                                                r = 5,
-                                                b = 5,
-                                                l = 5,
-                                                unit = "pt"),
-                                face = "bold"))
+    strip.background.x = element_rect(color = "black", fill = umng_palette[2]),
+    strip.text.x = element_text(
+      margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"),
+      face = "bold"
+    )
+  )
 ```
 
 ##
@@ -515,22 +546,25 @@ group_ingreso_nivel_educativo_categories |>
 #| fig-cap: Employed population according to last educational degree obtained and income bracket
 
 # Visualization
-group_ingreso_nivel_educativo_categories |> 
-  # Filter data  
-  filter(nivel_educativo %in% level_3) |> 
+group_ingreso_nivel_educativo_categories |>
+  # Filter data
+  filter(nivel_educativo %in% level_3) |>
   ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
   geom_point() +
   geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
-  scale_x_continuous(labels = label_number(scale = 1e-3,
-                                           big.mark = ",",
-                                           suffix = "K")) + 
+  scale_x_continuous(
+    labels = label_number(scale = 1e-3, big.mark = ",", suffix = "K")
+  ) +
   scale_y_discrete(breaks = nivel_ingreso_levels) +
-  facet_wrap(facets = vars(nivel_educativo), 
-             ncol = ncol) +
-  labs(x = "Number of employees in thousands (K)",
-       y = str_glue("Current legal monthly minimum wages"),
-       subtitle = str_glue("Period: {year}-{month}"),
-       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  facet_wrap(facets = vars(nivel_educativo), ncol = ncol) +
+  labs(
+    x = "Number of employees in thousands (K)",
+    y = str_glue("Current legal monthly minimum wages"),
+    subtitle = str_glue("Period: {year}-{month}"),
+    caption = str_glue(
+      "Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -540,14 +574,12 @@ group_ingreso_nivel_educativo_categories |>
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
     axis.text = element_text(size = 10),
-    strip.background.x = element_rect(color = "black", 
-                                      fill = umng_palette[2]),
-    strip.text.x = element_text(margin = margin(t = 5,
-                                                r = 5,
-                                                b = 5,
-                                                l = 5,
-                                                unit = "pt"),
-                                face = "bold"))
+    strip.background.x = element_rect(color = "black", fill = umng_palette[2]),
+    strip.text.x = element_text(
+      margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"),
+      face = "bold"
+    )
+  )
 ```
 
 ##
@@ -557,22 +589,25 @@ group_ingreso_nivel_educativo_categories |>
 #| fig-cap: Employed population according to last educational degree obtained and income bracket
 
 # Visualization
-group_ingreso_nivel_educativo_categories |> 
-  # Filter data  
-  filter(nivel_educativo %in% level_4) |> 
+group_ingreso_nivel_educativo_categories |>
+  # Filter data
+  filter(nivel_educativo %in% level_4) |>
   ggplot(aes(x = FEX_C18, y = nivel_ingreso)) +
   geom_point() +
   geom_segment(aes(xend = 0, yend = nivel_ingreso)) +
-  scale_x_continuous(labels = label_number(scale = 1e-3,
-                                           big.mark = ",",
-                                           suffix = "K")) + 
+  scale_x_continuous(
+    labels = label_number(scale = 1e-3, big.mark = ",", suffix = "K")
+  ) +
   scale_y_discrete(breaks = nivel_ingreso_levels) +
-  facet_wrap(facets = vars(nivel_educativo), 
-             ncol = ncol) +
-  labs(x = "Number of employees in thousands (K)",
-       y = str_glue("Current legal monthly minimum wages"),
-       subtitle = str_glue("Period: {year}-{month}"),
-       caption = str_glue("Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}")) +
+  facet_wrap(facets = vars(nivel_educativo), ncol = ncol) +
+  labs(
+    x = "Number of employees in thousands (K)",
+    y = str_glue("Current legal monthly minimum wages"),
+    subtitle = str_glue("Period: {year}-{month}"),
+    caption = str_glue(
+      "Gran Encuesta Integrada de Hogares - GEIH - {year}-{month}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -582,14 +617,12 @@ group_ingreso_nivel_educativo_categories |>
     panel.background = element_rect(fill = "white"),
     legend.background = element_rect(fill = "white"),
     axis.text = element_text(size = 10),
-    strip.background.x = element_rect(color = "black", 
-                                      fill = umng_palette[2]),
-    strip.text.x = element_text(margin = margin(t = 5,
-                                                r = 5,
-                                                b = 5,
-                                                l = 5,
-                                                unit = "pt"),
-                                face = "bold"))
+    strip.background.x = element_rect(color = "black", fill = umng_palette[2]),
+    strip.text.x = element_text(
+      margin = margin(t = 5, r = 5, b = 5, l = 5, unit = "pt"),
+      face = "bold"
+    )
+  )
 ```
 
 ## {.smaller}
