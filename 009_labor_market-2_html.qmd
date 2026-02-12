@@ -601,22 +601,34 @@ last_update <- toc |>
 ## Countries
 lac_iso <- c(
   "ARG", # Argentina
+  "ATG", # Antigua and Barbuda
+  "BHS", # Bahamas
+  "BLZ", # Belize
   "BOL", # Bolivia
   "BRA", # Brazil
+  "BRB", # Barbados
   "CHL", # Chile
   "COL", # Colombia
   "CRI", # Costa Rica
   "CUB", # Cuba
+  "DMA", # Dominica
   "DOM", # Dominican Republic
   "ECU", # Ecuador
-  "SLV", # El Salvador
+  "GRD", # Grenada
   "GTM", # Guatemala
+  "GUY", # Guyana
   "HND", # Honduras
+  "HTI", # Haiti
+  "JAM", # Jamaica
+  "LCA", # Saint Lucia
   "MEX", # Mexico
   "NIC", # Nicaragua
   "PAN", # Panama
-  "PRY", # Paraguay
   "PER", # Peru
+  "PRY", # Paraguay
+  "SLV", # El Salvador
+  "SUR", # Suriname
+  "TTO", # Trinidad and Tobago
   "URY", # Uruguay
   "VEN" # Venezuela
 )
