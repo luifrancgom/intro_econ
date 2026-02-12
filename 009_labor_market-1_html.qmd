@@ -103,7 +103,7 @@ umng_palette <- c(
 
 # Path
 ## Update this
-path_labor <- "000_data/009_anexo_empleo_dic_2026.xlsx"
+path_labor <- "000_data/009_anexo_empleo_dic_2025.xlsx"
 
 # Import ----
 labor_classification_concept <- read_excel(

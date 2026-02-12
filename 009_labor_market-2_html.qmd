@@ -96,37 +96,39 @@ umng_palette <- c(
 
 # Import ----
 ## Helper variables
-dates <- seq.Date(from = ymd("2001-01-01"),
-                  # Change the final date
-                  to = ymd("2025-06-01"), 
-                  by = "month") |> 
+dates <- seq.Date(
+  from = ymd("2001-01-01"),
+  # Change the final date
+  to = ymd("2025-12-01"),
+  by = "month"
+) |>
   as.character()
 col_names <- c("concept", dates)
 
 ## Data
-indicators <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx", 
-                         sheet = "Total nacional",
-                         # Change the range of the data 
-                         range = "A14:KI21",
-                         col_names = col_names)
+indicators <- read_excel(
+  path = "000_data/009_anexo_empleo_dic_2025.xlsx",
+  sheet = "Total nacional",
+  # Change the range of the data
+  range = "A14:KO21",
+  col_names = col_names
+)
 
 # Tidy
-indicators_longer <- indicators |> 
-  pivot_longer(cols = -c(concept), 
-               names_to = "date", 
-               values_to = "value") |> 
+indicators_longer <- indicators |>
+  pivot_longer(cols = -c(concept), names_to = "date", values_to = "value") |>
   mutate(date = ymd(date))
 
 ## Filter the last 10 years
-years <- year(indicators_longer$date) |> 
-  unique() |> 
+years <- year(indicators_longer$date) |>
+  unique() |>
   tail(n = 10)
 
-indicators_longer_td <- indicators_longer |> 
-  filter(concept == "Tasa de Desocupación (TD)") |> 
-  mutate(year = year(date)) |> 
-  mutate(year = as_factor(year)) |> 
-  mutate(month = month(date, label = TRUE)) |> 
+indicators_longer_td <- indicators_longer |>
+  filter(concept == "Tasa de Desocupación (TD)") |>
+  mutate(year = year(date)) |>
+  mutate(year = as_factor(year)) |>
+  mutate(month = month(date, label = TRUE)) |>
   filter(year %in% years)
 ```
 
@@ -138,27 +140,33 @@ indicators_longer_td <- indicators_longer |>
 ## Helpers
 year_pandemic <- 2020
 ### Update this part using the imported file
-last_update_date <- ymd("2025-07-31")
+last_update_date <- ymd("2026-01-30")
 
 ### First years
-first_years <- indicators_longer_td |> 
-  filter(year %in% head(years, n = 5)) |> 
+first_years <- indicators_longer_td |>
+  filter(year %in% head(years, n = 5)) |>
   # Delete the year about the pandemic
   ## It is an atypical year
   filter(year != year_pandemic)
 
 ## Plot
-first_years |> 
-  ggplot(aes(x = month, y = value)) + 
+first_years |>
+  ggplot(aes(x = month, y = value)) +
   geom_line(aes(group = year, color = year)) +
   scale_color_manual(values = umng_palette[1:4]) +
-  labs(x = NULL,
-       y = "Percent (%)",
-       color = NULL,
-       subtitle = str_glue("Period: {head(unique(first_years$year), n = 1)} - {tail(unique(first_years$year), n = 1)}
-                           Observation: {year_pandemic} is not included because is an atypical year taking into account the COVID-19 pandemic"),
-       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
-                          Last update date: {last_update_date}")) +
+  labs(
+    x = NULL,
+    y = "Percent (%)",
+    color = NULL,
+    subtitle = str_glue(
+      "Period: {head(unique(first_years$year), n = 1)} - {tail(unique(first_years$year), n = 1)}
+                           Observation: {year_pandemic} is not included because is an atypical year taking into account the COVID-19 pandemic"
+    ),
+    caption = str_glue(
+      "Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -179,22 +187,28 @@ first_years |>
 
 # Visualization
 ## Last years
-last_years <- indicators_longer_td |> 
-  filter(year %in% tail(years, n = 5)) |> 
+last_years <- indicators_longer_td |>
+  filter(year %in% tail(years, n = 5)) |>
   # Delete the year about the pandemic
   ## It is an atypical year
   filter(year != year_pandemic)
 
-last_years |> 
-  ggplot(aes(x = month, y = value)) + 
+last_years |>
+  ggplot(aes(x = month, y = value)) +
   geom_line(aes(group = year, color = year)) +
   scale_color_manual(values = umng_palette[1:5]) +
-  labs(x = NULL,
-       y = "Percent (%)",
-       color = NULL,
-       subtitle = str_glue("Period: {head(unique(last_years$year), n = 1)} - {tail(unique(last_years$year), n = 1)}"),
-       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
-                          Last update date: {last_update_date}")) +
+  labs(
+    x = NULL,
+    y = "Percent (%)",
+    color = NULL,
+    subtitle = str_glue(
+      "Period: {head(unique(last_years$year), n = 1)} - {tail(unique(last_years$year), n = 1)}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -221,55 +235,65 @@ last_years |>
 # Import data ----
 ## Helpers
 ### Different from "Total nacional"
-dates <- seq.Date(from = ymd("2010-01-01"),
-                  # Change the final date
-                  to = ymd("2025-06-01"), 
-                  by = "month") |> 
+dates <- seq.Date(
+  from = ymd("2010-01-01"),
+  # Change the final date
+  to = ymd("2025-12-01"),
+  by = "month"
+) |>
   as.character()
 col_names <- c("concept", dates)
 
 ## Data
-indicators_male <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx", 
-                              sheet = "Total_nacional_IML_Sexo",
-                              # Change the range of the data 
-                              range = "A14:GE18",
-                              col_names = col_names) |> 
+indicators_male <- read_excel(
+  path = "000_data/009_anexo_empleo_dic_2025.xlsx",
+  sheet = "Total_nacional_IML_Sexo",
+  # Change the range of the data
+  range = "A14:GK18",
+  col_names = col_names
+) |>
   mutate(sex = "Male")
 
-indicators_female <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx", 
-                                sheet = "Total_nacional_IML_Sexo",
-                                # Change the range of the data 
-                                range = "A33:GE37",
-                                col_names = col_names) |> 
+indicators_female <- read_excel(
+  path = "000_data/009_anexo_empleo_dic_2025.xlsx",
+  sheet = "Total_nacional_IML_Sexo",
+  # Change the range of the data
+  range = "A33:GK37",
+  col_names = col_names
+) |>
   mutate(sex = "Female")
 
 # Tidy
-indicators_male_longer <- indicators_male |> 
-  pivot_longer(cols = -c(concept, sex), 
-               names_to = "date", 
-               values_to = "value") |> 
+indicators_male_longer <- indicators_male |>
+  pivot_longer(
+    cols = -c(concept, sex),
+    names_to = "date",
+    values_to = "value"
+  ) |>
   mutate(date = ymd(date))
 
-indicators_female_longer <- indicators_female |> 
-  pivot_longer(cols = -c(concept, sex), 
-               names_to = "date", 
-               values_to = "value") |> 
+indicators_female_longer <- indicators_female |>
+  pivot_longer(
+    cols = -c(concept, sex),
+    names_to = "date",
+    values_to = "value"
+  ) |>
   mutate(date = ymd(date))
 
 ## Merge
-indicators_sex_longer <- indicators_male_longer |> 
+indicators_sex_longer <- indicators_male_longer |>
   bind_rows(indicators_female_longer)
 
 ### Filter the last 10 years
-years <- year(indicators_longer$date) |> 
-  unique() |> 
+years <- year(indicators_longer$date) |>
+  unique() |>
   tail(n = 10)
 
-indicators_sex_longer_td <- indicators_sex_longer |> 
-  filter(concept == "Tasa de Desocupación (TD)") |> 
-  mutate(year = year(date)) |> 
-  mutate(year = as_factor(year)) |> 
-  mutate(month = month(date, label = TRUE)) |> 
+indicators_sex_longer_td <- indicators_sex_longer |>
+  filter(concept == "Tasa de Desocupación (TD)") |>
+  mutate(year = year(date)) |>
+  mutate(year = as_factor(year)) |>
+  mutate(month = month(date, label = TRUE)) |>
   filter(year %in% years)
 ```
 
@@ -278,16 +302,22 @@ indicators_sex_longer_td <- indicators_sex_longer |>
 #| fig-cap: Unemployment rate in Colombia for men and women
 
 # Visualization
-indicators_sex_longer_td |> 
-  ggplot(aes(x = date, y = value)) + 
+indicators_sex_longer_td |>
+  ggplot(aes(x = date, y = value)) +
   geom_line(aes(group = sex, color = sex)) +
   scale_color_manual(values = umng_palette[1:2]) +
-  labs(x = NULL,
-       y = "Percent (%)",
-       color = NULL,
-       subtitle = str_glue("Period: {head(unique(indicators_sex_longer_td$date), n = 1)} - {tail(unique(indicators_sex_longer_td$date), n = 1)}"),
-       caption = str_glue("Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
-                          Last update date: {last_update_date}")) +
+  labs(
+    x = NULL,
+    y = "Percent (%)",
+    color = NULL,
+    subtitle = str_glue(
+      "Period: {head(unique(indicators_sex_longer_td$date), n = 1)} - {tail(unique(indicators_sex_longer_td$date), n = 1)}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -307,28 +337,32 @@ indicators_sex_longer_td |>
 ```{r}
 # Import ----
 ## Helpers
-date <- ymd("2025-06-01")
+date <- ymd("2025-12-01")
 date_label <- date |> format("%Y - %B")
 # Different from "Total nacional"
-dates <- seq.Date(from = ymd("2015-01-01"),
-                  # Change the final date
-                  to = date, 
-                  by = "month") |> 
+dates <- seq.Date(
+  from = ymd("2015-01-01"),
+  # Change the final date
+  to = date,
+  by = "month"
+) |>
   as.character()
 col_names <- c("concept", dates)
 
 ## Data
-indicators_sector <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx", 
-                                sheet = "Ocupados TN_T13_rama",
-                                # Change the range of the data 
-                                range = "A16:DW30",
-                                col_names = col_names)
+indicators_sector <- read_excel(
+  path = "000_data/009_anexo_empleo_dic_2025.xlsx",
+  sheet = "Ocupados TN_T13_rama",
+  # Change the range of the data
+  range = "A16:EC30",
+  col_names = col_names
+)
 
 # Tidy
-indicators_sector_clean <- indicators_sector |> 
-  select(1, ncol(indicators_sector)) |> 
-  set_names(nm = c("concept", "last_period")) |> 
-  mutate(last_period = (last_period*1e3) |> round()) |> 
+indicators_sector_clean <- indicators_sector |>
+  select(1, ncol(indicators_sector)) |>
+  set_names(nm = c("concept", "last_period")) |>
+  mutate(last_period = (last_period * 1e3) |> round()) |>
   arrange(desc(last_period))
 ```
 
@@ -337,8 +371,8 @@ indicators_sector_clean <- indicators_sector |>
 #| tbl-cap: Employed by sector in Colombia
 
 # Table
-indicators_sector_clean |> 
-  gt() |> 
+indicators_sector_clean |>
+  gt() |>
   cols_label(
     concept = "Concept",
     last_period = date_label
@@ -367,28 +401,32 @@ indicators_sector_clean |>
 ```{r}
 # Import ----
 ## Helpers
-date <- ymd("2025-06-01")
+date <- ymd("2025-12-01")
 date_label <- date |> format("%Y - %B")
 # Different from "Total nacional"
-dates <- seq.Date(from = ymd("2010-01-01"),
-                  # Change the final date
-                  to = date, 
-                  by = "month") |> 
+dates <- seq.Date(
+  from = ymd("2010-01-01"),
+  # Change the final date
+  to = date,
+  by = "month"
+) |>
   as.character()
 col_names <- c("concept", dates)
 
 ## Data
-indicators_occupational_position <- read_excel(path = "000_data/009_anexo_empleo_jul_31.xlsx", 
-                                               sheet = "Ocupados TN_posición",
-                                               # Change the range of the data 
-                                               range = "A16:GE24",
-                                               col_names = col_names)
+indicators_occupational_position <- read_excel(
+  path = "000_data/009_anexo_empleo_dic_2025.xlsx",
+  sheet = "Ocupados TN_posición",
+  # Change the range of the data
+  range = "A16:GK24",
+  col_names = col_names
+)
 
 # Tidy
-indicators_occupational_position_clean <- indicators_occupational_position |> 
-  select(1, ncol(indicators_occupational_position)) |> 
-  set_names(nm = c("concept", "last_period")) |> 
-  mutate(last_period = (last_period*1e3) |> round()) |> 
+indicators_occupational_position_clean <- indicators_occupational_position |>
+  select(1, ncol(indicators_occupational_position)) |>
+  set_names(nm = c("concept", "last_period")) |>
+  mutate(last_period = (last_period * 1e3) |> round()) |>
   arrange(desc(last_period))
 ```
 
@@ -397,8 +435,8 @@ indicators_occupational_position_clean <- indicators_occupational_position |>
 #| tbl-cap: Employed by occupational position in Colombia
 
 # Table
-indicators_occupational_position_clean |> 
-  gt() |> 
+indicators_occupational_position_clean |>
+  gt() |>
   cols_label(
     concept = "Concept",
     last_period = date_label
@@ -452,11 +490,15 @@ indicators_occupational_position_clean |>
     - Employed (E)
     - Informal Employed (I) 
 
-$$PI = \frac{I}{E} \times 100$$
+$$
+PI = \frac{I}{E} \times 100
+$$
 
 - Formality proportion (PF)
 
-$$PF = 1- PI = 1 - \frac{I}{E} \times 100$$
+$$
+PF = 1- PI = 1 - \frac{I}{E} \times 100
+$$
 
 ##
 
@@ -465,45 +507,42 @@ $$PF = 1- PI = 1 - \frac{I}{E} \times 100$$
 # Estadísticas por tema >
 # Mercado laboral >
 # Empleo informal y seguridad social  >
-# Documento >
 # Anexos >
 ## Descargar
 
 # Import ----
 ## Helpers
-dates <- seq.Date(from = ymd("2021-01-01"),
-                  # Change the final date
-                  to = ymd("2025-06-01"), 
-                  by = "month") |> 
+dates <- seq.Date(
+  from = ymd("2021-01-01"),
+  # Change the final date
+  to = ymd("2025-11-01"),
+  by = "month"
+) |>
   as.character()
 col_names <- c("concept", dates)
 
 ## Data
-informality_col <- read_excel(path = "000_data/009_anexo_empleo_informal_seguridad_social_jul_31.xlsx",
-                              # Check white spaces
-                              sheet = "Grandes dominios ",
-                              # Change the range of the data 
-                              range = "A14:BC16",
-                              col_names = col_names)
+informality_col <- read_excel(
+  path = "000_data/009_anexo_empleo_informal_seguridad_social_nov_2025.xlsx",
+  # Check white spaces
+  sheet = "Grandes dominios ",
+  # Change the range of the data
+  range = "A14:BH16",
+  col_names = col_names
+)
 
 # Tidy
-informality_col_wider <- informality_col |> 
-  pivot_longer(cols = -c(concept), 
-               names_to = "date", 
-               values_to = "value") |> 
-  pivot_wider(id_cols = date, 
-              names_from = concept, 
-              values_from = value) |> 
-  clean_names() |> 
-  mutate(prop_informalidad = (informal / poblacion_ocupada)*100) |> 
-  mutate(prop_formalidad = 100 - prop_informalidad) |> 
+informality_col_wider <- informality_col |>
+  pivot_longer(cols = -c(concept), names_to = "date", values_to = "value") |>
+  pivot_wider(id_cols = date, names_from = concept, values_from = value) |>
+  clean_names() |>
+  mutate(prop_informalidad = (informal / poblacion_ocupada) * 100) |>
+  mutate(prop_formalidad = 100 - prop_informalidad) |>
   mutate(date = ymd(date))
 
-informality_col_longer <- informality_col_wider |> 
-  select(date, prop_informalidad, prop_formalidad) |> 
-  pivot_longer(cols = -c(date), 
-               names_to = "variable", 
-               values_to = "value")
+informality_col_longer <- informality_col_wider |>
+  select(date, prop_informalidad, prop_formalidad) |>
+  pivot_longer(cols = -c(date), names_to = "variable", values_to = "value")
 ```
 
 ```{r}
@@ -512,11 +551,25 @@ informality_col_longer <- informality_col_wider |>
 
 # Visualization
 informality_col_longer |>
-  ggplot(aes(x = date, y = value)) + 
+  ggplot(aes(x = date, y = value)) +
   geom_line(aes(group = variable, color = variable)) +
-  scale_color_manual(labels = c("Formality proportion (PF)", "Informality proportion (PI)"),
-                     values = umng_palette[1:2]) +
+  scale_color_manual(
+    labels = c("Formality proportion (PF)", "Informality proportion (PI)"),
+    values = umng_palette[1:2]
+  ) +
   labs(color = NULL) +
+  labs(
+    x = NULL,
+    y = "Percent (%)",
+    color = NULL,
+    subtitle = str_glue(
+      "Period: {head(unique(informality_col_longer$date), n = 1)} - {tail(unique(informality_col_longer$date), n = 1)}"
+    ),
+    caption = str_glue(
+      "Source: DANE - Gran Encuesta Integrada de Hogares (GEIH)
+                          Last update date: {last_update_date}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
@@ -539,10 +592,10 @@ informality_col_longer |>
 
 # Helpers
 toc <- get_ilostat_toc()
-last_update <- toc |> filter(str_detect(string = id, 
-                                        pattern = "SDG_0852_SEX_AGE_RT_A")) |> 
-  pull(last.update) |> 
-  str_sub(start = 1, end = 10) |> 
+last_update <- toc |>
+  filter(str_detect(string = id, pattern = "SDG_0852_SEX_AGE_RT_A")) |>
+  pull(last.update) |>
+  str_sub(start = 1, end = 10) |>
   dmy()
 
 ## Countries
@@ -565,7 +618,7 @@ lac_iso <- c(
   "PRY", # Paraguay
   "PER", # Peru
   "URY", # Uruguay
-  "VEN"  # Venezuela
+  "VEN" # Venezuela
 )
 
 # id: SDG_0852_SEX_AGE_RT_A
@@ -573,41 +626,48 @@ lac_iso <- c(
 # indicator.label: SDG indicator 8.5.2 - Unemployment rate (%)
 ## Change this part
 year <- 2024
-unemployment_rate_lac <- get_ilostat(id = "SDG_0852_SEX_AGE_RT_A", 
-                                     segment = "indicator", 
-                                     filters = list(time = year,
-                                                    classif1 = "AGE_YTHADULT_YGE15",
-                                                    sex      = "SEX_T",
-                                                    ref_area = lac_iso))
+unemployment_rate_lac <- get_ilostat(
+  id = "SDG_0852_SEX_AGE_RT_A",
+  segment = "indicator",
+  filters = list(
+    time = year,
+    classif1 = "AGE_YTHADULT_YGE15",
+    sex = "SEX_T",
+    ref_area = lac_iso
+  )
+)
 
 # Tidy
-unemployment_rate_lac_clean <- unemployment_rate_lac |> 
-  select(ref_area, time, obs_value) |> 
-  rename(unemployment_rate = obs_value) |> 
+unemployment_rate_lac_clean <- unemployment_rate_lac |>
+  select(ref_area, time, obs_value) |>
+  rename(unemployment_rate = obs_value) |>
   mutate(time = as.double(time))
 
 # id: SDG_0831_SEX_ECO_RT_A
 # indicator: SDG_0831_SEX_ECO_RT
 # indicator.SDG indicator 8.3.1 - Proportion of informal employment in total employment by sex and sector (%)
-informality_rate_lac <- get_ilostat(id = "SDG_0831_SEX_ECO_RT_A", 
-                                    segment = "indicator", 
-                                    time_format = "date",
-                                    filters = list(time = year,
-                                                   classif1 = "ECO_AGGREGATE_TOTAL",
-                                                   sex      = "SEX_T",
-                                                   ref_area = lac_iso))
+informality_rate_lac <- get_ilostat(
+  id = "SDG_0831_SEX_ECO_RT_A",
+  segment = "indicator",
+  time_format = "date",
+  filters = list(
+    time = year,
+    classif1 = "ECO_AGGREGATE_TOTAL",
+    sex = "SEX_T",
+    ref_area = lac_iso
+  )
+)
 
 # Tidy
-informality_rate_lac_clean <- informality_rate_lac |> 
-  select(ref_area, time, obs_value) |> 
-  rename(informality_rate = obs_value) |> 
-  mutate(time = year(time)) |> 
+informality_rate_lac_clean <- informality_rate_lac |>
+  select(ref_area, time, obs_value) |>
+  rename(informality_rate = obs_value) |>
+  mutate(time = year(time)) |>
   mutate(time = as.double(time))
 
 # Merge
-unemployment_informality_rate <- unemployment_rate_lac_clean |> 
-  inner_join(y = informality_rate_lac_clean,
-             by = join_by(ref_area, time)) |> 
+unemployment_informality_rate <- unemployment_rate_lac_clean |>
+  inner_join(y = informality_rate_lac_clean, by = join_by(ref_area, time)) |>
   label_ilostat()
 ```
 
@@ -617,28 +677,38 @@ unemployment_informality_rate <- unemployment_rate_lac_clean |>
 
 # Visualization
 unemployment_informality_rate |>
-  ggplot(aes(x = informality_rate, y = unemployment_rate)) + 
-  geom_vline(xintercept = mean(unemployment_informality_rate$informality_rate), 
-             colour = umng_palette[3]) +
-  geom_hline(yintercept = mean(unemployment_informality_rate$unemployment_rate), 
-             colour = umng_palette[4]) +
-  geom_point(shape = 21,
-             color = "black",
-             fill = umng_palette[2]) + 
-  geom_label_repel(aes(label = ref_area.label),
-                   seed = 1234,
-                   size = 3,
-                   min.segment.length = 0,
-                   box.padding = 1,
-                   force = 2,
-                   max.overlaps = Inf,
-                   color = umng_palette[1]) +
-  labs(x        = "Informality proportion",
-       y        = "Unemployment rate",
-       subtitle = str_glue("Period: {year}
-                           Observation: Horizontal and vertical lines correspond to the mean of the variables in each axis"),
-       caption  = str_glue("Source: International Labour Organization - ILOSTAT Data Explorer
-                             Last update date: {last_update}")) +
+  ggplot(aes(x = informality_rate, y = unemployment_rate)) +
+  geom_vline(
+    xintercept = mean(unemployment_informality_rate$informality_rate),
+    colour = umng_palette[3]
+  ) +
+  geom_hline(
+    yintercept = mean(unemployment_informality_rate$unemployment_rate),
+    colour = umng_palette[4]
+  ) +
+  geom_point(shape = 21, color = "black", fill = umng_palette[2]) +
+  geom_label_repel(
+    aes(label = ref_area.label),
+    seed = 1234,
+    size = 3,
+    min.segment.length = 0,
+    box.padding = 1,
+    force = 2,
+    max.overlaps = Inf,
+    color = umng_palette[1]
+  ) +
+  labs(
+    x = "Informality proportion",
+    y = "Unemployment rate",
+    subtitle = str_glue(
+      "Period: {year}
+                           Observation: Horizontal and vertical lines correspond to the mean of the variables in each axis"
+    ),
+    caption = str_glue(
+      "Source: International Labour Organization - ILOSTAT Data Explorer
+                             Last update date: {last_update}"
+    )
+  ) +
   theme(
     panel.border = element_rect(
       fill = NA,
