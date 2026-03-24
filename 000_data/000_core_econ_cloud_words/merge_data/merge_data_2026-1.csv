@@ -1,0 +1,42 @@
+id,course,year,semester,raw_word,clean_word,en_word
+1,a,2026,1,inestabilidad,inestabilidad,instability
+2,a,2026,1,Informalidad,informalidad,informality
+3,a,2026,1,Desigualdad,desigualdad,inequality
+4,a,2026,1,Desempleo,desempleo,unemployment
+5,a,2026,1,Desempleo,desempleo,unemployment
+6,a,2026,1,Informalidad,informalidad,informality
+7,a,2026,1,Desigualdad,desigualdad,inequality
+8,a,2026,1,DEFICIT,deficit,deficit
+9,a,2026,1,Desequilibrio,desequilibrio,imbalance
+10,a,2026,1,Desigualdad,desigualdad,inequality
+11,a,2026,1,Desigualdad,desigualdad,inequality
+12,a,2026,1,DESIGUALDAD,desigualdad,inequality
+13,a,2026,1,El nivel de inversión,inversion,investment
+14,a,2026,1,Individualismo,individualismo,individualism
+15,a,2026,1,desigualdad y pobreza,desigualdad/pobreza,inequality/poverty
+16,a,2026,1,Desigualdad,desigualdad,inequality
+17,a,2026,1,Desigualdad,desigualdad,inequality
+18,a,2026,1,EQUIDAD,equidad,equity
+19,a,2026,1,machismo,machismo,sexism
+20,a,2026,1,las deudas publicas,deuda publica,public debt
+21,a,2026,1,Desigualdad,desigualdad,inequality
+22,b,2026,1,Informalidad.,informalidad,informality
+23,b,2026,1,La informalidad,informalidad,informality
+24,b,2026,1,Déficit fiscal,deficit fiscal,fiscal deficit
+25,b,2026,1,caida de la inversión,inversion,investment
+26,b,2026,1,actualidad,actualidad,present
+27,b,2026,1,Inflación,inflacion,inflation
+28,b,2026,1,inflacion,inflacion,inflation
+29,b,2026,1,La violencia .,violencia,violence
+30,b,2026,1,DESEMPLEO,desempleo,unemployment
+31,b,2026,1,informalidad,informalidad,informality
+32,b,2026,1,informalidad,informalidad,informality
+33,b,2026,1,Corrupción,corrupcion,corruption
+34,b,2026,1,Desbalance,desbalance,imbalance
+35,b,2026,1,estabilidad,estabilidad,stability
+36,b,2026,1,pobreza,pobreza,poverty
+37,b,2026,1,Inflación,inflacion,inflation
+38,b,2026,1,Reducir informalidad,informalidad,informality
+39,b,2026,1,Desigualdad,desigualdad,inequality
+40,b,2026,1,Desempleo,desempleo,unemployment
+41,b,2026,1,informalidad,informalidad,informality
