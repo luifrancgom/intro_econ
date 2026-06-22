@@ -1,0 +1,118 @@
+<h4 style="text-align: center; color: red;">Por favor leer las instrucciones antes de presentar el examen parcial</h4>
+<p><strong>Ruta para presentar:</strong> Medios de comunicación &gt; Vínculo encuentros virtuales<br></p>
+<p><strong>Prerrequisitos:</strong> Leer y revisar (Cárdenas Santamaría 2020, Capítulo 9) y tener un diadema con un micrófono incorporado para aislar el ruido del entorno así como un computador y una cámara web para presentar</p>
+
+<h4 style="text-align: center;">Instrucciones generales</h4>
+<ol>
+    <li>A lo largo del curso se realizará un proyecto que consistirá de 3 entregas donde esta actividad corresponde a la <strong>tercera</strong> entrega. El proyecto requiere trabajar en grupo donde el trabajo en grupo es obligatorio.</li>
+    <li>El proyecto se puede entregar en español o en inglés de acuerdo a las preferencias del grupo donde esto no afectará de ninguna manera la nota de la entrega.</li>
+    <li>La conformación de los grupos ha sido previamente realizada por el profesor del curso donde es responsabilidad de los estudiantes contactar a los demás integrantes del grupo para realizar las entregas. La conformación y horario de presentación para cada grupo se puede consultar en la siguiente ruta:</li>
+    <div style="text-align: center;"><strong>Primer Corte 30% &gt; Learning Resources &gt; Support material &gt; Groups</strong></div>
+    <li>
+        En ese sentido se recomienda compartir la información de contacto adicional al correo institucional que se considere necesaria en el Foro de inquietudes. Si usted no se contacta y trabaja en grupo con los demás integrantes ni usted ni los demás integrantes del grupo podrán presentar la actividad donde la nota en este caso será igual a cero.
+    </li>
+    <li>Adicionalmente, se indica que a lo largo del curso no será posible cambiar de grupo ni retirarse del grupo asignado por diferencias personales con otros integrantes. Usted como estudiante deberá resolver y superar los conflictos que puedan surgir cuando se realiza un trabajo grupal.</li>
+</ol>
+<h4 style="text-align: center;">Instrucciones específicas del producto a entregar</h4>
+<ol>
+    <li>Cada grupo deberá preparar una presentación en extensión .pdf, powerpoint o cualquier otra formato que sea adecuado para realizarla donde se incluyan los siguientes elementos:
+        <ol type="a">
+            <li>Gráfico de series de tiempo donde se presente la inflación anual mes a mes para Colombia calculada a partir del Índice de Precios al Consumidor (IPC) con periodicidad mensual<strong> a partir de Enero de 1974</strong> hasta el último periodo que se tenga información</li>
+            <li>Dar respuesta a las siguientes preguntas de manera clara y concisa:
+                <ol type="i">
+                    <li>¿Por qué es importante para Colombia tener una inflación baja y estable?</li>
+                    <li>¿Por qué es importante para Colombia tener un Banco Central independiente?</li>
+                </ol>
+            </li>
+            <li>Gráfico de series de tiempo donde se presente la capitalización bursátil como porcentaje del Producto Interno de Bruto para Colombia con el objetivo de medir la profundización financiera.</li>
+            <li>Gráfico de series de tiempo donde se presente el crédito interno al sector privado como porcentaje del Producto Interno Bruto para Colombia con el objetivo de medir la profundización financieras.</li>
+            <li>Gráfico de series de tiempo donde se presente tanto la tasa de desempleo femenino como la tasa de desempleo masculino para Colombia. Recuerde incluir ambas variables en un sólo gráfico y no por separado para facilitar su comparación.</li>
+            <li>Dar respuesta a las siguiente preguntas: </li>
+            <ol type="i">
+                <li>¿Por qué es importante para la economía colombiana que se disminuya tanto la tasa de desempleo femenino como la tasa de desempleo masculino?</li>
+                <li>¿Por qué es importante reducir las diferencias que existen entre la tasa de desempleo masculino y femenino?</li>
+            </ol>
+            <li>Una sección de referencias asociadas con citas a lo largo de las dispositivas que soporten las fuentes donde se obtuvo los datos para construir los gráficos u otra información que se haya utilizado</li>
+            <li>En caso de haber utilizado herramientas de inteligencia artificial, señalar cuáles herramientas fueron utilizadas y los usos que se les dió siguiendo las buenas prácticas y referencias indicadas en <strong>Primer corte 30% &gt; Recursos Educativos &gt; Material de Apoyo &gt; Presentations &gt; 000_syllabus_intro_econ_… &gt; 5 Use of Chat GPT-4, Gemini 1.5, Copilot and its friends</strong>. Para el caso del curso los usos autorizados para estudiantes son:
+                <ul>
+                    <li>Asistencia en la redacción de textos</li>
+                    <li>Asistencia en la elaboración de imágenes</li>
+                    <li>Asistencia en el desarrollo de ideas y exploración de argumentos</li>
+                    <li>Asistencia en procesos de estudio para evaluaciones</li>
+                </ul>
+                En caso contrario indicar de manera clara que no se utilizaron herramientas de inteligencia artificial.
+            </li>
+        </ol>
+    </li>
+</ol>
+<h4 style="text-align: center;">Recursos para elaborar el producto a entregar</h4>
+<ol>
+    <li>
+        Para realizar el gráfico del punto 1.a. respecto a las Instrucciones específicas del producto a entregar utilizar información del Banco de la República de Colombia que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://suameca.banrep.gov.co/estadisticas-economicas/" target="_blank">https://suameca.banrep.gov.co/estadisticas-economicas/</a> &gt; Series de estadísticas económicas &gt; Catálogo &gt; Precios e inflación &gt; IPC_Índice de Precios al Consumidor &gt; Utilizar el ícono de descargar en la parte superior derecha &gt; Descargar datos en XLS</div>
+        Al realizar los cálculos respectivos para obtener la inflación anual a partir del Índice de Precios al Consumidor (IPC) con
+        periodicidad mensual tener en cuenta que para los primeros 12 meses de la serie de datos no es posible calcular esta variable
+        debido a que se necesita el mes del año inmediatamente anterior donde no se tiene dicha información. Adicionalmente tener en
+        cuenta que la inflación para un mes en un año determinado requiere que en los cálculos se utilice el mismo mes pero del año
+        inmediatamente anterior
+    </li>
+    <li>
+        Para responder las preguntas del punto 1.b se puede utilizar la información presentada en los videos que se pueden encontrar en
+        Tercer corte 40% &gt; Links of interest y el contenido señalado en (Cárdenas Santamaría 2020, Capítulo 7)
+    </li>
+    <li>
+        Para realizar el gráfico del punto 1.c respecto a las Instrucciones específicas del producto a entregar utilizar la información del
+        World Development Indicators - WDI:
+        <div style="text-align: center;"><a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank">https://databank.worldbank.org/source/world-development-indicators</a></div>
+        En esta base en la sección <strong>Country</strong> seleccionar Colombia. Luego en la sección <strong>Series</strong> seleccionar la
+        variable Market capitalization of listed domestic companies (% of GDP). Despúes en la sección <strong>Time</strong> seleccionar seleccionar todos los
+        años que se encuentre disponibles. Finalmente en la parte superior derecha en la opción <strong>Download options</strong> descargar la
+        información en el formato deseado.
+    </li>
+    <li>
+        Para realizar el gráfico del punto 1.d respecto a las Instrucciones específicas del producto a entregar utilizar la información del
+        World Development Indicators - WDI:
+        <div style="text-align: center;"><a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank">https://databank.worldbank.org/source/world-development-indicators</a></div>
+        En esta base en la sección <strong>Country</strong> seleccionar Colombia. Luego en la sección <strong>Series</strong> seleccionar la
+        variable Domestic credit to private sector (% of GDP). Despúes en la sección <strong>Time</strong> seleccionar seleccionar todos los
+        años que se encuentre disponibles. Finalmente en la parte superior derecha en la opción <strong>Download options</strong> descargar la
+        información en el formato deseado.
+    </li>
+    <li>
+        Para realizar el gráfico del punto 1.e respecto a las Instrucciones específicas del producto a entregar utilizar información
+        del World Development Indicators - WDI:
+        <div style="text-align: center;"><a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank">https://databank.worldbank.org/source/world-development-indicators</a></div>
+        En esta base en la sección <strong>Country</strong> seleccionar Colombia. Luego en la sección <strong>Series</strong> seleccionar las
+        variables Unemployment, female (% of female labor force) (national estimate) y Unemployment, male (% of male labor force)
+        (national estimate). Despúes en la sección <strong>Time</strong> seleccionar seleccionar todos los
+        años que se encuentre disponibles. Finalmente en la parte superior derecha en la opción <strong>Download options</strong> descargar la información en
+        el formato deseado.
+    </li>
+    <li>
+        Para responder a las preguntas del punto 1.f se puede utilizar el contenido señalado en (Cárdenas Santamaría 2020, Capítulo 9) y lo
+        aprendido a lo largo de la asignatura.
+    </li>
+</ol>
+<h4 style="text-align: center;">Forma de presentación del producto a entregar</h4>
+<ol>
+    <li>En el horario asignado los integrantes del grupo deben ingresar a través de la ruta señalada al inicio de las instrucciones.</li>
+
+    <li>La asistencia es obligatoria para todos los miembros del grupo a la hora designada a menos que existan motivos de fuerza mayor o enfermedad. En ese caso se requiere que el miembro del grupo envíe una excusa al instructor.</li>
+
+    <li>Si un miembro del grupo no contribuyó a la tarea, el grupo debe notificar al instructor. El instructor excluirá al miembro de la presentación. Sin embargo, se debe volver a contactar al miembro para futuras entregas.</li>
+
+    <li>Una vez estén presentes los integrantes del grupo que asistan se escogerá un miembro del grupo al azar para que realice la presentación. Durante la presentación los integrantes restantes no pueden intervenir en la exposición. También se requiere que otro miembro del grupo suba la presentación en el vínculo de la actividad durante la presentación para que exista un soporte de lo que se presenta.</li>
+    <li>El miembro del grupo seleccionado al azar para presentar tendrá 10 minutos para hacerlo donde deberá contar con una cámara web y un computador. En caso de no contar con estos elementos no podrá presentar.</li>
+    <li>En la presentación en base a los gráficos realizados se deberán tratar los siguientes temas:
+        <ol type="a">
+            <li>Respecto al primer gráfico describir la evolución de la inflación anual en Colombia calculada en base al Índice de Precios al Consumidor (IPC) con periodicidad mensual utilizando toda la información disponible que se pueda utilizar y señalar por qué existe un cambio a partir del año 1991 en la inflación anual</li>
+            <li>Respecto al primer elemento de la presentación sustentar de manera clara y concisa, en base a las fuentes consultadas, las respuestas a las preguntas indicadas</li>
+            <li>Respecto al segundo gráfico describir la evolución de este indicador y señalar la relación que tiene con el concepto de profundización financiera </li>
+            <li>Respecto al tercer gráfico describir la evolución de este indicador y señalar por qué un aumento de la profundización financiera es importante para la economía Colombiana</li>
+            <li>Respecto al cuarto gráfico describir a grandes rasgos el comportamiento de las tasas de desempleo por género y señalar posibles hipótesis que expliquen dicho comportamiento</li>
+            <li>Respecto al segundo elemento de la presentación sustentar de manera clara y concisa, en base a las fuentes consultadas, las respuestas a las preguntas indicadas</li>
+        </ol>
+    </li>
+    <li>En la presentación también se debe indicar al final de manera clara si se realizó un uso de herramientas de inteligencia artificial y en caso de utilizarlas cuáles herramientas fueron utilizadas así como los usos autorizados que se aplicaron.</li>
+    <li>Después de los 10 minutos de la presentación el profesor realizará una ronda de preguntas de máximo 2 minutos al miembro del grupo que realizó la exposición y se fijará la nota donde será igual para los integrantes restantes del grupo.</li>
+</ol>

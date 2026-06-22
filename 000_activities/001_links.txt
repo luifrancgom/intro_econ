@@ -1,0 +1,65 @@
+<ol>
+    <li>
+        <h5>
+            Así se ve Colombia en 100 personas - La Silla Vacía
+        </h5>
+        <p>
+            Con el objetivo de comprender mejor la economía colombiana, La Silla Vacía y la Fundación WWB Colombia muestran en este video, basado en diversas fuentes de datos, una instantánea de esta economía a través de las personas que la conforman.
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/hBGI3Jqv5Ro?feature=shared">https://youtu.be/hBGI3Jqv5Ro?feature=shared</a>
+        </div>
+    </li>
+    <li>
+        <h5>
+            Observatorio Fiscal - Pontificia Universidad Javeriana | Ingreso de los
+            Hogares
+        </h5>
+        <p>
+            En este enlace puede consultar la distribución del ingreso de los hogares en
+            Colombia utilizando datos de la Gran Encuesta Integrada de Hogares. DANE 2023,
+            y compararlo con el ingreso de su propio hogar.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://www.ofiscal.org/interactua" target="_blank">https://www.ofiscal.org/interactua</a> &gt; Calcule dónde se ubica su hogar según su ingreso
+        </div>
+    </li>
+
+    <li>
+        <h5>Dollar Street</h5>
+        <p>
+            Es un proyecto liderado por Anna Rosling Rönnlund que imagina el mundo como
+            una calle ordenada por nivel de ingreso, donde las familias pobres viven en un extremo
+            y las familias ricas en el otro. En el enlace anterior puede encontrar videos y
+            fotos de objetos cotidianos que poseen familias de todos los niveles de ingreso en todo el
+            mundo.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://www.gapminder.org/dollar-street" target="_blank">www.gapminder.org/dollar-street</a>
+        </div>
+        <p>
+            También puede ver el siguiente video para conocer más sobre el proyecto,
+            el cual incluye subtítulos en español:
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/u4L130DkdOw">youtu.be/u4L130DkdOw</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Banco de la República de Colombia - Cátedras de Macroeconomía y Banca
+            Central - Indicadores de actividad económica
+        </h5>
+        <p>
+            El Banco de la República y la Red de Investigadores en Economía ofrecen
+            las Cátedras de Macroeconomía y Banca Central. Estos cursos promueven la
+            comprensión de conceptos básicos en macroeconomía y en política monetaria,
+            cambiaria y crediticia. El video titulado "Indicadores de actividad económica"
+            explica claramente estos indicadores al público en general:
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/YXTjJSGWnsE">youtu.be/YXTjJSGWnsE</a>
+        </div>
+    </li>
+</ol>

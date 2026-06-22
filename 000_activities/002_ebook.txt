@@ -1,0 +1,67 @@
+<h4>Propósitos</h4>
+
+<ol>
+    <li>
+        <strong>Economía e instituciones:</strong> Analizar el papel de las instituciones
+        en la economía
+    </li>
+    <li>
+        <strong>Sector externo:</strong> Explicar la composición y los determinantes
+        del comercio exterior colombiano
+    </li>
+    <li>
+        <strong>Finanzas públicas:</strong> Explicar el papel del Estado en la economía
+    </li>
+</ol>
+
+<h4>Recursos</h4>
+
+<p>
+    Para esta parte, el curso utilizará como material principal de estudio el libro electrónico:
+</p>
+<p>
+    <i>Cárdenas Santamaría, Mauricio. 2020. Introducción a La Economía Colombiana.
+        Bogotá, Colombia: Alfaomega.</i>
+</p>
+
+<p>Puede encontrar el libro en el siguiente enlace:</p>
+
+<div style="text-align: center;">
+    <a href="https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed" target="_blank">https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed</a>
+</div>
+
+<h4>Proceso metodológico</h4>
+
+<ol>
+    <li>Leer y revisar los Capítulos 4, 5 y 6.</li>
+    <li>
+        Realizar un mapa conceptual en el que los elementos mencionados en los Capítulos 4, 5 y 6
+        estén ordenados de manera lógica, de modo que puedan servir como insumo en la
+        actividad "Questionnaire 2" y "Oral presentation Midterm Exam 2".
+    </li>
+</ol>
+<p>
+    La realización del mapa conceptual no es una actividad calificable para entregar,
+    sino una herramienta que puede utilizarse para comprender los temas tratados en
+    estas partes del libro electrónico.
+</p>
+
+<h4>Recursos adicionales</h4>
+
+<ol>
+    <li>
+        Bubbl.us: Herramienta en línea para la creación de mapas conceptuales o esquemas mentales.
+        No requiere instalación previa porque es una herramienta Web 2.0.
+        <ul>
+            <li>
+                ¿Dónde lo encuentro?: <a href="https://bubbl.us/" target="_blank">https://bubbl.us/</a>
+            </li>
+            <li>
+                Tutorial de bubbl.us:
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/5TGO_LDiab8">https://youtu.be/5TGO_LDiab8</a>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ols>

@@ -1,0 +1,106 @@
+<h4 style="text-align: center; color: red;">Por favor leer las instrucciones antes de presentar el examen parcial</h4>
+<p><strong>Ruta para presentar:</strong> Medios de comunicación &gt; Vínculo encuentros virtuales<br></p>
+<p><strong>Prerrequisitos:</strong> Leer y revisar (Cárdenas Santamaría 2020, Capítulo 6) y tener un diadema con un micrófono incorporado para aislar el ruido del entorno así como un computador y una cámara web para presentar</p>
+
+<h4 style="text-align: center;">Instrucciones generales</h4>
+<ol>
+    <li>A lo largo del curso se realizará un proyecto que consistirá de 3 entregas donde esta actividad corresponde a la <strong>segunda</strong> entrega. El proyecto requiere trabajar en grupo donde el trabajo en grupo es obligatorio.</li>
+    <li>El proyecto se puede entregar en español o en inglés de acuerdo a las preferencias del grupo donde esto no afectará de ninguna manera la nota de la entrega.</li>
+    <li>La conformación de los grupos ha sido previamente realizada por el profesor del curso donde es responsabilidad de los estudiantes contactar a los demás integrantes del grupo para realizar las entregas. La conformación y horario de presentación para cada grupo se puede consultar en la siguiente ruta:</li>
+    <div style="text-align: center;"><strong>Primer Corte 30% &gt; Recursos Educativos &gt; Material de apoyo &gt; Groups </strong></div>
+    <li>
+        En ese sentido se recomienda compartir la información de contacto adicional al correo institucional que se considere necesaria en el Foro de inquietudes. Si usted no se contacta y trabaja en grupo con los demás integrantes ni usted ni los demás integrantes del grupo podrán presentar la actividad donde la nota en este caso será igual a cero.
+    </li>
+    <li>Adicionalmente, se indica que a lo largo del curso no será posible cambiar de grupo ni retirarse del grupo asignado por diferencias personales con otros integrantes. Usted como estudiante deberá resolver y superar los conflictos que puedan surgir cuando se realiza un trabajo grupal.</li>
+</ol>
+<h4 style="text-align: center;">Instrucciones específicas del producto a entregar</h4>
+<ol>
+    <li>Cada grupo deberá seleccionar una dimensión de las 6 dimensiones de gobernabilidad de la siguiente lista:
+        <ul>
+            <li>Voz y rendición de cuentas (Voice and accountability)</li>
+            <li>Estabilidad política y ausencia de violencia/terrorismo (Political stability and absence of violence/terrorism)</li>
+            <li>Efectividad del gobierno (Government effectiveness)</li>
+            <li>Calidad regulatoria (Regulatory quality)</li>
+            <li>Estado de derecho (Rule of law)</li>
+            <li>Control de la corrupción (Control of corruption)</li>
+        </ul>
+        Si se desea conocer más acerca de una dimensión particular para tomar una decisión, se puede consultar más información por las
+        siguientes rutas:
+        <ul>
+            <li><a href="https://www.worldbank.org/en/publication/worldwide-governance-indicators" target="_blank">https://www.worldbank.org/en/publication/worldwide-governance-indicators</a> &gt; FAQ &gt; What are the 6 dimensions of governance measured bythe Worldwide Governance Indicators?</li>
+            <li>Cárdenas Santamaría 2020 &gt; Capítulo 4 &gt; Paǵina 86 &gt; Recuadro 4.1</li>
+        </ul>
+    </li>
+    <li>
+        Cada grupo deberá seleccionar un país con el cual Colombia exporte bienes hacia este país e importe bienes de este país
+    </li>
+    <li>Cada grupo deberá preparar una presentación en extensión .pdf, powerpoint o cualquier otra formato que sea adecuado para realizarla donde se incluyan los siguientes elementos:
+        <ol type="a">
+            <li>Señalar la dimensión de gobernabilidad y la razón por la cuál el grupo escogió esta dimensión en base a la lista del punto 1</li>
+            <li>Gráfico de la dimensión seleccionada donde se compare el puntaje de Colombia, el país con peor puntaje y el país con mejor puntaje respecto al último año que se tenga información</li>
+            <li>Señalar el país seleccionado y la razón por la cuál el grupo escogió este país en base a lo señalado en el punto 2</li>
+            <li>Gráficos donde se señale el comercio bilateral (exportaciones e importaciones) entre Colombia y el país seleccionado en base al punto 2</li>
+            <li>Gráfico donde se señale los ingresos tributarios como porcentaje del Producto Interno Bruto (PIB) para Colombia, los países que hacen parte de la Organización para la Cooperación y el Desarrollo Económicos (OCDE) y los países de los que se tenga información de Latino América y el Caribe</li>
+            <li>Con base a la información recolectada del punto 3.e. contestar a la siguiente pregunta: ¿En Colombia se pagan muchos impuestos?</li>
+            <li>Una sección de referencias asociadas con citas a lo largo de las dispositivas que soporten las fuentes donde se obtuvo los datos para construir los gráficos u otra información que se haya utilizado</li>
+            <li>En caso de haber utilizado herramientas de inteligencia artificial, señalar cuáles herramientas fueron utilizadas y los usos que se les dió siguiendo las buenas prácticas y referencias indicadas en <strong>Primer corte 30% &gt; Recursos Educativos &gt; Material de Apoyo &gt; Presentations &gt; 000_syllabus_intro_econ_… &gt; 5 Use of Chat GPT-4, Gemini 1.5, Copilot and its friends</strong>. Para el caso del curso los usos autorizados para estudiantes son:
+                <ul>
+                    <li>Asistencia en la redacción de textos</li>
+                    <li>Asistencia en la elaboración de imágenes</li>
+                    <li>Asistencia en el desarrollo de ideas y exploración de argumentos</li>
+                    <li>Asistencia en procesos de estudio para evaluaciones</li>
+                </ul>
+                En caso contrario indicar de manera clara que no se utilizaron herramientas de inteligencia artificial.
+            </li>
+        </ol>
+    </li>
+</ol>
+<h4 style="text-align: center;">Recursos para elaborar el producto a entregar</h4>
+<ol>
+    <li>Para realizar el gráfico del punto 3.b. respecto a las Instrucciones específicas del producto a entregar utilizar información del Worldwide Governance Indicators (WGI) que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://databank.worldbank.org/source/worldwide-governance-indicators" target="_blank">https://databank.worldbank.org/source/worldwide-governance-indicators</a></div>
+        En esta base en la sección <strong>Country</strong> seleccionar todos los países. Luego en la sección
+        <strong>Series</strong> seleccionar la dimensión que se haya escogido donde para obtener un puntaje se debe seleccionar
+        &lt;Dimensión escogida&gt;: Percentile Rank. Despúes en la sección <strong>Time</strong> seleccionar el último año disponible.
+        Finalmente en la parte superior derecha en la opción <strong>Download options</strong> descargar la información en el formato
+        deseado.
+    </li>
+    <li>Para realizar los gráficos del punto 3.d. respecto a las Instrucciones específicas del producto a entregar utilizar información
+        del Observatory of Economic Complexity (OEC) que se puede encontrar en:
+        <div style="text-align: center;"><a href=" https://oec.world/" target="_blank">https://oec.world/</a> &gt; TOOLS &gt; VISUALIZATIONS &gt; Tree map</div>
+        En esta base en la opción <strong>country</strong> seleccionar Colombia. Luego en la opción <strong>partner</strong> seleccionar
+        el país escogido. Despúes en la opción <strong>DATASET</strong> seleccionar la última versión del Sistema Armonizado que se
+        encuentre disponible. Finalmente seleccionar solo el último año del que se tenga información y obtener los gráficos de exportaciones e importaciones a 2 dígitos en base al
+        Sistema Armonizado.
+    </li>
+    <li>Para realizar los gráficos del punto 3.e. respecto a las Instrucciones específicas del producto a entregar utilizar información
+        del Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues:
+        <div style="text-align: center;"><a href="https://data-explorer.oecd.org/" target="_blank">https://data-explorer.oecd.org/</a> &gt; Taxation &gt; Global Tax Revenues &gt; Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues</div>
+        En esta base en la sección <strong>Time Period</strong> seleccionar el último año del que se tenga información, en la sección <strong>Reference area</strong> seleccionar Colombia, OECD average country, Latin America and the Caribbean, en la sección <strong>Institutional sector</strong> seleccionar General Government, en la sección <strong>Revenue category</strong> seleccionar Total tax revenue y en la sección <strong>Unit of measure</strong> seleccionar Percentage of GDP. Finalmente seleccionar <strong>Table</strong> y en la opción <strong>Download</strong> seleccionar la opción deseada para descargar la información y poder manipularla.
+    </li>
+</ol>
+<h4 style="text-align: center;">Forma de presentación del producto a entregar</h4>
+<ol>
+    <li>En el horario asignado los integrantes del grupo deben ingresar a través de la ruta señalada al inicio de las instrucciones.</li>
+
+    <li>La asistencia es obligatoria para todos los miembros del grupo a la hora designada a menos que existan motivos de fuerza mayor o enfermedad. En ese caso se requiere que el miembro del grupo envíe una excusa al instructor.</li>
+
+    <li>Si un miembro del grupo no contribuyó a la tarea, el grupo debe notificar al instructor. El instructor excluirá al miembro de la presentación. Sin embargo, se debe volver a contactar al miembro para futuras entregas.</li>
+
+    <li>Una vez estén presentes los integrantes del grupo que asistan se escogerá un miembro del grupo al azar para que realice la presentación. Durante la presentación los integrantes restantes no pueden intervenir en la exposición. También se requiere que otro miembro del grupo suba la presentación en el vínculo de la actividad durante la presentación para que exista un soporte de lo que se presenta.</li>
+    <li>El miembro del grupo seleccionado al azar para presentar tendrá 10 minutos para hacerlo donde deberá contar con una cámara web y un computador. En caso de no contar con estos elementos no podrá presentar.</li>
+    <li>En la presentación en base a los gráficos realizados se deberán tratar los siguientes temas:
+        <ol type="a">
+            <li>Respecto al primer elemento de la presentación señalar la dimensión y sustentar de manera adecuada el porqué se escogió esta dimensión</li>
+            <li>Respecto al primer gráfico señalar la interpretación del puntaje obtenido para Colombia y compararlo con los países con peor y mejor puntaje para el último año del que se tenga información</li>
+            <li>Respecto al segundo elemento de la presentación señalar el país seleccionado y sustentar de manera adecuada el porqué se escogió este país</li>
+            <li>Respecto a los 2 gráficos de comercio bilateral describir el patrón de comercio entre
+                Colombia y el país escogido tanto en el tema de exportaciones como
+                importaciones<br></li>
+            <li>Respecto al tercer gráfico describir de manera clara los ingresos tributarios como porcentaje del Producto Interno Bruto (PIB) para Colombia, los países de la OCDE y los países de los que se tenga información de Latino América y el Caribe</li>
+            <li>Respecto al tercer elemento de la presentación sustentar de manera clara en base a la información recolectada la respuesta a la pregunta: ¿En Colombia dada la última información disponible se pagan muchos impuestos?</li>
+        </ol>
+    </li>
+    <li>En la presentación también se debe indicar al final de manera clara si se realizó un uso de herramientas de inteligencia artificial y en caso de utilizarlas cuáles herramientas fueron utilizadas así como los usos autorizados que se aplicaron.</li>
+    <li>Después de los 10 minutos de la presentación el profesor realizará una ronda de preguntas de máximo 2 minutos al miembro del grupo que realizó la exposición y se fijará la nota donde será igual para los integrantes restantes del grupo.</li>
+</ol>

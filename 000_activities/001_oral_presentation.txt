@@ -1,0 +1,106 @@
+<h4 style="text-align: center; color: red;">Por favor leer las instrucciones antes de presentar el examen parcial</h4>
+<p><strong>Ruta para presentar:</strong> Medios de comunicación &gt; Vínculo encuentros virtuales<br></p>
+<p><strong>Prerrequisitos:</strong> Leer y revisar (Cárdenas Santamaría 2020, Capítulo 3) y tener un diadema con un micrófono incorporado para aislar el ruido del entorno así como un computador y una cámara web para presentar</p>
+
+<h4 style="text-align: center;">Instrucciones generales</h4>
+<ol>
+    <li>A lo largo del curso se realizará un proyecto que consistirá de 3 entregas donde esta actividad corresponde a la <strong>primera</strong> entrega. El proyecto requiere trabajar en grupo donde el trabajo en grupo es obligatorio.</li>
+    <li>El proyecto se puede entregar en español o en inglés de acuerdo a las preferencias del grupo donde esto no afectará de ninguna manera la nota de la entrega.</li>
+    <li>La conformación de los grupos ha sido previamente realizada por el profesor del curso donde es responsabilidad de los estudiantes contactar a los demás integrantes del grupo para realizar las entregas. La conformación y horario de presentación para cada grupo se puede consultar en la siguiente ruta:</li>
+    <div style="text-align: center;"><strong>Primer Corte 30% &gt; Recursos Educativos &gt; Material de apoyo &gt; Groups</strong></div>
+    <li>
+        En ese sentido se recomienda compartir la información de contacto adicional al correo institucional que se considere necesaria en el Foro de inquietudes. Si usted no se contacta y trabaja en grupo con los demás integrantes ni usted ni los demás integrantes del grupo podrán presentar la actividad donde la nota en este caso será igual a cero.
+    </li>
+    <li>Adicionalmente, se indica que a lo largo del curso no será posible cambiar de grupo ni retirarse del grupo asignado por diferencias personales con otros integrantes. Usted como estudiante deberá resolver y superar los conflictos que puedan surgir cuando se realiza un trabajo grupal.</li>
+</ol>
+<h4 style="text-align: center;">Instrucciones específicas del producto a entregar</h4>
+<ol>
+    <li>Cada grupo deberá seleccionar una empresa e identificar de la lista que se menciona a continuación el sector de la economía colombiana a la que pertenece la empresa. Se recomienda, más no es obligatorio, que se seleccione una empresa con base a si alguno o algunos de los integrantes trabaja o participa en dicha empresa.
+        <ul>
+            <br>
+            <li>A: Agricultura, ganadería, caza, silvicultura y pesca</li>
+            <li>B: Explotación de minas y canteras</li>
+            <li>C: Industrias manufactureras</li>
+            <li>D + E: Suministro de electricidad, gas, vapor y aire acondicionado; Distribución de agua; evacuación y tratamiento de aguas residuales, gestión de desechos y actividades de saneamiento ambiental</li>
+            <li>F: Construcción</li>
+            <li>G + H + I: Comercio al por mayor y al por menor; reparación de vehículos automotores y motocicletas; Transporte y almacenamiento; Alojamiento y servicios de comida</li>
+            <li>J: Información y comunicaciones</li>
+            <li>L: Actividades inmobiliarias</li>
+            <li>K: Actividades financieras y de seguros</li>
+            <li>M + N: Actividades profesionales, científicas y técnicas; Actividades de servicios administrativos y de apoyo</li>
+            <li>O + P + Q: Administración pública y defensa; planes de seguridad social de afiliación obligatoria; Educación; Actividades de atención de la salud humana y de asistencia social</li>
+            <li>R + S + T: Actividades artísticas, de entretenimiento y recreación; Otras actividades de servicios; Actividades de los hogares individuales en calidad de empleadores; actividades no diferenciadas de los hogares individuales como productores de bienes y servicios para uso propio</li>
+        </ul>
+        <br>
+        Si no se tiene una idea clara respecto al sector al que se pertenece la empresa seleccionada se puede consultar la base de datos <strong>EMIS</strong> por la ruta: <a href="https://login.ezproxy.umng.edu.co/login?url=https://www.emis.com/php/home" target="_blank">https://login.ezproxy.umng.edu.co/login?url=https://www.emis.com/php/home</a> &gt; Compañias &gt; Seleccionar una compañía &gt; <strong>Buscar por el nombre o la razón social de la organización de interés</strong> &gt; Visión General &gt; Company details &gt; CIIU Rev.4 A.C &gt; Actividades Principales, para identificar el sector al que pertenece una determinada empresa.
+        <br>
+        Si se desea consultar con más detalle un sector se puede revisar:
+        <div style="text-align: center;"><a href="https://www.dane.gov.co" target="_blank">www.dane.gov.co</a> &gt; Sistema Estadístico Nacional (SEN) &gt; Normas y estándares &gt; Nomenclaturas y clasificaciones &gt; Clasificaciones estadísticas &gt; Clasificaciones adaptadas &gt; Clasificación industrial internacional uniforme de todas las actividades económicas (CIIU) &gt; Documento CIIU Rev. 4 A.C. (actualización 2022) </div>
+        o de manera directa <a href="https://www.dane.gov.co/files/sen/nomenclatura/ciiu/CIIU_Rev_4_AC2022.pdf" target="_blank">https://www.dane.gov.co/files/sen/nomenclatura/ciiu/CIIU_Rev_4_AC2022.pdf</a>
+    </li>
+    <br>
+    <li>Cada grupo deberá preparar una presentación en extensión .pdf, powerpoint o cualquier otra formato que sea adecuado para realizarla donde se incluyan los siguientes elementos:
+        <ol type="a">
+            <li>Gráfico de series de tiempo donde se presente tanto el Producto Interno Bruto (PIB) a precios corrientes como a precios constantes de <strong>Colombia</strong> utilizando todos los periodos disponibles.</li>
+            <li>Gráfico de series de tiempo donde se presente el PIB per capita a precios constantes de <strong>Colombia</strong> utilizando todos los periodos disponibles.</li>
+            <li>Gráfico de series de tiempo donde se presente el crecimiento anual del PIB per capita a precios constantes de <strong>Colombia</strong> utilizando todos los periodos disponibles.</li>
+            <li>Señalar el sector en base a la lista del punto 1, el nombre o razón social de la empresa seleccionada y una descripción de las actividades principales que realiza ésta empresa en el respectivo sector al que pertenece</li>
+            <li>Gráfico de series de tiempo donde se presente el crecimiento anual del valor agregado a precios constantes del sector al que pertenece la empresa utilizando todos los periodos disponibles.</li>
+            <li>Gráfico donde se presente de manera clara la participación del valor agregado a precios corrientes del sector al que pertenece la empresa en el Producto Interno Bruto (PIB) a precios corrientes tanto para el primer año como para el último año que se disponga de información</li>
+            <li>Una sección de referencias asociadas con citas a lo largo de las dispositivas que soporten las fuentes donde se obtuvo los datos para construir los gráficos u otra información que se haya utilizado</li>
+            <li>En caso de haber utilizado herramientas de inteligencia artificial, señalar cuáles herramientas fueron utilizadas y los usos que se les dió siguiendo las buenas prácticas y referencias indicadas en <strong>Primer corte 30% &gt; Recursos Educativos &gt; Material de Apoyo &gt; Presentations &gt; 000_syllabus_intro_econ_… &gt; 5 Use of Chat GPT-4, Gemini 1.5, Copilot and its friends</strong>. Para el caso del curso los usos autorizados para estudiantes son:
+                <ul>
+                    <li>Asistencia en la redacción de textos</li>
+                    <li>Asistencia en la elaboración de imágenes</li>
+                    <li>Asistencia en el desarrollo de ideas y exploración de argumentos</li>
+                    <li>Asistencia en procesos de estudio para evaluaciones</li>
+                </ul>
+                En caso contrario indicar de manera clara que no se utilizaron herramientas de inteligencia artificial.
+            </li>
+        </ol>
+    </li>
+</ol>
+<h4 style="text-align: center;">Recursos para elaborar el producto a entregar</h4>
+<ol>
+    <li>Para realizar el gráfico del punto 2.a. respecto a las Instrucciones específicas del producto a entregar utilizar información del DANE que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://www.dane.gov.co" target="_blank">www.dane.gov.co</a> &gt; Estadísticas por tema &gt; Cuentas nacionales &gt; Cuentas Nacionales Anuales &gt; Cuentas nacionales anuales &gt; Principales agregados macroeconómicos &gt; Principales agregados macroeconómicos 2005-2024pr</div>
+        Utilizando información en las hojas Cuadro 1 y Cuadro 2
+    </li>
+    <li>Para realizar el gráfico del punto 2.b. respecto a las Instrucciones específicas del producto a entregar utilizar información del DANE que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://www.dane.gov.co" target="_blank">www.dane.gov.co</a> &gt; Estadísticas por tema &gt; Cuentas nacionales &gt; Cuentas Nacionales Anuales &gt; Cuentas nacionales anuales &gt; Principales agregados macroeconómicos &gt; Principales agregados macroeconómicos 2005-2024pr</div>
+        Utilizando información en la hojas Cuadro 1 para la población y Cuadro 2 para el PIB a precios constantes
+    </li>
+    <li>Para realizar el gráfico del punto 2.c. respecto a las Instrucciones específicas del producto a entregar utilizar los cálculos del punto anterior</li>
+    <li>Para realizar el punto 2.d. respecto a las Instrucciones específicas del producto a entregar señalar una razón de peso donde no sea simplemente una decisión al azar</li>
+    <li>Para realizar el gráfico del punto 2.e. respecto a las Instrucciones específicas del producto a entregar utilizar información del DANE que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://www.dane.gov.co" target="_blank">www.dane.gov.co</a> &gt; Estadísticas por tema &gt; Cuentas nacionales &gt; Cuentas Nacionales Anuales &gt; Cuentas nacionales anuales &gt; Principales agregados macroeconómicos &gt; Principales agregados macroeconómicos 2005-2024pr</div>
+        Utilizando información en la hoja Cuadro 2 para el crecimiento anual del PIB a precios constantes del sector seleccionado
+    </li>
+    <li>Para realizar el gráfico del punto 2.f. respecto a las Instrucciones específicas del producto a entregar utilizar información del DANE que se puede encontrar en:
+        <div style="text-align: center;"><a href="https://www.dane.gov.co" target="_blank">www.dane.gov.co</a> &gt; Estadísticas por tema &gt; Cuentas nacionales &gt; Cuentas Nacionales Anuales &gt; Cuentas nacionales anuales &gt; Principales agregados macroeconómicos &gt; Principales agregados macroeconómicos 2005-2024pr</div>
+        Utilizando información en la hoja Cuadro 1
+    </li>
+</ol>
+<h4 style="text-align: center;">Forma de presentación del producto a entregar</h4>
+<ol>
+    <li>En el horario asignado los integrantes del grupo deben ingresar a través de la ruta señalada al inicio de las instrucciones.</li>
+
+    <li>La asistencia es obligatoria para todos los miembros del grupo a la hora designada a menos que existan motivos de fuerza mayor o enfermedad. En ese caso se requiere que el miembro del grupo envíe una excusa al instructor.</li>
+
+    <li>Si un miembro del grupo no contribuyó a la tarea, el grupo debe notificar al instructor. El instructor excluirá al miembro de la presentación. Sin embargo, se debe volver a contactar al miembro para futuras entregas.</li>
+
+    <li>Una vez estén presentes los integrantes del grupo que asistan se escogerá un miembro del grupo al azar para que realice la presentación. Durante la presentación los integrantes restantes no pueden intervenir en la exposición. También se requiere que otro miembro del grupo suba la presentación en el vínculo de la actividad durante la presentación para que exista un soporte de lo que se presenta.</li>
+    <li>El miembro del grupo seleccionado al azar para presentar tendrá 10 minutos para hacerlo donde deberá contar con una cámara web y un computador. En caso de no contar con estos elementos no podrá presentar.</li>
+    <li>En la presentación en base a los gráficos realizados se deberán tratar los siguientes temas:
+        <ol type="a">
+            <li>Respecto al primer gráfico señalar por qué es necesario realizar ajustes por inflación</li>
+            <li>Respecto al segundo gráfico señalar por qué es necesario realizar ajustes por población</li>
+            <li>Respecto al tercer gráfico señalar por qué es importante el crecimiento del PIB per capita a precios constantes para la economía colombiana y que limitaciones presenta esta variable</li>
+            <li>Respecto al cuarto elemento de la presentación señalar el sector al que pertenece la empresa seleccionada así como el nombre o razón social de la empresa. También indicar de manera general una descripción de las actividades principales que realiza ésta empresa en el sector</li>
+            <li>Respecto al cuarto gráfico describir a grandes rasgos el valor agregado a precios constantes del sector al que pertenece la empresa y señalar posibles hipótesis que expliquen dicho comportamiento</li>
+            <li>Respecto al quinto gráfico describir a grandes rasgos los cambios que se han dado entre el año inicial y final utilizado, señalar posibles hipótesis que expliquen dicho comportamiento e indicar por qué se utiliza el valor agregado a precios corrientes y no a precios constantes</li>
+        </ol>
+    </li>
+    <li>En la presentación también se debe indicar al final de manera clara si se realizó un uso de herramientas de inteligencia artificial y en caso de utilizarlas cuáles herramientas fueron utilizadas así como los usos autorizados que se aplicaron.</li>
+    <li>Después de los 10 minutos de la presentación el profesor realizará una ronda de preguntas de máximo 2 minutos al miembro del grupo que realizó la exposición y se fijará la nota donde será igual para los integrantes restantes del grupo.</li>
+</ol>

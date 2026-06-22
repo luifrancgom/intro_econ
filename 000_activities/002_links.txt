@@ -1,0 +1,79 @@
+<ol>
+    <li>
+        <h5>Worldwide Governance Indicators</h5>
+        <p>
+            Los Indicadores de Gobernanza Mundial (WGI) son un conjunto de datos de investigación que resumen
+            las opiniones sobre la calidad de la gobernanza proporcionadas por una gran cantidad de encuestados de empresas,
+            ciudadanos y expertos en países industriales y en desarrollo.
+            Estos datos se recopilan de diversas instituciones encuestadoras, centros de pensamiento,
+            organizaciones no gubernamentales, organizaciones internacionales y empresas del sector privado.</p>
+        <ol type="a">
+            <li>
+                <p>Descargar datos:</p>
+                <div style="text-align: center;">
+                    <a href="https://databank.worldbank.org/source/worldwide-governance-indicators" target="_blank">https://databank.worldbank.org/source/worldwide-governance-indicators</a>
+                </div>
+            </li>
+            <li>
+                <p>Metodología y detalles:</p>
+                <div style="text-align: center;">
+                    <a href="https://www.worldbank.org/en/publication/worldwide-governance-indicators" target="_blank">https://www.worldbank.org/en/publication/worldwide-governance-indicators</a>
+                </div>
+            </li>
+        </ol>
+    </li>
+
+    <li>
+        <h5>When ideas have sex | Matt Ridley (con subtítulos en español)</h5>
+        <p>
+            Parte de este video explica de forma clara las ventajas del comercio
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/OLHh9E5ilZ4">https://youtu.be/OLHh9E5ilZ4</a>
+        </div>
+        <p>
+            También puede ver el video en este enlace alternativo:
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://www.ted.com/talks/matt_ridley_when_ideas_have_sex?utm_campaign=tedspread&amp;utm_medium=referral&amp;utm_source=tedcomshare" target="_blank">When ideas have sex</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Observatory of Economic Complexity (OEC)
+        </h5>
+        <p>
+            El Observatorio de Complejidad Económica (OEC) es una plataforma en línea de visualización
+            y distribución de datos centrada en la geografía y dinámica de las actividades económicas:
+        </p>
+        <div style="text-align: center;">
+            <a href="https://oec.world/" target="_blank">https://oec.world/</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Observatorio Fiscal - Pontifica Universidad Javeriana | Guías ciudadanas
+        </h5>
+        <p>
+            En este enlace puede consultar publicaciones que explican las finanzas públicas de Colombia
+            de una manera accesible para los ciudadanos
+        </p>
+        <div style="text-align: center;">
+            <a href="https://www.ofiscal.org/guias" target="_blank">https://www.ofiscal.org/guias</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues
+        </h5>
+        <p>
+            Esta base presentan datos detallados e internacionalmente comparables sobre los ingresos tributarios de economías de América Latina y el Caribe (ALC). El enfoque de clasificación se basa en la metodología ampliamente reconocida de la base de datos de Estadísticas de Ingresos de la OCDE, que es una fuente de referencia esencial para los países miembros de la organización.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://data-explorer.oecd.org/" target="_blank">https://data-explorer.oecd.org/</a> &gt; Taxation &gt; Global Tax Revenues &gt; Revenue Statistics in Latin America and the Caribbean - Comparative tax revenues
+        </div>
+    </li>
+</ol>

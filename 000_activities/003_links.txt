@@ -1,0 +1,105 @@
+<ol>
+    <li>
+        <h5>Banco de la República de Colombia - Banrep Educa</h5>
+        <p>
+            Banrep Educa es el programa de educación económica y financiera del Banco de la República de Colombia,
+            donde se explican conceptos económicos y financieros
+        </p>
+        <ol type="a">
+            <li>
+                <p>¿Qué es la inflación? ¿Por qué se genera? ¿Cómo se produce y se controla?
+                    ¿Por qué es importante controlarla?</p>
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/Chx1vbLynFY">https://youtu.be/Chx1vbLynFY</a>
+                </div>
+            </li>
+        </ol>
+    </li>
+
+    <li>
+        <h5>Banco de la República de Colombia - Cátedras de Macroeconomía y Banca Central</h5>
+        <p>
+            El Banco de la República y la Red de Investigadores en Economía ofrecen las
+            Cátedras de Macroeconomía y Banca Central. Estos cursos promueven la comprensión
+            de conceptos básicos en macroeconomía y en política monetaria, cambiaria y crediticia.
+        </p>
+        <ol type="a">
+            <li>
+                <p>Inflación: causas y costos</p>
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/eoq421lHDJs">https://youtu.be/eoq421lHDJs</a>
+                </div>
+            </li>
+            <li>
+                <p>Demanda de dinero, inflación, tasas de interés y costos de la inflación e hiperinflación</p>
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/B8jAusr8Wj0">https://youtu.be/B8jAusr8Wj0</a>
+                </div>
+            </li>
+            <li>
+                <p>Oferta monetaria y bancos centrales</p>
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/BxpuTq1NOjI">https://youtu.be/BxpuTq1NOjI</a>
+                </div>
+            </li>
+        </ol>
+    </li>
+
+    <li>
+        <h5>
+            Portal de Estadísticas Económicas del Banco de la República
+        </h5>
+        <p>
+            Plataforma interactiva ofrecida por el Banco de la República de Colombia para descargar
+            datos económicos: <a href="https://suameca.banrep.gov.co/estadisticas-economicas/" target="_blank">https://suameca.banrep.gov.co/estadisticas-economicas/</a>
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/ar1qXvzim0k?si=dH7n9_X1Jm7Y1xC6">https://youtu.be/ar1qXvzim0k?si=dH7n9_X1Jm7Y1xC6</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Indicadores del Desarrollo Mundial (WDI) - Banco Mundial
+        </h5>
+        <p>
+            Los Indicadores del Desarrollo Mundial (WDI) son la colección principal del Banco Mundial de indicadores de desarrollo,
+            compilados a partir de fuentes internacionales oficialmente reconocidas. Presenta los datos de desarrollo global
+            más actuales y precisos disponibles, e incluye estimaciones nacionales, regionales y globales.
+        </p>
+        <div style="text-align: center;">
+            <a href="https://databank.worldbank.org/source/world-development-indicators" target="_blank">https://databank.worldbank.org/source/world-development-indicators</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            ¿Cómo se mide el mercado laboral en Colombia? - DANE
+        </h5>
+        <p>
+            En este video, el Departamento Administrativo Nacional de Estadística - DANE explica
+            los diferentes indicadores que se utilizan para medir el mercado laboral en Colombia.
+        </p>
+        <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+            <a href="https://youtu.be/e8L0UtEXKvQ">https://youtu.be/e8L0UtEXKvQ</a>
+        </div>
+    </li>
+
+    <li>
+        <h5>
+            Calculadora laboral - Mintrabajo
+        </h5>
+        <p>
+            El Ministerio del Trabajo de Colombia pone a disposición de los ciudadanos la Calculadora Laboral.
+            Es una herramienta pedagógica de fácil uso, con la cual todos los trabajadores y empleadores en Colombia
+            podrán:
+        </p>
+        <ul>
+            <li>Generar estimaciones de la liquidación de prestaciones sociales</li>
+            <li>Simular las provisiones mensuales que los empleadores deben tener en cuenta al contratar a un trabajador</li>
+        </ul>
+        <div style="text-align: center;">
+            <a href="https://www.mintrabajo.gov.co/atencion-al-ciudadano/tramites-y-servicios/mi-calculadora" target="_blank">https://www.mintrabajo.gov.co/atencion-al-ciudadano/tramites-y-servicios/mi-calculadora</a>
+        </div>
+    </li>
+</ol>

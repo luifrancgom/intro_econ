@@ -1,0 +1,40 @@
+<p>
+    <strong>Prerrequisitos:</strong> Leer y revisar (Cárdenas Santamaría 2020,
+    Chapters 7 &amp; 8)
+</p>
+
+<h4>Estructura y Formato</h4>
+
+<ol>
+    <li>
+        El cuestionario consta de 6 preguntas y debe ser presentado de forma individual.
+        Por lo tanto, si se responde en grupo, la calificación será cero (0).
+    </li>
+    <li>
+        Las 6 preguntas que forman parte del cuestionario son de opción múltiple
+        con una única respuesta correcta y están presentadas en español, así que no te preocupes por el inglés.
+    </li>
+    <li>
+        Cada pregunta tiene el mismo peso en la calificación total y se calificará
+        en una escala de 50 puntos. En otras palabras, cada pregunta tiene una
+        puntuación máxima posible de 8.33 puntos.
+    </li>
+</ol>
+
+<h4>Tiempo disponible</h4>
+
+<ol>
+    <li>
+        Una (1) hora disponible para responder. Además, se incluyen treinta (30)
+        minutos adicionales en caso de que haya un problema técnico. En ese sentido,
+        en total hay disponible una hora y media (1.5 horas).
+    </li>
+</ol>
+
+<h4>Intentos permitidos</h4>
+
+<ol>
+    <li>
+        Dos intentos, donde se tomará en cuenta la calificación más alta. La respectiva nota sólo podra ser visualizada una vez se cierre la actividad para todo el curso.
+    </li>
+</ol>

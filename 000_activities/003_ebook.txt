@@ -1,0 +1,68 @@
+<h4>Propósitos</h4>
+
+<ol>
+    <li>
+        <strong>Dinero, precios y tipo de cambio:</strong> Analizar el mercado monetario e
+        introducir los conceptos de inflación, tipo de cambio nominal y tasa de interés
+    </li>
+    <li>
+        <strong>Mercado financiero:</strong> Analizar el funcionamiento del mercado financiero,
+        identificando los tipos de intermediarios e instrumentos que lo conforman
+    </li>
+    <li>
+        <strong>Mercado laboral:</strong> Examinar la evolución y características de la
+        oferta y demanda de trabajo en Colombia
+    </li>
+</ol>
+
+<h4>Recursos</h4>
+
+<p>
+    Para esta parte, el curso utilizará como material principal de estudio el libro electrónico:
+</p>
+<p>
+    <i>Cárdenas Santamaría, Mauricio. 2020. Introducción a La Economía Colombiana.
+        Bogotá, Colombia: Alfaomega.</i>
+</p>
+
+<p>Puede encontrar el libro en el siguiente enlace:</p>
+
+<div style="text-align: center;">
+    <a href="https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed" target="_blank">https://www-alphaeditorialcloud-com.ezproxy.umng.edu.co/library/publication/introduccion-a-la-economia-colombiana-4ed</a>
+</div>
+
+<h4>Proceso metodológico</h4>
+
+<ol>
+    <li>Leer y revisar los Capítulos 7, 8 y 9.</li>
+    <li>
+        Realizar un mapa conceptual en el que los elementos mencionados en los Capítulos 7, 8 y 9
+        estén ordenados de manera lógica, de modo que puedan servir como insumo en la
+        actividad "Questionnaire 3" y "Oral presentation Final Exam".
+    </li>
+</ol>
+<p>
+    La realización del mapa conceptual no es una actividad calificable para entregar,
+    sino una herramienta que puede utilizarse para comprender los temas tratados en
+    estas partes del libro electrónico.
+</p>
+
+<h4>Recursos adicionales</h4>
+
+<ol>
+    <li>
+        Bubbl.us: Herramienta en línea para la creación de mapas conceptuales o esquemas mentales.
+        No requiere instalación previa porque es una herramienta Web 2.0.
+        <ul>
+            <li>
+                ¿Dónde lo encuentro?: <a href="https://bubbl.us/">https://bubbl.us/</a>
+            </li>
+            <li>
+                Tutorial de bubbl.us:
+                <div style="text-align: center; max-width: 80ch; margin: 0 auto;">
+                    <a href="https://youtu.be/5TGO_LDiab8">https://youtu.be/5TGO_LDiab8</a>
+                </div>
+            </li>
+        </ul>
+    </li>
+</ol>
